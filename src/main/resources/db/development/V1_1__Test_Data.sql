@@ -1,8 +1,9 @@
 INSERT INTO clans (clan_id, clan_name, caps, junk) VALUES
     (1, 'Stalkers', 100, 250);
 
-INSERT INTO weapons (weapon_id, weapon_name) VALUES
-    (1, 'Kitchen knife');
+INSERT INTO weapons (weapon_id, weapon_name, clan_id) VALUES
+    (1, 'Kitchen knife', null),
+    (2, 'Glock', 1);
 
 INSERT INTO characters (character_id, clan_id, character_name, gender, state, combat, scavenge, craftsmanship, charm, intellect, weapon_id) VALUES
     (1, 1, 'Rusty Nick', 'MALE', 'BUSY', 3, 2, 4, 1, 2, null),

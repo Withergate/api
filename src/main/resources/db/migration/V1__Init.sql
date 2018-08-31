@@ -26,8 +26,10 @@ DROP TABLE IF EXISTS weapons;
 CREATE TABLE weapons (
     weapon_id INT AUTO_INCREMENT,
     weapon_name VARCHAR(16),
+    clan_id INT DEFAULT NULL,
     PRIMARY KEY (weapon_id),
-    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (weapon_name) REFERENCES weapon_details (weapon_name)
+    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (weapon_name) REFERENCES weapon_details (weapon_name),
+    CONSTRAINT weapon_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
 DROP TABLE IF EXISTS characters;

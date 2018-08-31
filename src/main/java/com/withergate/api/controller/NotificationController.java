@@ -29,7 +29,7 @@ public class NotificationController {
      * Constructor.
      *
      * @param clanNotificationRepository player notification repository
-     * @param turnRepository turn repository
+     * @param turnRepository             turn repository
      */
     public NotificationController(ClanNotificationRepository clanNotificationRepository,
                                   TurnRepository turnRepository) {
@@ -49,9 +49,9 @@ public class NotificationController {
         log.debug("Requesting notifications for player {}", principal.getName());
 
         int playerId = Integer.parseInt(principal.getName());
-        int turn = turnRepository.findFirstByOrderByTurnIdDesc().getTurnId() -1; // get last turn's ID
+        int turn = turnRepository.findFirstByOrderByTurnIdDesc().getTurnId() - 1; // get last turn's ID
         return new ResponseEntity<>(clanNotificationRepository.findAllByClanIdAndTurnId(playerId, turn),
-                    HttpStatus.OK);
+                HttpStatus.OK);
     }
 
     /**

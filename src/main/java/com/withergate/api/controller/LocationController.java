@@ -31,7 +31,7 @@ public class LocationController {
     /**
      * Constructor.
      *
-     * @param locationService location service
+     * @param locationService               location service
      * @param locationDescriptionRepository location description repository
      */
     public LocationController(IActionService locationService,
@@ -44,7 +44,7 @@ public class LocationController {
      * Submits a new location action and checks if this action is applicable. Throws an exception if not.
      *
      * @param principal the principal
-     * @param request the location action request
+     * @param request   the location action request
      */
     @RequestMapping(value = "/locations/action", method = RequestMethod.POST)
     public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) {

@@ -56,16 +56,16 @@ public class Character {
     @Column(name = "combat", nullable = false)
     private int combat;
 
-    @Column(name="scavenge", nullable = false)
+    @Column(name = "scavenge", nullable = false)
     private int scavenge;
 
-    @Column(name="craftsmanship", nullable = false)
+    @Column(name = "craftsmanship", nullable = false)
     private int craftsmanship;
 
-    @Column(name="charm", nullable = false)
+    @Column(name = "charm", nullable = false)
     private int charm;
 
-    @Column(name="intellect", nullable = false)
+    @Column(name = "intellect", nullable = false)
     private int intellect;
 
     @OneToOne(cascade = CascadeType.ALL)

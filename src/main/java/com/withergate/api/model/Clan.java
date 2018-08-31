@@ -1,6 +1,7 @@
 package com.withergate.api.model;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Weapon;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +39,10 @@ public class Clan {
     @Column(name = "junk", nullable = false)
     private int junk;
 
-    @OneToMany(mappedBy="clan")
+    @OneToMany(mappedBy = "clan")
     private List<Character> characters;
+
+    @OneToMany(mappedBy = "clan")
+    private List<Weapon> weapons;
 
 }

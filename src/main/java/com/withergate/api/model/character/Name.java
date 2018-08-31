@@ -1,6 +1,5 @@
 package com.withergate.api.model.character;
 
-import com.withergate.api.model.character.Gender;
 import lombok.Getter;
 import lombok.Setter;
 

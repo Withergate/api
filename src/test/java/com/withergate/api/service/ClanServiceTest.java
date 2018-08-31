@@ -22,11 +22,14 @@ public class ClanServiceTest {
     @Mock
     private ClanRepository clanRepository;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        clanService = new ClanService(clanRepository);
+        clanService = new ClanService(clanRepository, characterService);
     }
 
     @Test(expected = EntityConflictException.class)

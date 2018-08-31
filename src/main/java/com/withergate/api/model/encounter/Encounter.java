@@ -47,7 +47,7 @@ public class Encounter {
     @Column(name = "success_text", updatable = false, nullable = false)
     private String successText;
 
-    @Column(name = "failure_text" , updatable = false, nullable = false)
+    @Column(name = "failure_text", updatable = false, nullable = false)
     private String failureText;
 
     public String getDescriptionText(Character character, Location location) {

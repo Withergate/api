@@ -1,10 +1,12 @@
 package com.withergate.api.model.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,4 +40,9 @@ public class Weapon {
     @JsonIgnore
     @OneToOne(mappedBy = "weapon")
     private Character character;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "clan_id")
+    @JsonIgnore
+    private Clan clan;
 }

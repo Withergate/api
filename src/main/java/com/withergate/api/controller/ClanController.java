@@ -57,7 +57,7 @@ public class ClanController {
     /**
      * Creates a new clan for the authenticated player. If this player already has a clan, returns error status.
      *
-     * @param principal the principal
+     * @param principal   the principal
      * @param clanRequest the clan request containing necessary clan details
      * @return the created clan
      */

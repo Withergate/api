@@ -27,8 +27,8 @@ public class NameService implements INameService {
      * Constructor.
      *
      * @param namePrefixRepository namePrefix repository
-     * @param nameRepository name repository
-     * @param randomService random service
+     * @param nameRepository       name repository
+     * @param randomService        random service
      */
     public NameService(NamePrefixRepository namePrefixRepository, NameRepository nameRepository,
                        RandomService randomService) {

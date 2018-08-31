@@ -29,7 +29,7 @@ public class ClanService implements IClanService {
     /**
      * Constructor.
      *
-     * @param clanRepository clan repository
+     * @param clanRepository   clan repository
      * @param characterService character service
      */
     public ClanService(ClanRepository clanRepository, CharacterService characterService) {

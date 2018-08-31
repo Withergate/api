@@ -1,8 +1,8 @@
 package com.withergate.api.service.action;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.Location;
 import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
@@ -11,6 +11,7 @@ import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.CharacterService;
+import com.withergate.api.service.IItemService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -34,24 +35,27 @@ public class ActionService implements IActionService {
     private final ClanNotificationRepository clanNotificationRepository;
     private final RandomService randomService;
     private final IEncounterService encounterService;
+    private final IItemService itemService;
 
     /**
      * Constructor.
      *
-     * @param characterService             character service
-     * @param locationActionRepository     locationAction repository
+     * @param characterService           character service
+     * @param locationActionRepository   locationAction repository
      * @param clanNotificationRepository player notification repository
-     * @param randomService                random service
-     * @param encounterService             encounter service
+     * @param randomService              random service
+     * @param encounterService           encounter service
+     * @param itemService item service
      */
     public ActionService(CharacterService characterService, LocationActionRepository locationActionRepository,
                          ClanNotificationRepository clanNotificationRepository, RandomService randomService,
-                         IEncounterService encounterService) {
+                         IEncounterService encounterService, IItemService itemService) {
         this.characterService = characterService;
         this.locationActionRepository = locationActionRepository;
         this.clanNotificationRepository = clanNotificationRepository;
         this.randomService = randomService;
         this.encounterService = encounterService;
+        this.itemService = itemService;
     }
 
     @Transactional
@@ -157,7 +161,11 @@ public class ActionService implements IActionService {
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");
 
-            notification.setText("<b>" + character.getName() + "</b> found loot at " + location + ".");
+            StringBuilder notificationBuilder = new StringBuilder();
+            notificationBuilder.append("<b>" + character.getName() + "</b> found loot at " + location + ".");
+            itemService.generateItemForCharacter(character, notificationBuilder);
+
+            notification.setText(notificationBuilder.toString());
             return;
         }
 

@@ -1,7 +1,7 @@
 package com.withergate.api.service.encounter;
 
-import com.withergate.api.model.Location;
 import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
 
 /**

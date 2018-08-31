@@ -29,15 +29,15 @@ public class CharacterService implements ICharacterService {
     /**
      * Constructor.
      *
-     * @param characterRepository character repository
-     * @param randomService random service
+     * @param characterRepository        character repository
+     * @param randomService              random service
      * @param clanNotificationRepository playerNotification repository
-     * @param nameService  name service
+     * @param nameService                name service
      */
     public CharacterService(CharacterRepository characterRepository, RandomService randomService,
                             ClanNotificationRepository clanNotificationRepository, NameService nameService) {
         this.characterRepository = characterRepository;
-        this.randomService= randomService;
+        this.randomService = randomService;
         this.clanNotificationRepository = clanNotificationRepository;
         this.nameService = nameService;
     }
@@ -72,9 +72,9 @@ public class CharacterService implements ICharacterService {
                 character.setState(CharacterState.READY);
                 characterRepository.save(character);
 
-                notification.setText("<b>" + character.getName() +"</b> has recovered as is ready again.");
+                notification.setText("<b>" + character.getName() + "</b> has recovered as is ready again.");
             } else { // failure
-                notification.setText("<b>" + character.getName() +"</b> did not manage to recover yet.");
+                notification.setText("<b>" + character.getName() + "</b> did not manage to recover yet.");
             }
             clanNotificationRepository.save(notification);
         }

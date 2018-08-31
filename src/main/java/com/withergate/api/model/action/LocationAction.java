@@ -26,7 +26,7 @@ import javax.persistence.Table;
 public class LocationAction extends BaseAction {
 
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name="character_id", unique = true, nullable = false, updatable = false)
+    @JoinColumn(name = "character_id", unique = true, nullable = false, updatable = false)
     private Character character;
 
     @Column(name = "location", nullable = false)

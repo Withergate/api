@@ -24,9 +24,9 @@ public class TurnScheduler {
     /**
      * Constructor.
      *
-     * @param turnRepository turn repository
+     * @param turnRepository        turn repository
      * @param locationActionService locationAction service
-     * @param characterService character service
+     * @param characterService      character service
      */
     public TurnScheduler(TurnRepository turnRepository, ActionService locationActionService,
                          CharacterService characterService) {

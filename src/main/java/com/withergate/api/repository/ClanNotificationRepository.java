@@ -15,6 +15,7 @@ import java.util.List;
 public interface ClanNotificationRepository extends JpaRepository<ClanNotification, Long> {
 
     List<ClanNotification> findAllByClanId(int clanId);
+
     List<ClanNotification> findAllByClanIdAndTurnId(int clanId, int turnId);
 
 }

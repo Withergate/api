@@ -1,14 +1,16 @@
 package com.withergate.api.service.encounter;
 
-import com.withergate.api.model.Location;
 import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.repository.EncounterRepository;
+import com.withergate.api.service.IItemService;
 import com.withergate.api.service.RandomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,18 +24,24 @@ import java.util.List;
 public class EncounterService implements IEncounterService {
 
     private final EncounterRepository encounterRepository;
+    private final IItemService itemService;
     private final RandomService randomService;
 
     /**
      * Constructor.
      *
      * @param encounterRepository encounter repository
+     * @param itemService item service
+     * @param randomService  random service
      */
-    public EncounterService(EncounterRepository encounterRepository, RandomService randomService) {
+    public EncounterService(EncounterRepository encounterRepository, IItemService itemService,
+                            RandomService randomService) {
         this.encounterRepository = encounterRepository;
+        this.itemService = itemService;
         this.randomService = randomService;
     }
 
+    @Transactional
     @Override
     public void handleEncounter(ClanNotification notification, Character character, Location location) {
         // load random encounter from the repository
@@ -55,7 +63,7 @@ public class EncounterService implements IEncounterService {
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getFailureText(character, location));
                 } else {
-                    // TODO - compute reward
+                    handleReward(encounter, character, notificationBuilder);
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
@@ -67,7 +75,7 @@ public class EncounterService implements IEncounterService {
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getFailureText(character, location));
                 } else {
-                    // TODO - compute reward
+                    handleReward(encounter, character, notificationBuilder);
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
@@ -79,7 +87,7 @@ public class EncounterService implements IEncounterService {
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getFailureText(character, location));
                 } else {
-                    // TODO - compute reward
+                    handleReward(encounter, character, notificationBuilder);
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
@@ -87,10 +95,32 @@ public class EncounterService implements IEncounterService {
             default:
                 log.error("Unknown encounter type triggered: {}!", encounter.getType());
                 break;
-            }
+        }
 
-             // Update notification
-             notification.setText(notificationBuilder.toString());
+        // Update notification
+        notification.setText(notificationBuilder.toString());
+    }
+
+    private void handleReward(Encounter encounter, Character character, StringBuilder notification) {
+        log.debug("Computing reward for character {}", character.getId());
+
+        switch (encounter.getReward()) {
+            case CAPS:
+                // TODO
+                break;
+            case JUNK:
+                // TODO
+                break;
+            case ITEM:
+                itemService.generateItemForCharacter(character, notification);
+                break;
+            case CHARACTER:
+                // TODO
+                break;
+            default:
+                // TODO
+                break;
+        }
     }
 
 }

@@ -22,10 +22,10 @@ public interface IClanService {
     /**
      * Creates a new clan for the provided ID and name.
      *
-     * @param clanId the clan ID
+     * @param clanId      the clan ID
      * @param clanRequest the clan request date
-     * @throws EntityConflictException
      * @return the created clan
+     * @throws EntityConflictException
      */
     Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException;
 }
