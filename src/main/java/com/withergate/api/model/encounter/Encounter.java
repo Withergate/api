@@ -63,7 +63,7 @@ public class Encounter {
     }
 
     private String enhanceText(String text, Character character, Location location) {
-        text = text.replaceAll("\\[CH\\]", "<b>" + character.getName() + "</b>");
+        text = text.replaceAll("\\[CH\\]", "[" + character.getName() + "]");
         text = text.replaceAll("\\[L\\]", location.name());
 
         return text;

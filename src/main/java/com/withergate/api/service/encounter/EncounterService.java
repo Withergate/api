@@ -63,7 +63,7 @@ public class EncounterService implements IEncounterService {
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getFailureText(character, location));
                 } else {
-                    handleReward(encounter, character, notificationBuilder);
+                    handleReward(encounter, character, notification);
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
@@ -75,7 +75,7 @@ public class EncounterService implements IEncounterService {
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getFailureText(character, location));
                 } else {
-                    handleReward(encounter, character, notificationBuilder);
+                    handleReward(encounter, character, notification);
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
@@ -87,7 +87,7 @@ public class EncounterService implements IEncounterService {
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getFailureText(character, location));
                 } else {
-                    handleReward(encounter, character, notificationBuilder);
+                    handleReward(encounter, character, notification);
                     notificationBuilder.append(" ");
                     notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
@@ -101,7 +101,7 @@ public class EncounterService implements IEncounterService {
         notification.setText(notificationBuilder.toString());
     }
 
-    private void handleReward(Encounter encounter, Character character, StringBuilder notification) {
+    private void handleReward(Encounter encounter, Character character, ClanNotification notification) {
         log.debug("Computing reward for character {}", character.getId());
 
         switch (encounter.getReward()) {

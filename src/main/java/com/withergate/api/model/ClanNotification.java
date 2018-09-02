@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "player_notifications")
+@Table(name = "clan_notifications")
 @Getter
 @Setter
 public class ClanNotification {
@@ -29,4 +29,7 @@ public class ClanNotification {
 
     @Column(name = "text", updatable = false, nullable = false)
     private String text;
+
+    @Column(name = "details", updatable = false, nullable = false)
+    private String details;
 }

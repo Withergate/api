@@ -59,11 +59,12 @@ CREATE TABLE location_descriptions (
 );
 
 DROP TABLE IF EXISTS clan_notifications;
-CREATE TABLE player_notifications (
+CREATE TABLE clan_notifications (
     notification_id BIGINT AUTO_INCREMENT,
     clan_id INT NOT NULL,
     turn_id INT NOT NULL,
-    text VARCHAR(512) NOT NULL,
+    text VARCHAR(256) NOT NULL,
+    details VARCHAR(256),
     PRIMARY KEY (notification_id),
     CONSTRAINT p_notification_turn_fk FOREIGN KEY (turn_id) REFERENCES turns (turn_id),
     CONSTRAINT p_notification_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)

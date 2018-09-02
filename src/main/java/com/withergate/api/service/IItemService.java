@@ -37,6 +37,6 @@ public interface IItemService {
      * @param character the character
      * @param notification the notification to be updated
      */
-    void generateItemForCharacter(Character character, StringBuilder notification);
+    void generateItemForCharacter(Character character, ClanNotification notification);
 
 }

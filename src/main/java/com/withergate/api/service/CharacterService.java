@@ -72,10 +72,11 @@ public class CharacterService implements ICharacterService {
                 character.setState(CharacterState.READY);
                 characterRepository.save(character);
 
-                notification.setText("<b>" + character.getName() + "</b> has recovered as is ready again.");
+                notification.setText("[" + character.getName() + "] has recovered as is ready again.");
             } else { // failure
-                notification.setText("<b>" + character.getName() + "</b> did not manage to recover yet.");
+                notification.setText("[" + character.getName() + "] did not manage to recover yet.");
             }
+            notification.setDetails("Rolled " + diceRoll + " when computing healing probability.");
             clanNotificationRepository.save(notification);
         }
 

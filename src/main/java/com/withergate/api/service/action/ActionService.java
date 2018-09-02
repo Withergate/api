@@ -134,7 +134,7 @@ public class ActionService implements IActionService {
     private void processLocationAction(ClanNotification notification, Character character, Location location,
                                        int encounterProbability, int lootProbability, int junkRatio) {
         // default outcome
-        notification.setText("<b>" + character.getName() + "</b> returned from " + location + "empty-handed.");
+        notification.setText("[" + character.getName() + "] returned from " + location + "empty-handed.");
 
         /*
          * ENCOUNTER
@@ -161,11 +161,9 @@ public class ActionService implements IActionService {
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");
 
-            StringBuilder notificationBuilder = new StringBuilder();
-            notificationBuilder.append("<b>" + character.getName() + "</b> found loot at " + location + ".");
-            itemService.generateItemForCharacter(character, notificationBuilder);
+            notification.setText("[" + character.getName() + "] found loot at " + location + ".");
+            itemService.generateItemForCharacter(character, notification);
 
-            notification.setText(notificationBuilder.toString());
             return;
         }
 
@@ -178,7 +176,8 @@ public class ActionService implements IActionService {
         int junk = character.getScavenge() * junkRatio;
         Clan clan = character.getClan();
         clan.setJunk(clan.getJunk() + junk);
-        notification.setText("<b>" + character.getName() + "</b> found <b>" + junk + "</b> junk at " + location + ".");
+        notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
+        notification.setDetails("Added [" + junk + "] junk to your storage.");
     }
 
 }

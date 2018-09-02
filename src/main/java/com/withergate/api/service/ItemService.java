@@ -146,7 +146,7 @@ public class ItemService implements IItemService {
 
     @Transactional
     @Override
-    public void generateItemForCharacter(Character character, StringBuilder notification) {
+    public void generateItemForCharacter(Character character, ClanNotification notification) {
         log.debug("Generating random item for character {}", character.getId());
 
         /*
@@ -164,9 +164,6 @@ public class ItemService implements IItemService {
         /*
          * Either equip the weapon with the character or place it in the clan storage.
          */
-        notification.append("\n");
-        notification.append("<b>" + details.getName() + "</b> was found!");
-
         if (character.getWeapon() == null) {
             character.setWeapon(weapon);
             weapon.setCharacter(character);
@@ -175,8 +172,7 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.append("\n");
-            notification.append("<b>" + character.getName() + "</b> equipped this weapon.");
+            notification.setDetails("[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
         } else {
             Clan clan = character.getClan();
             clan.getWeapons().add(weapon);
@@ -186,8 +182,7 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.append("\n");
-            notification.append("<b>" + character.getName() + "</b> took this item to your clan storage.");
+            notification.setDetails("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
         }
     }
 }
