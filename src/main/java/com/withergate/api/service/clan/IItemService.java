@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.clan;
 
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;

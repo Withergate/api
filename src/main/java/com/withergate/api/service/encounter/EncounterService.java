@@ -6,7 +6,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.repository.EncounterRepository;
-import com.withergate.api.service.IItemService;
+import com.withergate.api.service.clan.IItemService;
 import com.withergate.api.service.RandomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

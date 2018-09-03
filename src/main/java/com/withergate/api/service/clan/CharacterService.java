@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.clan;
 
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
@@ -6,6 +6,8 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.repository.CharacterRepository;
 import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.service.NameService;
+import com.withergate.api.service.RandomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

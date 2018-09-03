@@ -1,6 +1,7 @@
-package com.withergate.api.service;
+package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.character.Character;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -73,6 +74,9 @@ public class ClanServiceTest {
 
         Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(clan));
 
+        Character character = new Character();
+        Mockito.when(characterService.generateRandomCharacter()).thenReturn(character);
+
         // when creating new clan
         ClanRequest clanRequest = new ClanRequest("Dragons");
         clanService.createClan(2, clanRequest);
@@ -81,6 +85,10 @@ public class ClanServiceTest {
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
         Mockito.verify(clanRepository).save(captor.capture());
 
+        // verify all characters saved
+        Mockito.verify(characterService, Mockito.times(5)).save(Mockito.any(Character.class));
+
         assertEquals("Dragons", captor.getValue().getName());
+        assertEquals(5, captor.getValue().getCharacters().size());
     }
 }

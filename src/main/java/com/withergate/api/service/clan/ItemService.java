@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
@@ -9,6 +9,7 @@ import com.withergate.api.repository.CharacterRepository;
 import com.withergate.api.repository.ClanRepository;
 import com.withergate.api.repository.WeaponDetailsRepository;
 import com.withergate.api.repository.WeaponRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

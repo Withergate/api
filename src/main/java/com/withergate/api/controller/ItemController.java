@@ -1,7 +1,7 @@
 package com.withergate.api.controller;
 
 import com.withergate.api.model.request.WeaponEquipRequest;
-import com.withergate.api.service.IItemService;
+import com.withergate.api.service.clan.IItemService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

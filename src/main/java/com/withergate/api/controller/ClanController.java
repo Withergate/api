@@ -2,7 +2,7 @@ package com.withergate.api.controller;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.request.ClanRequest;
-import com.withergate.api.service.IClanService;
+import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

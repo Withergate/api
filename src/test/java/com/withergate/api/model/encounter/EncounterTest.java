@@ -21,6 +21,6 @@ public class EncounterTest {
         String result = encounter.getDescriptionText(character, Location.WASTELAND);
 
         // then verify correct text returned
-        assertEquals("This is <b>Rusty Nick</b>.", result);
+        assertEquals("This is [Rusty Nick].", result);
     }
 }
