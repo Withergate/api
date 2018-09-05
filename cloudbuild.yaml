@@ -1,0 +1,24 @@
+steps:
+- name: 'gcr.io/cloud-builders/java/gradle'
+  id: 'java-build'
+  args: ['build']
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'docker-build'
+  args: ['build', 
+         '-t', 'eu.gcr.io/$PROJECT_ID/withergate-api:$COMMIT_SHA',
+         '-t', 'eu.gcr.io/$PROJECT_ID/withergate-api:latest',
+         '-f', 'Dockerfile', '.']
+  waitFor: ['java-build']
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'docker-push'
+  args: ['push', 'eu.gcr.io/$PROJECT_ID/withergate-api:latest']
+  waitFor: ['docker-build']
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'docker-push-sha'
+  args: ['push', 'eu.gcr.io/$PROJECT_ID/withergate-api:$COMMIT_SHA']
+  waitFor: ['docker-build']
+
+images:
+- 'eu.gcr.io/$PROJECT_ID/withergate-api:$COMMIT_SHA'
+- 'eu.gcr.io/$PROJECT_ID/withergate-api:latest'
+
