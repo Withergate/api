@@ -118,11 +118,11 @@ INSERT INTO weapon_details(weapon_name, description, weapon_type, combat) VALUES
 -- Location descriptions
 INSERT INTO location_descriptions(location, description, image_url) VALUES
     ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a great place to search for junk and some low-value items. Do not expect to find anything too valuable, though.',
-    'https://pre00.deviantart.net/356e/th/pre/f/2013/017/8/c/commssion__spacecraft_crash_by_danillovesfood-d5rr985.jpg'),
+    'https://image.ibb.co/gcR9Xz/vault.jpg'),
     ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this area can sometimes be dangerous.',
-    'https://orig00.deviantart.net/2eb3/f/2010/198/7/5/travels_by_danillovesfood.jpg'),
+    'https://image.ibb.co/dxwXkK/wasteland.jpg'),
     ('CITY', 'The ruins of the destroyed city hides the most valuable treasures. But keep in mind that many scavengers and wastelanders go there in a hope for better life. That means you are most likely to encounter enemy characters in this location. On the other hand, if you are lucky, you can find some useful items here.',
-    'https://img00.deviantart.net/48e7/i/2012/078/d/f/post_apocalyptic_stronghold_by_danillovesfood-d4t9jpl.jpg');
+    'https://image.ibb.co/jVgMee/city.jpg');
 
 -- Random encounters
 INSERT INTO encounters(encounter_id, encounter_type, reward_type, difficulty, description_text, success_text, failure_text) VALUES
