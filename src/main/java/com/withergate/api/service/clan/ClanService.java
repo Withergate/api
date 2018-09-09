@@ -95,7 +95,6 @@ public class ClanService implements IClanService {
 
         // deduct price and add the character to the clan
         clan.getCharacters().add(character);
-        clan.setCaps(clan.getCaps() - CHARACTER_COST);
         clanRepository.save(clan);
 
         log.debug("Hired new character: {}", character.getName());
