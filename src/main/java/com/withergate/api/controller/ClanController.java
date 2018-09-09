@@ -4,7 +4,6 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.exception.EntityConflictException;
-import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,17 +60,14 @@ public class ClanController {
      * @param principal   the principal
      * @param clanRequest the clan request containing necessary clan details
      * @return the created clan
+     * @throws EntityConflictException
      */
     @RequestMapping(value = "/clan", method = RequestMethod.POST)
-    public ResponseEntity<Clan> createClan(Principal principal, @RequestBody ClanRequest clanRequest) {
+    public ResponseEntity<Clan> createClan(Principal principal, @RequestBody ClanRequest clanRequest) throws EntityConflictException {
         log.debug("Creating a new clan for player {}", principal.getName());
 
-        try {
-            Clan clan = clanService.createClan(Integer.parseInt(principal.getName()), clanRequest);
-            return new ResponseEntity<>(clan, HttpStatus.CREATED);
-        } catch (EntityConflictException e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        Clan clan = clanService.createClan(Integer.parseInt(principal.getName()), clanRequest);
+        return new ResponseEntity<>(clan, HttpStatus.CREATED);
     }
 
 }

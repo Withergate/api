@@ -23,4 +23,4 @@ Each request to this server must contain a `Bearer` token retrieved from the aut
 
 ## 🔖 License
 
-The code is released under the Apache 2.0 license. See [LICENSE](https://github.com/gigsterous/auth-server/blob/master/LICENSE) for details.
+The code is released under the Apache 2.0 license. See [LICENSE](https://github.com/Withergate/api/blob/master/LICENSE) for details.

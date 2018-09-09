@@ -45,17 +45,14 @@ public class LocationController {
      *
      * @param principal the principal
      * @param request   the location action request
+     * @throws InvalidActionException
      */
     @RequestMapping(value = "/locations/action", method = RequestMethod.POST)
-    public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) {
+    public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) throws InvalidActionException {
         log.debug("Executing location action for player {}", principal.getName());
 
-        try {
-            locationService.createLocationAction(request, Integer.parseInt(principal.getName()));
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (InvalidActionException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        locationService.createLocationAction(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/locations", method = RequestMethod.GET)

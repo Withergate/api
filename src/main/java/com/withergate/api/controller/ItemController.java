@@ -34,23 +34,15 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/items/weapons/equip", method = RequestMethod.POST)
-    public ResponseEntity<Void> equipWeapon(Principal principal, @RequestBody WeaponEquipRequest request) {
-        try {
-            itemService.equipWeapon(request.getWeaponId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (InvalidActionException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Void> equipWeapon(Principal principal, @RequestBody WeaponEquipRequest request) throws InvalidActionException {
+        itemService.equipWeapon(request.getWeaponId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/items/weapons/unequip", method = RequestMethod.POST)
-    public ResponseEntity<Void> unequipWeapon(Principal principal, @RequestBody WeaponEquipRequest request) {
-        try {
-            itemService.unequipWeapon(request.getWeaponId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (InvalidActionException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Void> unequipWeapon(Principal principal, @RequestBody WeaponEquipRequest request) throws InvalidActionException {
+        itemService.unequipWeapon(request.getWeaponId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
