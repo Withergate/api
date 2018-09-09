@@ -10,9 +10,11 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
-import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.IItemService;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.clan.IClanService;
+import com.withergate.api.service.clan.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class ActionService implements IActionService {
     private final RandomService randomService;
     private final IEncounterService encounterService;
     private final IItemService itemService;
+    private final IClanService clanService;
 
     /**
      * Constructor.
@@ -45,17 +48,19 @@ public class ActionService implements IActionService {
      * @param clanNotificationRepository player notification repository
      * @param randomService              random service
      * @param encounterService           encounter service
-     * @param itemService item service
+     * @param itemService                item service
+     * @param clanService                clan service
      */
     public ActionService(CharacterService characterService, LocationActionRepository locationActionRepository,
                          ClanNotificationRepository clanNotificationRepository, RandomService randomService,
-                         IEncounterService encounterService, IItemService itemService) {
+                         IEncounterService encounterService, IItemService itemService, IClanService clanService) {
         this.characterService = characterService;
         this.locationActionRepository = locationActionRepository;
         this.clanNotificationRepository = clanNotificationRepository;
         this.randomService = randomService;
         this.encounterService = encounterService;
         this.itemService = itemService;
+        this.clanService = clanService;
     }
 
     @Transactional
@@ -67,6 +72,16 @@ public class ActionService implements IActionService {
                 || character.getState() != CharacterState.READY) {
             log.error("Action cannot be performed with this character: {}!", character);
             throw new InvalidActionException("Cannot perform exploration with the specified character!");
+        }
+
+        // check if clan has enough resources
+        if (request.getLocation() == Location.TAVERN) {
+            Clan clan = character.getClan();
+            if (clan.getCaps() < ClanService.CHARACTER_COST) {
+                throw new InvalidActionException("Not enough resources to perform this action!");
+            }
+            clan.setCaps(clan.getCaps() - ClanService.CHARACTER_COST);
+            clanService.saveClan(clan);
         }
 
         LocationAction action = new LocationAction();
@@ -97,8 +112,6 @@ public class ActionService implements IActionService {
             notification.setClanId(character.getClan().getId());
             notification.setTurnId(turnId);
 
-            // TODO - action logic
-
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
                     processLocationAction(notification, character, action.getLocation(), 0, -25, 1);
@@ -108,6 +121,13 @@ public class ActionService implements IActionService {
                     break;
                 case CITY:
                     processLocationAction(notification, character, action.getLocation(), 50, 20, 3);
+                    break;
+                case TAVERN:
+                    Character hired = clanService.hireCharacter(character.getClan());
+
+                    notification.setText("[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
+                            "After spending the evening chatting with several people, the decision fell on [" + hired.getName() + "].");
+                    notification.setDetails("[100] caps were deducted from your clan storage.");
                     break;
                 default:
                     log.error("Encountered unknown location: {}", action.getLocation());

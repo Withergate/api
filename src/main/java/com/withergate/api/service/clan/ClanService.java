@@ -22,6 +22,8 @@ public class ClanService implements IClanService {
 
     // number of characters for starting player
     private static final int INITIAL_CLAN_SIZE = 5;
+    // cost for hiring new character in caps
+    public static final int CHARACTER_COST = 100;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -42,28 +44,27 @@ public class ClanService implements IClanService {
         return clanRepository.findById(clanId).orElse(null);
     }
 
+    @Override
+    public Clan saveClan(Clan clan) {
+        return clanRepository.save(clan);
+    }
+
     @Transactional
     @Override
     public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException {
-        /*
-         * Check if clan already exists.
-         */
+        // check if clan already exists.
         if (getClan(clanId) != null) {
             log.warn("Cannot create a clan with ID {}", clanId);
             throw new EntityConflictException("Clan with the provided ID already exists.");
         }
 
-        /*
-         * Check for name collisions. Clan name must be unique among all players.
-         */
+        // check for name collisions. Clan name must be unique among all players.
         if (clanRepository.findOneByName(clanRequest.getName()) != null) {
             log.warn("Cannot create a clan with name {}", clanRequest.getName());
             throw new EntityConflictException("Clan with the provided name already exists.");
         }
 
-        /*
-         * Create clan with initial resources.
-         */
+        // Create clan with initial resources.
         Clan clan = new Clan();
         clan.setId(clanId);
         clan.setName(clanRequest.getName());
@@ -71,9 +72,7 @@ public class ClanService implements IClanService {
         clan.setJunk(100);
         clan.setCharacters(new ArrayList<>());
 
-        /*
-         * Assign random initial characters to clan.
-         */
+        // assign random initial characters to clan.
         for (int i = 0; i < INITIAL_CLAN_SIZE; i++) {
             Character character = characterService.generateRandomCharacter();
             character.setClan(clan);
@@ -83,5 +82,23 @@ public class ClanService implements IClanService {
         }
 
         return clanRepository.save(clan);
+    }
+
+    @Transactional
+    @Override
+    public Character hireCharacter(Clan clan) {
+        log.debug("Hiring new character for clan {}", clan.getId());
+
+        // create a random character
+        Character character = characterService.generateRandomCharacter();
+        character.setClan(clan);
+
+        // deduct price and add the character to the clan
+        clan.getCharacters().add(character);
+        clan.setCaps(clan.getCaps() - CHARACTER_COST);
+        clanRepository.save(clan);
+
+        log.debug("Hired new character: {}", character.getName());
+        return characterService.save(character);
     }
 }

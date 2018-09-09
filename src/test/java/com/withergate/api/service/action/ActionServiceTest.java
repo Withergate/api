@@ -11,6 +11,7 @@ import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.clan.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -48,12 +49,15 @@ public class ActionServiceTest {
     @Mock
     private IItemService itemService;
 
+    @Mock
+    private IClanService clanService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         actionService = new ActionService(characterService, locationActionRepository, clanNotificationRepository,
-                randomService, encounterService, itemService);
+                randomService, encounterService, itemService, clanService);
     }
 
     @Test

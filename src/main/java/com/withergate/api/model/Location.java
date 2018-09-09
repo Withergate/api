@@ -6,5 +6,5 @@ package com.withergate.api.model;
  * @author Martin Myslik
  */
 public enum Location {
-    NEIGHBORHOOD, WASTELAND, CITY
+    NEIGHBORHOOD, WASTELAND, CITY, TAVERN
 }

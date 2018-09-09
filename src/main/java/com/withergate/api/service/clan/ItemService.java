@@ -122,7 +122,7 @@ public class ItemService implements IItemService {
          *
          */
         if (character == null || character.getId() != characterId || character.getClan().getId() != clanId) {
-            log.error("Character with ID {} does not match the requested character!", character.getId());
+            log.error("Character with ID {} does not match the requested character!", characterId);
             throw new InvalidActionException("Cannot equip weapon to the provided character!");
         }
 

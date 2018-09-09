@@ -25,6 +25,9 @@ public class LocationDescription {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "info", nullable = false)
+    private String info;
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 }

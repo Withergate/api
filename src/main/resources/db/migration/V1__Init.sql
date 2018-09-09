@@ -54,6 +54,7 @@ DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,
     description VARCHAR(1024) NOT NULL,
+    info VARCHAR(256) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (location)
 );
@@ -116,13 +117,19 @@ INSERT INTO weapon_details(weapon_name, description, weapon_type, combat) VALUES
     ('Glock', 'Hand gun.', 'RANGED', 4);
 
 -- Location descriptions
-INSERT INTO location_descriptions(location, description, image_url) VALUES
+INSERT INTO location_descriptions(location, description, info, image_url) VALUES
     ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a great place to search for junk and some low-value items. Do not expect to find anything too valuable, though.',
+    'Neighborhood is a relatively safe location. The most probable outcome is finding some junk.',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
     ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this area can sometimes be dangerous.',
+    'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.',
     'https://image.ibb.co/dxwXkK/wasteland.jpg'),
     ('CITY', 'The ruins of the destroyed city hides the most valuable treasures. But keep in mind that many scavengers and wastelanders go there in a hope for better life. That means you are most likely to encounter enemy characters in this location. On the other hand, if you are lucky, you can find some useful items here.',
-    'https://image.ibb.co/jVgMee/city.jpg');
+    'City has the highest risk of encoutering dangerous events. On the other hand, it also provides higher chances for finding valuable loot.',
+    'https://image.ibb.co/jVgMee/city.jpg'),
+    ('TAVERN', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash.',
+    'Taver is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.',
+    'https://image.ibb.co/iZAMZp/tavern.jpg');
 
 -- Random encounters
 INSERT INTO encounters(encounter_id, encounter_type, reward_type, difficulty, description_text, success_text, failure_text) VALUES
