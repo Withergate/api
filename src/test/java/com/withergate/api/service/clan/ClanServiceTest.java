@@ -90,5 +90,6 @@ public class ClanServiceTest {
 
         assertEquals("Dragons", captor.getValue().getName());
         assertEquals(5, captor.getValue().getCharacters().size());
+        assertEquals(0, captor.getValue().getFame());
     }
 }

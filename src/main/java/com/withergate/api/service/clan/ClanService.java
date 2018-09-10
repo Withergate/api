@@ -6,6 +6,8 @@ import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,11 @@ public class ClanService implements IClanService {
     }
 
     @Override
+    public Page<Clan> getClans(Pageable pageable) {
+        return clanRepository.findAll(pageable);
+    }
+
+    @Override
     public Clan saveClan(Clan clan) {
         return clanRepository.save(clan);
     }
@@ -68,6 +75,7 @@ public class ClanService implements IClanService {
         Clan clan = new Clan();
         clan.setId(clanId);
         clan.setName(clanRequest.getName());
+        clan.setFame(0);
         clan.setCaps(50);
         clan.setJunk(100);
         clan.setCharacters(new ArrayList<>());

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
@@ -20,14 +21,14 @@ import java.util.Date;
 public class CustomExceptionHandler {
 
     @ExceptionHandler(InvalidActionException.class)
-    public final ResponseEntity<ErrorDetails> handleInvalidActionException(InvalidActionException ex, WebRequest request) {
+    public @ResponseBody ResponseEntity<ErrorDetails> handleInvalidActionException(InvalidActionException ex, WebRequest request) {
         ErrorDetails details = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EntityConflictException.class)
-    public final ResponseEntity<ErrorDetails> handleEntityConflictException(InvalidActionException ex, WebRequest request) {
+    public @ResponseBody ResponseEntity<ErrorDetails> handleEntityConflictException(InvalidActionException ex, WebRequest request) {
         ErrorDetails details = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(details, HttpStatus.CONFLICT);

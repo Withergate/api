@@ -1,10 +1,14 @@
 package com.withergate.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.request.ClanRequest;
+import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,4 +74,16 @@ public class ClanController {
         return new ResponseEntity<>(clan, HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves the list of all clans. Supports paging and sorting. This view contains only a limited subset of
+     * information about each clan.
+     *
+     * @param pageable pagination and sorting
+     * @return the page containing clans in the specified order
+     */
+    @JsonView(Views.Public.class)
+    @RequestMapping("/clans")
+    public ResponseEntity<Page<Clan>> getClans(Pageable pageable) {
+        return new ResponseEntity<>(clanService.getClans(pageable), HttpStatus.OK);
+    }
 }
