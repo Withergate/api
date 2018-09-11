@@ -40,10 +40,11 @@ CREATE TABLE characters (
     character_name VARCHAR(32) NOT NULL,
     gender VARCHAR(8) NOT NULL,
     state VARCHAR(8) NOT NULL,
+    hitpoints INT NOT NULL,
+    max_hitpoints INT NOT NULL,
     combat INT NOT NULL,
     scavenge INT NOT NULL,
     craftsmanship INT NOT NULL,
-    charm INT NOT NULL,
     intellect INT NOT NULL,
     weapon_id INT DEFAULT NULL,
     PRIMARY KEY (character_id),
@@ -66,7 +67,9 @@ CREATE TABLE clan_notifications (
     clan_id INT NOT NULL,
     turn_id INT NOT NULL,
     text VARCHAR(256) NOT NULL,
-    details VARCHAR(256),
+    result VARCHAR(256),
+    income VARCHAR(128),
+    details VARCHAR(128),
     PRIMARY KEY (notification_id),
     CONSTRAINT p_notification_turn_fk FOREIGN KEY (turn_id) REFERENCES turns (turn_id),
     CONSTRAINT p_notification_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
@@ -91,8 +94,7 @@ CREATE TABLE location_actions (
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
     location VARCHAR(16) NOT NULL,
-    PRIMARY KEY (action_id),
-    CONSTRAINT character_exp_action_fk FOREIGN KEY (character_id) REFERENCES characters (character_id)
+    PRIMARY KEY (action_id)
 );
 
 DROP TABLE IF EXISTS name_prefixes;
@@ -122,7 +124,7 @@ INSERT INTO location_descriptions(location, description, info, image_url) VALUES
     ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a great place to search for junk and some low-value items. Do not expect to find anything too valuable, though.',
     'Neighborhood is a relatively safe location. The most probable outcome is finding some junk.',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
-    ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this area can sometimes be dangerous.',
+    ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.',
     'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.',
     'https://image.ibb.co/dxwXkK/wasteland.jpg'),
     ('CITY', 'The ruins of the destroyed city hides the most valuable treasures. But keep in mind that many scavengers and wastelanders go there in a hope for better life. That means you are most likely to encounter enemy characters in this location. On the other hand, if you are lucky, you can find some useful items here.',
@@ -134,18 +136,14 @@ INSERT INTO location_descriptions(location, description, info, image_url) VALUES
 
 -- Random encounters
 INSERT INTO encounters(encounter_id, encounter_type, reward_type, difficulty, description_text, success_text, failure_text) VALUES
-    (1, 'COMBAT', 'JUNK', 7,
+    (1, 'COMBAT', 'JUNK', 8,
     '[CH] was attacked by a mutated cow during the exploration of [L].',
     'Fortunately, [CH] managed to kill the beast and survived without a scratch. After the fight [CH] collected some junk that was lying around.',
     'Unfortunately, [CH] was wounded during the combat.'),
     (2, 'INTELLECT', 'CAPS', 7,
     '[CH] encountered a group of merchants during the exploration of [L]. The merchats offered to play a few rounds of dice poker.',
     'Due to the high value of [CH]`s intellect, he managed to win some caps.', 'Unfortunately, [CH] lost couple of games.'),
-    (3, 'CHARM', 'CHARACTER', 7,
-    '[CH] found a wounded person during the exploration of [L].',
-    'Due to the high value of [CH]`s charm, the wander let accepted [CH]`s help and decided to join your clan.',
-    'Unfortunately, [CH]`s scarry appearance made the person run away.'),
-    (4, 'COMBAT', 'ITEM', 6,
+    (3, 'COMBAT', 'ITEM', 7,
     '[CH] was attacked by an older man during the exploration of a hidden hideout in [L].',
     'All those combat training paid off and [CH] managed to get rid of the attacker and loot his hideout.',
     'The angry inhabitant turned out to be quite dangerous and wounded [CH] during the combat.');
@@ -168,7 +166,7 @@ INSERT INTO name_prefixes (value) VALUES
     ('Fierce'),
     ('Spotty'),
     ('Faithful'),
-    ('Toubled'),
+    ('Troubled'),
     ('Mad'),
     ('Lunatic'),
     ('Hungry'),

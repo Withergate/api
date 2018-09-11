@@ -30,6 +30,12 @@ public class ClanNotification {
     @Column(name = "text", updatable = false, nullable = false)
     private String text;
 
+    @Column(name = "result", updatable = false, nullable = false)
+    private String result;
+
+    @Column(name = "income", updatable = false, nullable = false)
+    private String income;
+
     @Column(name = "details", updatable = false, nullable = false)
     private String details;
 }

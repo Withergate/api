@@ -6,5 +6,5 @@ package com.withergate.api.model.encounter;
  * @author Martin Myslik
  */
 public enum EncounterType {
-    COMBAT, INTELLECT, CHARM
+    COMBAT, INTELLECT
 }

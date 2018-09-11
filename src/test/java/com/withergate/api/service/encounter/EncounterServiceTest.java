@@ -7,6 +7,7 @@ import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.encounter.EncounterType;
 import com.withergate.api.model.encounter.RewardType;
 import com.withergate.api.repository.EncounterRepository;
+import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.IItemService;
 import org.junit.Before;
@@ -29,17 +30,20 @@ public class EncounterServiceTest {
     private IItemService itemService;
 
     @Mock
-    private RandomService randomService;
+    private IRandomService randomService;
+
+    @Mock
+    private ICombatService combatService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        encounterService = new EncounterService(encounterRepository, itemService, randomService);
+        encounterService = new EncounterService(encounterRepository, itemService, randomService, combatService);
     }
 
     @Test
-    public void testGivenCombatEncounterWhenCharacterSucceedsThenVerifyNotificationUpdated() {
+    public void testGivenCombatEncounterWhenCharacterEncountersCombatThenVerifyCombatServiceCalled() {
         // given encounter
         Encounter encounter = new Encounter();
         encounter.setType(EncounterType.COMBAT);
@@ -60,12 +64,10 @@ public class EncounterServiceTest {
 
         ClanNotification notification = Mockito.mock(ClanNotification.class);
 
-        // when character succeeds
-        Mockito.when(randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE)).thenReturn(5); // high roll
-
+        // when character combats
         encounterService.handleEncounter(notification, character, Location.CITY);
 
         // then verify notification updated
-        Mockito.verify(notification).setText("Combat encounter. [Rusty Nick] won!");
+        Mockito.verify(combatService).handleCombat(notification, encounter, character, Location.CITY);
     }
 }

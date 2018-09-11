@@ -3,7 +3,6 @@ package com.withergate.api.controller;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.TurnRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import java.util.List;
  *
  * @author Martin Myslik
  */
-@Slf4j
 @RestController
 public class NotificationController {
 
@@ -46,8 +44,6 @@ public class NotificationController {
     @RequestMapping("/notifications")
     public ResponseEntity<List<ClanNotification>> getPlayerNotificationsForTurn(
             Principal principal, @RequestParam(name = "turn", required = false) Integer turn) {
-
-        log.debug("Requesting notifications for player {}", principal.getName());
 
         if (turn == null) {
             // default to last turn

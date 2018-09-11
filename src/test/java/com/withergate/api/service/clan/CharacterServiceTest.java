@@ -70,7 +70,7 @@ public class CharacterServiceTest {
         character.setId(1);
         character.setName("Rusty Nick");
 
-        Character result = characterService.save(character);
+        characterService.save(character);
 
         // then verify repository called
         Mockito.verify(characterRepository).save(character);
@@ -83,39 +83,42 @@ public class CharacterServiceTest {
         // when generating random character
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
         Mockito.when(nameService.generateRandomName(Gender.MALE)).thenReturn("Rusty Nick");
-        Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(1,2, 3, 4, 5);
+        Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 1, 2, 3, 4);
 
         Character result = characterService.generateRandomCharacter();
 
         // then verify correct values used
         assertEquals("Rusty Nick", result.getName());
         assertEquals(Gender.MALE, result.getGender());
+        assertEquals(6, result.getHitpoints());
+        assertEquals(6, result.getMaxHitpoints());
         assertEquals(1, result.getCombat());
         assertEquals(2, result.getScavenge());
         assertEquals(3, result.getCraftsmanship());
         assertEquals(4, result.getIntellect());
-        assertEquals(5, result.getCharm());
     }
 
     @Test
-    public void testGivenCharacterWhenPerformingHealingWithLowDiceRollThenVerifyCharacterUpdated() {
+    public void testGivenReadyCharacterWhenPerformingHealingThenVerifyCharacterHealed() {
         // given character
         Clan clan = new Clan();
         clan.setId(1);
 
         Character character = new Character();
         character.setId(1);
+        character.setHitpoints(5);
+        character.setMaxHitpoints(7);
         character.setName("Rusty Nick");
-        character.setState(CharacterState.INJURED);
+        character.setState(CharacterState.READY);
         character.setClan(clan);
 
         List<Character> characters = new ArrayList<>();
         characters.add(character);
 
-        Mockito.when(characterRepository.findAllByState(CharacterState.INJURED)).thenReturn(characters);
+        Mockito.when(characterRepository.findAllByState(CharacterState.READY)).thenReturn(characters);
 
         // when performing healing
-        Mockito.when(randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE)).thenReturn(10);
+        Mockito.when(randomService.getRandomInt(1, 2)).thenReturn(1);
 
         characterService.performCharacterHealing(1);
 
@@ -124,6 +127,34 @@ public class CharacterServiceTest {
 
         Mockito.verify(characterRepository).save(captor.capture());
         assertEquals(1, captor.getValue().getId());
-        assertEquals(CharacterState.READY, captor.getValue().getState());
+        assertEquals(6, captor.getValue().getHitpoints());
+    }
+
+    @Test
+    public void testGivenReadyCharacterWithFullHitpointsWhenPerformingHealingThenVerifyCharacterNotHealed() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(1);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(7);
+        character.setMaxHitpoints(7);
+        character.setName("Rusty Nick");
+        character.setState(CharacterState.READY);
+        character.setClan(clan);
+
+        List<Character> characters = new ArrayList<>();
+        characters.add(character);
+
+        Mockito.when(characterRepository.findAllByState(CharacterState.READY)).thenReturn(characters);
+
+        // when performing healing
+        characterService.performCharacterHealing(1);
+
+        // then verify character not updated
+        ArgumentCaptor<Character> captor = ArgumentCaptor.forClass(Character.class);
+
+        Mockito.verify(characterRepository, Mockito.never()).save(captor.capture());
     }
 }

@@ -33,7 +33,7 @@ public class Character {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "clan_id", nullable = false)
     @JsonIgnore
     private Clan clan;
@@ -53,6 +53,12 @@ public class Character {
      * ATTRIBUTES
      */
 
+    @Column(name = "hitpoints", nullable = false)
+    private int hitpoints;
+
+    @Column(name = "max_hitpoints", nullable = false)
+    private int maxHitpoints;
+
     @Column(name = "combat", nullable = false)
     private int combat;
 
@@ -61,9 +67,6 @@ public class Character {
 
     @Column(name = "craftsmanship", nullable = false)
     private int craftsmanship;
-
-    @Column(name = "charm", nullable = false)
-    private int charm;
 
     @Column(name = "intellect", nullable = false)
     private int intellect;

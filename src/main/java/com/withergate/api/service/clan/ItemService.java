@@ -173,7 +173,7 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.setDetails("[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
+            notification.setIncome("[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
         } else {
             Clan clan = character.getClan();
             clan.getWeapons().add(weapon);
@@ -183,7 +183,7 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.setDetails("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
+            notification.setIncome("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
         }
     }
 }

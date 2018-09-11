@@ -85,9 +85,6 @@ public class ClanServiceTest {
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
         Mockito.verify(clanRepository).save(captor.capture());
 
-        // verify all characters saved
-        Mockito.verify(characterService, Mockito.times(5)).save(Mockito.any(Character.class));
-
         assertEquals("Dragons", captor.getValue().getName());
         assertEquals(5, captor.getValue().getCharacters().size());
         assertEquals(0, captor.getValue().getFame());

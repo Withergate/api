@@ -85,8 +85,6 @@ public class ClanService implements IClanService {
             Character character = characterService.generateRandomCharacter();
             character.setClan(clan);
             clan.getCharacters().add(character);
-
-            characterService.save(character);
         }
 
         return clanRepository.save(clan);

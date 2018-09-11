@@ -3,11 +3,11 @@ package com.withergate.api.service.encounter;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.repository.EncounterRepository;
-import com.withergate.api.service.clan.IItemService;
+import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.clan.IItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,8 @@ public class EncounterService implements IEncounterService {
 
     private final EncounterRepository encounterRepository;
     private final IItemService itemService;
-    private final RandomService randomService;
+    private final IRandomService randomService;
+    private final ICombatService combatService;
 
     /**
      * Constructor.
@@ -33,12 +34,14 @@ public class EncounterService implements IEncounterService {
      * @param encounterRepository encounter repository
      * @param itemService item service
      * @param randomService  random service
+     * @param combatService combat service
      */
     public EncounterService(EncounterRepository encounterRepository, IItemService itemService,
-                            RandomService randomService) {
+                            IRandomService randomService, ICombatService combatService) {
         this.encounterRepository = encounterRepository;
         this.itemService = itemService;
         this.randomService = randomService;
+        this.combatService = combatService;
     }
 
     @Transactional
@@ -51,54 +54,29 @@ public class EncounterService implements IEncounterService {
 
         log.debug("Processing {} with {} at {}", encounter.getType(), character.getName(), location.name());
 
-        StringBuilder notificationBuilder = new StringBuilder();
-        notificationBuilder.append(encounter.getDescriptionText(character, location));
+        notification.setText(encounter.getDescriptionText(character, location));
 
         switch (encounter.getType()) {
             case COMBAT:
-                int totalCombat = character.getTotalCombat() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-                log.debug("{} rolled dice and the total combat value is {}", character.getName(), totalCombat);
-                if (totalCombat < encounter.getDifficulty()) {
-                    character.setState(CharacterState.INJURED);
-                    notificationBuilder.append(" ");
-                    notificationBuilder.append(encounter.getFailureText(character, location));
-                } else {
+                // handle combat and check if character won, if yes, handle reward
+                if (combatService.handleCombat(notification, encounter, character, location)) {
                     handleReward(encounter, character, notification);
-                    notificationBuilder.append(" ");
-                    notificationBuilder.append(encounter.getSuccessText(character, location));
-                }
-                break;
-            case CHARM:
-                int totalCharm = character.getCharm() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-                log.debug("{} rolled dice and the total charm value is {}", character.getName(), totalCharm);
-                if (totalCharm < encounter.getDifficulty()) {
-                    notificationBuilder.append(" ");
-                    notificationBuilder.append(encounter.getFailureText(character, location));
-                } else {
-                    handleReward(encounter, character, notification);
-                    notificationBuilder.append(" ");
-                    notificationBuilder.append(encounter.getSuccessText(character, location));
                 }
                 break;
             case INTELLECT:
-                int totalIntellect = character.getCharm() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+                int totalIntellect = character.getIntellect() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
-                    notificationBuilder.append(" ");
-                    notificationBuilder.append(encounter.getFailureText(character, location));
+                    notification.setResult(encounter.getFailureText(character, location));
                 } else {
                     handleReward(encounter, character, notification);
-                    notificationBuilder.append(" ");
-                    notificationBuilder.append(encounter.getSuccessText(character, location));
+                    notification.setResult(encounter.getSuccessText(character, location));
                 }
                 break;
             default:
                 log.error("Unknown encounter type triggered: {}!", encounter.getType());
                 break;
         }
-
-        // Update notification
-        notification.setText(notificationBuilder.toString());
     }
 
     private void handleReward(Encounter encounter, Character character, ClanNotification notification) {

@@ -13,6 +13,8 @@ public interface ICharacterService {
 
     Character save(Character character);
 
+    void delete(Character character);
+
     void performCharacterHealing(int turnId);
 
     Character generateRandomCharacter();

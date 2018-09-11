@@ -46,8 +46,6 @@ public class ClanController {
      */
     @RequestMapping("/clan")
     public ResponseEntity<Clan> getClan(Principal principal) {
-        log.debug("Requesting clan for player {}", principal.getName());
-
         Clan clan = clanService.getClan(Integer.parseInt(principal.getName()));
 
         if (clan == null) {

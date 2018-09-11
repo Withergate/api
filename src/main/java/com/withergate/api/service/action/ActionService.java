@@ -120,31 +120,30 @@ public class ActionService implements IActionService {
                     processLocationAction(notification, character, action.getLocation(), 25, 0, 2);
                     break;
                 case CITY:
-                    processLocationAction(notification, character, action.getLocation(), 50, 20, 3);
+                    processLocationAction(notification, character, action.getLocation(), 90, 20, 3);
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
 
                     notification.setText("[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
                             "After spending the evening chatting with several people, the decision fell on [" + hired.getName() + "].");
-                    notification.setDetails("[100] caps were deducted from your clan storage.");
+                    notification.setIncome("[100] caps were deducted from your clan storage. New character was added to your clan.");
                     break;
                 default:
                     log.error("Encountered unknown location: {}", action.getLocation());
 
             }
 
-            // send notification about action result
-            clanNotificationRepository.save(notification);
-
-            // mark character as ready and action as executed
-            if (character.getState() != CharacterState.INJURED) {
+            // mark character as ready if still alive
+            if (character.getHitpoints() > 0) {
                 character.setState(CharacterState.READY);
+                characterService.save(character);
             } else {
-                // TODO - handle healing
+                characterService.delete(character);
             }
 
-            characterService.save(character);
+            // send notification about action result
+            clanNotificationRepository.save(notification);
 
             action.setState(ActionState.COMPLETED);
             locationActionRepository.save(action);
@@ -197,7 +196,7 @@ public class ActionService implements IActionService {
         Clan clan = character.getClan();
         clan.setJunk(clan.getJunk() + junk);
         notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
-        notification.setDetails("Added [" + junk + "] junk to your storage.");
+        notification.setIncome("Added [" + junk + "] junk to your storage.");
     }
 
 }

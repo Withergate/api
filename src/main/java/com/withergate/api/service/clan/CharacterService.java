@@ -54,31 +54,43 @@ public class CharacterService implements ICharacterService {
         return characterRepository.save(character);
     }
 
+    @Override
+    public void delete(Character character) {
+        characterRepository.delete(character);
+    }
+
     @Transactional
     @Override
     public void performCharacterHealing(int turnId) {
         log.debug("Performing healing action");
 
-        // load all injured characters
-        List<Character> characters = characterRepository.findAllByState(CharacterState.INJURED);
+        // load all characters that are ready
+        List<Character> characters = characterRepository.findAllByState(CharacterState.READY);
 
         for (Character character : characters) {
+            int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
+
+            if (hitpointsMissing == 0) {
+                return;
+            }
+
             // prepare notification
             ClanNotification notification = new ClanNotification();
             notification.setTurnId(turnId);
             notification.setClanId(character.getClan().getId());
 
-            // each character has a chance to be healed this turn
-            int diceRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
-            if (diceRoll < 50) { // success
-                character.setState(CharacterState.READY);
-                characterRepository.save(character);
+            // each character that is ready heals
+            int diceRoll = randomService.getRandomInt(1, 2);
 
-                notification.setText("[" + character.getName() + "] has recovered and is ready again.");
-            } else { // failure
-                notification.setText("[" + character.getName() + "] did not manage to recover yet.");
-            }
-            notification.setDetails("Rolled " + diceRoll + " when computing healing probability.");
+
+            int healing = Math.min(diceRoll, hitpointsMissing);
+            character.setHitpoints(character.getHitpoints() + healing);
+
+            characterRepository.save(character);
+
+            notification.setText("[" + character.getName() + "] has healed " + diceRoll + " hitpoints.");
+
+            notification.setDetails("Rolled " + diceRoll + " when computing healing.");
             clanNotificationRepository.save(notification);
         }
 
@@ -106,13 +118,19 @@ public class CharacterService implements ICharacterService {
         character.setName(name);
 
         /*
+         * Generate random hitpoints.
+         */
+        int hitpoints = randomService.getRandomInt(1, 5) + randomService.getRandomInt(1, 5);
+        character.setHitpoints(hitpoints);
+        character.setMaxHitpoints(hitpoints);
+
+        /*
          * Generate random stats.
          */
         character.setCombat(randomService.getRandomInt(1, 5));
         character.setScavenge(randomService.getRandomInt(1, 5));
         character.setCraftsmanship(randomService.getRandomInt(1, 5));
         character.setIntellect(randomService.getRandomInt(1, 5));
-        character.setCharm(randomService.getRandomInt(1, 5));
 
         return character;
     }
