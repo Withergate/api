@@ -38,35 +38,23 @@ public class NotificationController {
     }
 
     /**
-     * Retrieves the current notifications for the specified player.
-     *
-     * @param principal the principal
-     * @return the retrieved list of notifications
-     */
-    @RequestMapping("/notifications/current")
-    public ResponseEntity<List<ClanNotification>> getCurrentPlayerNotifications(Principal principal) {
-
-        log.debug("Requesting notifications for player {}", principal.getName());
-
-        int playerId = Integer.parseInt(principal.getName());
-        int turn = turnRepository.findFirstByOrderByTurnIdDesc().getTurnId() - 1; // get last turn's ID
-        return new ResponseEntity<>(clanNotificationRepository.findAllByClanIdAndTurnId(playerId, turn),
-                HttpStatus.OK);
-    }
-
-    /**
      * Retrieves all notifications for the specified player.
      *
      * @param principal the principal
      * @return the retrieved list of notifications
      */
     @RequestMapping("/notifications")
-    public ResponseEntity<List<ClanNotification>> getAllPlayerNotifications(
+    public ResponseEntity<List<ClanNotification>> getPlayerNotificationsForTurn(
             Principal principal, @RequestParam(name = "turn", required = false) Integer turn) {
 
         log.debug("Requesting notifications for player {}", principal.getName());
 
+        if (turn == null) {
+            // default to last turn
+            turn = turnRepository.findFirstByOrderByTurnIdDesc().getTurnId() - 1;
+        }
+
         int playerId = Integer.parseInt(principal.getName());
-        return new ResponseEntity<>(clanNotificationRepository.findAllByClanId(playerId), HttpStatus.OK);
+        return new ResponseEntity<>(clanNotificationRepository.findAllByClanIdAndTurnId(playerId, turn), HttpStatus.OK);
     }
 }
