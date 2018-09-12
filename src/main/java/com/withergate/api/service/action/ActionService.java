@@ -195,6 +195,8 @@ public class ActionService implements IActionService {
         int junk = character.getScavenge() * junkRatio;
         Clan clan = character.getClan();
         clan.setJunk(clan.getJunk() + junk);
+        clanService.saveClan(clan);
+
         notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
         notification.setIncome("Added [" + junk + "] junk to your storage.");
     }

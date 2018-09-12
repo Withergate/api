@@ -1,5 +1,6 @@
 package com.withergate.api.service.encounter;
 
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
@@ -7,6 +8,8 @@ import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.clan.ICharacterService;
+import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.clan.IItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ public class EncounterService implements IEncounterService {
     private final IItemService itemService;
     private final IRandomService randomService;
     private final ICombatService combatService;
+    private final IClanService clanService;
+    private final ICharacterService characterService;
 
     /**
      * Constructor.
@@ -35,13 +40,18 @@ public class EncounterService implements IEncounterService {
      * @param itemService item service
      * @param randomService  random service
      * @param combatService combat service
+     * @param clanService clan service
+     * @param characterService  character service
      */
     public EncounterService(EncounterRepository encounterRepository, IItemService itemService,
-                            IRandomService randomService, ICombatService combatService) {
+                            IRandomService randomService, ICombatService combatService, IClanService clanService,
+                            ICharacterService characterService) {
         this.encounterRepository = encounterRepository;
         this.itemService = itemService;
         this.randomService = randomService;
         this.combatService = combatService;
+        this.clanService = clanService;
+        this.characterService = characterService;
     }
 
     @Transactional
@@ -82,21 +92,44 @@ public class EncounterService implements IEncounterService {
     private void handleReward(Encounter encounter, Character character, ClanNotification notification) {
         log.debug("Computing reward for character {}", character.getId());
 
+        Clan clan = character.getClan();
+
         switch (encounter.getReward()) {
             case CAPS:
-                // TODO
+                // add caps
+                int caps = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * 2; // random amount of caps
+
+                clan.setCaps(clan.getCaps() + caps);
+                clanService.saveClan(clan);
+
+                // update notification
+                notification.setIncome("Added [" + caps + "] caps to your clan storage.");
                 break;
             case JUNK:
-                // TODO
+                // add junk
+                int junk = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * 2; // random amount of caps
+                clan.setJunk(clan.getJunk() + junk);
+                clanService.saveClan(clan);
+
+                // update notification
+                notification.setIncome("Added [" + junk + "] junk to your clan storage.");
                 break;
             case ITEM:
+                // generate item
                 itemService.generateItemForCharacter(character, notification);
                 break;
             case CHARACTER:
-                // TODO
+                // generate character
+                Character generated = characterService.generateRandomCharacter();
+                generated.setClan(clan);
+                clan.getCharacters().add(generated);
+                clanService.saveClan(clan);
+
+                // update notification
+                notification.setIncome("[" + generated.getName() + "] joined your clan.");
                 break;
             default:
-                // TODO
+                log.error("Unknown type of reward!");
                 break;
         }
     }

@@ -104,6 +104,6 @@ public class ClanService implements IClanService {
         clanRepository.save(clan);
 
         log.debug("Hired new character: {}", character.getName());
-        return characterService.save(character);
+        return character;
     }
 }

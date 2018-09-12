@@ -71,7 +71,7 @@ public class CharacterService implements ICharacterService {
             int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
 
             if (hitpointsMissing == 0) {
-                return;
+                continue;
             }
 
             // prepare notification

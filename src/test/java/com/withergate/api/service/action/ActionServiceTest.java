@@ -1,6 +1,7 @@
 package com.withergate.api.service.action;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
@@ -96,7 +97,7 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void testGivenPendingLocationActionWhenLowDiceRollThenVerifyEncounterTriggered() {
+    public void testGivenPendingLocationActionWhenLowEncounterDiceRollThenVerifyEncounterTriggered() {
         // given pending location action
         Clan clan = new Clan();
         clan.setId(1);
@@ -125,5 +126,83 @@ public class ActionServiceTest {
 
         // then verify encounter triggered
         Mockito.verify(encounterService).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND));
+    }
+
+    @Test
+    public void testGivenPendingLocationActionWhenLowLootDiceRollThenVerifyLootFound() {
+        // given pending location action
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setScavenge(5);
+        character.setState(CharacterState.BUSY);
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setLocation(Location.WASTELAND);
+
+        List<LocationAction> actions = new ArrayList<>();
+        actions.add(action);
+
+        Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+
+        // when performing pending actions
+
+        // high encounter roll followed by low loot roll
+        Mockito.when(randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE)).thenReturn(50, 10);
+
+        actionService.performPendingLocationActions(1);
+
+        // then verify item generated
+        Mockito.verify(itemService).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class));
+        Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND));
+    }
+
+    @Test
+    public void testGivenPendingLocationActionWhenHighDiceRollsThenVerifyJunkFound() {
+        // given pending location action
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setJunk(10);
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setScavenge(5);
+        character.setState(CharacterState.BUSY);
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setLocation(Location.NEIGHBORHOOD);
+
+        List<LocationAction> actions = new ArrayList<>();
+        actions.add(action);
+
+        Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+
+        // when performing pending actions
+
+        // high encounter roll followed by high loot roll
+        Mockito.when(randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE)).thenReturn(50, 60);
+
+        actionService.performPendingLocationActions(1);
+
+        // then verify clan saved with updated junk
+        Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.NEIGHBORHOOD));
+        Mockito.verify(itemService, Mockito.never()).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class));
+
+        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
+        Mockito.verify(clanService).saveClan(captor.capture());
+
+        assertEquals(15, captor.getValue().getJunk());
     }
 }
