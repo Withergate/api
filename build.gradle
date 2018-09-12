@@ -15,6 +15,12 @@ plugins {
 	id 'org.sonarqube' version '2.5'
 }
 
+processResources {
+    filesMatching('application.properties') {
+        expand(project.properties)
+    }
+}
+
 sonarqube {
     properties {
         property 'sonar.coverage.exclusions', '**/model/*, **/*Exception.java'
@@ -37,7 +43,7 @@ jacocoTestReport {
 check.dependsOn jacocoTestReport
 
 group = 'com.withergate'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1-ALPHA'
 sourceCompatibility = 1.8
 
 repositories {
