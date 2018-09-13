@@ -1,15 +1,18 @@
-package com.withergate.api.service.clan;
+package com.withergate.api.service.item;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
-import com.withergate.api.repository.CharacterRepository;
-import com.withergate.api.repository.ClanRepository;
-import com.withergate.api.repository.WeaponDetailsRepository;
-import com.withergate.api.repository.WeaponRepository;
+import com.withergate.api.repository.clan.CharacterRepository;
+import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.repository.item.ConsumableDetailsRepository;
+import com.withergate.api.repository.item.ConsumableRepository;
+import com.withergate.api.repository.item.WeaponDetailsRepository;
+import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.item.ItemService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -39,6 +42,12 @@ public class ItemServiceTest {
     private WeaponDetailsRepository weaponDetailsRepository;
 
     @Mock
+    private ConsumableRepository consumableRepository;
+
+    @Mock
+    private ConsumableDetailsRepository consumableDetailsRepository;
+
+    @Mock
     private RandomService randomService;
 
     @Before
@@ -46,7 +55,7 @@ public class ItemServiceTest {
         MockitoAnnotations.initMocks(this);
 
         itemService = new ItemService(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository,
-                randomService);
+                consumableRepository, consumableDetailsRepository, randomService);
     }
 
     @Test
@@ -67,7 +76,7 @@ public class ItemServiceTest {
 
         Weapon weapon = new Weapon();
         weapon.setId(3);
-        weapon.setWeaponDetails(weaponDetails);
+        weapon.setDetails(weaponDetails);
         weapon.setClan(clan);
 
         List<Weapon> weapons = new ArrayList<>();
@@ -113,7 +122,7 @@ public class ItemServiceTest {
 
         Weapon weapon = new Weapon();
         weapon.setId(3);
-        weapon.setWeaponDetails(weaponDetails);
+        weapon.setDetails(weaponDetails);
         weapon.setClan(null);
         weapon.setCharacter(character);
         character.setWeapon(weapon);
@@ -160,7 +169,7 @@ public class ItemServiceTest {
 
         Weapon weapon = new Weapon();
         weapon.setId(3);
-        weapon.setWeaponDetails(weaponDetails);
+        weapon.setDetails(weaponDetails);
         weapon.setClan(clan);
 
         List<Weapon> weapons = new ArrayList<>();

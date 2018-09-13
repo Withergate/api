@@ -16,21 +16,42 @@ CREATE TABLE clans (
 
 DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE weapon_details (
-    weapon_name VARCHAR(16) NOT NULL,
+    item_name VARCHAR(16) NOT NULL,
     description VARCHAR(256) NOT NULL,
+    rarity VARCHAR(8) NOT NULL,
     combat INT NOT NULL,
     weapon_type VARCHAR(8) NOT NULL,
-    PRIMARY KEY (weapon_name)
+    PRIMARY KEY (item_name)
 );
 
 DROP TABLE IF EXISTS weapons;
 CREATE TABLE weapons (
     weapon_id INT AUTO_INCREMENT,
-    weapon_name VARCHAR(16),
+    item_name VARCHAR(16),
     clan_id INT DEFAULT NULL,
     PRIMARY KEY (weapon_id),
-    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (weapon_name) REFERENCES weapon_details (weapon_name),
+    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (item_name) REFERENCES weapon_details (item_name),
     CONSTRAINT weapon_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
+DROP TABLE IF EXISTS consumable_details;
+CREATE TABLE consumable_details (
+    item_name VARCHAR(16) NOT NULL,
+    description VARCHAR(256) NOT NULL,
+    rarity VARCHAR(8) NOT NULL,
+    effect_type VARCHAR(8) NOT NULL,
+    effect INT NOT NULL,
+    PRIMARY KEY (item_name)
+);
+
+DROP TABLE IF EXISTS consumables;
+CREATE TABLE consumables (
+    consumable_id INT AUTO_INCREMENT,
+    item_name VARCHAR(16),
+    clan_id INT DEFAULT NULL,
+    PRIMARY KEY (consumable_id),
+    CONSTRAINT consumable_consumable_details_fk FOREIGN KEY (item_name) REFERENCES consumable_details (item_name),
+    CONSTRAINT consumable_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
 DROP TABLE IF EXISTS characters;
@@ -115,23 +136,29 @@ INSERT INTO turns (turn_id) VALUES
     (1);
 
 -- Weapon details
-INSERT INTO weapon_details(weapon_name, description, weapon_type, combat) VALUES
-    ('Kitchen knife', 'Rusty kitchen knife.', 'MELEE', 1),
-    ('Glock', 'Hand gun.', 'RANGED', 4);
+INSERT INTO weapon_details(item_name, description, rarity, weapon_type, combat) VALUES
+    ('Kitchen knife', 'Rusty kitchen knife.', 'COMMON', 'MELEE', 1),
+    ('Chainsaw', 'Rusty chainsaw.', 'RARE', 'MELEE', 2),
+    ('Boomerang', 'Plastic boomerang', 'COMMON', 'RANGED', 1),
+    ('Glock', 'Hand gun.', 'RARE', 'RANGED', 4);
+
+INSERT INTO consumable_details(item_name, description, rarity, effect, effect_type) VALUES
+    ('Small medkit', 'Small medkit', 'COMMON', 2, 'HEALING'),
+    ('Large medkit', 'Large medkit', 'RARE', 4, 'HEALING');
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, description, info, image_url) VALUES
-    ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a great place to search for junk and some low-value items. Do not expect to find anything too valuable, though.',
+    ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk. Do not expect to find anything too valuable, though.',
     'Neighborhood is a relatively safe location. The most probable outcome is finding some junk.',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
     ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.',
     'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.',
     'https://image.ibb.co/dxwXkK/wasteland.jpg'),
-    ('CITY', 'The ruins of the destroyed city hides the most valuable treasures. But keep in mind that many scavengers and wastelanders go there in a hope for better life. That means you are most likely to encounter enemy characters in this location. On the other hand, if you are lucky, you can find some useful items here.',
+    ('CITY', 'The ruins of Withergate hides the most valuable treasures. Unofrtunately, run by local gangs and roamed by scavengers, this place can sometimes prove to be very dangerous. On the other hand, if you are lucky, you can find some useful items here.',
     'City has the highest risk of encoutering dangerous events. On the other hand, it also provides higher chances for finding valuable loot.',
     'https://image.ibb.co/jVgMee/city.jpg'),
     ('TAVERN', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash.',
-    'Taver is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.',
+    'Tavern is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.',
     'https://image.ibb.co/iZAMZp/tavern.jpg');
 
 -- Random encounters

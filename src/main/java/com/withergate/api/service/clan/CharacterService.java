@@ -4,7 +4,7 @@ import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
-import com.withergate.api.repository.CharacterRepository;
+import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;

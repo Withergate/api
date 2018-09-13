@@ -1,4 +1,4 @@
-package com.withergate.api.service.clan;
+package com.withergate.api.service.item;
 
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
@@ -38,5 +38,15 @@ public interface IItemService {
      * @param notification the notification to be updated
      */
     void generateItemForCharacter(Character character, ClanNotification notification);
+
+    /**
+     * Use the consumable with the provided character.
+     *
+     * @param consumableId the consumable ID
+     * @param characterId the character ID
+     * @param clanId the clan ID
+     * @throws InvalidActionException
+     */
+    void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException;
 
 }

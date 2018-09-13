@@ -1,5 +1,6 @@
 package com.withergate.api.service.action;
 
+import com.withergate.api.Constants;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
@@ -12,9 +13,8 @@ import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.clan.IClanService;
-import com.withergate.api.service.clan.IItemService;
+import com.withergate.api.service.item.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
@@ -77,10 +77,10 @@ public class ActionService implements IActionService {
         // check if clan has enough resources
         if (request.getLocation() == Location.TAVERN) {
             Clan clan = character.getClan();
-            if (clan.getCaps() < ClanService.CHARACTER_COST) {
+            if (clan.getCaps() < Constants.CHARACTER_COST) {
                 throw new InvalidActionException("Not enough resources to perform this action!");
             }
-            clan.setCaps(clan.getCaps() - ClanService.CHARACTER_COST);
+            clan.setCaps(clan.getCaps() - Constants.CHARACTER_COST);
             clanService.saveClan(clan);
         }
 
@@ -114,13 +114,16 @@ public class ActionService implements IActionService {
 
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
-                    processLocationAction(notification, character, action.getLocation(), 0, -25, 1);
+                    processLocationAction(notification, character, action.getLocation(),
+                            Constants.NEIGHBORHOOD_ENCOUNTER_PROBABILITY, Constants.NEIGHBORHOOD_LOOT_PROBABILITY, Constants.NEIGHBORHOOD_JUNK_MULTIPLIER);
                     break;
                 case WASTELAND:
-                    processLocationAction(notification, character, action.getLocation(), 25, 0, 2);
+                    processLocationAction(notification, character, action.getLocation(),
+                            Constants.WASTELAND_ENCOUNTER_PROBABILITY, Constants.WASTELAND_LOOT_PROBABILITY, Constants.WASTELAND_JUNK_MULTIPLIER);
                     break;
                 case CITY:
-                    processLocationAction(notification, character, action.getLocation(), 90, 20, 3);
+                    processLocationAction(notification, character, action.getLocation(),
+                            Constants.CITY_ENCOUNTER_PROBABILITY, Constants.CITY_LOOT_PROBABILITY, Constants.CITY_JUNK_MULTIPLIER);
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
@@ -175,7 +178,7 @@ public class ActionService implements IActionService {
          * If not encounter has been triggered, the character receives a chance to find a random loot based on the
          * location type.
          */
-        lootProbability += character.getScavenge() * 10;
+        lootProbability += character.getScavenge() * 5;
         int lootRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");

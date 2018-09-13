@@ -1,14 +1,20 @@
-package com.withergate.api.service.clan;
+package com.withergate.api.service.item;
 
+import com.withergate.api.Constants;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Consumable;
+import com.withergate.api.model.item.ConsumableDetails;
+import com.withergate.api.model.item.Rarity;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
-import com.withergate.api.repository.CharacterRepository;
-import com.withergate.api.repository.ClanRepository;
-import com.withergate.api.repository.WeaponDetailsRepository;
-import com.withergate.api.repository.WeaponRepository;
+import com.withergate.api.repository.clan.CharacterRepository;
+import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.repository.item.ConsumableDetailsRepository;
+import com.withergate.api.repository.item.ConsumableRepository;
+import com.withergate.api.repository.item.WeaponDetailsRepository;
+import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +36,8 @@ public class ItemService implements IItemService {
     private final ClanRepository clanRepository;
     private final WeaponRepository weaponRepository;
     private final WeaponDetailsRepository weaponDetailsRepository;
+    private final ConsumableRepository consumableRepository;
+    private final ConsumableDetailsRepository consumableDetailsRepository;
     private final RandomService randomService;
 
     /**
@@ -43,11 +51,14 @@ public class ItemService implements IItemService {
      */
     public ItemService(CharacterRepository characterRepository, ClanRepository clanRepository,
                        WeaponRepository weaponRepository, WeaponDetailsRepository weaponDetailsRepository,
+                       ConsumableRepository consumableRepository, ConsumableDetailsRepository consumableDetailsRepository,
                        RandomService randomService) {
         this.characterRepository = characterRepository;
         this.clanRepository = clanRepository;
         this.weaponRepository = weaponRepository;
         this.weaponDetailsRepository = weaponDetailsRepository;
+        this.consumableRepository = consumableRepository;
+        this.consumableDetailsRepository = consumableDetailsRepository;
         this.randomService = randomService;
     }
 
@@ -151,16 +162,79 @@ public class ItemService implements IItemService {
         log.debug("Generating random item for character {}", character.getId());
 
         /*
+         * Get random item type
+         */
+        int diceRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        if (diceRoll < 50) {
+            generateWeapon(character, notification, getRandomRarity());
+        } else {
+            generateConsumable(character, notification, getRandomRarity());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException {
+        log.debug("Using consumable {} with character {}", consumableId, characterId);
+
+        /*
+         * Load the character.
+         */
+        Character character = characterRepository.getOne(characterId);
+        if (character == null || character.getClan().getId() != clanId) {
+            throw new InvalidActionException("Character not found or doesn't belong to your clan!");
+        }
+
+        /*
+         * Load the consumable.
+         */
+        Consumable consumable = consumableRepository.getOne(consumableId);
+        if (consumable == null || consumable.getClan().getId() != clanId) {
+            throw new InvalidActionException("Consumable not found or doesn't belong to your clan!");
+        }
+
+        /*
+         * Process the effect.
+         */
+        Clan clan = character.getClan();
+
+        switch (consumable.getDetails().getEffectType()) {
+            case HEALING:
+                int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
+                if (hitpointsMissing == 0) {
+                    throw new InvalidActionException("This character already has full health!");
+                }
+                int healing = Math.min(hitpointsMissing, consumable.getDetails().getEffect());
+                character.setHitpoints(character.getHitpoints() + healing);
+                log.debug("{} healed {} from consumable.", character.getName(), healing);
+
+                // delete consumable
+                consumableRepository.delete(consumable);
+
+                // update
+                clanRepository.save(clan);
+
+                break;
+            default:
+                log.error("Unknown consumable type: {}!", consumable.getDetails().getEffectType());
+        }
+
+    }
+
+    private void generateWeapon(Character character, ClanNotification notification, Rarity rarity) {
+        log.debug("Generating random weapon!");
+
+        /*
          * Load random weapon details .
          */
-        List<WeaponDetails> weaponDetailsList = weaponDetailsRepository.findAll();
+        List<WeaponDetails> weaponDetailsList = weaponDetailsRepository.findAllByRarity(rarity);
         WeaponDetails details = weaponDetailsList.get(randomService.getRandomInt(0, weaponDetailsList.size() - 1));
 
         /*
          * Create weapon.
          */
         Weapon weapon = new Weapon();
-        weapon.setWeaponDetails(details);
+        weapon.setDetails(details);
 
         /*
          * Either equip the weapon with the character or place it in the clan storage.
@@ -184,6 +258,46 @@ public class ItemService implements IItemService {
 
             // update notification
             notification.setIncome("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
+        }
+    }
+
+    private void generateConsumable(Character character, ClanNotification notification, Rarity rarity) {
+        log.debug("Generating random consumable.");
+
+        /*
+         * Load random weapon details .
+         */
+        List<ConsumableDetails> detailsList = consumableDetailsRepository.findAllByRarity(rarity);
+        ConsumableDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
+
+        /*
+         * Create consumable.
+         */
+        Consumable consumable = new Consumable();
+        consumable.setDetails(details);
+
+        /*
+         * Add it to clan storage.
+         */
+        Clan clan = character.getClan();
+
+        consumable.setClan(clan);
+        clan.getConsumables().add(consumable);
+        clanRepository.save(clan);
+
+        /*
+         * Update notification.
+         */
+        notification.setIncome("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
+
+    }
+
+    private Rarity getRandomRarity() {
+        int diceRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        if (diceRoll < Constants.RARE_ITEM_CHANCE) {
+            return Rarity.RARE;
+        } else {
+            return Rarity.COMMON;
         }
     }
 }

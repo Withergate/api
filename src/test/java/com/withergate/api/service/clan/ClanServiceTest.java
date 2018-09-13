@@ -3,7 +3,7 @@ package com.withergate.api.service.clan;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.request.ClanRequest;
-import com.withergate.api.repository.ClanRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
 import org.junit.Before;
 import org.junit.Test;

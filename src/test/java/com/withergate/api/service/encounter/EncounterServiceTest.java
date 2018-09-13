@@ -12,7 +12,7 @@ import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
 import com.withergate.api.service.clan.IClanService;
-import com.withergate.api.service.clan.IItemService;
+import com.withergate.api.service.item.IItemService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

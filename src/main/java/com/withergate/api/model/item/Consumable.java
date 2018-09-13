@@ -2,11 +2,9 @@ package com.withergate.api.model.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.Character;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,35 +12,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Weapon entity.
+ * Consumable entity.
  *
  * @author Martin Myslik
  */
 @Entity
-@Table(name = "weapons")
+@Table(name = "consumables")
 @Getter
 @Setter
-public class Weapon {
+public class Consumable {
 
     @Id
-    @Column(name = "weapon_id", updatable = false, nullable = false)
+    @Column(name = "consumable_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "item_name")
-    private WeaponDetails details;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "weapon")
-    private Character character;
+    private ConsumableDetails details;
 
     @ManyToOne
     @JoinColumn(name = "clan_id")
     @JsonIgnore
     private Clan clan;
+
 }

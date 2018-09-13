@@ -1,4 +1,4 @@
-package com.withergate.api.repository;
+package com.withergate.api.repository.clan;
 
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;

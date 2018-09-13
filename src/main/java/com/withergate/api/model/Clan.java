@@ -2,6 +2,7 @@ package com.withergate.api.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.view.Views;
 import lombok.Getter;
@@ -57,5 +58,9 @@ public class Clan {
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private List<Weapon> weapons;
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @JsonView(Views.Internal.class)
+    private List<Consumable> consumables;
 
 }

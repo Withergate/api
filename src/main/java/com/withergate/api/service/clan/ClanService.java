@@ -1,9 +1,10 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.Constants;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.request.ClanRequest;
-import com.withergate.api.repository.ClanRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,6 @@ import java.util.ArrayList;
 @Slf4j
 @Service
 public class ClanService implements IClanService {
-
-    // number of characters for starting player
-    private static final int INITIAL_CLAN_SIZE = 5;
-    // cost for hiring new character in caps
-    public static final int CHARACTER_COST = 100;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -81,7 +77,7 @@ public class ClanService implements IClanService {
         clan.setCharacters(new ArrayList<>());
 
         // assign random initial characters to clan.
-        for (int i = 0; i < INITIAL_CLAN_SIZE; i++) {
+        for (int i = 0; i < Constants.INITIAL_CLAN_SIZE; i++) {
             Character character = characterService.generateRandomCharacter();
             character.setClan(clan);
             clan.getCharacters().add(character);

@@ -84,7 +84,7 @@ public class Character {
     public int getTotalCombat() {
         int weaponCombat = 0;
         if (weapon != null) {
-            weaponCombat = weapon.getWeaponDetails().getCombat();
+            weaponCombat = weapon.getDetails().getCombat();
         }
 
         return combat + weaponCombat;

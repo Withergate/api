@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -19,14 +18,7 @@ import javax.persistence.Table;
 @Table(name = "weapon_details")
 @Getter
 @Setter
-public class WeaponDetails {
-
-    @Id
-    @Column(name = "weapon_name", updatable = false, nullable = false)
-    private String name;
-
-    @Column(name = "description", nullable = false)
-    private String description;
+public class WeaponDetails extends ItemDetails {
 
     @Column(name = "combat", nullable = false)
     private int combat;

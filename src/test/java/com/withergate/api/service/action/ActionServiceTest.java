@@ -13,7 +13,7 @@ import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.IClanService;
-import com.withergate.api.service.clan.IItemService;
+import com.withergate.api.service.item.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import org.junit.Before;

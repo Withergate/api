@@ -19,7 +19,7 @@ public class CharacterTest {
         details.setName("Knife");
         details.setCombat(1);
         Weapon weapon = new Weapon();
-        weapon.setWeaponDetails(details);
+        weapon.setDetails(details);
         character.setWeapon(weapon);
 
         // when getting total combat

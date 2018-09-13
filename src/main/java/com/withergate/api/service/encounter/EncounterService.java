@@ -10,7 +10,7 @@ import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
 import com.withergate.api.service.clan.IClanService;
-import com.withergate.api.service.clan.IItemService;
+import com.withergate.api.service.item.IItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

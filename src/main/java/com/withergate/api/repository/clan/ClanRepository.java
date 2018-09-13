@@ -1,4 +1,4 @@
-package com.withergate.api.repository;
+package com.withergate.api.repository.clan;
 
 import com.withergate.api.model.Clan;
 import org.springframework.data.domain.Page;

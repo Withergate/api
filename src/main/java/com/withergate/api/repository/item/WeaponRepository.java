@@ -1,4 +1,4 @@
-package com.withergate.api.repository;
+package com.withergate.api.repository.item;
 
 import com.withergate.api.model.item.Weapon;
 import org.springframework.data.jpa.repository.JpaRepository;
