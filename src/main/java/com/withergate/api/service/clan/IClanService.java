@@ -55,4 +55,9 @@ public interface IClanService {
      * @return the created character
      */
     Character hireCharacter(Clan clan);
+
+    /**
+     * Un-assigns all arena characters from all clans.
+     */
+    void clearArenaCharacters();
 }

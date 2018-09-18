@@ -4,6 +4,7 @@ import com.withergate.api.Constants;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.ConsumableDetails;
 import com.withergate.api.model.item.Rarity;
@@ -93,8 +94,12 @@ public class ItemService implements IItemService {
         Character character = characterRepository.getOne(characterId);
 
         if (character == null || character.getWeapon() != null) {
-            log.error("Character with ID {} is already holding a weapon!", characterId);
+            log.error("Character with ID {} is not able to equip the weapon!", characterId);
             throw new InvalidActionException("The provided character either does not exist or already has a weapon!");
+        }
+
+        if (character.getState() != CharacterState.READY) {
+            throw new InvalidActionException("Character must be READY to equip weapon.");
         }
 
         /*
@@ -128,6 +133,7 @@ public class ItemService implements IItemService {
 
         Character character = weapon.getCharacter();
         Clan clan = clanRepository.getOne(clanId);
+
         /*
          * Check if the weapon and character belong to the provided clan.
          *
@@ -135,6 +141,10 @@ public class ItemService implements IItemService {
         if (character == null || character.getId() != characterId || character.getClan().getId() != clanId) {
             log.error("Character with ID {} does not match the requested character!", characterId);
             throw new InvalidActionException("Cannot equip weapon to the provided character!");
+        }
+
+        if (character.getState() != CharacterState.READY) {
+            throw new InvalidActionException("Character must be READY to un-equip weapon.");
         }
 
         /*

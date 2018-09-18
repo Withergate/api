@@ -25,4 +25,11 @@ public interface IActionService {
      * @param turnId turn ID
      */
     void performPendingLocationActions(int turnId);
+
+    /**
+     * Executes all pending arena actions.
+     *
+     * @param turnId turn ID
+     */
+    void performPendingArenaActions(int turnId);
 }

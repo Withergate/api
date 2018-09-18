@@ -11,6 +11,7 @@ CREATE TABLE clans (
     fame INT NOT NULL,
     caps INT NOT NULL,
     junk INT NOT NULL,
+    arena BIT NOT NULL DEFAULT FALSE,
     PRIMARY KEY (clan_id)
 );
 
@@ -159,7 +160,10 @@ INSERT INTO location_descriptions(location, description, info, image_url) VALUES
     'https://image.ibb.co/jVgMee/city.jpg'),
     ('TAVERN', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash.',
     'Tavern is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.',
-    'https://image.ibb.co/iZAMZp/tavern.jpg');
+    'https://image.ibb.co/iZAMZp/tavern.jpg'),
+    ('ARENA', 'Glory for your best warriors and caps for your clan. Show your strenght in the arena and fight against other gladiators. Be warned, though, that this is no place for weaklings and safety is not guaranteed.',
+    'Only one character per day can be sent to the arena. This character will be matched with random opponent and fight. Only melee weapons are allowed. Fame and glory awarded in case of victory but characters can get injured.',
+    'https://image.ibb.co/edVRNK/arena.jpg');
 
 -- Random encounters
 INSERT INTO encounters(encounter_id, encounter_type, reward_type, difficulty, description_text, success_text, failure_text) VALUES

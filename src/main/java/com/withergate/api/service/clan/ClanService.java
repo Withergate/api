@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clan service. Handles all basic operations over the clan entity.
@@ -101,5 +102,17 @@ public class ClanService implements IClanService {
 
         log.debug("Hired new character: {}", character.getName());
         return character;
+    }
+
+    @Transactional
+    @Override
+    public void clearArenaCharacters() {
+        log.debug("Clearing arena characters...");
+        List<Clan> clans = clanRepository.findAll();
+
+        for (Clan clan : clans) {
+            clan.setArena(false);
+            clanRepository.save(clan);
+        }
     }
 }

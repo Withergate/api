@@ -1,6 +1,7 @@
 package com.withergate.api.service.action;
 
 import com.withergate.api.Constants;
+import com.withergate.api.model.ArenaResult;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
@@ -8,12 +9,14 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.IClanService;
+import com.withergate.api.service.encounter.ICombatService;
 import com.withergate.api.service.item.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -21,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +43,7 @@ public class ActionService implements IActionService {
     private final IEncounterService encounterService;
     private final IItemService itemService;
     private final IClanService clanService;
+    private final ICombatService combatService;
 
     /**
      * Constructor.
@@ -50,10 +55,12 @@ public class ActionService implements IActionService {
      * @param encounterService           encounter service
      * @param itemService                item service
      * @param clanService                clan service
+     * @param combatService              combat service
      */
     public ActionService(CharacterService characterService, LocationActionRepository locationActionRepository,
                          ClanNotificationRepository clanNotificationRepository, RandomService randomService,
-                         IEncounterService encounterService, IItemService itemService, IClanService clanService) {
+                         IEncounterService encounterService, IItemService itemService, IClanService clanService,
+                         ICombatService combatService) {
         this.characterService = characterService;
         this.locationActionRepository = locationActionRepository;
         this.clanNotificationRepository = clanNotificationRepository;
@@ -61,6 +68,7 @@ public class ActionService implements IActionService {
         this.encounterService = encounterService;
         this.itemService = itemService;
         this.clanService = clanService;
+        this.combatService = combatService;
     }
 
     @Transactional
@@ -81,6 +89,19 @@ public class ActionService implements IActionService {
                 throw new InvalidActionException("Not enough resources to perform this action!");
             }
             clan.setCaps(clan.getCaps() - Constants.CHARACTER_COST);
+            clanService.saveClan(clan);
+        }
+
+        // check arena requirements
+        if (request.getLocation() == Location.ARENA) {
+            Clan clan = character.getClan();
+            if (clan.isArena()) {
+                throw new InvalidActionException("You already have selected a character to enter arena this turn!");
+            }
+            if (character.getWeapon() != null && character.getWeapon().getDetails().getType() != WeaponType.MELEE) {
+                throw new InvalidActionException("Only melee weapons are allowed to the arena!");
+            }
+            clan.setArena(true);
             clanService.saveClan(clan);
         }
 
@@ -132,6 +153,8 @@ public class ActionService implements IActionService {
                             "After spending the evening chatting with several people, the decision fell on [" + hired.getName() + "].");
                     notification.setIncome("[100] caps were deducted from your clan storage. New character was added to your clan.");
                     break;
+                case ARENA:
+                    notification.setText("[" + character.getName() + "] returned from arena.");
                 default:
                     log.error("Encountered unknown location: {}", action.getLocation());
 
@@ -151,6 +174,39 @@ public class ActionService implements IActionService {
             action.setState(ActionState.COMPLETED);
             locationActionRepository.save(action);
         }
+    }
+
+    @Transactional
+    @Override
+    public void performPendingArenaActions(int turnId) {
+        log.debug("Executing arena actions");
+
+        List<LocationAction> actions = locationActionRepository.findAllByStateAndLocation(ActionState.PENDING, Location.ARENA);
+        List<Character> characters = new ArrayList<>(actions.size());
+
+        for (LocationAction action : actions) {
+            characters.add(action.getCharacter());
+
+            // mark action as completed
+            action.setState(ActionState.COMPLETED);
+            locationActionRepository.save(action);
+        }
+
+        log.debug("{} characters entered arena.", characters.size());
+
+        // process arena fights
+        List<ArenaResult> results = combatService.handleArenaFights(characters);
+
+        for (ArenaResult result : results) {
+            // save results
+            result.getCharacter().setState(CharacterState.READY);
+            result.getNotification().setTurnId(turnId);
+            clanNotificationRepository.save(result.getNotification());
+            characterService.save(result.getCharacter());
+        }
+
+        // clear arena data
+        clanService.clearArenaCharacters();
     }
 
     private void processLocationAction(ClanNotification notification, Character character, Location location,

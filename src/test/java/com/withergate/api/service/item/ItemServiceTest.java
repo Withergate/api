@@ -2,6 +2,7 @@ package com.withergate.api.service.item;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.repository.clan.CharacterRepository;
@@ -69,6 +70,7 @@ public class ItemServiceTest {
         character.setId(2);
         character.setName("Rusty Nick");
         character.setClan(clan);
+        character.setState(CharacterState.READY);
         character.setWeapon(null);
 
         WeaponDetails weaponDetails = new WeaponDetails();
@@ -115,6 +117,7 @@ public class ItemServiceTest {
         Character character = new Character();
         character.setId(2);
         character.setName("Rusty Nick");
+        character.setState(CharacterState.READY);
         character.setClan(clan);
 
         WeaponDetails weaponDetails = new WeaponDetails();

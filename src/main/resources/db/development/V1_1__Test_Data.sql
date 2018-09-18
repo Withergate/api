@@ -1,6 +1,6 @@
-INSERT INTO clans (clan_id, clan_name, fame, caps, junk) VALUES
-    (1, 'Stalkers', 10, 100, 250),
-    (2, 'Dragons', 5, 50, 80);
+INSERT INTO clans (clan_id, clan_name, fame, caps, junk, arena) VALUES
+    (1, 'Stalkers', 10, 100, 250, false),
+    (2, 'Dragons', 5, 50, 80, false);
 
 INSERT INTO weapons (weapon_id, item_name, clan_id) VALUES
     (1, 'Kitchen knife', null),

@@ -2,8 +2,8 @@ package com.withergate.api.scheduling;
 
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
-import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.action.ActionService;
+import com.withergate.api.service.clan.CharacterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -47,6 +47,9 @@ public class TurnScheduler {
         // perform character healing
         characterService.performCharacterHealing(currentTurn.getTurnId());
 
+        // process arena actions
+        locationActionService.performPendingArenaActions(currentTurn.getTurnId());
+
         // process actions
         locationActionService.performPendingLocationActions(currentTurn.getTurnId());
 
@@ -59,4 +62,5 @@ public class TurnScheduler {
         nextTurn.setTurnId(currentTurn.getTurnId() + 1);
         turnRepository.save(nextTurn);
     }
+
 }

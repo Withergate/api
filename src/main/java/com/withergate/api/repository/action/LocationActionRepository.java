@@ -1,5 +1,6 @@
 package com.withergate.api.repository.action;
 
+import com.withergate.api.model.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,7 @@ import java.util.List;
 public interface LocationActionRepository extends JpaRepository<LocationAction, Integer> {
 
     List<LocationAction> findAllByState(ActionState state);
+
+    List<LocationAction> findAllByStateAndLocation(ActionState state, Location location);
 
 }
