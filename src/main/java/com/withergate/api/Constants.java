@@ -24,4 +24,7 @@ public class Constants {
 
     public static final int RARE_ITEM_CHANCE = 10;
 
+    public static final int ARENA_CAPS = 20;
+    public static final int ARENA_FAME = 10;
+
 }

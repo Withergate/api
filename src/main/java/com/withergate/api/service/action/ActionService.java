@@ -151,7 +151,7 @@ public class ActionService implements IActionService {
 
                     notification.setText("[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
                             "After spending the evening chatting with several people, the decision fell on [" + hired.getName() + "].");
-                    notification.setIncome("[100] caps were deducted from your clan storage. New character was added to your clan.");
+                    notification.setCharacterIncome("New character joined your clan.");
                     break;
                 case ARENA:
                     notification.setText("[" + character.getName() + "] returned from arena.");
@@ -257,7 +257,7 @@ public class ActionService implements IActionService {
         clanService.saveClan(clan);
 
         notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
-        notification.setIncome("Added [" + junk + "] junk to your storage.");
+        notification.setJunkIncome(junk);
     }
 
 }

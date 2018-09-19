@@ -89,6 +89,7 @@ public class CharacterService implements ICharacterService {
             characterRepository.save(character);
 
             notification.setText("[" + character.getName() + "] has healed " + diceRoll + " hitpoints.");
+            notification.setHealing(diceRoll);
 
             notification.setDetails("Rolled " + diceRoll + " when computing healing.");
             clanNotificationRepository.save(notification);

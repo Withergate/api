@@ -1,5 +1,6 @@
 package com.withergate.api.service.encounter;
 
+import com.withergate.api.Constants;
 import com.withergate.api.model.ArenaResult;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
@@ -149,10 +150,11 @@ public class CombatService implements ICombatService {
 
         notification.setResult("[" + character.getName() + "] won the fight!");
 
-        character.getClan().setCaps(character.getClan().getCaps() + 20); // add caps to the winner
-        character.getClan().setFame(character.getClan().getFame() + 10); // add fame to the winner
+        character.getClan().setCaps(character.getClan().getCaps() + Constants.ARENA_CAPS); // add caps to the winner
+        character.getClan().setFame(character.getClan().getFame() + Constants.ARENA_FAME); // add fame to the winner
 
-        notification.setIncome("Your clan received [" + 20 + "] caps and [" + 10 + "] fame.");
+        notification.setCapsIncome(Constants.ARENA_CAPS);
+        notification.setFameIncome(Constants.ARENA_FAME);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
@@ -180,7 +182,7 @@ public class CombatService implements ICombatService {
         int injury = Math.min(computeInjury(), character.getHitpoints() - 1);
         character.setHitpoints(character.getHitpoints() - injury);
 
-        notification.setIncome("[" + character.getName() + "] lost [" + injury + "] hitpoints.");
+        notification.setInjury(injury);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);

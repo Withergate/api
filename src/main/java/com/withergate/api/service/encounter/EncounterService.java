@@ -103,7 +103,7 @@ public class EncounterService implements IEncounterService {
                 clanService.saveClan(clan);
 
                 // update notification
-                notification.setIncome("Added [" + caps + "] caps to your clan storage.");
+                notification.setCapsIncome(caps);
                 break;
             case JUNK:
                 // add junk
@@ -112,7 +112,7 @@ public class EncounterService implements IEncounterService {
                 clanService.saveClan(clan);
 
                 // update notification
-                notification.setIncome("Added [" + junk + "] junk to your clan storage.");
+                notification.setJunkIncome(junk);
                 break;
             case ITEM:
                 // generate item
@@ -126,7 +126,7 @@ public class EncounterService implements IEncounterService {
                 clanService.saveClan(clan);
 
                 // update notification
-                notification.setIncome("[" + generated.getName() + "] joined your clan.");
+                notification.setCharacterIncome("[" + generated.getName() + "] joined your clan.");
                 break;
             default:
                 log.error("Unknown type of reward!");

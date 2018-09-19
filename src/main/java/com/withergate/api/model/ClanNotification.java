@@ -33,9 +33,30 @@ public class ClanNotification {
     @Column(name = "result")
     private String result;
 
-    @Column(name = "income")
-    private String income;
-
     @Column(name = "details")
     private String details;
+
+    // INCOME
+
+    @Column(name = "item_income")
+    private String itemIncome;
+
+    @Column(name = "junk_income")
+    private int junkIncome;
+
+    @Column(name = "caps_income")
+    private int capsIncome;
+
+    @Column(name = "fameIncome")
+    private int fameIncome;
+
+    @Column(name = "character_income")
+    private String characterIncome;
+
+    @Column(name = "injury")
+    private int injury;
+
+    @Column(name = "healing")
+    private int healing;
+
 }
