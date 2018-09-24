@@ -3,8 +3,8 @@ INSERT INTO clans (clan_id, clan_name, fame, caps, junk, arena) VALUES
     (2, 'Dragons', 5, 50, 80, false);
 
 INSERT INTO weapons (weapon_id, item_name, clan_id) VALUES
-    (1, 'Kitchen knife', null),
-    (2, 'Glock', 1);
+    (1, 'Knife', null),
+    (2, 'Hand gun', 1);
 
 INSERT INTO consumables(consumable_id, item_name, clan_id) VALUES
     (1, 'Small medkit', 1);

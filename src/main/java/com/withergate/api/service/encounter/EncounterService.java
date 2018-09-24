@@ -58,7 +58,7 @@ public class EncounterService implements IEncounterService {
     @Override
     public void handleEncounter(ClanNotification notification, Character character, Location location) {
         // load random encounter from the repository
-        List<Encounter> encounters = encounterRepository.findAll();
+        List<Encounter> encounters = encounterRepository.findAllByLocation(location);
         int index = randomService.getRandomInt(0, encounters.size() - 1);
         Encounter encounter = encounters.get(index);
 
@@ -71,6 +71,8 @@ public class EncounterService implements IEncounterService {
                 // handle combat and check if character won, if yes, handle reward
                 if (combatService.handleCombat(notification, encounter, character, location)) {
                     handleReward(encounter, character, notification);
+                } else {
+                    handlePenalty(encounter, character, notification);
                 }
                 break;
             case INTELLECT:
@@ -130,6 +132,40 @@ public class EncounterService implements IEncounterService {
                 break;
             default:
                 log.error("Unknown type of reward!");
+                break;
+        }
+    }
+
+    private void handlePenalty(Encounter encounter, Character character, ClanNotification notification) {
+        log.debug("Computing penalty for character {}", character.getId());
+
+        Clan clan = character.getClan();
+
+        switch (encounter.getPenalty()) {
+            case NONE:
+                break;
+            case CAPS:
+                // add caps
+                int diceRoll = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * 2; // random amount of caps
+                int caps = Math.min(clan.getCaps(), diceRoll);
+
+                clan.setCaps(clan.getCaps() - caps);
+                clanService.saveClan(clan);
+
+                // update notification
+                notification.setCapsIncome(- caps);
+                break;
+            case INJURY:
+                int injury = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+
+                character.setHitpoints(character.getHitpoints() - injury);
+                notification.setInjury(injury);
+
+                if (character.getHitpoints() < 1) {
+                    notification.setDetails("[" + character.getName() + "] died after suffering from the injury.");
+                }
+            default:
+                log.error("Unknown type of penalty!");
                 break;
         }
     }

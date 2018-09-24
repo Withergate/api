@@ -51,6 +51,8 @@ public class CombatService implements ICombatService {
             int injury = computeInjury();
             character.setHitpoints(character.getHitpoints() - injury);
 
+            notification.setInjury(injury);
+
             // update notification details
             notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
                     "], enemy combat: [" + encounter.getDifficulty() + "], injury: [" + injury +"] hitpoints lost.");
@@ -69,7 +71,7 @@ public class CombatService implements ICombatService {
             notification.setResult(encounter.getSuccessText(character, location));
 
             notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
-                    "], enemy combat: [ " + encounter.getDifficulty() + "].");
+                    "], enemy combat: [" + encounter.getDifficulty() + "].");
 
             return true;
         }

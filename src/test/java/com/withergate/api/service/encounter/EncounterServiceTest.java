@@ -6,6 +6,7 @@ import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.encounter.EncounterType;
+import com.withergate.api.model.encounter.PenaltyType;
 import com.withergate.api.model.encounter.RewardType;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.IRandomService;
@@ -59,15 +60,17 @@ public class EncounterServiceTest {
     public void testGivenCombatEncounterWhenCharacterEncountersCombatThenVerifyCombatServiceCalled() {
         // given encounter
         Encounter encounter = new Encounter();
+        encounter.setLocation(Location.CITY);
         encounter.setType(EncounterType.COMBAT);
         encounter.setReward(RewardType.ITEM);
+        encounter.setPenalty(PenaltyType.NONE);
         encounter.setDescriptionText("Combat encounter.");
         encounter.setSuccessText("[CH] won!");
         encounter.setDifficulty(5);
 
         List<Encounter> encounters = new ArrayList<>();
         encounters.add(encounter);
-        Mockito.when(encounterRepository.findAll()).thenReturn(encounters);
+        Mockito.when(encounterRepository.findAllByLocation(Location.CITY)).thenReturn(encounters);
 
         Mockito.when(randomService.getRandomInt(0, 0)).thenReturn(0); // select the only encounter in the list
 
@@ -88,15 +91,17 @@ public class EncounterServiceTest {
     public void testGivenIntellectEncounterWhenCharacterSucceedsThenVerifyRewardHandled() {
         // given encounter
         Encounter encounter = new Encounter();
+        encounter.setLocation(Location.CITY);
         encounter.setType(EncounterType.INTELLECT);
         encounter.setReward(RewardType.CAPS);
+        encounter.setPenalty(PenaltyType.NONE);
         encounter.setDescriptionText("Intellect encounter.");
         encounter.setSuccessText("[CH] won!");
         encounter.setDifficulty(5);
 
         List<Encounter> encounters = new ArrayList<>();
         encounters.add(encounter);
-        Mockito.when(encounterRepository.findAll()).thenReturn(encounters);
+        Mockito.when(encounterRepository.findAllByLocation(Location.CITY)).thenReturn(encounters);
 
         Mockito.when(randomService.getRandomInt(0, 0)).thenReturn(0); // select the only encounter in the list
 

@@ -2,8 +2,7 @@ package com.withergate.api.model.encounter;
 
 import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
-import lombok.Getter;
-import lombok.Setter;
+import com.withergate.api.model.character.Gender;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Encounter entity class.
@@ -30,6 +31,10 @@ public class Encounter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "location", updatable = false, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Location location;
+
     @Column(name = "encounter_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private EncounterType type;
@@ -37,6 +42,10 @@ public class Encounter {
     @Column(name = "reward_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private RewardType reward;
+
+    @Column(name = "penalty_type", updatable = false, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PenaltyType penalty;
 
     @Column(name = "difficulty", updatable = false, nullable = false)
     private int difficulty;
@@ -63,8 +72,18 @@ public class Encounter {
     }
 
     private String enhanceText(String text, Character character, Location location) {
+        String g1 = character.getGender() == Gender.MALE ? "he" : "she";
+        String g2 = character.getGender() == Gender.MALE ? "his" : "her";
+        String g3 = character.getGender() == Gender.MALE ? "him" : "her";
+
         text = text.replaceAll("\\[CH\\]", "[" + character.getName() + "]");
-        text = text.replaceAll("\\[L\\]", location.name());
+        text = text.replaceAll("\\[L\\]", location.name().toLowerCase());
+        text = text.replaceAll("\\[G1\\]", g1);
+        text = text.replaceAll("\\[G2\\]", g2);
+        text = text.replaceAll("\\[G3\\]", g3);
+
+        // capitalize first letter
+        text = text.substring(0, 1).toUpperCase() + text.substring(1);
 
         return text;
     }
