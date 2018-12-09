@@ -21,6 +21,9 @@ public class ItemDetails {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
+
     @Column(name = "rarity", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private Rarity rarity;

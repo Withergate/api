@@ -1,8 +1,10 @@
 package com.withergate.api.service;
 
+import com.withergate.api.model.character.Avatar;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.character.Name;
 import com.withergate.api.model.character.NamePrefix;
+import com.withergate.api.repository.AvatarRepository;
 import com.withergate.api.repository.NamePrefixRepository;
 import com.withergate.api.repository.NameRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,19 +23,22 @@ public class NameService implements INameService {
 
     private final NamePrefixRepository namePrefixRepository;
     private final NameRepository nameRepository;
+    private final AvatarRepository avatarRepository;
     private final RandomService randomService;
 
     /**
      * Constructor.
      *
-     * @param namePrefixRepository namePrefix repository
-     * @param nameRepository       name repository
-     * @param randomService        random service
+     * @param namePrefixRepository  namePrefix repository
+     * @param nameRepository        name repository
+     * @param avatarRepository      avatar repository
+     * @param randomService         random service
      */
     public NameService(NamePrefixRepository namePrefixRepository, NameRepository nameRepository,
-                       RandomService randomService) {
+                       AvatarRepository avatarRepository, RandomService randomService) {
         this.namePrefixRepository = namePrefixRepository;
         this.nameRepository = nameRepository;
+        this.avatarRepository = avatarRepository;
         this.randomService = randomService;
     }
 
@@ -51,6 +56,17 @@ public class NameService implements INameService {
         log.debug("Generated name: {}", name);
 
         return name;
+    }
+
+    @Override
+    public String generateRandomAvatar(Gender gender) {
+        log.debug("Generating {} avatar.", gender);
+
+        List<Avatar> avatars = avatarRepository.findAllByGender(gender);
+
+        int avatarIndex = randomService.getRandomInt(0, avatars.size() - 1);
+
+        return avatars.get(avatarIndex).getImageUrl();
     }
 
 }

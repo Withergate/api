@@ -4,6 +4,14 @@ CREATE TABLE turns (
     PRIMARY KEY (turn_id)
 );
 
+DROP TABLE IF EXISTS avatars;
+CREATE TABLE avatars (
+    avatar_id INT AUTO_INCREMENT,
+    image_url VARCHAR(256) NOT NULL,
+    gender VARCHAR(8) NOT NULL,
+    PRIMARY KEY (avatar_id)
+);
+
 DROP TABLE IF EXISTS clans;
 CREATE TABLE clans (
     clan_id INT,
@@ -19,6 +27,7 @@ DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE weapon_details (
     item_name VARCHAR(16) NOT NULL,
     description VARCHAR(256) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     combat INT NOT NULL,
     weapon_type VARCHAR(8) NOT NULL,
@@ -39,6 +48,7 @@ DROP TABLE IF EXISTS consumable_details;
 CREATE TABLE consumable_details (
     item_name VARCHAR(16) NOT NULL,
     description VARCHAR(256) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     effect_type VARCHAR(8) NOT NULL,
     effect INT NOT NULL,
@@ -60,6 +70,7 @@ CREATE TABLE characters (
     character_id INT AUTO_INCREMENT,
     clan_id INT NOT NULL,
     character_name VARCHAR(32) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
     gender VARCHAR(8) NOT NULL,
     state VARCHAR(8) NOT NULL,
     hitpoints INT NOT NULL,

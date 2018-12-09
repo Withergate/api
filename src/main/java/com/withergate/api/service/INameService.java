@@ -16,4 +16,12 @@ public interface INameService {
      * @return the generated name
      */
     String generateRandomName(Gender gender);
+
+    /**
+     * Generates a random avatar for the specified gender.
+     *
+     * @param gender the specified gender
+     * @return the generated avatar URL
+     */
+    String generateRandomAvatar(Gender gender);
 }

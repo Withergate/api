@@ -133,6 +133,11 @@ public class CharacterService implements ICharacterService {
         character.setCraftsmanship(randomService.getRandomInt(1, 5));
         character.setIntellect(randomService.getRandomInt(1, 5));
 
+        /*
+         * Generate random avatar.
+         */
+        character.setImageUrl(nameService.generateRandomAvatar(gender));
+
         return character;
     }
 }

@@ -41,6 +41,9 @@ public class Character {
     @Column(name = "character_name", updatable = false, nullable = false)
     private String name;
 
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
+
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
