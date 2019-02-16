@@ -53,6 +53,9 @@ public class TurnScheduler {
         // process actions
         locationActionService.performPendingLocationActions(currentTurn.getTurnId());
 
+        // process leveling up
+        characterService.performCharacterLeveling(currentTurn.getTurnId());
+
         /**
          * Prepare next turn data.
          */

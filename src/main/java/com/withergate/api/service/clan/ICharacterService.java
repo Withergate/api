@@ -17,5 +17,7 @@ public interface ICharacterService {
 
     void performCharacterHealing(int turnId);
 
+    void performCharacterLeveling(int turnId);
+
     Character generateRandomCharacter();
 }

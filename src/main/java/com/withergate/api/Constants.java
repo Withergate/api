@@ -10,6 +10,8 @@ public class Constants {
     public static final int INITIAL_CLAN_SIZE = 5;
     public static final int CHARACTER_COST = 100;
 
+    public static final int LEVEL_EXPERIENCE_QUOCIENT = 10;
+
     public static final int NEIGHBORHOOD_LOOT_PROBABILITY = -10;
     public static final int NEIGHBORHOOD_ENCOUNTER_PROBABILITY = 0;
     public static final int NEIGHBORHOOD_JUNK_MULTIPLIER = 1;

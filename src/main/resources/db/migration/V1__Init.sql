@@ -73,6 +73,8 @@ CREATE TABLE characters (
     image_url VARCHAR(256) NOT NULL,
     gender VARCHAR(8) NOT NULL,
     state VARCHAR(8) NOT NULL,
+    level INT NOT NULL DEFaULT 1,
+    experience INT NOT NULL,
     hitpoints INT NOT NULL,
     max_hitpoints INT NOT NULL,
     combat INT NOT NULL,
@@ -109,6 +111,7 @@ CREATE TABLE clan_notifications (
     fame_income INT,
     injury INT,
     healing INT,
+    experience INT,
     PRIMARY KEY (notification_id),
     CONSTRAINT p_notification_turn_fk FOREIGN KEY (turn_id) REFERENCES turns (turn_id),
     CONSTRAINT p_notification_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)

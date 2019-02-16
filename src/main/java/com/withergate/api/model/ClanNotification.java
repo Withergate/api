@@ -59,4 +59,7 @@ public class ClanNotification {
     @Column(name = "healing")
     private int healing;
 
+    @Column(name = "experience")
+    private int experience;
+
 }

@@ -2,6 +2,7 @@ package com.withergate.api.model.character;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.withergate.api.Constants;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.item.Weapon;
 import lombok.Getter;
@@ -53,6 +54,15 @@ public class Character {
     private CharacterState state;
 
     /**
+     * LEVEL
+     */
+    @Column(name = "level", nullable = false)
+    private int level;
+
+    @Column(name = "experience", nullable = false)
+    private int experience;
+
+    /**
      * ATTRIBUTES
      */
 
@@ -77,6 +87,16 @@ public class Character {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "weapon_id")
     private Weapon weapon;
+
+    /**
+     * Returns the experience needed for next level
+     *
+     * @return the experience needed for next level
+     */
+    @JsonProperty("nextLevel")
+    public int getNextLevelExperience() {
+        return level * Constants.LEVEL_EXPERIENCE_QUOCIENT;
+    }
 
     /**
      * Returns the current combat value for the character.

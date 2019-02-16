@@ -53,6 +53,10 @@ public class CombatService implements ICombatService {
 
             notification.setInjury(injury);
 
+            // handle experience
+            character.setExperience(character.getExperience() + 1);
+            notification.setExperience(1);
+
             // update notification details
             notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
                     "], enemy combat: [" + encounter.getDifficulty() + "], injury: [" + injury +"] hitpoints lost.");
@@ -69,6 +73,10 @@ public class CombatService implements ICombatService {
         } else {
             // combat won - update notification
             notification.setResult(encounter.getSuccessText(character, location));
+
+            // handle experience
+            character.setExperience(character.getExperience() + 2);
+            notification.setExperience(2);
 
             notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
                     "], enemy combat: [" + encounter.getDifficulty() + "].");
@@ -158,6 +166,10 @@ public class CombatService implements ICombatService {
         notification.setCapsIncome(Constants.ARENA_CAPS);
         notification.setFameIncome(Constants.ARENA_FAME);
 
+        // handle experience
+        character.setExperience(character.getExperience() + 2);
+        notification.setExperience(2);
+
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
         result.setNotification(notification);
@@ -185,6 +197,10 @@ public class CombatService implements ICombatService {
         character.setHitpoints(character.getHitpoints() - injury);
 
         notification.setInjury(injury);
+
+        // handle experience
+        character.setExperience(character.getExperience() + 1);
+        notification.setExperience(1);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);

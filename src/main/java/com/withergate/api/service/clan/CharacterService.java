@@ -1,5 +1,6 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.Constants;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -94,7 +95,36 @@ public class CharacterService implements ICharacterService {
             notification.setDetails("Rolled " + diceRoll + " when computing healing.");
             clanNotificationRepository.save(notification);
         }
+    }
 
+    @Transactional
+    @Override
+    public void performCharacterLeveling(int turnId) {
+        log.debug("Performing character leveling action");
+
+        // load all characters
+        List<Character> characters = characterRepository.findAll();
+
+        for (Character character : characters) {
+            if (character.getExperience() >= character.getNextLevelExperience()) {
+                // level up
+                log.debug("Character {} leveled up.", character.getName());
+
+                character.setExperience(character.getExperience() - character.getNextLevelExperience());
+                int hpIncrease = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+                character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
+                character.setHitpoints(character.getHitpoints() + hpIncrease);
+                character.setLevel(character.getLevel() + 1);
+                characterRepository.save(character);
+
+                // send notification
+                ClanNotification notification = new ClanNotification();
+                notification.setTurnId(turnId);
+                notification.setClanId(character.getClan().getId());
+                notification.setText("[" + character.getName() +"] leveled up and is now on level " + character.getLevel() + ".");
+                clanNotificationRepository.save(notification);
+            }
+        }
     }
 
     @Override
@@ -137,6 +167,12 @@ public class CharacterService implements ICharacterService {
          * Generate random avatar.
          */
         character.setImageUrl(nameService.generateRandomAvatar(gender));
+
+        /*
+         * Set level.
+         */
+        character.setLevel(1);
+        character.setExperience(0);
 
         return character;
     }

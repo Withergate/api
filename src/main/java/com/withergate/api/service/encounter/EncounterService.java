@@ -79,6 +79,7 @@ public class EncounterService implements IEncounterService {
                 int totalIntellect = character.getIntellect() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
+                    handlePenalty(encounter, character, notification);
                     notification.setResult(encounter.getFailureText(character, location));
                 } else {
                     handleReward(encounter, character, notification);
