@@ -48,6 +48,11 @@ public class ClanService implements IClanService {
     }
 
     @Override
+    public List<Clan> getAllClans() {
+        return clanRepository.findAll();
+    }
+
+    @Override
     public Page<Clan> getClans(Pageable pageable) {
         return clanRepository.findAll(pageable);
     }

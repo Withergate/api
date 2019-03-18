@@ -6,6 +6,9 @@ INSERT INTO weapons (weapon_id, item_name, clan_id) VALUES
     (1, 'Knife', null),
     (2, 'Hand gun', 1);
 
+INSERT INTO buildings (building_id, identifier, level, progress, clan_id) VALUES
+    (1, 'SICK_BAY', 1, 8, 1);
+
 INSERT INTO consumables(consumable_id, item_name, clan_id) VALUES
     (1, 'Small medkit', 1);
 

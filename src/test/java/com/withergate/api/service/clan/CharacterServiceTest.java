@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -103,6 +104,7 @@ public class CharacterServiceTest {
         // given character
         Clan clan = new Clan();
         clan.setId(1);
+        clan.setBuildings(new HashMap<>());
 
         Character character = new Character();
         character.setId(1);

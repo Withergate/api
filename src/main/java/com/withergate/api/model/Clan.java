@@ -1,20 +1,31 @@
 package com.withergate.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.view.Views;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyClass;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import javax.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -66,5 +77,28 @@ public class Clan {
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private List<Consumable> consumables;
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "identifier")
+    @MapKeyClass(BuildingDetails.BuildingName.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    @JsonView(Views.Internal.class)
+    private Map<BuildingDetails.BuildingName, Building> buildings;
+
+    /**
+     * List of unconstructed buildings. This list is assembled dynamically and is not persisted.
+     */
+    @Transient
+    private List<Building> unconstructedBuildings;
+
+    /**
+     * Returns the buildings as List.
+     *
+     * @return the list of buildings
+     */
+    @JsonProperty("buildings")
+    public Collection<Building> getBuildingsAsList() {
+        return buildings.values();
+    }
 
 }

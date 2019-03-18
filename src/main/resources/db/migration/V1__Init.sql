@@ -23,6 +23,29 @@ CREATE TABLE clans (
     PRIMARY KEY (clan_id)
 );
 
+DROP TABLE IF EXISTS building_details;
+CREATE TABLE building_details (
+    identifier VARCHAR(16) UNIQUE NOT NULL,
+    building_name VARCHAR(16) NOT NULL,
+    description VARCHAR(256) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
+    cost INT NOT NULL,
+    visitable BIT NOT NULL,
+    PRIMARY KEY (identifier)
+);
+
+DROP TABLE IF EXISTS buildings;
+CREATE TABLE buildings (
+    building_id INT AUTO_INCREMENT,
+    identifier VARCHAR(16),
+    level INT NOT NULL DEFAULT 0,
+    progress INT NOT NULL DEFAULT 0,
+    clan_id INT NOT NULL,
+    PRIMARY KEY (building_id),
+    CONSTRAINT building_building_details_fk FOREIGN KEY (identifier) REFERENCES building_details (identifier),
+    CONSTRAINT building_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
 DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE weapon_details (
     item_name VARCHAR(16) NOT NULL,
@@ -138,6 +161,16 @@ CREATE TABLE location_actions (
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
     location VARCHAR(16) NOT NULL,
+    PRIMARY KEY (action_id)
+);
+
+DROP TABLE IF EXISTS building_actions;
+CREATE TABLE building_actions (
+    action_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    character_id INT NOT NULL,
+    building VARCHAR(16) NOT NULL,
+    action_type VARCHAR(16) NOT NULL,
     PRIMARY KEY (action_id)
 );
 

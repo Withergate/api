@@ -1,6 +1,8 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
@@ -82,18 +84,25 @@ public class CharacterService implements ICharacterService {
             notification.setClanId(character.getClan().getId());
 
             // each character that is ready heals
-            int diceRoll = randomService.getRandomInt(1, 2);
+            int points = randomService.getRandomInt(1, 2);
+            if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
+                Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
+                points += building.getLevel();
 
+                if (building.getLevel() > 0) {
+                    notification.setDetails("Healing increased by " + building.getLevel() +" when computing healing (sick bay bonus).");
+                }
+            }
 
-            int healing = Math.min(diceRoll, hitpointsMissing);
+            int healing = Math.min(points, hitpointsMissing);
             character.setHitpoints(character.getHitpoints() + healing);
 
             characterRepository.save(character);
 
-            notification.setText("[" + character.getName() + "] has healed " + diceRoll + " hitpoints.");
-            notification.setHealing(diceRoll);
+            notification.setText("[" + character.getName() + "] has healed " + points + " hitpoints.");
+            notification.setHealing(points);
 
-            notification.setDetails("Rolled " + diceRoll + " when computing healing.");
+
             clanNotificationRepository.save(notification);
         }
     }

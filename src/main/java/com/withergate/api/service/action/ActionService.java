@@ -6,26 +6,31 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
 import com.withergate.api.model.action.ActionState;
+import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.LocationAction;
+import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.WeaponType;
+import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.building.IBuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.encounter.ICombatService;
-import com.withergate.api.service.item.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.withergate.api.service.item.IItemService;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * LocationAction service. Responsible for the execution of all location-bound actions.
@@ -38,6 +43,7 @@ public class ActionService implements IActionService {
 
     private final CharacterService characterService;
     private final LocationActionRepository locationActionRepository;
+    private final BuildingActionRepository buildingActionRepository;
     private final ClanNotificationRepository clanNotificationRepository;
     private final RandomService randomService;
     private final IEncounterService encounterService;
@@ -45,11 +51,14 @@ public class ActionService implements IActionService {
     private final IClanService clanService;
     private final ICombatService combatService;
     private final GameProperties gameProperties;
+    private final IBuildingService buildingService;
 
     /**
      * Constructor.
-     *  @param characterService          character service
+     *
+     * @param characterService           character service
      * @param locationActionRepository   locationAction repository
+     * @param buildingActionRepository   buildingAction repository
      * @param clanNotificationRepository player notification repository
      * @param randomService              random service
      * @param encounterService           encounter service
@@ -57,13 +66,17 @@ public class ActionService implements IActionService {
      * @param clanService                clan service
      * @param combatService              combat service
      * @param gameProperties             game properties
+     * @param buildingService            building service
      */
     public ActionService(CharacterService characterService, LocationActionRepository locationActionRepository,
+                         BuildingActionRepository buildingActionRepository,
                          ClanNotificationRepository clanNotificationRepository, RandomService randomService,
                          IEncounterService encounterService, IItemService itemService, IClanService clanService,
-                         ICombatService combatService, GameProperties gameProperties) {
+                         ICombatService combatService, GameProperties gameProperties,
+                         IBuildingService buildingService) {
         this.characterService = characterService;
         this.locationActionRepository = locationActionRepository;
+        this.buildingActionRepository = buildingActionRepository;
         this.clanNotificationRepository = clanNotificationRepository;
         this.randomService = randomService;
         this.encounterService = encounterService;
@@ -71,18 +84,14 @@ public class ActionService implements IActionService {
         this.clanService = clanService;
         this.combatService = combatService;
         this.gameProperties = gameProperties;
+        this.buildingService = buildingService;
     }
 
     @Transactional
     @Override
     public void createLocationAction(LocationRequest request, int clanId) throws InvalidActionException {
-        log.debug("Processing location action request: {}", request.toString());
-        Character character = characterService.load(request.getCharacterId());
-        if (character == null || character.getClan().getId() != clanId
-                || character.getState() != CharacterState.READY) {
-            log.error("Action cannot be performed with this character: {}!", character);
-            throw new InvalidActionException("Cannot perform exploration with the specified character!");
-        }
+        log.debug("Submitting location action request: {}", request.toString());
+        Character character = getCharacter(request.getCharacterId(), clanId);
 
         // check if clan has enough resources
         if (request.getLocation() == Location.TAVERN) {
@@ -121,6 +130,52 @@ public class ActionService implements IActionService {
 
     @Transactional
     @Override
+    public void createBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting building action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+
+        // check if action is applicable
+        BuildingDetails buildingDetails = buildingService.getBuildingDetails(request.getBuilding());
+        if (buildingDetails == null) {
+            throw new InvalidActionException("This building does not exist");
+        }
+
+        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings()
+                .containsKey(request.getBuilding())) {
+            throw new InvalidActionException("This building is not constructed yet!");
+        }
+
+        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings()
+                .get(request.getBuilding()).getDetails().isVisitable()) {
+            throw new InvalidActionException("This building does not support this type of action.");
+
+        }
+
+        if (request.getType() == BuildingAction.Type.CONSTRUCT && character.getClan().getJunk() < character.getCraftsmanship()) {
+            throw new InvalidActionException("Not enough junk to perform this action.");
+        }
+
+        BuildingAction action = new BuildingAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setBuilding(buildingDetails.getIdentifier());
+        action.setType(request.getType());
+
+        buildingActionRepository.save(action);
+
+        // pay junk
+        Clan clan = character.getClan();
+        clan.setJunk(clan.getJunk() - character.getCraftsmanship());
+        clanService.saveClan(clan);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
+        characterService.save(character);
+
+    }
+
+    @Transactional
+    @Override
     public void performPendingLocationActions(int turnId) {
         log.info("Executing location actions...");
         List<LocationAction> actions = locationActionRepository.findAllByState(ActionState.PENDING);
@@ -138,23 +193,28 @@ public class ActionService implements IActionService {
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
                     processLocationAction(notification, character, action.getLocation(),
-                            gameProperties.getNeighborhoodEncounterProbability(), gameProperties.getNeighborhoodLootProbability(),
+                            gameProperties.getNeighborhoodEncounterProbability(),
+                            gameProperties.getNeighborhoodLootProbability(),
                             gameProperties.getNeighborhoodJunkMultiplier());
                     break;
                 case WASTELAND:
                     processLocationAction(notification, character, action.getLocation(),
-                            gameProperties.getWastelandEncounterProbability(), gameProperties.getWastelandLootProbability(),
+                            gameProperties.getWastelandEncounterProbability(),
+                            gameProperties.getWastelandLootProbability(),
                             gameProperties.getWastelandJunkMultiplier());
                     break;
                 case CITY:
                     processLocationAction(notification, character, action.getLocation(),
-                            gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(), gameProperties.getCityJunkMultiplier());
+                            gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(),
+                            gameProperties.getCityJunkMultiplier());
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
 
-                    notification.setText("[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
-                            "After spending the evening chatting with several people, the decision fell on [" + hired.getName() + "].");
+                    notification.setText(
+                            "[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
+                                    "After spending the evening chatting with several people, the decision fell on ["
+                                    + hired.getName() + "].");
                     notification.setCharacterIncome("New character joined your clan.");
                     break;
                 case ARENA:
@@ -180,12 +240,22 @@ public class ActionService implements IActionService {
         }
     }
 
+    @Override
+    public void performPendingBuildingActions(int turnId) {
+        // passive building bonuses
+        buildingService.processPassiveBuildingBonuses(turnId);
+
+        // building actions
+        buildingService.processBuildingActions(turnId);
+    }
+
     @Transactional
     @Override
     public void performPendingArenaActions(int turnId) {
         log.debug("Executing arena actions");
 
-        List<LocationAction> actions = locationActionRepository.findAllByStateAndLocation(ActionState.PENDING, Location.ARENA);
+        List<LocationAction> actions =
+                locationActionRepository.findAllByStateAndLocation(ActionState.PENDING, Location.ARENA);
         List<Character> characters = new ArrayList<>(actions.size());
 
         for (LocationAction action : actions) {
@@ -262,6 +332,17 @@ public class ActionService implements IActionService {
 
         notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
         notification.setJunkIncome(junk);
+    }
+
+    private Character getCharacter(int characterId, int clanId) throws InvalidActionException {
+        Character character = characterService.load(characterId);
+        if (character == null || character.getClan().getId() != clanId
+                || character.getState() != CharacterState.READY) {
+            log.error("Action cannot be performed with this character: {}!", character);
+            throw new InvalidActionException("Cannot perform exploration with the specified character!");
+        }
+
+        return character;
     }
 
 }

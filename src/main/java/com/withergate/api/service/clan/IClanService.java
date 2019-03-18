@@ -4,6 +4,8 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.service.exception.EntityConflictException;
+
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,6 +23,13 @@ public interface IClanService {
      * @return the clan or null if not found
      */
     Clan getClan(int clanId);
+
+    /**
+     * Retrieves all clans.
+     *
+     * @return all clans in a list
+     */
+    List<Clan> getAllClans();
 
     /**
      * Retrieves the list of clans. Supports paging and sorting.

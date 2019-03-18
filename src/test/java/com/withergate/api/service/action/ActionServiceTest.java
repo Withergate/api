@@ -10,23 +10,25 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.encounter.ICombatService;
-import com.withergate.api.service.item.IItemService;
 import com.withergate.api.service.encounter.IEncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.item.IItemService;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -58,6 +60,12 @@ public class ActionServiceTest {
     @Mock
     private ICombatService combatService;
 
+    @Mock
+    private BuildingActionRepository buildingActionRepository;
+
+    @Mock
+    private BuildingService buildingService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -70,8 +78,10 @@ public class ActionServiceTest {
         gameProperties.setCityEncounterProbability(40);
         gameProperties.setCityJunkMultiplier(2);
 
-        actionService = new ActionService(characterService, locationActionRepository, clanNotificationRepository,
-                randomService, encounterService, itemService, clanService, combatService, gameProperties);
+        actionService = new ActionService(characterService, locationActionRepository, buildingActionRepository,
+                clanNotificationRepository,
+                randomService, encounterService, itemService, clanService, combatService, gameProperties,
+                buildingService);
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,20 +19,20 @@ import org.springframework.stereotype.Component;
 public class TurnScheduler {
 
     private final TurnRepository turnRepository;
-    private final ActionService locationActionService;
+    private final ActionService actionService;
     private final CharacterService characterService;
 
     /**
      * Constructor.
      *
-     * @param turnRepository        turn repository
-     * @param locationActionService locationAction service
-     * @param characterService      character service
+     * @param turnRepository   turn repository
+     * @param actionService    locationAction service
+     * @param characterService character service
      */
-    public TurnScheduler(TurnRepository turnRepository, ActionService locationActionService,
+    public TurnScheduler(TurnRepository turnRepository, ActionService actionService,
                          CharacterService characterService) {
         this.turnRepository = turnRepository;
-        this.locationActionService = locationActionService;
+        this.actionService = actionService;
         this.characterService = characterService;
     }
 
@@ -48,10 +49,13 @@ public class TurnScheduler {
         characterService.performCharacterHealing(currentTurn.getTurnId());
 
         // process arena actions
-        locationActionService.performPendingArenaActions(currentTurn.getTurnId());
+        actionService.performPendingArenaActions(currentTurn.getTurnId());
 
-        // process actions
-        locationActionService.performPendingLocationActions(currentTurn.getTurnId());
+        // process location actions
+        actionService.performPendingLocationActions(currentTurn.getTurnId());
+
+        // process building actions
+        actionService.performPendingBuildingActions(currentTurn.getTurnId());
 
         // process leveling up
         characterService.performCharacterLeveling(currentTurn.getTurnId());

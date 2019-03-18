@@ -13,9 +13,17 @@ INSERT INTO weapon_details(item_name, description, rarity, weapon_type, combat, 
     ('Crossbow', 'Modern crossbows can be precise and silet at the same time. Just mind the reloading time.', 'RARE', 'RANGED', 3, 'https://i.ibb.co/HN0yYqt/crossbow.jpg'),
     ('Hand gun', 'Hand gun. Light, practical, deadly.', 'RARE', 'RANGED', 4, 'https://i.ibb.co/nCW17gy/handgun.jpg');
 
+-- Consumable details
 INSERT INTO consumable_details(item_name, description, rarity, effect, effect_type, image_url) VALUES
     ('Small medkit', 'Basic medical equipment for providing first aid and treating minor wounds.', 'COMMON', 2, 'HEALING', 'https://i.ibb.co/XC6jLZS/small-medkit.jpg'),
     ('Large medkit', 'Large bag containing all sorts of medical equipment. Useful for treating more dangerous wounds.', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
+
+-- Building details
+INSERT INTO building_details(identifier, building_name, cost, visitable, description, image_url) VALUES
+    ('SICK_BAY', 'Sick bay', 10, false, 'A place where wounded characters can rest. Each level of this building increases the hitpoints healed when resting by 1.',
+    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('MONUMENT', 'Monument', 15, false, 'Let everybody know the glory of your mighty clan by building a monument near your campsite. Each level of this building grants 1 FAME per level every turn.',
+    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, description, info, image_url) VALUES
