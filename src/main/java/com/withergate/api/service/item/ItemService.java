@@ -1,6 +1,6 @@
 package com.withergate.api.service.item;
 
-import com.withergate.api.Constants;
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
@@ -18,11 +18,11 @@ import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
+
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Item service.
@@ -40,20 +40,23 @@ public class ItemService implements IItemService {
     private final ConsumableRepository consumableRepository;
     private final ConsumableDetailsRepository consumableDetailsRepository;
     private final RandomService randomService;
+    private final GameProperties gameProperties;
 
     /**
      * Constructor.
      *
-     * @param characterRepository character repository
-     * @param clanRepository      clan repository
-     * @param weaponRepository    weapon repository
-     * @param weaponDetailsRepository  weaponDetails repository
-     * @param randomService random service
+     * @param characterRepository     character repository
+     * @param clanRepository          clan repository
+     * @param weaponRepository        weapon repository
+     * @param weaponDetailsRepository weaponDetails repository
+     * @param randomService           random service
+     * @param gameProperties          game properties
      */
     public ItemService(CharacterRepository characterRepository, ClanRepository clanRepository,
                        WeaponRepository weaponRepository, WeaponDetailsRepository weaponDetailsRepository,
-                       ConsumableRepository consumableRepository, ConsumableDetailsRepository consumableDetailsRepository,
-                       RandomService randomService) {
+                       ConsumableRepository consumableRepository,
+                       ConsumableDetailsRepository consumableDetailsRepository,
+                       RandomService randomService, GameProperties gameProperties) {
         this.characterRepository = characterRepository;
         this.clanRepository = clanRepository;
         this.weaponRepository = weaponRepository;
@@ -61,6 +64,7 @@ public class ItemService implements IItemService {
         this.consumableRepository = consumableRepository;
         this.consumableDetailsRepository = consumableDetailsRepository;
         this.randomService = randomService;
+        this.gameProperties = gameProperties;
     }
 
     @Transactional
@@ -257,7 +261,8 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
+            notification.setItemIncome(
+                    "[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
         } else {
             Clan clan = character.getClan();
             clan.getWeapons().add(weapon);
@@ -267,7 +272,8 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
+            notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName()
+                    + "] took it to your clan storage.");
         }
     }
 
@@ -298,13 +304,14 @@ public class ItemService implements IItemService {
         /*
          * Update notification.
          */
-        notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName() + "] took it to your clan storage.");
+        notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName()
+                + "] took it to your clan storage.");
 
     }
 
     private Rarity getRandomRarity() {
         int diceRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
-        if (diceRoll < Constants.RARE_ITEM_CHANCE) {
+        if (diceRoll < gameProperties.getRareItemChance()) {
             return Rarity.RARE;
         } else {
             return Rarity.COMMON;

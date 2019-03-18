@@ -1,6 +1,5 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.Constants;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -23,6 +22,8 @@ import java.util.List;
 @Slf4j
 @Service
 public class CharacterService implements ICharacterService {
+
+    public static final int LEVEL_QUOCIENT = 10;
 
     private final CharacterRepository characterRepository;
     private final RandomService randomService;

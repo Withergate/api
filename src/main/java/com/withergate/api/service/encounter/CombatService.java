@@ -1,8 +1,7 @@
 package com.withergate.api.service.encounter;
 
-import com.withergate.api.Constants;
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.ArenaResult;
-import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
 import com.withergate.api.model.character.Character;
@@ -10,11 +9,11 @@ import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * Combat service.
@@ -27,20 +26,25 @@ public class CombatService implements ICombatService {
 
     private final IRandomService randomService;
     private final ICharacterService characterService;
+    private final GameProperties gameProperties;
 
     /**
      * Constructor.
      *
-     * @param randomService random service
+     * @param randomService    random service
      * @param characterService character service
+     * @param gameProperties   game properties
      */
-    public CombatService(IRandomService randomService, ICharacterService characterService) {
+    public CombatService(IRandomService randomService, ICharacterService characterService,
+                         GameProperties gameProperties) {
         this.randomService = randomService;
         this.characterService = characterService;
+        this.gameProperties = gameProperties;
     }
 
     @Override
-    public boolean handleCombat(ClanNotification notification, Encounter encounter, Character character, Location location) {
+    public boolean handleCombat(ClanNotification notification, Encounter encounter, Character character,
+                                Location location) {
         int diceRoll = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
         int totalCombat = character.getTotalCombat() + diceRoll;
         log.debug("{} rolled dice and the total combat value is {}", character.getName(), totalCombat);
@@ -59,7 +63,7 @@ public class CombatService implements ICombatService {
 
             // update notification details
             notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
-                    "], enemy combat: [" + encounter.getDifficulty() + "], injury: [" + injury +"] hitpoints lost.");
+                    "], enemy combat: [" + encounter.getDifficulty() + "], injury: [" + injury + "] hitpoints lost.");
 
             // check if character is still alive
             if (character.getHitpoints() < 1) {
@@ -67,7 +71,8 @@ public class CombatService implements ICombatService {
 
                 notification.setResult("Unfortunately, [" + character.getName() + "] died during the combat.");
             } else {
-                log.debug("Character {} lost {} hitpoints and now has {} hitpoints.", character.getName(), injury, character.getHitpoints());
+                log.debug("Character {} lost {} hitpoints and now has {} hitpoints.", character.getName(), injury,
+                        character.getHitpoints());
                 notification.setResult(encounter.getFailureText(character, location));
             }
         } else {
@@ -140,9 +145,13 @@ public class CombatService implements ICombatService {
 
         // add results
         ArenaResult result1 = getWinnerResult(winner, loser);
-        if (result1 != null) results.add(result1);
+        if (result1 != null) {
+            results.add(result1);
+        }
         ArenaResult result2 = getLoserResult(loser, winner);
-        if (result2 != null) results.add(result2);
+        if (result2 != null) {
+            results.add(result2);
+        }
     }
 
     private ArenaResult getWinnerResult(Character character, Character opponent) {
@@ -160,11 +169,11 @@ public class CombatService implements ICombatService {
 
         notification.setResult("[" + character.getName() + "] won the fight!");
 
-        character.getClan().setCaps(character.getClan().getCaps() + Constants.ARENA_CAPS); // add caps to the winner
-        character.getClan().setFame(character.getClan().getFame() + Constants.ARENA_FAME); // add fame to the winner
+        character.getClan().setCaps(character.getClan().getCaps() + gameProperties.getArenaCaps()); // add caps to the winner
+        character.getClan().setFame(character.getClan().getFame() + gameProperties.getArenaFame()); // add fame to the winner
 
-        notification.setCapsIncome(Constants.ARENA_CAPS);
-        notification.setFameIncome(Constants.ARENA_FAME);
+        notification.setCapsIncome(gameProperties.getArenaCaps());
+        notification.setFameIncome(gameProperties.getArenaFame());
 
         // handle experience
         character.setExperience(character.getExperience() + 2);

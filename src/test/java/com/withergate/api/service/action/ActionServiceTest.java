@@ -1,5 +1,6 @@
 package com.withergate.api.service.action;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
 import com.withergate.api.model.Location;
@@ -61,8 +62,16 @@ public class ActionServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        GameProperties gameProperties = new GameProperties();
+        gameProperties.setNeighborhoodEncounterProbability(0);
+        gameProperties.setNeighborhoodJunkMultiplier(1);
+        gameProperties.setWastelandEncounterProbability(20);
+        gameProperties.setWastelandJunkMultiplier(2);
+        gameProperties.setCityEncounterProbability(40);
+        gameProperties.setCityJunkMultiplier(2);
+
         actionService = new ActionService(characterService, locationActionRepository, clanNotificationRepository,
-                randomService, encounterService, itemService, clanService, combatService);
+                randomService, encounterService, itemService, clanService, combatService, gameProperties);
     }
 
     @Test

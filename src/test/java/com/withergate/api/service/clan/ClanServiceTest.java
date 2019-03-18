@@ -1,5 +1,6 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.request.ClanRequest;
@@ -30,7 +31,10 @@ public class ClanServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        clanService = new ClanService(clanRepository, characterService);
+        GameProperties gameProperties = new GameProperties();
+        gameProperties.setInitialClanSize(5);
+
+        clanService = new ClanService(clanRepository, characterService, gameProperties);
     }
 
     @Test(expected = EntityConflictException.class)

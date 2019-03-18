@@ -1,6 +1,6 @@
 package com.withergate.api.service.action;
 
-import com.withergate.api.Constants;
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.ArenaResult;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ClanNotification;
@@ -44,11 +44,11 @@ public class ActionService implements IActionService {
     private final IItemService itemService;
     private final IClanService clanService;
     private final ICombatService combatService;
+    private final GameProperties gameProperties;
 
     /**
      * Constructor.
-     *
-     * @param characterService           character service
+     *  @param characterService          character service
      * @param locationActionRepository   locationAction repository
      * @param clanNotificationRepository player notification repository
      * @param randomService              random service
@@ -56,11 +56,12 @@ public class ActionService implements IActionService {
      * @param itemService                item service
      * @param clanService                clan service
      * @param combatService              combat service
+     * @param gameProperties             game properties
      */
     public ActionService(CharacterService characterService, LocationActionRepository locationActionRepository,
                          ClanNotificationRepository clanNotificationRepository, RandomService randomService,
                          IEncounterService encounterService, IItemService itemService, IClanService clanService,
-                         ICombatService combatService) {
+                         ICombatService combatService, GameProperties gameProperties) {
         this.characterService = characterService;
         this.locationActionRepository = locationActionRepository;
         this.clanNotificationRepository = clanNotificationRepository;
@@ -69,6 +70,7 @@ public class ActionService implements IActionService {
         this.itemService = itemService;
         this.clanService = clanService;
         this.combatService = combatService;
+        this.gameProperties = gameProperties;
     }
 
     @Transactional
@@ -85,10 +87,10 @@ public class ActionService implements IActionService {
         // check if clan has enough resources
         if (request.getLocation() == Location.TAVERN) {
             Clan clan = character.getClan();
-            if (clan.getCaps() < Constants.CHARACTER_COST) {
+            if (clan.getCaps() < gameProperties.getCharacterCost()) {
                 throw new InvalidActionException("Not enough resources to perform this action!");
             }
-            clan.setCaps(clan.getCaps() - Constants.CHARACTER_COST);
+            clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
             clanService.saveClan(clan);
         }
 
@@ -136,15 +138,17 @@ public class ActionService implements IActionService {
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
                     processLocationAction(notification, character, action.getLocation(),
-                            Constants.NEIGHBORHOOD_ENCOUNTER_PROBABILITY, Constants.NEIGHBORHOOD_LOOT_PROBABILITY, Constants.NEIGHBORHOOD_JUNK_MULTIPLIER);
+                            gameProperties.getNeighborhoodEncounterProbability(), gameProperties.getNeighborhoodLootProbability(),
+                            gameProperties.getNeighborhoodJunkMultiplier());
                     break;
                 case WASTELAND:
                     processLocationAction(notification, character, action.getLocation(),
-                            Constants.WASTELAND_ENCOUNTER_PROBABILITY, Constants.WASTELAND_LOOT_PROBABILITY, Constants.WASTELAND_JUNK_MULTIPLIER);
+                            gameProperties.getWastelandEncounterProbability(), gameProperties.getWastelandLootProbability(),
+                            gameProperties.getWastelandJunkMultiplier());
                     break;
                 case CITY:
                     processLocationAction(notification, character, action.getLocation(),
-                            Constants.CITY_ENCOUNTER_PROBABILITY, Constants.CITY_LOOT_PROBABILITY, Constants.CITY_JUNK_MULTIPLIER);
+                            gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(), gameProperties.getCityJunkMultiplier());
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());

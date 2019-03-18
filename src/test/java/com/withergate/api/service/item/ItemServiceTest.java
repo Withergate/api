@@ -1,5 +1,6 @@
 package com.withergate.api.service.item;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -13,16 +14,15 @@ import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
-import com.withergate.api.service.item.ItemService;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,8 +55,11 @@ public class ItemServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        GameProperties gameProperties = new GameProperties();
+        gameProperties.setRareItemChance(10);
+
         itemService = new ItemService(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository,
-                consumableRepository, consumableDetailsRepository, randomService);
+                consumableRepository, consumableDetailsRepository, randomService, gameProperties);
     }
 
     @Test

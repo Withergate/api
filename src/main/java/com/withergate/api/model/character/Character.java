@@ -2,12 +2,9 @@ package com.withergate.api.model.character;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.withergate.api.Constants;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.item.Weapon;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.withergate.api.service.clan.CharacterService;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "characters")
@@ -95,7 +95,7 @@ public class Character {
      */
     @JsonProperty("nextLevel")
     public int getNextLevelExperience() {
-        return level * Constants.LEVEL_EXPERIENCE_QUOCIENT;
+        return level * CharacterService.LEVEL_QUOCIENT;
     }
 
     /**
