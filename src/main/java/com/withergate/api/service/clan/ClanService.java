@@ -8,6 +8,7 @@ import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -92,6 +93,8 @@ public class ClanService implements IClanService {
             character.setClan(clan);
             clan.getCharacters().add(character);
         }
+
+        clan.setBuildings(new HashMap<>());
 
         return clanRepository.save(clan);
     }
