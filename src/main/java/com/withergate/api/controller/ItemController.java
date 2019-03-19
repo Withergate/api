@@ -25,11 +25,6 @@ public class ItemController {
 
     private final IItemService itemService;
 
-    /**
-     * Constructor.
-     *
-     * @param itemService item service
-     */
     public ItemController(IItemService itemService) {
         this.itemService = itemService;
     }

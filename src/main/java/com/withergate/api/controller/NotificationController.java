@@ -23,12 +23,6 @@ public class NotificationController {
     private final ClanNotificationRepository clanNotificationRepository;
     private final TurnRepository turnRepository;
 
-    /**
-     * Constructor.
-     *
-     * @param clanNotificationRepository player notification repository
-     * @param turnRepository             turn repository
-     */
     public NotificationController(ClanNotificationRepository clanNotificationRepository,
                                   TurnRepository turnRepository) {
         this.clanNotificationRepository = clanNotificationRepository;

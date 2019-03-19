@@ -28,12 +28,6 @@ public class LocationController {
     private final IActionService locationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
 
-    /**
-     * Constructor.
-     *
-     * @param locationService               location service
-     * @param locationDescriptionRepository location description repository
-     */
     public LocationController(IActionService locationService,
                               LocationDescriptionRepository locationDescriptionRepository) {
         this.locationService = locationService;

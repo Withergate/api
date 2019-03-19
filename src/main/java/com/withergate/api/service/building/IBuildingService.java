@@ -1,5 +1,6 @@
 package com.withergate.api.service.building;
 
+import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.BuildingDetails;
 
 import java.util.List;
@@ -10,6 +11,13 @@ import java.util.List;
  * @author Martin Myslik
  */
 public interface IBuildingService {
+
+    /**
+     * Saves the provided action
+     *
+     * @param action the action to be saved
+     */
+    void saveBuildingAction(BuildingAction action);
 
     void processBuildingActions(int turnId);
 

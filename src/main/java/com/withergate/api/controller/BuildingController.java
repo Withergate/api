@@ -24,11 +24,6 @@ public class BuildingController {
 
     private final IActionService actionService;
 
-    /**
-     * Constructor.
-     *
-     * @param actionService action service
-     */
     public BuildingController(IActionService actionService) {
         this.actionService = actionService;
     }

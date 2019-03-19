@@ -29,13 +29,6 @@ public class ClanService implements IClanService {
     private final CharacterService characterService;
     private final GameProperties gameProperties;
 
-    /**
-     * Constructor.
-     *
-     * @param clanRepository   clan repository
-     * @param characterService character service
-     * @param gameProperties   game properties
-     */
     public ClanService(ClanRepository clanRepository, CharacterService characterService,
                        GameProperties gameProperties) {
         this.clanRepository = clanRepository;

@@ -22,13 +22,6 @@ public class TurnScheduler {
     private final ActionService actionService;
     private final CharacterService characterService;
 
-    /**
-     * Constructor.
-     *
-     * @param turnRepository   turn repository
-     * @param actionService    locationAction service
-     * @param characterService character service
-     */
     public TurnScheduler(TurnRepository turnRepository, ActionService actionService,
                          CharacterService characterService) {
         this.turnRepository = turnRepository;
@@ -39,6 +32,7 @@ public class TurnScheduler {
     // @Scheduled(cron = "0 0 0 * * *") // every midnight
     @Scheduled(cron = "0 0/2 * * * ?") // testing
     public void processTurn() {
+
         /**
          * Process current turn.
          */
@@ -48,14 +42,11 @@ public class TurnScheduler {
         // perform character healing
         characterService.performCharacterHealing(currentTurn.getTurnId());
 
-        // process arena actions
-        actionService.performPendingArenaActions(currentTurn.getTurnId());
-
         // process location actions
-        actionService.performPendingLocationActions(currentTurn.getTurnId());
+        actionService.processLocationActions(currentTurn.getTurnId());
 
         // process building actions
-        actionService.performPendingBuildingActions(currentTurn.getTurnId());
+        actionService.processBuildingActions(currentTurn.getTurnId());
 
         // process leveling up
         characterService.performCharacterLeveling(currentTurn.getTurnId());

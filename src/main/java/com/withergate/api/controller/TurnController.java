@@ -19,11 +19,6 @@ public class TurnController {
 
     private final TurnRepository turnRepository;
 
-    /**
-     * Constructor.
-     *
-     * @param turnRepository turn repository
-     */
     public TurnController(TurnRepository turnRepository) {
         this.turnRepository = turnRepository;
     }

@@ -32,14 +32,6 @@ public class CharacterService implements ICharacterService {
     private final ClanNotificationRepository clanNotificationRepository;
     private final NameService nameService;
 
-    /**
-     * Constructor.
-     *
-     * @param characterRepository        character repository
-     * @param randomService              random service
-     * @param clanNotificationRepository playerNotification repository
-     * @param nameService                name service
-     */
     public CharacterService(CharacterRepository characterRepository, RandomService randomService,
                             ClanNotificationRepository clanNotificationRepository, NameService nameService) {
         this.characterRepository = characterRepository;

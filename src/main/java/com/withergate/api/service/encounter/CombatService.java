@@ -28,13 +28,6 @@ public class CombatService implements ICombatService {
     private final ICharacterService characterService;
     private final GameProperties gameProperties;
 
-    /**
-     * Constructor.
-     *
-     * @param randomService    random service
-     * @param characterService character service
-     * @param gameProperties   game properties
-     */
     public CombatService(IRandomService randomService, ICharacterService characterService,
                          GameProperties gameProperties) {
         this.randomService = randomService;

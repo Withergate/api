@@ -35,12 +35,6 @@ public class ClanController {
     private final IClanService clanService;
     private final IBuildingService buildingService;
 
-    /**
-     * Constructor.
-     *
-     * @param clanService     clan service
-     * @param buildingService building service
-     */
     public ClanController(IClanService clanService,
                           IBuildingService buildingService) {
         this.clanService = clanService;

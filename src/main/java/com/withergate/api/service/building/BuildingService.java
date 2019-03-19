@@ -34,15 +34,6 @@ public class BuildingService implements IBuildingService {
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final ClanNotificationRepository notificationRepository;
 
-    /**
-     * Constructor.
-     *
-     * @param characterService          character service
-     * @param clanService               clan service
-     * @param buildingActionRepository  building action repository
-     * @param buildingDetailsRepository building details repository
-     * @param notificationRepository    notification repository
-     */
     public BuildingService(CharacterService characterService, ClanService clanService,
                            BuildingActionRepository buildingActionRepository,
                            BuildingDetailsRepository buildingDetailsRepository,
@@ -52,6 +43,11 @@ public class BuildingService implements IBuildingService {
         this.buildingActionRepository = buildingActionRepository;
         this.buildingDetailsRepository = buildingDetailsRepository;
         this.notificationRepository = notificationRepository;
+    }
+
+    @Override
+    public void saveBuildingAction(BuildingAction action) {
+        buildingActionRepository.save(action);
     }
 
     @Transactional

@@ -42,16 +42,6 @@ public class ItemService implements IItemService {
     private final RandomService randomService;
     private final GameProperties gameProperties;
 
-    /**
-     * Constructor.
-     *
-     * @param characterRepository     character repository
-     * @param clanRepository          clan repository
-     * @param weaponRepository        weapon repository
-     * @param weaponDetailsRepository weaponDetails repository
-     * @param randomService           random service
-     * @param gameProperties          game properties
-     */
     public ItemService(CharacterRepository characterRepository, ClanRepository clanRepository,
                        WeaponRepository weaponRepository, WeaponDetailsRepository weaponDetailsRepository,
                        ConsumableRepository consumableRepository,

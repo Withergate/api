@@ -65,6 +65,6 @@ public class TurnSchedulerTest {
 
         // then verify all actions triggered
         Mockito.verify(characterService).performCharacterHealing(1);
-        Mockito.verify(locationActionService).performPendingLocationActions(1);
+        Mockito.verify(locationActionService).processLocationActions(1);
     }
 }

@@ -33,16 +33,6 @@ public class EncounterService implements IEncounterService {
     private final IClanService clanService;
     private final ICharacterService characterService;
 
-    /**
-     * Constructor.
-     *
-     * @param encounterRepository encounter repository
-     * @param itemService item service
-     * @param randomService  random service
-     * @param combatService combat service
-     * @param clanService clan service
-     * @param characterService  character service
-     */
     public EncounterService(EncounterRepository encounterRepository, IItemService itemService,
                             IRandomService randomService, ICombatService combatService, IClanService clanService,
                             ICharacterService characterService) {

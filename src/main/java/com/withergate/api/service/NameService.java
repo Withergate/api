@@ -26,14 +26,6 @@ public class NameService implements INameService {
     private final AvatarRepository avatarRepository;
     private final RandomService randomService;
 
-    /**
-     * Constructor.
-     *
-     * @param namePrefixRepository  namePrefix repository
-     * @param nameRepository        name repository
-     * @param avatarRepository      avatar repository
-     * @param randomService         random service
-     */
     public NameService(NamePrefixRepository namePrefixRepository, NameRepository nameRepository,
                        AvatarRepository avatarRepository, RandomService randomService) {
         this.namePrefixRepository = namePrefixRepository;
