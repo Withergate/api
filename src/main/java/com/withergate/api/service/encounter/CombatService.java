@@ -1,11 +1,12 @@
 package com.withergate.api.service.encounter;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.model.location.ArenaResult;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.encounter.Encounter;
+import com.withergate.api.model.location.ArenaResult;
+import com.withergate.api.model.location.Location;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
@@ -37,38 +38,31 @@ public class CombatService implements ICombatService {
     }
 
     @Override
-    public boolean handleCombat(ClanNotification notification, Encounter encounter, Character character,
-                                Location location) {
-        int diceRoll = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-        int totalCombat = character.getTotalCombat() + diceRoll;
-        log.debug("{} rolled dice and the total combat value is {}", character.getName(), totalCombat);
+    public boolean handleEncounterCombat(ClanNotification notification, Encounter encounter, Character character,
+                                         Location location) {
+        log.debug("Handling encounter combat for character {} and encounter difficulty {}.", character.getName(),
+                encounter.getDifficulty());
+
+        // prepare enemy
+        Character enemy = new Character();
+        enemy.setId(-1);
+        enemy.setName("Enemy");
+        enemy.setCombat(encounter.getDifficulty());
+        enemy.setHitpoints(encounter.getDifficulty() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE));
+        enemy.setMaxHitpoints(enemy.getHitpoints());
+
+        CombatResult result = handleCombat(character, notification, enemy, null);
 
         // compute combat result
-        if (totalCombat < encounter.getDifficulty()) {
-            // combat lost - compute injury
-            int injury = computeInjury();
-            character.setHitpoints(character.getHitpoints() - injury);
-
-            notification.setInjury(injury);
-
+        if (result.getLoser().getId() == character.getId()) {
             // handle experience
             character.setExperience(character.getExperience() + 1);
             notification.setExperience(1);
 
-            // update notification details
-            NotificationDetail detail = new NotificationDetail();
-            detail.setText("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
-                    "], enemy combat: [" + encounter.getDifficulty() + "], injury: [" + injury + "] hitpoints lost.");
-            notification.getDetails().add(detail);
-
             // check if character is still alive
             if (character.getHitpoints() < 1) {
-                log.debug("{} died during the combat!", character.getName());
-
                 notification.setResult("Unfortunately, [" + character.getName() + "] died during the combat.");
             } else {
-                log.debug("Character {} lost {} hitpoints and now has {} hitpoints.", character.getName(), injury,
-                        character.getHitpoints());
                 notification.setResult(encounter.getFailureText(character, location));
             }
         } else {
@@ -78,11 +72,6 @@ public class CombatService implements ICombatService {
             // handle experience
             character.setExperience(character.getExperience() + 2);
             notification.setExperience(2);
-
-            NotificationDetail detail = new NotificationDetail();
-            detail.setText("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
-                    "], enemy combat: [" + encounter.getDifficulty() + "].");
-            notification.getDetails().add(detail);
 
             return true;
         }
@@ -105,54 +94,22 @@ public class CombatService implements ICombatService {
             Character character1 = characters.get(i);
             Character character2 = characters.get(i + 1);
 
-            handleFight(character1, character2, results);
+            // process fight
+            ClanNotification winnerNotification = new ClanNotification();
+            ClanNotification loserNotification = new ClanNotification();
+            CombatResult result = handleCombat(character1, winnerNotification, character2, loserNotification);
+
+            // create results
+            ArenaResult winnerResult = getWinnerResult(result.getWinner(), result.getLoser(), winnerNotification);
+            if (winnerResult != null) results.add(winnerResult);
+            ArenaResult loserResult = getLoserResult(result.getLoser(), result.getWinner(), loserNotification);
+            if (loserResult != null) results.add(loserResult);
         }
 
         return results;
     }
 
-    private void handleFight(Character character1, Character character2, List<ArenaResult> results) {
-        int combat1 = character1.getTotalCombat() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-        int combat2 = character2.getTotalCombat() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-
-        log.debug("{} has total combat of {}", character1.getName(), combat1);
-        log.debug("{} has total combat of {}", character2.getName(), combat2);
-
-        // handle draw
-        if (combat1 == combat2) {
-            // one of the characters gets random bonus
-            if (randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE) <= 50) {
-                combat1++;
-            } else {
-                combat2++;
-            }
-        }
-
-        // handle fight result
-        Character winner;
-        Character loser;
-        if (combat1 > combat2) {
-            // character1 won
-            winner = character1;
-            loser = character2;
-        } else {
-            // character2 won
-            winner = character2;
-            loser = character1;
-        }
-
-        // add results
-        ArenaResult result1 = getWinnerResult(winner, loser);
-        if (result1 != null) {
-            results.add(result1);
-        }
-        ArenaResult result2 = getLoserResult(loser, winner);
-        if (result2 != null) {
-            results.add(result2);
-        }
-    }
-
-    private ArenaResult getWinnerResult(Character character, Character opponent) {
+    private ArenaResult getWinnerResult(Character character, Character opponent, ClanNotification notification) {
         log.debug("{} won the fight. Updating results...", character.getName());
 
         // do not handle non-player characters
@@ -161,14 +118,15 @@ public class CombatService implements ICombatService {
             return null;
         }
 
-        ClanNotification notification = new ClanNotification();
         notification.setClanId(character.getClan().getId());
         notification.setText("[" + character.getName() + "] faced [" + opponent.getName() + "] in the arena.");
 
         notification.setResult("[" + character.getName() + "] won the fight!");
 
-        character.getClan().setCaps(character.getClan().getCaps() + gameProperties.getArenaCaps()); // add caps to the winner
-        character.getClan().setFame(character.getClan().getFame() + gameProperties.getArenaFame()); // add fame to the winner
+        character.getClan()
+                .setCaps(character.getClan().getCaps() + gameProperties.getArenaCaps()); // add caps to the winner
+        character.getClan()
+                .setFame(character.getClan().getFame() + gameProperties.getArenaFame()); // add fame to the winner
 
         notification.setCapsIncome(gameProperties.getArenaCaps());
         notification.setFameIncome(gameProperties.getArenaFame());
@@ -184,7 +142,7 @@ public class CombatService implements ICombatService {
         return result;
     }
 
-    private ArenaResult getLoserResult(Character character, Character opponent) {
+    private ArenaResult getLoserResult(Character character, Character opponent, ClanNotification notification) {
         log.debug("{} lost the fight. Updating results...", character.getName());
 
         // do not handle non-player characters
@@ -193,17 +151,10 @@ public class CombatService implements ICombatService {
             return null;
         }
 
-        ClanNotification notification = new ClanNotification();
         notification.setClanId(character.getClan().getId());
         notification.setText("[" + character.getName() + "] faced [" + opponent.getName() + "] in the arena.");
 
         notification.setResult("[" + character.getName() + "] lost the fight!");
-
-        // make the injury non-fatal
-        int injury = Math.min(computeInjury(), character.getHitpoints() - 1);
-        character.setHitpoints(character.getHitpoints() - injury);
-
-        notification.setInjury(injury);
 
         // handle experience
         character.setExperience(character.getExperience() + 1);
@@ -216,15 +167,101 @@ public class CombatService implements ICombatService {
         return result;
     }
 
-    private int computeInjury() {
-        // compute basic injury
-        int injury = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+    private CombatResult handleCombat(Character character1, ClanNotification notification1, Character character2,
+                                      ClanNotification notification2) {
+        while (true) {
+            CombatResult result = handleCombatRound(character1, character2);
+            log.debug("Combat round result: {}", result);
 
-        // chance for critical hit
-        if (randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE) < 20) {
-            log.debug("Critical hit triggered!");
-            injury *= 2;
+            if (notification1 != null) {
+                notification1.getDetails().addAll(result.getDetails());
+            }
+            if (notification2 != null) {
+                notification2.getDetails().addAll(result.getDetails());
+            }
+
+            if (result.isFinished()) {
+                return result;
+            }
         }
-        return injury;
+    }
+
+    private CombatResult handleCombatRound(Character character1, Character character2) {
+        CombatResult result = new CombatResult();
+        List<NotificationDetail> details = new ArrayList<>();
+        boolean finished = false;
+
+        // initial dice rolls
+        int roll1 = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+        int roll2 = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+        NotificationDetail detailRoll = new NotificationDetail();
+        detailRoll.setText(
+                "[" + character1.getName() + "] rolled " + roll1 + " on combat dice. [" + character2.getName()
+                        + "] rolled " + roll2 + ".");
+        details.add(detailRoll);
+
+        // compare combat values
+        int combat1 = character1.getTotalCombat() + roll1;
+        int combat2 = character2.getTotalCombat() + roll2;
+
+        // handle draw
+        if (combat1 == combat2) {
+            // one of the characters gets random bonus
+            if (randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE) <= 50) {
+                combat1++;
+            } else {
+                combat2++;
+            }
+        }
+
+        Character winner;
+        Character loser;
+        int combatWinner;
+        int combatLoser;
+        int injury;
+        if (combat1 > combat2) {
+            winner = character1;
+            loser = character2;
+            combatWinner = combat1;
+            combatLoser = combat2;
+        } else {
+            winner = character2;
+            loser = character1;
+            combatWinner = combat2;
+            combatLoser = combat1;
+        }
+        injury = combatWinner - combatLoser;
+        loser.setHitpoints(loser.getHitpoints() - injury);
+        NotificationDetail detailCombat = new NotificationDetail();
+        detailCombat
+                .setText("[" + winner.getName() + "] won the round with combat value " + combatWinner + " and dealt "
+                        + injury + " damage to [" + loser.getName() + "].");
+        details.add(detailCombat);
+
+        if (loser.getHitpoints() < 1) {
+            finished = true;
+            NotificationDetail detailDeath = new NotificationDetail();
+            detailDeath.setText("[" + loser.getName() + "] died.");
+            details.add(detailDeath);
+        }
+
+        // compute the chance to flee the combat
+        int fleeRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        double fleeChance = 100 - ((double) loser.getHitpoints() / loser.getMaxHitpoints()) * 100;
+        if (loser.getHitpoints() > 0 && fleeChance > fleeRoll) {
+            finished = true;
+            NotificationDetail fleeDetail = new NotificationDetail();
+            fleeDetail.setText(
+                    "[" + loser.getName() + "] fleed the combat with " + (int) fleeChance + " chance and " + fleeRoll
+                            + " dice roll.");
+            details.add(fleeDetail);
+        }
+
+        result.setFinished(finished);
+        result.setWinner(winner);
+        result.setLoser(loser);
+        result.setDetails(details);
+
+        return result;
     }
 }

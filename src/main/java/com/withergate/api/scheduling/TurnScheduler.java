@@ -51,6 +51,9 @@ public class TurnScheduler {
         // process leveling up
         characterService.performCharacterLeveling(currentTurn.getTurnId());
 
+        // delete dead characters
+        characterService.deleteDeadCharacters();
+
         /**
          * Prepare next turn data.
          */

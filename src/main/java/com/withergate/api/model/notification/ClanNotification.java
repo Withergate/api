@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -36,13 +37,11 @@ public class ClanNotification {
     @Column(name = "result")
     private String result;
 
-    @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "notification_id")
     private List<NotificationDetail> details;
 
     // INCOME
-
-    @Column(name = "item_income")
-    private String itemIncome;
 
     @Column(name = "junk_income")
     private int junkIncome;
@@ -52,9 +51,6 @@ public class ClanNotification {
 
     @Column(name = "fameIncome")
     private int fameIncome;
-
-    @Column(name = "character_income")
-    private String characterIncome;
 
     @Column(name = "injury")
     private int injury;
@@ -66,7 +62,7 @@ public class ClanNotification {
     private int experience;
 
     public ClanNotification() {
-        details = new ArrayList<>();
+        if (details == null) details = new ArrayList<>();
     }
 
 }

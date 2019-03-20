@@ -52,8 +52,13 @@ public class CharacterService implements ICharacterService {
     }
 
     @Override
-    public void delete(Character character) {
-        characterRepository.delete(character);
+    public void deleteDeadCharacters() {
+        for (Character character : characterRepository.findAll()) {
+            if (character.getHitpoints() < 1) {
+                log.debug("Deleting dead character: {}", character.getName());
+                characterRepository.delete(character);
+            }
+        }
     }
 
     @Transactional
@@ -159,7 +164,8 @@ public class CharacterService implements ICharacterService {
         /*
          * Generate random hitpoints.
          */
-        int hitpoints = randomService.getRandomInt(1, 5) + randomService.getRandomInt(1, 5);
+        int hitpoints = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE)
+                + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
         character.setHitpoints(hitpoints);
         character.setMaxHitpoints(hitpoints);
 

@@ -60,7 +60,7 @@ public class EncounterService implements IEncounterService {
         switch (encounter.getType()) {
             case COMBAT:
                 // handle combat and check if character won, if yes, handle reward
-                if (combatService.handleCombat(notification, encounter, character, location)) {
+                if (combatService.handleEncounterCombat(notification, encounter, character, location)) {
                     handleReward(encounter, character, notification);
                 } else {
                     handlePenalty(encounter, character, notification);
@@ -120,7 +120,9 @@ public class EncounterService implements IEncounterService {
                 clanService.saveClan(clan);
 
                 // update notification
-                notification.setCharacterIncome("[" + generated.getName() + "] joined your clan.");
+                NotificationDetail detail = new NotificationDetail();
+                detail.setText("[" + generated.getName() + "] joined your clan.");
+                notification.getDetails().add(detail);
                 break;
             default:
                 log.error("Unknown type of reward!");

@@ -10,6 +10,7 @@ import com.withergate.api.model.item.ConsumableDetails;
 import com.withergate.api.model.item.Rarity;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.item.ConsumableDetailsRepository;
@@ -251,8 +252,10 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.setItemIncome(
+            NotificationDetail detail = new NotificationDetail();
+            detail.setText(
                     "[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
+            notification.getDetails().add(detail);
         } else {
             Clan clan = character.getClan();
             clan.getWeapons().add(weapon);
@@ -262,8 +265,10 @@ public class ItemService implements IItemService {
             weaponRepository.save(weapon);
 
             // update notification
-            notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName()
+            NotificationDetail detail = new NotificationDetail();
+            detail.setText("[" + details.getName() + "] was found and [" + character.getName()
                     + "] took it to your clan storage.");
+            notification.getDetails().add(detail);
         }
     }
 
@@ -294,8 +299,10 @@ public class ItemService implements IItemService {
         /*
          * Update notification.
          */
-        notification.setItemIncome("[" + details.getName() + "] was found and [" + character.getName()
+        NotificationDetail detail = new NotificationDetail();
+        detail.setText("[" + details.getName() + "] was found and [" + character.getName()
                 + "] took it to your clan storage.");
+        notification.getDetails().add(detail);
 
     }
 

@@ -126,8 +126,6 @@ CREATE TABLE clan_notifications (
     turn_id INT NOT NULL,
     text VARCHAR(256) NOT NULL,
     result VARCHAR(256),
-    item_income VARCHAR(128),
-    character_income VARCHAR(128),
     junk_income INT,
     caps_income INT,
     fame_income INT,

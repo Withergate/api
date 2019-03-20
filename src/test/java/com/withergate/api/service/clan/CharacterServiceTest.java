@@ -84,19 +84,20 @@ public class CharacterServiceTest {
         // when generating random character
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
         Mockito.when(nameService.generateRandomName(Gender.MALE)).thenReturn("Rusty Nick");
-        Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 1, 2, 3, 4);
+        Mockito.when(randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE)).thenReturn(6, 2, 1); // hp
+        Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 4, 2, 3, 4);
 
         Character result = characterService.generateRandomCharacter();
 
         // then verify correct values used
         assertEquals("Rusty Nick", result.getName());
         assertEquals(Gender.MALE, result.getGender());
-        assertEquals(6, result.getHitpoints());
-        assertEquals(6, result.getMaxHitpoints());
-        assertEquals(1, result.getCombat());
-        assertEquals(2, result.getScavenge());
-        assertEquals(3, result.getCraftsmanship());
-        assertEquals(4, result.getIntellect());
+        assertEquals(13, result.getHitpoints());
+        assertEquals(13, result.getMaxHitpoints());
+        assertEquals(3, result.getCombat());
+        assertEquals(3, result.getScavenge());
+        assertEquals(4, result.getCraftsmanship());
+        assertEquals(2, result.getIntellect());
     }
 
     @Test

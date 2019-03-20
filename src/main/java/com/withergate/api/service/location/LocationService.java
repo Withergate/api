@@ -9,6 +9,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
@@ -107,7 +108,9 @@ public class LocationService implements ILocationService {
                             "[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
                                     "After spending the evening chatting with several people, the decision fell on ["
                                     + hired.getName() + "].");
-                    notification.setCharacterIncome("New character joined your clan.");
+                    NotificationDetail detail = new NotificationDetail();
+                    detail.setText("New character joined your clan.");
+                    notification.getDetails().add(detail);
                     break;
                 case ARENA:
                     notification.setText("[" + character.getName() + "] returned from arena.");
@@ -120,8 +123,6 @@ public class LocationService implements ILocationService {
             if (character.getHitpoints() > 0) {
                 character.setState(CharacterState.READY);
                 characterService.save(character);
-            } else {
-                characterService.delete(character);
             }
 
             // send notification about action result

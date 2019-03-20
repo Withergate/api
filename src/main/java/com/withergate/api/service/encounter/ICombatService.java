@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ICombatService {
 
-    boolean handleCombat(ClanNotification notification, Encounter encounter, Character character, Location location);
+    boolean handleEncounterCombat(ClanNotification notification, Encounter encounter, Character character, Location location);
 
     List<ArenaResult> handleArenaFights(List<Character> characters);
 }

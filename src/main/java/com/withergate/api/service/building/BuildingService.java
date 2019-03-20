@@ -132,7 +132,7 @@ public class BuildingService implements IBuildingService {
                     notification.setTurnId(turnId);
                     notification.setClanId(clan.getId());
                     notification.setFameIncome(building.getLevel());
-                    notification.setText("Your monument generated " + building.getLevel() + " this turn.");
+                    notification.setText("Your monument generated " + building.getLevel() + " FAME this turn.");
                     notificationRepository.save(notification);
 
                 }
