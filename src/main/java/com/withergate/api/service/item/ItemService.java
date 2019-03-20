@@ -2,7 +2,7 @@ package com.withergate.api.service.item;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Consumable;

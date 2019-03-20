@@ -1,6 +1,6 @@
 package com.withergate.api.model.request;
 
-import com.withergate.api.model.Location;
+import com.withergate.api.model.location.Location;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

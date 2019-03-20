@@ -2,8 +2,8 @@ package com.withergate.api.service.location;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.ClanNotification;
-import com.withergate.api.model.Location;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;

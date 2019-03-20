@@ -1,8 +1,8 @@
 package com.withergate.api.service.encounter;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.ClanNotification;
-import com.withergate.api.model.Location;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.encounter.EncounterType;

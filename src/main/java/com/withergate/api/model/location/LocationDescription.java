@@ -1,4 +1,4 @@
-package com.withergate.api.model;
+package com.withergate.api.model.location;
 
 import lombok.Getter;
 import lombok.Setter;

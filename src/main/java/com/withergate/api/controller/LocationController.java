@@ -1,6 +1,6 @@
 package com.withergate.api.controller;
 
-import com.withergate.api.model.LocationDescription;
+import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.service.action.IActionService;

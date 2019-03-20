@@ -1,11 +1,12 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.service.NameService;
@@ -77,12 +78,17 @@ public class CharacterService implements ICharacterService {
 
             // each character that is ready heals
             int points = randomService.getRandomInt(1, 2);
+            NotificationDetail detail1 = new NotificationDetail();
+            detail1.setText("Rolled " + points + " when computing healing.");
+            notification.getDetails().add(detail1);
             if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
                 Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
                 points += building.getLevel();
 
                 if (building.getLevel() > 0) {
-                    notification.setDetails("Healing increased by " + building.getLevel() +" when computing healing (sick bay bonus).");
+                    NotificationDetail detail2 = new NotificationDetail();
+                    detail2.setText("Healing increased by " + building.getLevel() +" by having sick bay.");
+                    notification.getDetails().add(detail2);
                 }
             }
 

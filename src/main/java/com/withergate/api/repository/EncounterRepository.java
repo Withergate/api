@@ -1,6 +1,6 @@
 package com.withergate.api.repository;
 
-import com.withergate.api.model.Location;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.encounter.Encounter;
 
 import java.util.List;

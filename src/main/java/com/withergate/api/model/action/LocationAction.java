@@ -1,6 +1,6 @@
 package com.withergate.api.model.action;
 
-import com.withergate.api.model.Location;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
 import lombok.Getter;
 import lombok.Setter;

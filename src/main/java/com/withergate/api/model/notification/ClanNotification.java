@@ -1,14 +1,17 @@
-package com.withergate.api.model;
+package com.withergate.api.model.notification;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "clan_notifications")
@@ -33,8 +36,8 @@ public class ClanNotification {
     @Column(name = "result")
     private String result;
 
-    @Column(name = "details")
-    private String details;
+    @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL)
+    private List<NotificationDetail> details;
 
     // INCOME
 
@@ -61,5 +64,9 @@ public class ClanNotification {
 
     @Column(name = "experience")
     private int experience;
+
+    public ClanNotification() {
+        details = new ArrayList<>();
+    }
 
 }

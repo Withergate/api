@@ -1,11 +1,12 @@
 package com.withergate.api.service.encounter;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.model.ArenaResult;
-import com.withergate.api.model.ClanNotification;
-import com.withergate.api.model.Location;
+import com.withergate.api.model.location.ArenaResult;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
@@ -55,8 +56,10 @@ public class CombatService implements ICombatService {
             notification.setExperience(1);
 
             // update notification details
-            notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
+            NotificationDetail detail = new NotificationDetail();
+            detail.setText("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
                     "], enemy combat: [" + encounter.getDifficulty() + "], injury: [" + injury + "] hitpoints lost.");
+            notification.getDetails().add(detail);
 
             // check if character is still alive
             if (character.getHitpoints() < 1) {
@@ -76,8 +79,10 @@ public class CombatService implements ICombatService {
             character.setExperience(character.getExperience() + 2);
             notification.setExperience(2);
 
-            notification.setDetails("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
+            NotificationDetail detail = new NotificationDetail();
+            detail.setText("Dice roll: [" + diceRoll + "], total combat: [" + totalCombat +
                     "], enemy combat: [" + encounter.getDifficulty() + "].");
+            notification.getDetails().add(detail);
 
             return true;
         }

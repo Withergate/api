@@ -1,6 +1,6 @@
 package com.withergate.api.repository.action;
 
-import com.withergate.api.model.Location;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import org.springframework.data.jpa.repository.JpaRepository;

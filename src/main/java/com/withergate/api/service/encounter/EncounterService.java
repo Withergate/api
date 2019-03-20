@@ -1,10 +1,11 @@
 package com.withergate.api.service.encounter;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.ClanNotification;
-import com.withergate.api.model.Location;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
@@ -153,7 +154,9 @@ public class EncounterService implements IEncounterService {
                 notification.setInjury(injury);
 
                 if (character.getHitpoints() < 1) {
-                    notification.setDetails("[" + character.getName() + "] died after suffering from the injury.");
+                    NotificationDetail detail = new NotificationDetail();
+                    detail.setText("[" + character.getName() + "] died after suffering from the injury.");
+                    notification.getDetails().add(detail);
                 }
             default:
                 log.error("Unknown type of penalty!");

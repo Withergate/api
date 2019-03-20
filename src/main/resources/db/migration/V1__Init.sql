@@ -126,7 +126,6 @@ CREATE TABLE clan_notifications (
     turn_id INT NOT NULL,
     text VARCHAR(256) NOT NULL,
     result VARCHAR(256),
-    details VARCHAR(128),
     item_income VARCHAR(128),
     character_income VARCHAR(128),
     junk_income INT,
@@ -138,6 +137,15 @@ CREATE TABLE clan_notifications (
     PRIMARY KEY (notification_id),
     CONSTRAINT p_notification_turn_fk FOREIGN KEY (turn_id) REFERENCES turns (turn_id),
     CONSTRAINT p_notification_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
+DROP TABLE IF EXISTS notification_details;
+CREATE TABLE notification_details (
+    detail_id BIGINT AUTO_INCREMENT,
+    text VARCHAR(256),
+    notification_id BIGINT,
+    PRIMARY KEY (detail_id),
+    CONSTRAINT detail_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id)
 );
 
 DROP TABLE IF EXISTS encounters;

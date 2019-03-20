@@ -1,13 +1,14 @@
 package com.withergate.api.service.building;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.ClanNotification;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
@@ -78,7 +79,9 @@ public class BuildingService implements IBuildingService {
                         building.setProgress(building.getProgress() - building.getNextLevelWork());
                         building.setLevel(building.getLevel() + 1);
 
-                        notification.setDetails("[" + details.getName() + "] advanced to the next level!");
+                        NotificationDetail detail = new NotificationDetail();
+                        detail.setText("[" + details.getName() + "] advanced to the next level!");
+                        notification.getDetails().add(detail);
                     }
 
                 } else {
