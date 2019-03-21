@@ -63,6 +63,7 @@ public class ActionServiceTest {
 
         Clan clan = new Clan();
         clan.setId(1);
+        clan.setFood(10);
         clan.setName("Dragons");
 
         Character character = new Character();

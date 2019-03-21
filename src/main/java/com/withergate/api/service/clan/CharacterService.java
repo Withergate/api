@@ -1,5 +1,6 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;

@@ -62,6 +62,10 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private int junk;
 
+    @Column(name = "food", nullable = false)
+    @JsonView(Views.Internal.class)
+    private int food;
+
     @Column(name = "arena", nullable = false)
     @JsonView(Views.Internal.class)
     private boolean arena;

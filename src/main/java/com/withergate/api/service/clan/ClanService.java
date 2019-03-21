@@ -77,7 +77,8 @@ public class ClanService implements IClanService {
         clan.setName(clanRequest.getName());
         clan.setFame(0);
         clan.setCaps(50);
-        clan.setJunk(100);
+        clan.setJunk(20);
+        clan.setFood(20);
         clan.setCharacters(new ArrayList<>());
 
         // assign random initial characters to clan.

@@ -46,6 +46,9 @@ public class ClanNotification {
     @Column(name = "junk_income")
     private int junkIncome;
 
+    @Column(name = "food_income")
+    private int foodIncome;
+
     @Column(name = "caps_income")
     private int capsIncome;
 

@@ -22,14 +22,17 @@ public class GameProperties {
     private int neighborhoodLootProbability;
     private int neighborhoodEncounterProbability;
     private int neighborhoodJunkMultiplier;
+    private int neighborhoodFoodMultiplier;
 
     private int wastelandLootProbability;
     private int wastelandEncounterProbability;
     private int wastelandJunkMultiplier;
+    private int wastelandFoodMultiplier;
 
     private int cityLootProbability;
     private int cityEncounterProbability;
     private int cityJunkMultiplier;
+    private int cityFoodMultiplier;
 
     private int rareItemChance;
 

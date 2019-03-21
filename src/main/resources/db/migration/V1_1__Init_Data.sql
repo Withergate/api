@@ -27,8 +27,8 @@ INSERT INTO building_details(identifier, building_name, cost, visitable, descrip
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, description, info, image_url) VALUES
-    ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk. Do not expect to find anything too valuable, though.',
-    'Neighborhood is a relatively safe location. The most probable outcome is finding some junk.',
+    ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk and food. Do not expect to find anything too valuable, though.',
+    'Neighborhood is a relatively safe location. The most probable outcome is finding some junk or food.',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
     ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.',
     'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.',

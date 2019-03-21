@@ -51,20 +51,22 @@ public class ActionService implements IActionService {
     public void createLocationAction(LocationRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting location action request: {}", request.toString());
         Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
 
         // check if clan has enough resources
         if (request.getLocation() == Location.TAVERN) {
-            Clan clan = character.getClan();
+
             if (clan.getCaps() < gameProperties.getCharacterCost()) {
                 throw new InvalidActionException("Not enough resources to perform this action!");
             }
             clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
-            clanService.saveClan(clan);
         }
+
+        // check food
+        if (clan.getFood() < 1) throw new InvalidActionException("Not enough food!");
 
         // check arena requirements
         if (request.getLocation() == Location.ARENA) {
-            Clan clan = character.getClan();
             if (clan.isArena()) {
                 throw new InvalidActionException("You already have selected a character to enter arena this turn!");
             }
@@ -72,7 +74,6 @@ public class ActionService implements IActionService {
                 throw new InvalidActionException("Only melee weapons are allowed to the arena!");
             }
             clan.setArena(true);
-            clanService.saveClan(clan);
         }
 
         LocationAction action = new LocationAction();
@@ -81,6 +82,10 @@ public class ActionService implements IActionService {
         action.setLocation(request.getLocation());
 
         locationService.saveLocationAction(action);
+
+        // pay food
+        clan.setFood(clan.getFood() - 1);
+        clanService.saveClan(clan);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -92,6 +97,10 @@ public class ActionService implements IActionService {
     public void createBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting building action for request {}.", request);
         Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check food
+        if (clan.getFood() < 1) throw new InvalidActionException("Not enough food!");
 
         // check if action is applicable
         BuildingDetails buildingDetails = buildingService.getBuildingDetails(request.getBuilding());
@@ -123,15 +132,14 @@ public class ActionService implements IActionService {
 
         buildingService.saveBuildingAction(action);
 
-        // pay junk
-        Clan clan = character.getClan();
+        // pay junk and food
         clan.setJunk(clan.getJunk() - character.getCraftsmanship());
+        clan.setFood(clan.getFood() - 1);
         clanService.saveClan(clan);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
         characterService.save(character);
-
     }
 
     @Transactional

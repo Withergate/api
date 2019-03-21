@@ -88,18 +88,18 @@ public class LocationService implements ILocationService {
                     processLocationAction(notification, character, action.getLocation(),
                             gameProperties.getNeighborhoodEncounterProbability(),
                             gameProperties.getNeighborhoodLootProbability(),
-                            gameProperties.getNeighborhoodJunkMultiplier());
+                            gameProperties.getNeighborhoodJunkMultiplier(), gameProperties.getNeighborhoodFoodMultiplier());
                     break;
                 case WASTELAND:
                     processLocationAction(notification, character, action.getLocation(),
                             gameProperties.getWastelandEncounterProbability(),
                             gameProperties.getWastelandLootProbability(),
-                            gameProperties.getWastelandJunkMultiplier());
+                            gameProperties.getWastelandJunkMultiplier(), gameProperties.getWastelandFoodMultiplier());
                     break;
                 case CITY:
                     processLocationAction(notification, character, action.getLocation(),
                             gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(),
-                            gameProperties.getCityJunkMultiplier());
+                            gameProperties.getCityJunkMultiplier(), gameProperties.getCityFoodMultiplier());
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
@@ -161,7 +161,7 @@ public class LocationService implements ILocationService {
     }
 
     private void processLocationAction(ClanNotification notification, Character character, Location location,
-                                       int encounterProbability, int lootProbability, int junkRatio) {
+                                       int encounterProbability, int lootProbability, int junkRatio, int foodRatio) {
         // default outcome
         notification.setText("[" + character.getName() + "] returned from " + location + "empty-handed.");
 
@@ -197,17 +197,29 @@ public class LocationService implements ILocationService {
         }
 
         /*
-         * JUNK
+         * JUNK AND FOOD
          *
-         * If nothing from the above triggered, the character finds some junk at the location.
+         * If nothing from the above triggered, the character finds some junk or food at the location.
          */
-        log.debug("Junk found!");
-        int junk = character.getScavenge() * junkRatio;
-        Clan clan = character.getClan();
-        clan.setJunk(clan.getJunk() + junk);
-        clanService.saveClan(clan);
+        if (randomService.getRandomInt(1, 100) > 50) {
+            log.debug("Junk found!");
+            int junk = character.getScavenge() * junkRatio;
+            Clan clan = character.getClan();
+            clan.setJunk(clan.getJunk() + junk);
+            clanService.saveClan(clan);
 
-        notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
-        notification.setJunkIncome(junk);
+            notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
+            notification.setJunkIncome(junk);
+        } else {
+            log.debug("Food found!");
+            int food = character.getScavenge() * foodRatio;
+            Clan clan = character.getClan();
+            clan.setFood(clan.getFood() + food);
+            clanService.saveClan(clan);
+
+            notification.setText("[" + character.getName() + "] found some food at " + location + ".");
+            notification.setFoodIncome(food);
+        }
+
     }
 }

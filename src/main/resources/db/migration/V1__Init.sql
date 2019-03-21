@@ -19,6 +19,7 @@ CREATE TABLE clans (
     fame INT NOT NULL,
     caps INT NOT NULL,
     junk INT NOT NULL,
+    food INT NOT NULL,
     arena BIT NOT NULL DEFAULT FALSE,
     PRIMARY KEY (clan_id)
 );
@@ -127,6 +128,7 @@ CREATE TABLE clan_notifications (
     text VARCHAR(256) NOT NULL,
     result VARCHAR(256),
     junk_income INT,
+    food_income INT,
     caps_income INT,
     fame_income INT,
     injury INT,
