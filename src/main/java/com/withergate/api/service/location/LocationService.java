@@ -119,12 +119,6 @@ public class LocationService implements ILocationService {
 
             }
 
-            // mark character as ready if still alive
-            if (character.getHitpoints() > 0) {
-                character.setState(CharacterState.READY);
-                characterService.save(character);
-            }
-
             // send notification about action result
             clanNotificationRepository.save(notification);
 

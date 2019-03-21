@@ -100,8 +100,7 @@ public class BuildingService implements IBuildingService {
 
             // TODO: implement visit actions
 
-            // make character ready again and award experience
-            character.setState(CharacterState.READY);
+            // award experience
             character.setExperience(character.getExperience() + 1);
             notification.setExperience(1);
             characterService.save(character);

@@ -22,7 +22,7 @@ public class TurnSchedulerTest {
     private TurnRepository turnRepository;
 
     @Mock
-    private ActionService locationActionService;
+    private ActionService actionService;
 
     @Mock
     private CharacterService characterService;
@@ -31,7 +31,7 @@ public class TurnSchedulerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        scheduler = new TurnScheduler(turnRepository, locationActionService, characterService);
+        scheduler = new TurnScheduler(turnRepository, actionService, characterService);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class TurnSchedulerTest {
         scheduler.processTurn();
 
         // then verify all actions triggered
-        Mockito.verify(characterService).performCharacterHealing(1);
-        Mockito.verify(locationActionService).processLocationActions(1);
+        Mockito.verify(actionService).processBuildingActions(1);
+        Mockito.verify(actionService).processLocationActions(1);
     }
 }

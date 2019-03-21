@@ -39,20 +39,14 @@ public class TurnScheduler {
         Turn currentTurn = turnRepository.findFirstByOrderByTurnIdDesc();
         log.info("Processing current turn: {}", currentTurn.getTurnId());
 
-        // perform character healing
-        characterService.performCharacterHealing(currentTurn.getTurnId());
-
         // process location actions
         actionService.processLocationActions(currentTurn.getTurnId());
 
         // process building actions
         actionService.processBuildingActions(currentTurn.getTurnId());
 
-        // process leveling up
-        characterService.performCharacterLeveling(currentTurn.getTurnId());
-
-        // delete dead characters
-        characterService.deleteDeadCharacters();
+        // update characters
+        characterService.performCharacterTurnUpdates(currentTurn.getTurnId());
 
         /**
          * Prepare next turn data.

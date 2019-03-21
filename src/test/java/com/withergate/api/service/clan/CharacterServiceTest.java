@@ -101,7 +101,7 @@ public class CharacterServiceTest {
     }
 
     @Test
-    public void testGivenReadyCharacterWhenPerformingHealingThenVerifyCharacterHealed() {
+    public void testGivenReadyCharacterWhenPerformingEndTurnUpdatesThenVerifyCharacterHealed() {
         // given character
         Clan clan = new Clan();
         clan.setId(1);
@@ -123,7 +123,7 @@ public class CharacterServiceTest {
         // when performing healing
         Mockito.when(randomService.getRandomInt(1, 2)).thenReturn(1);
 
-        characterService.performCharacterHealing(1);
+        characterService.performCharacterTurnUpdates(1);
 
         // then verify character updated
         ArgumentCaptor<Character> captor = ArgumentCaptor.forClass(Character.class);
@@ -134,7 +134,7 @@ public class CharacterServiceTest {
     }
 
     @Test
-    public void testGivenReadyCharacterWithFullHitpointsWhenPerformingHealingThenVerifyCharacterNotHealed() {
+    public void testGivenReadyCharacterWithFullHitpointsWhenPerformingEndTurnUpdatesThenVerifyCharacterNotHealed() {
         // given character
         Clan clan = new Clan();
         clan.setId(1);
@@ -153,7 +153,7 @@ public class CharacterServiceTest {
         Mockito.when(characterRepository.findAllByState(CharacterState.READY)).thenReturn(characters);
 
         // when performing healing
-        characterService.performCharacterHealing(1);
+        characterService.performCharacterTurnUpdates(1);
 
         // then verify character not updated
         ArgumentCaptor<Character> captor = ArgumentCaptor.forClass(Character.class);

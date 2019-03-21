@@ -9,15 +9,31 @@ import com.withergate.api.model.character.Character;
  */
 public interface ICharacterService {
 
+    /**
+     * Loads single character from database.
+     * 
+     * @param characterId character ID
+     * @return the character
+     */
     Character load(int characterId);
 
+    /**
+     * Saves the provided character.
+     * 
+     * @param character the character to be saved
+     * @return the saved character
+     */
     Character save(Character character);
 
-    void deleteDeadCharacters();
+    /**
+     * Updates all characters. Meant to be called at the end of each turn.
+     */
+    void performCharacterTurnUpdates(int turnId);
 
-    void performCharacterHealing(int turnId);
-
-    void performCharacterLeveling(int turnId);
-
+    /**
+     * Generates random character.
+     *
+     * @return the generated character
+     */
     Character generateRandomCharacter();
 }

@@ -51,93 +51,24 @@ public class CharacterService implements ICharacterService {
         return characterRepository.save(character);
     }
 
+    @Transactional
     @Override
-    public void deleteDeadCharacters() {
+    public void performCharacterTurnUpdates(int turnId) {
         for (Character character : characterRepository.findAll()) {
             if (character.getHitpoints() < 1) {
                 log.debug("Deleting dead character: {}", character.getName());
                 characterRepository.delete(character);
-            }
-        }
-    }
-
-    @Transactional
-    @Override
-    public void performCharacterHealing(int turnId) {
-        log.debug("Performing healing action");
-
-        // load all characters that are ready
-        List<Character> characters = characterRepository.findAllByState(CharacterState.READY);
-
-        for (Character character : characters) {
-            int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
-
-            if (hitpointsMissing == 0) {
-                continue;
-            }
-
-            // prepare notification
-            ClanNotification notification = new ClanNotification();
-            notification.setTurnId(turnId);
-            notification.setClanId(character.getClan().getId());
-
-            // each character that is ready heals
-            int points = randomService.getRandomInt(1, 2);
-            NotificationDetail detail1 = new NotificationDetail();
-            detail1.setText("Rolled " + points + " when computing healing.");
-            notification.getDetails().add(detail1);
-            if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
-                Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
-                points += building.getLevel();
-
-                if (building.getLevel() > 0) {
-                    NotificationDetail detail2 = new NotificationDetail();
-                    detail2.setText("Healing increased by " + building.getLevel() +" by having sick bay.");
-                    notification.getDetails().add(detail2);
-                }
-            }
-
-            int healing = Math.min(points, hitpointsMissing);
-            character.setHitpoints(character.getHitpoints() + healing);
-
-            characterRepository.save(character);
-
-            notification.setText("[" + character.getName() + "] has healed " + points + " hitpoints.");
-            notification.setHealing(points);
-
-
-            clanNotificationRepository.save(notification);
-        }
-    }
-
-    @Transactional
-    @Override
-    public void performCharacterLeveling(int turnId) {
-        log.debug("Performing character leveling action");
-
-        // load all characters
-        List<Character> characters = characterRepository.findAll();
-
-        for (Character character : characters) {
-            if (character.getExperience() >= character.getNextLevelExperience()) {
-                // level up
-                log.debug("Character {} leveled up.", character.getName());
-
-                character.setExperience(character.getExperience() - character.getNextLevelExperience());
-                int hpIncrease = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-                character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
-                character.setHitpoints(character.getHitpoints() + hpIncrease);
-                character.setLevel(character.getLevel() + 1);
+            } else {
+                character.setState(CharacterState.READY);
                 characterRepository.save(character);
-
-                // send notification
-                ClanNotification notification = new ClanNotification();
-                notification.setTurnId(turnId);
-                notification.setClanId(character.getClan().getId());
-                notification.setText("[" + character.getName() +"] leveled up and is now on level " + character.getLevel() + ".");
-                clanNotificationRepository.save(notification);
             }
         }
+
+        // perform character healing
+        performCharacterHealing(turnId);
+
+        // perform character leveling
+        performCharacterLeveling(turnId);
     }
 
     @Override
@@ -190,4 +121,80 @@ public class CharacterService implements ICharacterService {
 
         return character;
     }
+
+    private void performCharacterHealing(int turnId) {
+        log.debug("Performing healing action");
+
+        // load all characters that are ready
+        List<Character> characters = characterRepository.findAllByState(CharacterState.READY);
+
+        for (Character character : characters) {
+            int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
+
+            if (hitpointsMissing == 0) {
+                continue;
+            }
+
+            // prepare notification
+            ClanNotification notification = new ClanNotification();
+            notification.setTurnId(turnId);
+            notification.setClanId(character.getClan().getId());
+
+            // each character that is ready heals
+            int points = randomService.getRandomInt(1, 2);
+            NotificationDetail detail1 = new NotificationDetail();
+            detail1.setText("Rolled " + points + " when computing healing.");
+            notification.getDetails().add(detail1);
+            if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
+                Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
+                points += building.getLevel();
+
+                if (building.getLevel() > 0) {
+                    NotificationDetail detail2 = new NotificationDetail();
+                    detail2.setText("Healing increased by " + building.getLevel() +" by having sick bay.");
+                    notification.getDetails().add(detail2);
+                }
+            }
+
+            int healing = Math.min(points, hitpointsMissing);
+            character.setHitpoints(character.getHitpoints() + healing);
+
+            characterRepository.save(character);
+
+            notification.setText("[" + character.getName() + "] has healed " + points + " hitpoints.");
+            notification.setHealing(points);
+
+
+            clanNotificationRepository.save(notification);
+        }
+    }
+
+    private void performCharacterLeveling(int turnId) {
+        log.debug("Performing character leveling action");
+
+        // load all characters
+        List<Character> characters = characterRepository.findAll();
+
+        for (Character character : characters) {
+            if (character.getExperience() >= character.getNextLevelExperience()) {
+                // level up
+                log.debug("Character {} leveled up.", character.getName());
+
+                character.setExperience(character.getExperience() - character.getNextLevelExperience());
+                int hpIncrease = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+                character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
+                character.setHitpoints(character.getHitpoints() + hpIncrease);
+                character.setLevel(character.getLevel() + 1);
+                characterRepository.save(character);
+
+                // send notification
+                ClanNotification notification = new ClanNotification();
+                notification.setTurnId(turnId);
+                notification.setClanId(character.getClan().getId());
+                notification.setText("[" + character.getName() +"] leveled up and is now on level " + character.getLevel() + ".");
+                clanNotificationRepository.save(notification);
+            }
+        }
+    }
+
 }
