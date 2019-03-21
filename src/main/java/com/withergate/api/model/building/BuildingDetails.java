@@ -41,7 +41,7 @@ public class BuildingDetails {
     private int cost; // cost per level
 
     public enum BuildingName {
-        SICK_BAY, MONUMENT
+        SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT
     }
 
 }

@@ -131,9 +131,46 @@ public class BuildingService implements IBuildingService {
                     notification.setTurnId(turnId);
                     notification.setClanId(clan.getId());
                     notification.setFameIncome(building.getLevel());
-                    notification.setText("Your monument generated " + building.getLevel() + " FAME this turn.");
+                    notification.setText("Your monument generated " + building.getLevel() + " [FAME] this turn.");
                     notificationRepository.save(notification);
 
+                }
+            }
+
+            // GMO farm
+            if (clan.getBuildings().containsKey(BuildingDetails.BuildingName.GMO_FARM)) {
+                Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
+                if (building.getLevel() > 0) {
+                    clan.setFood(clan.getFood() + building.getLevel());
+                    clanService.saveClan(clan);
+
+                    ClanNotification notification = new ClanNotification();
+                    notification.setTurnId(turnId);
+                    notification.setClanId(clan.getId());
+                    notification.setFoodIncome(building.getLevel());
+                    notification.setText("Your GMO farm generated " + building.getLevel() + " [FOOD] this turn.");
+                    notificationRepository.save(notification);
+
+                }
+            }
+
+            // Training grounds
+            if (clan.getBuildings().containsKey(BuildingDetails.BuildingName.TRAINING_GROUNDS)) {
+                Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
+                if (building.getLevel() > 0) {
+                    for (Character character : clan.getCharacters()) {
+                        if (character.getState() == CharacterState.READY) {
+                            character.setExperience(character.getExperience() + building.getLevel());
+                            characterService.save(character);
+
+                            ClanNotification notification = new ClanNotification();
+                            notification.setTurnId(turnId);
+                            notification.setClanId(clan.getId());
+                            notification.setExperience(building.getLevel());
+                            notification.setText("[" + character.getName() + "] gained " + building.getLevel() + " [EXPERIENCE] for training in the training grounds.");
+                            notificationRepository.save(notification);
+                        }
+                    }
                 }
             }
         }

@@ -20,10 +20,15 @@ INSERT INTO consumable_details(item_name, description, rarity, effect, effect_ty
 
 -- Building details
 INSERT INTO building_details(identifier, building_name, cost, visitable, description, image_url) VALUES
-    ('SICK_BAY', 'Sick bay', 10, false, 'A place where wounded characters can rest. Each level of this building increases the hitpoints healed when resting by 1.',
+    ('SICK_BAY', 'Sick bay', 15, false, 'Feeling under the weather? Grab a bed and pull yourself together! Each level of this building increases the hitpoints healed when resting by 1.',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('MONUMENT', 'Monument', 15, false, 'Let everybody know the glory of your mighty clan by building a monument near your campsite. Each level of this building grants 1 FAME per level every turn.',
+    ('GMO_FARM', 'GMO Farm', 15, false, 'We finally realized how to genetically modify our animals without them growing a third head! Each level of this building grants 1 FOOD per level every turn.',
+    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('TRAINING_GROUNDS', 'Training grounds', 20, false, 'There is nothing we cant learn! Each level of this building grants 1 EXPERIENCE per level to all resting characters every turn.',
+    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('MONUMENT', 'Monument', 20, false, 'Let everybody know the glory of your mighty clan by building a monument near your campsite! Each level of this building grants 1 FAME per level every turn.',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
+
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, description, info, image_url) VALUES
