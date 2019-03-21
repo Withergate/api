@@ -27,8 +27,8 @@ CREATE TABLE clans (
 DROP TABLE IF EXISTS building_details;
 CREATE TABLE building_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
-    building_name VARCHAR(16) NOT NULL,
-    description VARCHAR(256) NOT NULL,
+    building_name VARCHAR(64) NOT NULL,
+    description VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     cost INT NOT NULL,
     visitable BIT NOT NULL,
@@ -49,43 +49,45 @@ CREATE TABLE buildings (
 
 DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE weapon_details (
-    item_name VARCHAR(16) NOT NULL,
+    item_identifier VARCHAR(16) NOT NULL,
+    item_name VARCHAR(64) NOT NULL,
     description VARCHAR(256) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     combat INT NOT NULL,
     weapon_type VARCHAR(8) NOT NULL,
-    PRIMARY KEY (item_name)
+    PRIMARY KEY (item_identifier)
 );
 
 DROP TABLE IF EXISTS weapons;
 CREATE TABLE weapons (
     weapon_id INT AUTO_INCREMENT,
-    item_name VARCHAR(16),
+    item_identifier VARCHAR(16),
     clan_id INT DEFAULT NULL,
     PRIMARY KEY (weapon_id),
-    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (item_name) REFERENCES weapon_details (item_name),
+    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (item_identifier) REFERENCES weapon_details (item_identifier),
     CONSTRAINT weapon_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
 DROP TABLE IF EXISTS consumable_details;
 CREATE TABLE consumable_details (
-    item_name VARCHAR(16) NOT NULL,
+    item_identifier VARCHAR(16) NOT NULL,
+    item_name VARCHAR(64) NOT NULL,
     description VARCHAR(256) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     effect_type VARCHAR(8) NOT NULL,
     effect INT NOT NULL,
-    PRIMARY KEY (item_name)
+    PRIMARY KEY (item_identifier)
 );
 
 DROP TABLE IF EXISTS consumables;
 CREATE TABLE consumables (
     consumable_id INT AUTO_INCREMENT,
-    item_name VARCHAR(16),
+    item_identifier VARCHAR(16),
     clan_id INT DEFAULT NULL,
     PRIMARY KEY (consumable_id),
-    CONSTRAINT consumable_consumable_details_fk FOREIGN KEY (item_name) REFERENCES consumable_details (item_name),
+    CONSTRAINT consumable_consumable_details_fk FOREIGN KEY (item_identifier) REFERENCES consumable_details (item_identifier),
     CONSTRAINT consumable_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 

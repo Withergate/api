@@ -1,6 +1,6 @@
 # Withergate API
 
-This is a resource server used for the Withergate game. The application is written in Spring Boot and expects an [authorization server](https://github.com/Withergate/auth) to be running (the enpoint is specified in the appropriate `application.properties`) configuration file.
+This is a resource server used for the Withergate project. The application is written in Spring Boot and expects an [authorization server](https://github.com/Withergate/auth) to be running (the enpoint is specified in the appropriate `application.properties`) configuration file.
 
 ## 🔧 Installation
 

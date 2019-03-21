@@ -3,30 +3,30 @@ INSERT INTO turns (turn_id) VALUES
     (1);
 
 -- Weapon details
-INSERT INTO weapon_details(item_name, description, rarity, weapon_type, combat, image_url) VALUES
-    ('Knife', 'A dull edged, rusty kitchen knife stained with blood.', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/vxtBRdS/knife.jpg'),
-    ('Bat', 'Baseball bat full of splinters enhanced with some nails.', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/SXJ5Ywb/bat.jpg'),
-    ('Axe', 'One-handed axe. Deadly meelee weapon.', 'RARE', 'MELEE', 2, 'https://i.ibb.co/BwwPWcC/axe.jpg'),
-    ('Chainsaw', 'Gas powered chainsaw with some fuel still left in the tank.', 'RARE', 'MELEE', 3, 'https://i.ibb.co/stVSRjG/chainsaw.jpg'),
-    ('Boomerang', 'Wooden boomerang. With some razors attached to it, might turn out to be a deadly weapon. Just don`t try catching it', 'COMMON', 'RANGED', 1, 'https://i.ibb.co/3NdWXS5/boomerang.jpg'),
-    ('Throwing knife', 'A set of well balanced throwing knives.', 'COMMON', 'RANGED', 2, 'https://i.ibb.co/2yjF8pr/throwing-knifes.jpg'),
-    ('Crossbow', 'Modern crossbows can be precise and silet at the same time. Just mind the reloading time.', 'RARE', 'RANGED', 3, 'https://i.ibb.co/HN0yYqt/crossbow.jpg'),
-    ('Hand gun', 'Hand gun. Light, practical, deadly.', 'RARE', 'RANGED', 4, 'https://i.ibb.co/nCW17gy/handgun.jpg');
+INSERT INTO weapon_details(item_identifier, item_name, description, rarity, weapon_type, combat, image_url) VALUES
+    ('KNIFE', 'items.knife.name', 'items.knife.description', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/vxtBRdS/knife.jpg'),
+    ('BAT', 'items.bat.name', 'items.bat.description', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/SXJ5Ywb/bat.jpg'),
+    ('AXE', 'items.axe.name', 'items.axe.description', 'RARE', 'MELEE', 2, 'https://i.ibb.co/BwwPWcC/axe.jpg'),
+    ('CHAINSAW', 'items.chainsaw.name', 'items.chainsaw.description', 'RARE', 'MELEE', 3, 'https://i.ibb.co/stVSRjG/chainsaw.jpg'),
+    ('BOOMERANG', 'items.boomerang.name', 'items.boomerang.description', 'COMMON', 'RANGED', 1, 'https://i.ibb.co/3NdWXS5/boomerang.jpg'),
+    ('THROWING_KNIFES', 'items.throwingknifes.name', 'items.throwingknifes.description', 'COMMON', 'RANGED', 2, 'https://i.ibb.co/2yjF8pr/throwing-knifes.jpg'),
+    ('CROSSBOW', 'items.crossbow.name', 'items.crossbow.description', 'RARE', 'RANGED', 3, 'https://i.ibb.co/HN0yYqt/crossbow.jpg'),
+    ('HAND_GUN', 'items.handgun.name', 'items.handgun.description', 'RARE', 'RANGED', 4, 'https://i.ibb.co/nCW17gy/handgun.jpg');
 
 -- Consumable details
-INSERT INTO consumable_details(item_name, description, rarity, effect, effect_type, image_url) VALUES
-    ('Small medkit', 'Basic medical equipment for providing first aid and treating minor wounds.', 'COMMON', 2, 'HEALING', 'https://i.ibb.co/XC6jLZS/small-medkit.jpg'),
-    ('Large medkit', 'Large bag containing all sorts of medical equipment. Useful for treating more dangerous wounds.', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
+INSERT INTO consumable_details(item_identifier, item_name, description, rarity, effect, effect_type, image_url) VALUES
+    ('SMALL_MEDKIT', 'items.smallmedkit.name', 'items.smallmedkit.description', 'COMMON', 2, 'HEALING', 'https://i.ibb.co/XC6jLZS/small-medkit.jpg'),
+    ('LARGE_MEDKIT', 'items.largemedkit.name', 'items.largemedkit.description', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
 
 -- Building details
 INSERT INTO building_details(identifier, building_name, cost, visitable, description, image_url) VALUES
-    ('SICK_BAY', 'Sick bay', 15, false, 'Feeling under the weather? Grab a bed and pull yourself together! Each level of this building increases the hitpoints healed when resting by 1.',
+    ('SICK_BAY', 'buildings.sickbay.name', 15, false, 'buildings.sickbay.description',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('GMO_FARM', 'GMO Farm', 15, false, 'We finally realized how to genetically modify our animals without them growing a third head! Each level of this building grants 1 FOOD per level every turn.',
+    ('GMO_FARM', 'buildings.gmofarm.name', 15, false, 'buildings.gmofarm.description',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('TRAINING_GROUNDS', 'Training grounds', 20, false, 'There is nothing we cant learn! Each level of this building grants 1 EXPERIENCE per level to all resting characters every turn.',
+    ('TRAINING_GROUNDS', 'buildings.traininggrounds.name', 20, false, 'buildings.traininggrounds.description',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('MONUMENT', 'Monument', 20, false, 'Let everybody know the glory of your mighty clan by building a monument near your campsite! Each level of this building grants 1 FAME per level every turn.',
+    ('MONUMENT', 'buildings.monument.name', 20, false, 'buildings.monument.description',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
 
 

@@ -31,7 +31,7 @@ public class Consumable {
     private int id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "item_name")
+    @JoinColumn(name = "item_identifier")
     private ConsumableDetails details;
 
     @ManyToOne

@@ -15,6 +15,9 @@ import javax.persistence.MappedSuperclass;
 public class ItemDetails {
 
     @Id
+    @Column(name = "item_identifier", updatable = false, nullable = false)
+    private String identifier;
+
     @Column(name = "item_name", updatable = false, nullable = false)
     private String name;
 

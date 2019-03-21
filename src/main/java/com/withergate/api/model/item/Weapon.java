@@ -34,7 +34,7 @@ public class Weapon {
     private int id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "item_name")
+    @JoinColumn(name = "item_identifier")
     private WeaponDetails details;
 
     @JsonIgnore
