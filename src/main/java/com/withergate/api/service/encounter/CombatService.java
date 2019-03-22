@@ -48,7 +48,7 @@ public class CombatService implements ICombatService {
         enemy.setId(-1);
         enemy.setName("Enemy");
         enemy.setCombat(encounter.getDifficulty());
-        enemy.setHitpoints(encounter.getDifficulty() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE));
+        enemy.setHitpoints(encounter.getDifficulty() + randomService.getRandomInt(1, RandomService.K6));
         enemy.setMaxHitpoints(enemy.getHitpoints());
 
         CombatResult result = handleCombat(character, notification, enemy, null);
@@ -192,8 +192,8 @@ public class CombatService implements ICombatService {
         boolean finished = false;
 
         // initial dice rolls
-        int roll1 = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
-        int roll2 = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+        int roll1 = randomService.getRandomInt(1, RandomService.K6);
+        int roll2 = randomService.getRandomInt(1, RandomService.K6);
         NotificationDetail detailRoll = new NotificationDetail();
         detailRoll.setText(
                 "[" + character1.getName() + "] rolled " + roll1 + " on combat dice. [" + character2.getName()
@@ -207,7 +207,7 @@ public class CombatService implements ICombatService {
         // handle draw
         if (combat1 == combat2) {
             // one of the characters gets random bonus
-            if (randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE) <= 50) {
+            if (randomService.getRandomInt(1, RandomService.K100) <= 50) {
                 combat1++;
             } else {
                 combat2++;
@@ -246,7 +246,7 @@ public class CombatService implements ICombatService {
         }
 
         // compute the chance to flee the combat
-        int fleeRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        int fleeRoll = randomService.getRandomInt(1, RandomService.K100);
         double fleeChance = 100 - ((double) loser.getHitpoints() / loser.getMaxHitpoints()) * 100;
         if (loser.getHitpoints() > 0 && fleeChance > fleeRoll) {
             finished = true;

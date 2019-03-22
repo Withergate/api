@@ -98,7 +98,7 @@ public class LocationServiceTest {
         Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when performing pending actions
-        Mockito.when(randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE)).thenReturn(10); // low roll
+        Mockito.when(randomService.getRandomInt(1, RandomService.K100)).thenReturn(10); // low roll
 
         locationService.processLocationActions(1);
 
@@ -133,7 +133,7 @@ public class LocationServiceTest {
         // when performing pending actions
 
         // high encounter roll followed by low loot roll
-        Mockito.when(randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE)).thenReturn(50, 10);
+        Mockito.when(randomService.getRandomInt(1, RandomService.K100)).thenReturn(50, 10);
 
         locationService.processLocationActions(1);
 
@@ -170,7 +170,7 @@ public class LocationServiceTest {
         // when performing pending actions
 
         // high encounter roll followed by high loot roll
-        Mockito.when(randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE)).thenReturn(50, 60);
+        Mockito.when(randomService.getRandomInt(1, RandomService.K100)).thenReturn(50, 60);
 
         locationService.processLocationActions(1);
 

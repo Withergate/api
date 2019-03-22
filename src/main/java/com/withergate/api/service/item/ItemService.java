@@ -169,7 +169,7 @@ public class ItemService implements IItemService {
         /*
          * Get random item type
          */
-        int diceRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        int diceRoll = randomService.getRandomInt(1, RandomService.K100);
         if (diceRoll < 50) {
             generateWeapon(character, notification, getRandomRarity());
         } else {
@@ -307,7 +307,7 @@ public class ItemService implements IItemService {
     }
 
     private Rarity getRandomRarity() {
-        int diceRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        int diceRoll = randomService.getRandomInt(1, RandomService.K100);
         if (diceRoll < gameProperties.getRareItemChance()) {
             return Rarity.RARE;
         } else {

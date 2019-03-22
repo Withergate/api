@@ -116,8 +116,9 @@ CREATE TABLE characters (
 DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,
-    description VARCHAR(1024) NOT NULL,
-    info VARCHAR(256) NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    description VARCHAR(64) NOT NULL,
+    info VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (location)
 );

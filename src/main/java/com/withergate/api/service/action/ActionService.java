@@ -83,10 +83,6 @@ public class ActionService implements IActionService {
 
         locationService.saveLocationAction(action);
 
-        // pay food
-        clan.setFood(clan.getFood() - 1);
-        clanService.saveClan(clan);
-
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
         characterService.save(character);
@@ -132,9 +128,8 @@ public class ActionService implements IActionService {
 
         buildingService.saveBuildingAction(action);
 
-        // pay junk and food
+        // pay junk
         clan.setJunk(clan.getJunk() - character.getCraftsmanship());
-        clan.setFood(clan.getFood() - 1);
         clanService.saveClan(clan);
 
         // character needs to be marked as busy

@@ -65,6 +65,9 @@ public class CharacterService implements ICharacterService {
             }
         }
 
+        // eat food
+        eatFood(turnId);
+
         // perform character healing
         performCharacterHealing(turnId);
 
@@ -96,8 +99,7 @@ public class CharacterService implements ICharacterService {
         /*
          * Generate random hitpoints.
          */
-        int hitpoints = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE)
-                + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+        int hitpoints = RandomService.K10 + randomService.getRandomInt(1, RandomService.K10);
         character.setHitpoints(hitpoints);
         character.setMaxHitpoints(hitpoints);
 
@@ -123,6 +125,42 @@ public class CharacterService implements ICharacterService {
         return character;
     }
 
+    private void eatFood(int turnId) {
+        log.debug("Eating food.");
+
+        for (Character character : characterRepository.findAll()) {
+            Clan clan = character.getClan();
+            if (clan.getFood() > 0) {
+                clan.setFood(clan.getFood() - 1);
+            } else {
+                log.debug("Character {} is starving,", character.getName());
+
+                character.setHitpoints(character.getHitpoints() - 1);
+
+                ClanNotification notification = new ClanNotification();
+                notification.setClanId(clan.getId());
+                notification.setTurnId(turnId);
+                notification.setText("[" + character.getName() + "] is starving.");
+                notification.setInjury(1);
+
+                if (character.getHitpoints() < 1) {
+                    log.debug("Character {} died of starvation.", character.getName());
+
+                    NotificationDetail detail = new NotificationDetail();
+                    detail.setText("[" + character.getName() + "] died of starvation.");
+                    notification.getDetails().add(detail);
+
+                    characterRepository.delete(character);
+                } else {
+                    characterRepository.save(character);
+                }
+
+                clanNotificationRepository.save(notification);
+
+            }
+        }
+    }
+
     private void performCharacterHealing(int turnId) {
         log.debug("Performing healing action");
 
@@ -130,6 +168,9 @@ public class CharacterService implements ICharacterService {
         List<Character> characters = characterRepository.findAllByState(CharacterState.READY);
 
         for (Character character : characters) {
+            // skip if there is no food
+            if (character.getClan().getFood() < 1) continue;
+
             int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
 
             if (hitpointsMissing == 0) {
@@ -182,7 +223,7 @@ public class CharacterService implements ICharacterService {
                 log.debug("Character {} leveled up.", character.getName());
 
                 character.setExperience(character.getExperience() - character.getNextLevelExperience());
-                int hpIncrease = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+                int hpIncrease = randomService.getRandomInt(1, RandomService.K6);
                 character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
                 character.setHitpoints(character.getHitpoints() + hpIncrease);
                 character.setLevel(character.getLevel() + 1);

@@ -31,21 +31,16 @@ INSERT INTO building_details(identifier, building_name, cost, visitable, descrip
 
 
 -- Location descriptions
-INSERT INTO location_descriptions(location, description, info, image_url) VALUES
-    ('NEIGHBORHOOD', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk and food. Do not expect to find anything too valuable, though.',
-    'Neighborhood is a relatively safe location. The most probable outcome is finding some junk or food.',
+INSERT INTO location_descriptions(location, name, description, info, image_url) VALUES
+    ('NEIGHBORHOOD', 'locations.neighborhood.name', 'locations.neighborhood.description', 'locations.neighborhood.info',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
-    ('WASTELAND', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.',
-    'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.',
+    ('WASTELAND', 'locations.wasteland.name', 'locations.wasteland.description', 'locations.wasteland.info',
     'https://image.ibb.co/dxwXkK/wasteland.jpg'),
-    ('CITY', 'The ruins of Withergate hides the most valuable treasures. Unofrtunately, run by local gangs and roamed by scavengers, this place can sometimes prove to be very dangerous. On the other hand, if you are lucky, you can find some useful items here.',
-    'City has the highest risk of encoutering dangerous events. On the other hand, it also provides higher chances for finding valuable loot.',
+    ('CITY_CENTER', 'locations.citycenter.name', 'locations.citycenter.description', 'locations.citycenter.info',
     'https://image.ibb.co/jVgMee/city.jpg'),
-    ('TAVERN', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash.',
-    'Tavern is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.',
+    ('TAVERN', 'locations.tavern.name', 'locations.tavern.description', 'locations.tavern.info',
     'https://image.ibb.co/iZAMZp/tavern.jpg'),
-    ('ARENA', 'Glory for your best warriors and caps for your clan. Show your strenght in the arena and fight against other gladiators. Be warned, though, that this is no place for weaklings and safety is not guaranteed.',
-    'Only one character per day can be sent to the arena. This character will be matched with random opponent and fight. Only melee weapons are allowed. Fame and glory awarded in case of victory but characters can get injured.',
+    ('ARENA', 'locations.arena.name', 'locations.arena.description', 'locations.arena.info',
     'https://image.ibb.co/edVRNK/arena.jpg');
 
 -- Random encounters
@@ -90,19 +85,19 @@ INSERT INTO encounters(encounter_id, location, encounter_type, reward_type, pena
     '[CH] went exploring [L] when [G1] suddenly heard a loud growling. [G1] ran back to the city but soon realized that a giant bear is hunting [G3] and [G1] had to fight him.',
     '[CH] hurt he beast and survived without a scratch. [G1] ended up in a hidden cave at the end of the chase and found some loot in it.',
     'The beast turned out to be very strong and hurt [CH] during the combat.'),
-    (11, 'CITY', 'COMBAT', 'CAPS', 'CAPS', 7,
+    (11, 'CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 7,
     '[CH] was attacked by a mutated dog while roaming through the abandoned streets of the city ruins.',
     '[G1] managed to kill the beast and sell it in the city market for meat.',
     '[G1] was wounded during the combat. The wound got infected and [CH] had to buy a desinfection in the city market.'),
-    (12, 'CITY', 'COMBAT', 'JUNK', 'CAPS', 6,
+    (12, 'CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 6,
     '[CH] was attacked by a mutated cat while roaming through the abandoned streets of the city ruins.',
     '[G1] managed to kill the feline collected some junk on [G2] way back home.',
     '[G1] was wounded during the combat.'),
-    (13, 'CITY', 'COMBAT', 'ITEM', 'CAPS', 9,
+    (13, 'CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 9,
     '[CH] met a junkie while searching in the streets of the city. The junkie asked for some caps and, after being rejected, pulled out a knife.',
     '[CH] beat the attacker and took the gear he was carrying.',
     '[CH] was knocked out while dueling the attacker and realized that the junkie stoled the caps [G1] was carrying.'),
-    (14, 'CITY', 'INTELLECT', 'JUNK', 'NONE', 6,
+    (14, 'CITY_CENTER', 'INTELLECT', 'JUNK', 'NONE', 6,
     '[CH] met a priest in a torn cape while roaming the city streets. The priest asked if [G1] believed in the cult of the Atom.',
     '[CH] nodded, knowing that rejection might turn out to be dangerous when speaking with fanatics. The priest blessed [G3] and [CH] collected some junk on [G2] way back.',
     '[CH] did not know anything about such cult so cursed and tried to leave the strange man behind. Maybe it was just a strange coincidence, but [G1] did not find anything that day.');

@@ -67,7 +67,7 @@ public class EncounterService implements IEncounterService {
                 }
                 break;
             case INTELLECT:
-                int totalIntellect = character.getIntellect() + randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+                int totalIntellect = character.getIntellect() + randomService.getRandomInt(1, RandomService.K6);
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
                     handlePenalty(encounter, character, notification);
@@ -91,7 +91,7 @@ public class EncounterService implements IEncounterService {
         switch (encounter.getReward()) {
             case CAPS:
                 // add caps
-                int caps = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * 2; // random amount of caps
+                int caps = randomService.getRandomInt(1, RandomService.K6) * 2; // random amount of caps
 
                 clan.setCaps(clan.getCaps() + caps);
                 clanService.saveClan(clan);
@@ -101,7 +101,7 @@ public class EncounterService implements IEncounterService {
                 break;
             case JUNK:
                 // add junk
-                int junk = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * 2; // random amount of caps
+                int junk = randomService.getRandomInt(1, RandomService.K6) * 2; // random amount of caps
                 clan.setJunk(clan.getJunk() + junk);
                 clanService.saveClan(clan);
 
@@ -140,7 +140,7 @@ public class EncounterService implements IEncounterService {
                 break;
             case CAPS:
                 // add caps
-                int diceRoll = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE) * 2; // random amount of caps
+                int diceRoll = randomService.getRandomInt(1, RandomService.K6) * 2; // random amount of caps
                 int caps = Math.min(clan.getCaps(), diceRoll);
 
                 clan.setCaps(clan.getCaps() - caps);
@@ -150,7 +150,7 @@ public class EncounterService implements IEncounterService {
                 notification.setCapsIncome(- caps);
                 break;
             case INJURY:
-                int injury = randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE);
+                int injury = randomService.getRandomInt(1, RandomService.K6);
 
                 character.setHitpoints(character.getHitpoints() - injury);
                 notification.setInjury(injury);

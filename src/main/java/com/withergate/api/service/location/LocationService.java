@@ -96,7 +96,7 @@ public class LocationService implements ILocationService {
                             gameProperties.getWastelandLootProbability(),
                             gameProperties.getWastelandJunkMultiplier(), gameProperties.getWastelandFoodMultiplier());
                     break;
-                case CITY:
+                case CITY_CENTER:
                     processLocationAction(notification, character, action.getLocation(),
                             gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(),
                             gameProperties.getCityJunkMultiplier(), gameProperties.getCityFoodMultiplier());
@@ -171,7 +171,7 @@ public class LocationService implements ILocationService {
          * If the character encounters a random event, process it and finish exploration. The chance for an encounter
          * differs based on location type.
          */
-        int encounterRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        int encounterRoll = randomService.getRandomInt(1, RandomService.K100);
         if (encounterRoll <= encounterProbability) {
             log.debug("Random encounter triggered!");
 
@@ -186,7 +186,7 @@ public class LocationService implements ILocationService {
          * location type.
          */
         lootProbability += character.getScavenge() * 5;
-        int lootRoll = randomService.getRandomInt(1, RandomService.PERCENTAGE_DICE);
+        int lootRoll = randomService.getRandomInt(1, RandomService.K100);
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");
 

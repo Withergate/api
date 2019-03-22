@@ -14,8 +14,9 @@ import java.util.Random;
 public class RandomService implements IRandomService {
 
     // random dice rolls
-    public static final int ENCOUNTER_DICE = 6;
-    public static final int PERCENTAGE_DICE = 100;
+    public static final int K6 = 6;
+    public static final int K10 = 10;
+    public static final int K100 = 100;
 
     @Override
     public Gender getRandomGender() {

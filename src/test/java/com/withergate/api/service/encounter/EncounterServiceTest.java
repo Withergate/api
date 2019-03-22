@@ -60,7 +60,7 @@ public class EncounterServiceTest {
     public void testGivenCombatEncounterWhenCharacterEncountersCombatThenVerifyCombatServiceCalled() {
         // given encounter
         Encounter encounter = new Encounter();
-        encounter.setLocation(Location.CITY);
+        encounter.setLocation(Location.CITY_CENTER);
         encounter.setType(EncounterType.COMBAT);
         encounter.setReward(RewardType.ITEM);
         encounter.setPenalty(PenaltyType.NONE);
@@ -70,7 +70,7 @@ public class EncounterServiceTest {
 
         List<Encounter> encounters = new ArrayList<>();
         encounters.add(encounter);
-        Mockito.when(encounterRepository.findAllByLocation(Location.CITY)).thenReturn(encounters);
+        Mockito.when(encounterRepository.findAllByLocation(Location.CITY_CENTER)).thenReturn(encounters);
 
         Mockito.when(randomService.getRandomInt(0, 0)).thenReturn(0); // select the only encounter in the list
 
@@ -81,17 +81,17 @@ public class EncounterServiceTest {
         ClanNotification notification = Mockito.mock(ClanNotification.class);
 
         // when character combats
-        encounterService.handleEncounter(notification, character, Location.CITY);
+        encounterService.handleEncounter(notification, character, Location.CITY_CENTER);
 
         // then verify combat service called
-        Mockito.verify(combatService).handleEncounterCombat(notification, encounter, character, Location.CITY);
+        Mockito.verify(combatService).handleEncounterCombat(notification, encounter, character, Location.CITY_CENTER);
     }
 
     @Test
     public void testGivenIntellectEncounterWhenCharacterSucceedsThenVerifyRewardHandled() {
         // given encounter
         Encounter encounter = new Encounter();
-        encounter.setLocation(Location.CITY);
+        encounter.setLocation(Location.CITY_CENTER);
         encounter.setType(EncounterType.INTELLECT);
         encounter.setReward(RewardType.CAPS);
         encounter.setPenalty(PenaltyType.NONE);
@@ -101,7 +101,7 @@ public class EncounterServiceTest {
 
         List<Encounter> encounters = new ArrayList<>();
         encounters.add(encounter);
-        Mockito.when(encounterRepository.findAllByLocation(Location.CITY)).thenReturn(encounters);
+        Mockito.when(encounterRepository.findAllByLocation(Location.CITY_CENTER)).thenReturn(encounters);
 
         Mockito.when(randomService.getRandomInt(0, 0)).thenReturn(0); // select the only encounter in the list
 
@@ -118,9 +118,9 @@ public class EncounterServiceTest {
         ClanNotification notification = Mockito.mock(ClanNotification.class);
 
         // when character succeeds with high roll followed by roll for caps
-        Mockito.when(randomService.getRandomInt(1, RandomService.ENCOUNTER_DICE)).thenReturn(6, 3);
+        Mockito.when(randomService.getRandomInt(1, RandomService.K6)).thenReturn(6, 3);
 
-        encounterService.handleEncounter(notification, character, Location.CITY);
+        encounterService.handleEncounter(notification, character, Location.CITY_CENTER);
 
         // then verify notification updated
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);

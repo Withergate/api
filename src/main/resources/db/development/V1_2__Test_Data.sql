@@ -18,4 +18,4 @@ INSERT INTO characters (character_id, clan_id, character_name, gender, state, le
 
 INSERT INTO location_actions (action_id, state, character_id, location) VALUES
     (1, 'COMPLETED', 1, 'WASTELEND'),
-    (2, 'PENDING', 1, 'CITY');
+    (2, 'PENDING', 1, 'CITY_CENTER');
