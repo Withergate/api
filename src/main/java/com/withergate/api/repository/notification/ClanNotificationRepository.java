@@ -1,4 +1,4 @@
-package com.withergate.api.repository;
+package com.withergate.api.repository.notification;
 
 import com.withergate.api.model.notification.ClanNotification;
 import org.springframework.data.jpa.repository.JpaRepository;

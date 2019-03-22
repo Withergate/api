@@ -1,19 +1,19 @@
 package com.withergate.api.service.building;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
-import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.notification.INotificationService;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -33,17 +33,17 @@ public class BuildingService implements IBuildingService {
     private final ClanService clanService;
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
-    private final ClanNotificationRepository notificationRepository;
+    private final INotificationService notificationService;
 
     public BuildingService(CharacterService characterService, ClanService clanService,
                            BuildingActionRepository buildingActionRepository,
                            BuildingDetailsRepository buildingDetailsRepository,
-                           ClanNotificationRepository notificationRepository) {
+                           INotificationService notificationService) {
         this.characterService = characterService;
         this.clanService = clanService;
         this.buildingActionRepository = buildingActionRepository;
         this.buildingDetailsRepository = buildingDetailsRepository;
-        this.notificationRepository = notificationRepository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BuildingService implements IBuildingService {
             if (action.getType() == BuildingAction.Type.CONSTRUCT) {
                 int progress = character.getCraftsmanship(); // progress to be done
 
-                notification.setText("[" + character.getName() + "] worked on building " + details.getName() + ".");
+                notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{character.getName(), details.getName()});
 
                 if (clan.getBuildings().containsKey(action.getBuilding())) {
                     log.debug("Improving existing building {}.", action.getBuilding());
@@ -80,7 +80,7 @@ public class BuildingService implements IBuildingService {
                         building.setLevel(building.getLevel() + 1);
 
                         NotificationDetail detail = new NotificationDetail();
-                        detail.setText("[" + details.getName() + "] advanced to the next level!");
+                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[]{details.getName()});
                         notification.getDetails().add(detail);
                     }
 
@@ -93,8 +93,6 @@ public class BuildingService implements IBuildingService {
                     building.setLevel(0);
                     building.setProgress(progress);
                     clan.getBuildings().put(details.getIdentifier(), building);
-
-                    notification.setText("[" + character.getName() + "] worked on building " + details.getName() + ".");
                 }
             }
 
@@ -110,7 +108,7 @@ public class BuildingService implements IBuildingService {
             buildingActionRepository.save(action);
 
             // save notification
-            notificationRepository.save(notification);
+            notificationService.save(notification);
         }
     }
 
@@ -131,9 +129,9 @@ public class BuildingService implements IBuildingService {
                     notification.setTurnId(turnId);
                     notification.setClanId(clan.getId());
                     notification.setFameIncome(building.getLevel());
-                    notification.setText("Your monument generated " + building.getLevel() + " [FAME] this turn.");
-                    notificationRepository.save(notification);
 
+                    notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[]{building.getDetails().getName()});
+                    notificationService.save(notification);
                 }
             }
 
@@ -148,8 +146,8 @@ public class BuildingService implements IBuildingService {
                     notification.setTurnId(turnId);
                     notification.setClanId(clan.getId());
                     notification.setFoodIncome(building.getLevel());
-                    notification.setText("Your GMO farm generated " + building.getLevel() + " [FOOD] this turn.");
-                    notificationRepository.save(notification);
+                    notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[]{building.getDetails().getName()});
+                    notificationService.save(notification);
 
                 }
             }
@@ -167,8 +165,8 @@ public class BuildingService implements IBuildingService {
                             notification.setTurnId(turnId);
                             notification.setClanId(clan.getId());
                             notification.setExperience(building.getLevel());
-                            notification.setText("[" + character.getName() + "] gained " + building.getLevel() + " [EXPERIENCE] for training in the training grounds.");
-                            notificationRepository.save(notification);
+                            notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[]{character.getName(), building.getDetails().getName()});
+                            notificationService.save(notification);
                         }
                     }
                 }

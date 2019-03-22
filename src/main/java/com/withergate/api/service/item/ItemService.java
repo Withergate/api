@@ -2,7 +2,6 @@ package com.withergate.api.service.item;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Consumable;
@@ -10,6 +9,7 @@ import com.withergate.api.model.item.ConsumableDetails;
 import com.withergate.api.model.item.Rarity;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.ClanRepository;
@@ -19,6 +19,7 @@ import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.notification.INotificationService;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -42,12 +43,14 @@ public class ItemService implements IItemService {
     private final ConsumableDetailsRepository consumableDetailsRepository;
     private final RandomService randomService;
     private final GameProperties gameProperties;
+    private final INotificationService notificationService;
 
     public ItemService(CharacterRepository characterRepository, ClanRepository clanRepository,
                        WeaponRepository weaponRepository, WeaponDetailsRepository weaponDetailsRepository,
                        ConsumableRepository consumableRepository,
                        ConsumableDetailsRepository consumableDetailsRepository,
-                       RandomService randomService, GameProperties gameProperties) {
+                       RandomService randomService, GameProperties gameProperties,
+                       INotificationService notificationService) {
         this.characterRepository = characterRepository;
         this.clanRepository = clanRepository;
         this.weaponRepository = weaponRepository;
@@ -56,6 +59,7 @@ public class ItemService implements IItemService {
         this.consumableDetailsRepository = consumableDetailsRepository;
         this.randomService = randomService;
         this.gameProperties = gameProperties;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -253,8 +257,7 @@ public class ItemService implements IItemService {
 
             // update notification
             NotificationDetail detail = new NotificationDetail();
-            detail.setText(
-                    "[" + details.getName() + "] was found and [" + character.getName() + "] equipped this weapon.");
+            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.equipped", new String[]{character.getName(), details.getName()});
             notification.getDetails().add(detail);
         } else {
             Clan clan = character.getClan();
@@ -266,8 +269,7 @@ public class ItemService implements IItemService {
 
             // update notification
             NotificationDetail detail = new NotificationDetail();
-            detail.setText("[" + details.getName() + "] was found and [" + character.getName()
-                    + "] took it to your clan storage.");
+            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName(), details.getName()});
             notification.getDetails().add(detail);
         }
     }
@@ -300,8 +302,7 @@ public class ItemService implements IItemService {
          * Update notification.
          */
         NotificationDetail detail = new NotificationDetail();
-        detail.setText("[" + details.getName() + "] was found and [" + character.getName()
-                + "] took it to your clan storage.");
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName(), details.getName()});
         notification.getDetails().add(detail);
 
     }

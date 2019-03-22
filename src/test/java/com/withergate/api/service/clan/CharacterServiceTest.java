@@ -5,9 +5,11 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.repository.clan.CharacterRepository;
-import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.repository.notification.ClanNotificationRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.notification.NotificationService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -32,17 +34,16 @@ public class CharacterServiceTest {
     private RandomService randomService;
 
     @Mock
-    private ClanNotificationRepository clanNotificationRepository;
+    private NameService nameService;
 
     @Mock
-    private NameService nameService;
+    private NotificationService notificationService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        characterService = new CharacterService(characterRepository, randomService, clanNotificationRepository,
-                nameService);
+        characterService = new CharacterService(characterRepository, randomService, nameService, notificationService);
     }
 
     @Test

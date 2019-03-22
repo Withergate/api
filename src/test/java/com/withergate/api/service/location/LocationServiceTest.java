@@ -8,7 +8,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.repository.notification.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
@@ -16,6 +16,7 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.encounter.ICombatService;
 import com.withergate.api.service.item.ItemService;
+import com.withergate.api.service.notification.INotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +45,6 @@ public class LocationServiceTest {
     private CharacterService characterService;
 
     @Mock
-    private ClanNotificationRepository clanNotificationRepository;
-
-    @Mock
     private RandomService randomService;
 
     @Mock
@@ -57,6 +55,9 @@ public class LocationServiceTest {
 
     @Mock
     private ICombatService combatService;
+
+    @Mock
+    private INotificationService notificationService;
 
     @Before
     public void setUp() {
@@ -71,7 +72,7 @@ public class LocationServiceTest {
         gameProperties.setCityJunkMultiplier(2);
 
         locationService = new LocationService(locationActionRepository, gameProperties, clanService, characterService,
-                clanNotificationRepository, randomService, encounterService, itemService, combatService);
+                randomService, encounterService, itemService, combatService, notificationService);
     }
 
     @Test

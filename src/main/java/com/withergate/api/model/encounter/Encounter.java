@@ -59,32 +59,4 @@ public class Encounter {
     @Column(name = "failure_text", updatable = false, nullable = false)
     private String failureText;
 
-    public String getDescriptionText(Character character, Location location) {
-        return enhanceText(descriptionText, character, location);
-    }
-
-    public String getSuccessText(Character character, Location location) {
-        return enhanceText(successText, character, location);
-    }
-
-    public String getFailureText(Character character, Location location) {
-        return enhanceText(failureText, character, location);
-    }
-
-    private String enhanceText(String text, Character character, Location location) {
-        String g1 = character.getGender() == Gender.MALE ? "he" : "she";
-        String g2 = character.getGender() == Gender.MALE ? "his" : "her";
-        String g3 = character.getGender() == Gender.MALE ? "him" : "her";
-
-        text = text.replaceAll("\\[CH\\]", "[" + character.getName() + "]");
-        text = text.replaceAll("\\[L\\]", location.name().toLowerCase());
-        text = text.replaceAll("\\[G1\\]", g1);
-        text = text.replaceAll("\\[G2\\]", g2);
-        text = text.replaceAll("\\[G3\\]", g3);
-
-        // capitalize first letter
-        text = text.substring(0, 1).toUpperCase() + text.substring(1);
-
-        return text;
-    }
 }

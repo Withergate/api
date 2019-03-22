@@ -1,7 +1,7 @@
 package com.withergate.api.controller;
 
 import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.repository.notification.ClanNotificationRepository;
 import com.withergate.api.repository.TurnRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

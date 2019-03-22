@@ -1,22 +1,22 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
-import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.notification.INotificationService;
+
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Character service.
@@ -31,15 +31,16 @@ public class CharacterService implements ICharacterService {
 
     private final CharacterRepository characterRepository;
     private final RandomService randomService;
-    private final ClanNotificationRepository clanNotificationRepository;
     private final NameService nameService;
+    private final INotificationService notificationService;
 
     public CharacterService(CharacterRepository characterRepository, RandomService randomService,
-                            ClanNotificationRepository clanNotificationRepository, NameService nameService) {
+                            NameService nameService,
+                            INotificationService notificationService) {
         this.characterRepository = characterRepository;
         this.randomService = randomService;
-        this.clanNotificationRepository = clanNotificationRepository;
         this.nameService = nameService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -55,13 +56,11 @@ public class CharacterService implements ICharacterService {
     @Transactional
     @Override
     public void performCharacterTurnUpdates(int turnId) {
+        // delete dead characters
         for (Character character : characterRepository.findAll()) {
             if (character.getHitpoints() < 1) {
                 log.debug("Deleting dead character: {}", character.getName());
                 characterRepository.delete(character);
-            } else {
-                character.setState(CharacterState.READY);
-                characterRepository.save(character);
             }
         }
 
@@ -73,6 +72,12 @@ public class CharacterService implements ICharacterService {
 
         // perform character leveling
         performCharacterLeveling(turnId);
+
+        // mark characters as ready
+        for (Character character : characterRepository.findAll()) {
+            character.setState(CharacterState.READY);
+            characterRepository.save(character);
+        }
     }
 
     @Override
@@ -140,14 +145,16 @@ public class CharacterService implements ICharacterService {
                 ClanNotification notification = new ClanNotification();
                 notification.setClanId(clan.getId());
                 notification.setTurnId(turnId);
-                notification.setText("[" + character.getName() + "] is starving.");
+
+                notificationService
+                        .addLocalizedTexts(notification.getText(), "character.starving", new String[]{character.getName()});
                 notification.setInjury(1);
 
                 if (character.getHitpoints() < 1) {
                     log.debug("Character {} died of starvation.", character.getName());
 
                     NotificationDetail detail = new NotificationDetail();
-                    detail.setText("[" + character.getName() + "] died of starvation.");
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.starvationdeath", new String[]{character.getName()});
                     notification.getDetails().add(detail);
 
                     characterRepository.delete(character);
@@ -155,8 +162,7 @@ public class CharacterService implements ICharacterService {
                     characterRepository.save(character);
                 }
 
-                clanNotificationRepository.save(notification);
-
+                notificationService.save(notification);
             }
         }
     }
@@ -169,7 +175,9 @@ public class CharacterService implements ICharacterService {
 
         for (Character character : characters) {
             // skip if there is no food
-            if (character.getClan().getFood() < 1) continue;
+            if (character.getClan().getFood() < 1) {
+                continue;
+            }
 
             int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
 
@@ -184,17 +192,18 @@ public class CharacterService implements ICharacterService {
 
             // each character that is ready heals
             int points = randomService.getRandomInt(1, 2);
-            NotificationDetail detail1 = new NotificationDetail();
-            detail1.setText("Rolled " + points + " when computing healing.");
-            notification.getDetails().add(detail1);
+            NotificationDetail healingRollDetail = new NotificationDetail();
+            notificationService.addLocalizedTexts(healingRollDetail.getText(), "detail.healing.roll", new String[]{String.valueOf(points)});
+            notification.getDetails().add(healingRollDetail);
             if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
                 Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
                 points += building.getLevel();
 
                 if (building.getLevel() > 0) {
-                    NotificationDetail detail2 = new NotificationDetail();
-                    detail2.setText("Healing increased by " + building.getLevel() +" by having sick bay.");
-                    notification.getDetails().add(detail2);
+                    NotificationDetail healingBuildingDetail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
+                            new String[]{String.valueOf(points), building.getDetails().getName()});
+                    notification.getDetails().add(healingBuildingDetail);
                 }
             }
 
@@ -203,11 +212,10 @@ public class CharacterService implements ICharacterService {
 
             characterRepository.save(character);
 
-            notification.setText("[" + character.getName() + "] has healed " + points + " hitpoints.");
+            notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[]{character.getName()});
             notification.setHealing(points);
 
-
-            clanNotificationRepository.save(notification);
+            notificationService.save(notification);
         }
     }
 
@@ -233,8 +241,10 @@ public class CharacterService implements ICharacterService {
                 ClanNotification notification = new ClanNotification();
                 notification.setTurnId(turnId);
                 notification.setClanId(character.getClan().getId());
-                notification.setText("[" + character.getName() +"] leveled up and is now on level " + character.getLevel() + ".");
-                clanNotificationRepository.save(notification);
+                notificationService
+                        .addLocalizedTexts(notification.getText(), "character.levelup", new String[]{character.getName()});
+
+                notificationService.save(notification);
             }
         }
     }

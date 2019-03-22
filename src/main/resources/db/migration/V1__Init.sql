@@ -123,13 +123,20 @@ CREATE TABLE location_descriptions (
     PRIMARY KEY (location)
 );
 
+DROP TABLE IF EXISTS placeholder_texts;
+CREATE TABLE placeholder_texts (
+    text_id INT AUTO_INCREMENT,
+    code VARCHAR(64) NOT NULL,
+    lang VARCHAR(4) NOT NULL,
+    text VARCHAR(512) NOT NULL,
+    PRIMARY KEY (text_id)
+);
+
 DROP TABLE IF EXISTS clan_notifications;
 CREATE TABLE clan_notifications (
     notification_id BIGINT AUTO_INCREMENT,
     clan_id INT NOT NULL,
     turn_id INT NOT NULL,
-    text VARCHAR(256) NOT NULL,
-    result VARCHAR(256),
     junk_income INT,
     food_income INT,
     caps_income INT,
@@ -145,10 +152,21 @@ CREATE TABLE clan_notifications (
 DROP TABLE IF EXISTS notification_details;
 CREATE TABLE notification_details (
     detail_id BIGINT AUTO_INCREMENT,
-    text VARCHAR(256),
     notification_id BIGINT,
     PRIMARY KEY (detail_id),
     CONSTRAINT detail_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id)
+);
+
+DROP TABLE IF EXISTS localized_texts;
+CREATE TABLE localized_texts (
+    text_id BIGINT AUTO_INCREMENT,
+    lang VARCHAR(4) NOT NULL,
+    text VARCHAR(1024) NOT NULL,
+    notification_id BIGINT,
+    notification_detail_id BIGINT,
+    PRIMARY KEY (text_id),
+    CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
+    CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id)
 );
 
 DROP TABLE IF EXISTS encounters;

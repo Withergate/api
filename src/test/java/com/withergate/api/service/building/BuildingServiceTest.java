@@ -6,11 +6,12 @@ import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.repository.ClanNotificationRepository;
+import com.withergate.api.repository.notification.ClanNotificationRepository;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.notification.NotificationService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,14 +41,14 @@ public class BuildingServiceTest {
     private BuildingDetailsRepository buildingDetailsRepository;
 
     @Mock
-    private ClanNotificationRepository notificationRepository;
+    private NotificationService notificationService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         buildingService = new BuildingService(characterService, clanService, buildingActionRepository, buildingDetailsRepository,
-                notificationRepository);
+                notificationService);
     }
 
     @Test
@@ -93,6 +94,6 @@ public class BuildingServiceTest {
         Mockito.verify(buildingActionRepository).save(actionCaptor.capture());
         Assert.assertEquals(ActionState.COMPLETED, actionCaptor.getValue().getState());
 
-        Mockito.verify(notificationRepository).save(Mockito.any());
+        Mockito.verify(notificationService).save(Mockito.any());
     }
 }

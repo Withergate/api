@@ -62,9 +62,6 @@ public class ActionService implements IActionService {
             clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
         }
 
-        // check food
-        if (clan.getFood() < 1) throw new InvalidActionException("Not enough food!");
-
         // check arena requirements
         if (request.getLocation() == Location.ARENA) {
             if (clan.isArena()) {
@@ -94,9 +91,6 @@ public class ActionService implements IActionService {
         log.debug("Submitting building action for request {}.", request);
         Character character = getCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
-
-        // check food
-        if (clan.getFood() < 1) throw new InvalidActionException("Not enough food!");
 
         // check if action is applicable
         BuildingDetails buildingDetails = buildingService.getBuildingDetails(request.getBuilding());

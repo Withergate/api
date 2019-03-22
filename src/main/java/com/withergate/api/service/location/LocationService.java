@@ -10,7 +10,6 @@ import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.notification.NotificationDetail;
-import com.withergate.api.repository.ClanNotificationRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
@@ -18,6 +17,7 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.encounter.ICombatService;
 import com.withergate.api.service.item.ItemService;
+import com.withergate.api.service.notification.INotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,28 +38,28 @@ public class LocationService implements ILocationService {
     private final GameProperties gameProperties;
     private final ClanService clanService;
     private final CharacterService characterService;
-    private final ClanNotificationRepository clanNotificationRepository;
     private final RandomService randomService;
     private final EncounterService encounterService;
     private final ItemService itemService;
     private final ICombatService combatService;
+    private final INotificationService notificationService;
 
     public LocationService(LocationActionRepository locationActionRepository,
                            GameProperties gameProperties, ClanService clanService,
                            CharacterService characterService,
-                           ClanNotificationRepository clanNotificationRepository,
                            RandomService randomService,
                            EncounterService encounterService, ItemService itemService,
-                           ICombatService combatService) {
+                           ICombatService combatService,
+                           INotificationService notificationService) {
         this.locationActionRepository = locationActionRepository;
         this.gameProperties = gameProperties;
         this.clanService = clanService;
         this.characterService = characterService;
-        this.clanNotificationRepository = clanNotificationRepository;
         this.randomService = randomService;
         this.encounterService = encounterService;
         this.itemService = itemService;
         this.combatService = combatService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -104,23 +104,21 @@ public class LocationService implements ILocationService {
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
 
-                    notification.setText(
-                            "[" + character.getName() + "] went to the tavern to hire someone for your clan. " +
-                                    "After spending the evening chatting with several people, the decision fell on ["
-                                    + hired.getName() + "].");
+                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.joined", new String[]{character.getName(), hired.getName()});
+
                     NotificationDetail detail = new NotificationDetail();
-                    detail.setText("New character joined your clan.");
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{hired.getName()});
                     notification.getDetails().add(detail);
                     break;
                 case ARENA:
-                    notification.setText("[" + character.getName() + "] returned from arena.");
+                    // arena processed separately
                 default:
                     log.error("Encountered unknown location: {}", action.getLocation());
 
             }
 
             // send notification about action result
-            clanNotificationRepository.save(notification);
+            notificationService.save(notification);
 
             action.setState(ActionState.COMPLETED);
             locationActionRepository.save(action);
@@ -150,9 +148,8 @@ public class LocationService implements ILocationService {
 
         for (ArenaResult result : results) {
             // save results
-            result.getCharacter().setState(CharacterState.READY);
             result.getNotification().setTurnId(turnId);
-            clanNotificationRepository.save(result.getNotification());
+            notificationService.save(result.getNotification());
             characterService.save(result.getCharacter());
         }
 
@@ -162,9 +159,6 @@ public class LocationService implements ILocationService {
 
     private void processLocationAction(ClanNotification notification, Character character, Location location,
                                        int encounterProbability, int lootProbability, int junkRatio, int foodRatio) {
-        // default outcome
-        notification.setText("[" + character.getName() + "] returned from " + location + "empty-handed.");
-
         /*
          * ENCOUNTER
          *
@@ -190,7 +184,7 @@ public class LocationService implements ILocationService {
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");
 
-            notification.setText("[" + character.getName() + "] found loot at " + location + ".");
+            notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[]{character.getName()});
             itemService.generateItemForCharacter(character, notification);
 
             return;
@@ -208,7 +202,7 @@ public class LocationService implements ILocationService {
             clan.setJunk(clan.getJunk() + junk);
             clanService.saveClan(clan);
 
-            notification.setText("[" + character.getName() + "] found some junk at " + location + ".");
+            notificationService.addLocalizedTexts(notification.getText(), "location.junk", new String[]{character.getName()});
             notification.setJunkIncome(junk);
         } else {
             log.debug("Food found!");
@@ -217,7 +211,7 @@ public class LocationService implements ILocationService {
             clan.setFood(clan.getFood() + food);
             clanService.saveClan(clan);
 
-            notification.setText("[" + character.getName() + "] found some food at " + location + ".");
+            notificationService.addLocalizedTexts(notification.getText(), "location.food", new String[]{character.getName()});
             notification.setFoodIncome(food);
         }
 

@@ -14,6 +14,8 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
 import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.item.IItemService;
+import com.withergate.api.service.notification.INotificationService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -48,12 +50,15 @@ public class EncounterServiceTest {
     @Mock
     private ICharacterService characterService;
 
+    @Mock
+    private INotificationService notificationService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         encounterService = new EncounterService(encounterRepository, itemService, randomService, combatService,
-                clanService, characterService);
+                clanService, characterService, notificationService);
     }
 
     @Test

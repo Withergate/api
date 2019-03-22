@@ -12,6 +12,8 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
 import com.withergate.api.service.clan.IClanService;
 import com.withergate.api.service.item.IItemService;
+import com.withergate.api.service.notification.INotificationService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,16 +35,19 @@ public class EncounterService implements IEncounterService {
     private final ICombatService combatService;
     private final IClanService clanService;
     private final ICharacterService characterService;
+    private final INotificationService notificationService;
 
     public EncounterService(EncounterRepository encounterRepository, IItemService itemService,
                             IRandomService randomService, ICombatService combatService, IClanService clanService,
-                            ICharacterService characterService) {
+                            ICharacterService characterService,
+                            INotificationService notificationService) {
         this.encounterRepository = encounterRepository;
         this.itemService = itemService;
         this.randomService = randomService;
         this.combatService = combatService;
         this.clanService = clanService;
         this.characterService = characterService;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -55,7 +60,7 @@ public class EncounterService implements IEncounterService {
 
         log.debug("Processing {} with {} at {}", encounter.getType(), character.getName(), location.name());
 
-        notification.setText(encounter.getDescriptionText(character, location));
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[]{character.getName()});
 
         switch (encounter.getType()) {
             case COMBAT:
@@ -71,10 +76,10 @@ public class EncounterService implements IEncounterService {
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
                     handlePenalty(encounter, character, notification);
-                    notification.setResult(encounter.getFailureText(character, location));
+                    notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{character.getName()});
                 } else {
                     handleReward(encounter, character, notification);
-                    notification.setResult(encounter.getSuccessText(character, location));
+                    notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{character.getName()});
                 }
                 break;
             default:
@@ -121,7 +126,7 @@ public class EncounterService implements IEncounterService {
 
                 // update notification
                 NotificationDetail detail = new NotificationDetail();
-                detail.setText("[" + generated.getName() + "] joined your clan.");
+                notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{character.getName()});
                 notification.getDetails().add(detail);
                 break;
             default:
@@ -157,7 +162,7 @@ public class EncounterService implements IEncounterService {
 
                 if (character.getHitpoints() < 1) {
                     NotificationDetail detail = new NotificationDetail();
-                    detail.setText("[" + character.getName() + "] died after suffering from the injury.");
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath", new String[]{character.getName()});
                     notification.getDetails().add(detail);
                 }
             default:

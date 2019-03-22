@@ -14,6 +14,7 @@ import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.notification.INotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,9 @@ public class ItemServiceTest {
     @Mock
     private RandomService randomService;
 
+    @Mock
+    private INotificationService notificationService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -58,8 +62,8 @@ public class ItemServiceTest {
         GameProperties gameProperties = new GameProperties();
         gameProperties.setRareItemChance(10);
 
-        itemService = new ItemService(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository,
-                consumableRepository, consumableDetailsRepository, randomService, gameProperties);
+        itemService = new ItemService(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository, consumableRepository,
+                consumableDetailsRepository, randomService, gameProperties, notificationService);
     }
 
     @Test

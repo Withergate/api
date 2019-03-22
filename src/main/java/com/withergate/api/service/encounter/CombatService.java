@@ -11,6 +11,7 @@ import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
+import com.withergate.api.service.notification.INotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +30,15 @@ public class CombatService implements ICombatService {
     private final IRandomService randomService;
     private final ICharacterService characterService;
     private final GameProperties gameProperties;
+    private final INotificationService notificationService;
 
     public CombatService(IRandomService randomService, ICharacterService characterService,
-                         GameProperties gameProperties) {
+                         GameProperties gameProperties,
+                         INotificationService notificationService) {
         this.randomService = randomService;
         this.characterService = characterService;
         this.gameProperties = gameProperties;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -61,13 +65,13 @@ public class CombatService implements ICombatService {
 
             // check if character is still alive
             if (character.getHitpoints() < 1) {
-                notification.setResult("Unfortunately, [" + character.getName() + "] died during the combat.");
+                notificationService.addLocalizedTexts(notification.getText(), "combat.death", new String[]{character.getName()});
             } else {
-                notification.setResult(encounter.getFailureText(character, location));
+                notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{character.getName()});
             }
         } else {
             // combat won - update notification
-            notification.setResult(encounter.getSuccessText(character, location));
+            notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{character.getName()});
 
             // handle experience
             character.setExperience(character.getExperience() + 2);
@@ -119,9 +123,8 @@ public class CombatService implements ICombatService {
         }
 
         notification.setClanId(character.getClan().getId());
-        notification.setText("[" + character.getName() + "] faced [" + opponent.getName() + "] in the arena.");
-
-        notification.setResult("[" + character.getName() + "] won the fight!");
+        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description", new String[]{character.getName(), opponent.getName()});
+        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
         character.getClan()
                 .setCaps(character.getClan().getCaps() + gameProperties.getArenaCaps()); // add caps to the winner
@@ -152,9 +155,8 @@ public class CombatService implements ICombatService {
         }
 
         notification.setClanId(character.getClan().getId());
-        notification.setText("[" + character.getName() + "] faced [" + opponent.getName() + "] in the arena.");
-
-        notification.setResult("[" + character.getName() + "] lost the fight!");
+        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description", new String[]{character.getName(), opponent.getName()});
+        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
 
         // handle experience
         character.setExperience(character.getExperience() + 1);
@@ -195,9 +197,8 @@ public class CombatService implements ICombatService {
         int roll1 = randomService.getRandomInt(1, RandomService.K6);
         int roll2 = randomService.getRandomInt(1, RandomService.K6);
         NotificationDetail detailRoll = new NotificationDetail();
-        detailRoll.setText(
-                "[" + character1.getName() + "] rolled " + roll1 + " on combat dice. [" + character2.getName()
-                        + "] rolled " + roll2 + ".");
+        notificationService.addLocalizedTexts(detailRoll.getText(), "detail.combat.rolls",
+                new String[]{character1.getName(), String.valueOf(roll1), character2.getName(), String.valueOf(roll2)});
         details.add(detailRoll);
 
         // compare combat values
@@ -233,15 +234,14 @@ public class CombatService implements ICombatService {
         injury = combatWinner - combatLoser;
         loser.setHitpoints(loser.getHitpoints() - injury);
         NotificationDetail detailCombat = new NotificationDetail();
-        detailCombat
-                .setText("[" + winner.getName() + "] won the round with combat value " + combatWinner + " and dealt "
-                        + injury + " damage to [" + loser.getName() + "].");
+        notificationService.addLocalizedTexts(detailCombat.getText(), "detail.combat.roundresult",
+                new String[]{winner.getName(), String.valueOf(combatWinner), loser.getName(), String.valueOf(combatLoser), loser.getName(), String.valueOf(injury)});
         details.add(detailCombat);
 
         if (loser.getHitpoints() < 1) {
             finished = true;
             NotificationDetail detailDeath = new NotificationDetail();
-            detailDeath.setText("[" + loser.getName() + "] died.");
+            notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.injurydeath", new String[]{loser.getName()});
             details.add(detailDeath);
         }
 
@@ -251,9 +251,9 @@ public class CombatService implements ICombatService {
         if (loser.getHitpoints() > 0 && fleeChance > fleeRoll) {
             finished = true;
             NotificationDetail fleeDetail = new NotificationDetail();
-            fleeDetail.setText(
-                    "[" + loser.getName() + "] fleed the combat with " + (int) fleeChance + " chance and " + fleeRoll
-                            + " dice roll.");
+            notificationService.addLocalizedTexts(fleeDetail.getText(), "detail.combat.flee",
+                    new String[]{loser.getName(), String.valueOf(fleeRoll), String.valueOf((int) fleeChance)});
+
             details.add(fleeDetail);
         }
 
