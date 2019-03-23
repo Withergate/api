@@ -12,11 +12,11 @@ import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ICharacterService;
 import com.withergate.api.service.notification.INotificationService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 /**
  * Combat service.
@@ -55,7 +55,7 @@ public class CombatService implements ICombatService {
         enemy.setHitpoints(encounter.getDifficulty() + randomService.getRandomInt(1, RandomService.K6));
         enemy.setMaxHitpoints(enemy.getHitpoints());
 
-        CombatResult result = handleCombat(character, notification, enemy, null);
+        CombatResult result = handleCombat(character, notification, enemy, new ClanNotification());
 
         // compute combat result
         if (result.getLoser().getId() == character.getId()) {
@@ -171,16 +171,15 @@ public class CombatService implements ICombatService {
 
     private CombatResult handleCombat(Character character1, ClanNotification notification1, Character character2,
                                       ClanNotification notification2) {
+        notification1.setInjury(0); // init injuries
+        notification2.setInjury(0);
+
         while (true) {
             CombatResult result = handleCombatRound(character1, character2);
             log.debug("Combat round result: {}", result);
 
-            if (notification1 != null) {
-                notification1.getDetails().addAll(result.getDetails());
-            }
-            if (notification2 != null) {
-                notification2.getDetails().addAll(result.getDetails());
-            }
+            notification1.getDetails().addAll(result.getDetails());
+            notification2.getDetails().addAll(result.getDetails());
 
             if (result.isFinished()) {
                 return result;
@@ -231,13 +230,18 @@ public class CombatService implements ICombatService {
             combatWinner = combat2;
             combatLoser = combat1;
         }
+
+        // compute injury
         injury = combatWinner - combatLoser;
         loser.setHitpoints(loser.getHitpoints() - injury);
+
+        // update notification
         NotificationDetail detailCombat = new NotificationDetail();
         notificationService.addLocalizedTexts(detailCombat.getText(), "detail.combat.roundresult",
                 new String[]{winner.getName(), String.valueOf(combatWinner), loser.getName(), String.valueOf(combatLoser), loser.getName(), String.valueOf(injury)});
         details.add(detailCombat);
 
+        // check death
         if (loser.getHitpoints() < 1) {
             finished = true;
             NotificationDetail detailDeath = new NotificationDetail();
@@ -257,6 +261,7 @@ public class CombatService implements ICombatService {
             details.add(fleeDetail);
         }
 
+        // update result
         result.setFinished(finished);
         result.setWinner(winner);
         result.setLoser(loser);

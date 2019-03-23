@@ -2,10 +2,15 @@ package com.withergate.api.model.character;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.item.Weapon;
+import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.CharacterService;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,17 +21,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyClass;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "characters")
 @Getter
 @Setter
-@ToString(exclude = {"clan"})
 public class Character {
 
     @Id
@@ -88,6 +95,18 @@ public class Character {
     @JoinColumn(name = "weapon_id")
     private Weapon weapon;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "character_id")
+    @MapKeyColumn(name = "identifier")
+    @MapKeyClass(TraitDetails.TraitName.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    @JsonView(Views.Internal.class)
+    private Map<TraitDetails.TraitName, Trait> traits;
+
+    public Character() {
+        if (traits == null) traits = new HashMap<>();
+    }
+
     /**
      * Returns the experience needed for next level
      *
@@ -96,6 +115,16 @@ public class Character {
     @JsonProperty("nextLevel")
     public int getNextLevelExperience() {
         return level * CharacterService.LEVEL_QUOCIENT;
+    }
+
+    /**
+     * Returns the traits as List.
+     *
+     * @return the list of traits
+     */
+    @JsonProperty("traits")
+    public Collection<Trait> getTraitsAsList() {
+        return traits.values();
     }
 
     /**

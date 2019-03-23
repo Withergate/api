@@ -7,6 +7,7 @@ import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.BuildingActionRepository;
@@ -66,6 +67,15 @@ public class BuildingService implements IBuildingService {
             BuildingDetails details = getBuildingDetails(action.getBuilding());
             if (action.getType() == BuildingAction.Type.CONSTRUCT) {
                 int progress = character.getCraftsmanship(); // progress to be done
+
+                // builder trait
+                if (character.getTraits().containsKey(TraitDetails.TraitName.BUILDER)) {
+                    progress = progress + 2;
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[]{character.getName(),
+                            character.getTraits().get(TraitDetails.TraitName.BUILDER).getDetails().getName()});
+                    notification.getDetails().add(detail);
+                }
 
                 notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{character.getName(), details.getName()});
 

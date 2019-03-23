@@ -29,6 +29,12 @@ INSERT INTO building_details(identifier, building_name, cost, visitable, descrip
     ('MONUMENT', 'buildings.monument.name', 20, false, 'buildings.monument.description',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
 
+--- Trait details
+INSERT INTO trait_details(identifier, trait_name, description, image_url) VALUES
+    ('GLADIATOR', 'traits.gladiator.name', 'traits.gladiator.description',
+    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('BUILDER', 'traits.builder.name', 'traits.builder.description',
+    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, name, description, info, image_url) VALUES
@@ -84,22 +90,26 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.character.starvationdeath', 'cs', '{} zemřel/a hlady.'),
     ('detail.character.injurydeath', 'en', '{} died from suffering the injury.'),
     ('detail.character.injurydeath', 'cs', '{} podlehl/a zraněním.'),
+    ('detail.character.levelup.trait', 'en', '{} got a new trait: [{}].'),
+    ('detail.character.levelup.trait', 'cs', '{} získal/a novou schopnost: [{}].'),
     ('detail.healing.roll', 'en', 'Rolled {} when computing healing.'),
     ('detail.healing.roll', 'cs', 'Na kostce padlo {} při hodu na léčení.'),
-    ('detail.healing.builing', 'en', 'Healing increased by {} due to [{}].'),
+    ('detail.healing.building', 'en', 'Healing increased by {} due to [{}].'),
     ('detail.healing.building', 'cs', 'Léčba zvýšena o {} díky [{}].'),
     ('detail.combat.rolls', 'en', '{} rolled {} on combat dice. {} rolled {}.'),
-    ('detail.combat.rolls', 'cs', '{} hodil při souboji {}. {} hodil {}.'),
+    ('detail.combat.rolls', 'cs', '{} hodil/a při souboji {}. {} hodil/a {}.'),
     ('detail.combat.roundresult', 'en', '{} won the round with combat value {}. {} had combat value {}. {} lost {} health'),
     ('detail.combat.roundresult', 'cs', '{} vyhrál/a kolo souboje s bojovým číslem {}. {} měl bojové číslo {}. {} ztrácí {} životy.'),
     ('detail.combat.flee', 'en', '{} fleed the combat with {} dice roll and {}% flee chance.'),
     ('detail.combat.flee', 'cs', '{} uprchl/a ze souboje s hodem {} při šanci {}% na útěk.'),
     ('detail.item.found.equipped', 'en', '{} found [{}] and equipped it.'),
-    ('detail.item.found.equipped', 'cs', '{} nalezl [{}] a přidal do své výzbroje.'),
+    ('detail.item.found.equipped', 'cs', '{} přidal do své výzbroje [{}].'),
     ('detail.item.found.storage', 'en', '{} found [{}] took it to your clan storage.'),
     ('detail.item.found.storage', 'cs', '{} nalezl [{}] a vzal tento úlovek do klanového skladu.'),
     ('detail.building.levelup', 'en', '[{}] advanced to the next level.'),
-    ('detail.building.levelup', 'cs', 'Tvé budově [{}] se zvýšila úroveň.');
+    ('detail.building.levelup', 'cs', 'Tvé budově [{}] se zvýšila úroveň.'),
+    ('detail.trait.builder', 'en', '{} used his trait [{}] and increased the construction speed.'),
+    ('detail.trait.builder', 'cs', '{} použil svou schopnost [{}] a rychlost stavby se zvýšila.');
 
 -- Placeholder texts encounters
 INSERT INTO placeholder_texts(code, lang, text) VALUES

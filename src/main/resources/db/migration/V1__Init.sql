@@ -113,6 +113,25 @@ CREATE TABLE characters (
     CONSTRAINT character_weapon_fk FOREIGN KEY (weapon_id) REFERENCES weapons (weapon_id)
 );
 
+DROP TABLE IF EXISTS trait_details;
+CREATE TABLE trait_details (
+    identifier VARCHAR(16) UNIQUE NOT NULL,
+    trait_name VARCHAR(64) NOT NULL,
+    description VARCHAR(64) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
+    PRIMARY KEY (identifier)
+);
+
+DROP TABLE IF EXISTS traits;
+CREATE TABLE traits (
+    trait_id INT AUTO_INCREMENT,
+    identifier VARCHAR(16),
+    character_id INT,
+    PRIMARY KEY (trait_id),
+    CONSTRAINT trait_trait_details_fk FOREIGN KEY (identifier) REFERENCES trait_details (identifier),
+    CONSTRAINT trait_character_fk FOREIGN KEY (character_id) REFERENCES characters (character_id)
+);
+
 DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,

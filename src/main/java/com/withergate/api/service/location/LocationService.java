@@ -104,7 +104,7 @@ public class LocationService implements ILocationService {
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
 
-                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.joined", new String[]{character.getName(), hired.getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[]{character.getName(), hired.getName()});
 
                     NotificationDetail detail = new NotificationDetail();
                     notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{hired.getName()});

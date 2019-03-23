@@ -26,13 +26,4 @@ public class CombatResult {
         details = new ArrayList<>();
     }
 
-    @Override
-    public String toString() {
-        return "CombatResult{" +
-                "winner=" + winner.getName() +
-                ", loser=" + loser.getName() +
-                ", details=" + details +
-                ", finished=" + finished +
-                '}';
-    }
 }
