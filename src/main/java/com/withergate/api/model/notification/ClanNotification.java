@@ -76,6 +76,7 @@ public class ClanNotification {
     private int experience;
 
     public ClanNotification() {
+        injury = 0;
         if (text == null) text = new HashMap<>();
         if (details == null) details = new ArrayList<>();
     }
