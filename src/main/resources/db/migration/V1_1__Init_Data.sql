@@ -19,14 +19,14 @@ INSERT INTO consumable_details(item_identifier, item_name, description, rarity, 
     ('LARGE_MEDKIT', 'items.largemedkit.name', 'items.largemedkit.description', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
 
 -- Building details
-INSERT INTO building_details(identifier, building_name, cost, visitable, description, image_url) VALUES
-    ('SICK_BAY', 'buildings.sickbay.name', 15, false, 'buildings.sickbay.description',
+INSERT INTO building_details(identifier, building_name, cost, visitable, description, info, image_url) VALUES
+    ('SICK_BAY', 'buildings.sickbay.name', 15, false, 'buildings.sickbay.description', 'buildings.sickbay.info',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('GMO_FARM', 'buildings.gmofarm.name', 15, false, 'buildings.gmofarm.description',
+    ('GMO_FARM', 'buildings.gmofarm.name', 15, false, 'buildings.gmofarm.description', 'buildings.gmofarm.info',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('TRAINING_GROUNDS', 'buildings.traininggrounds.name', 20, false, 'buildings.traininggrounds.description',
+    ('TRAINING_GROUNDS', 'buildings.traininggrounds.name', 20, false, 'buildings.traininggrounds.description', 'buildings.traininggrounds.info',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('MONUMENT', 'buildings.monument.name', 20, false, 'buildings.monument.description',
+    ('MONUMENT', 'buildings.monument.name', 20, false, 'buildings.monument.description', 'buildings.monument.info',
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
 
 --- Trait details

@@ -29,6 +29,7 @@ CREATE TABLE building_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
     building_name VARCHAR(64) NOT NULL,
     description VARCHAR(64) NOT NULL,
+    info VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     cost INT NOT NULL,
     visitable BIT NOT NULL,
