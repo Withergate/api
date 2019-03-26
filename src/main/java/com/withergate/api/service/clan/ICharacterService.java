@@ -26,6 +26,11 @@ public interface ICharacterService {
     Character save(Character character);
 
     /**
+     * Deletes all characters with less than 1 health remaining.
+     */
+    void deleteDeadCharacters();
+
+    /**
      * Updates all characters. Meant to be called at the end of each turn.
      */
     void performCharacterTurnUpdates(int turnId);

@@ -70,7 +70,7 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private boolean arena;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "clan", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private List<Character> characters;
 

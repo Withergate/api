@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,13 +66,20 @@ public class CharacterService implements ICharacterService {
 
     @Transactional
     @Override
-    public void performCharacterTurnUpdates(int turnId) {
-        // delete dead characters
+    public void deleteDeadCharacters() {
         for (Character character : characterRepository.findAll()) {
             if (character.getHitpoints() < 1) {
-                delete(character);
+                log.debug("Deleting character {}.", character.getName());
+                characterRepository.delete(character);
             }
         }
+    }
+
+    @Transactional
+    @Override
+    public void performCharacterTurnUpdates(int turnId) {
+        // delete dead characters
+        deleteDeadCharacters();
 
         // eat food
         performFoodConsumption(turnId);
@@ -153,7 +161,10 @@ public class CharacterService implements ICharacterService {
             notification.setInjury(0);
             notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[]{});
 
-            for (Character character : clan.getCharacters()) {
+            Iterator<Character> iterator = clan.getCharacters().iterator();
+            while (iterator.hasNext()) {
+                Character character = iterator.next();
+
                 // ascetic
                 if (character.getTraits().containsKey(TraitDetails.TraitName.ASCETIC)) {
                     NotificationDetail detail = new NotificationDetail();
@@ -190,7 +201,9 @@ public class CharacterService implements ICharacterService {
                                 new String[]{character.getName()});
                         notification.getDetails().add(detailDeath);
 
-                        delete(character);
+                        // delte and remove from clan
+                        characterRepository.delete(character);
+                        iterator.remove();
                     } else {
                         characterRepository.save(character);
                     }
@@ -305,13 +318,6 @@ public class CharacterService implements ICharacterService {
         trait.setDetails(details);
 
         return trait;
-    }
-
-    private void delete(Character character) {
-        log.debug("Deleting dead character: {}", character.getName());
-        character.getClan().getCharacters().remove(character);
-        characterRepository.delete(character);
-        clanService.saveClan(character.getClan());
     }
 
 }
