@@ -17,8 +17,9 @@ INSERT INTO characters (character_id, clan_id, character_name, gender, state, le
     (3, 1, 'Sticky Marry', 'FEMALE', 'READY', 2, 2, 1, 10, 2, 4, 2, 1, 1, 'https://i.ibb.co/kJYvvWK/female01.jpg');
 
 INSERT INTO traits(trait_id, identifier, character_id) VALUES
-    (1, 'GLADIATOR', 1),
-    (2, 'BUILDER', 3);
+    (1, 'FIGHTER', 1),
+    (2, 'ASCETIC', 1),
+    (3, 'BUILDER', 3);
 
 INSERT INTO location_actions (action_id, state, character_id, location) VALUES
     (1, 'COMPLETED', 1, 'WASTELEND'),

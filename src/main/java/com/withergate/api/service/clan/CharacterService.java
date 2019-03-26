@@ -15,12 +15,13 @@ import com.withergate.api.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.notification.INotificationService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Character service.
@@ -34,16 +35,18 @@ public class CharacterService implements ICharacterService {
     public static final int LEVEL_QUOCIENT = 10;
 
     private final CharacterRepository characterRepository;
+    private final IClanService clanService;
     private final RandomService randomService;
     private final NameService nameService;
     private final TraitDetailsRepository traitDetailsRepository;
     private final INotificationService notificationService;
 
-    public CharacterService(CharacterRepository characterRepository, RandomService randomService,
+    public CharacterService(CharacterRepository characterRepository, @Lazy IClanService clanService, RandomService randomService,
                             NameService nameService,
                             TraitDetailsRepository traitDetailsRepository,
                             INotificationService notificationService) {
         this.characterRepository = characterRepository;
+        this.clanService = clanService;
         this.randomService = randomService;
         this.nameService = nameService;
         this.traitDetailsRepository = traitDetailsRepository;
@@ -66,13 +69,12 @@ public class CharacterService implements ICharacterService {
         // delete dead characters
         for (Character character : characterRepository.findAll()) {
             if (character.getHitpoints() < 1) {
-                log.debug("Deleting dead character: {}", character.getName());
-                characterRepository.delete(character);
+                delete(character);
             }
         }
 
         // eat food
-        eatFood(turnId);
+        performFoodConsumption(turnId);
 
         // perform character healing
         performCharacterHealing(turnId);
@@ -137,42 +139,64 @@ public class CharacterService implements ICharacterService {
         return character;
     }
 
-    private void eatFood(int turnId) {
-        log.debug("Eating food.");
+    private void performFoodConsumption(int turnId) {
+        log.debug("Food consumption.");
 
-        for (Character character : characterRepository.findAll()) {
-            Clan clan = character.getClan();
-            if (clan.getFood() > 0) {
-                clan.setFood(clan.getFood() - 1);
-            } else {
-                log.debug("Character {} is starving,", character.getName());
+        for (Clan clan : clanService.getAllClans()) {
+            if (clan.getCharacters().size() < 1) continue;
 
-                character.setHitpoints(character.getHitpoints() - 1);
+            ClanNotification notification = new ClanNotification();
+            notification.setHeader(clan.getName());
+            notification.setTurnId(turnId);
+            notification.setClanId(clan.getId());
+            notification.setFoodIncome(0);
+            notification.setInjury(0);
+            notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[]{});
 
-                ClanNotification notification = new ClanNotification();
-                notification.setClanId(clan.getId());
-                notification.setTurnId(turnId);
-
-                notificationService
-                        .addLocalizedTexts(notification.getText(), "character.starving",
-                                new String[]{character.getName()});
-                notification.setInjury(1);
-
-                if (character.getHitpoints() < 1) {
-                    log.debug("Character {} died of starvation.", character.getName());
-
+            for (Character character : clan.getCharacters()) {
+                // ascetic
+                if (character.getTraits().containsKey(TraitDetails.TraitName.ASCETIC)) {
                     NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.starvationdeath",
-                            new String[]{character.getName()});
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[]{character.getName()});
                     notification.getDetails().add(detail);
 
-                    characterRepository.delete(character);
-                } else {
-                    characterRepository.save(character);
+                    continue; // skip food consumption
                 }
 
-                notificationService.save(notification);
+                if (clan.getFood() > 0) {
+                    clan.setFood(clan.getFood() - 1);
+
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption", new String[]{character.getName()});
+                    notification.getDetails().add(detail);
+                    notification.setFoodIncome(notification.getFoodIncome() - 1);
+                } else {
+                    log.debug("Character {} is starving,", character.getName());
+
+                    character.setHitpoints(character.getHitpoints() - 1);
+
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService
+                            .addLocalizedTexts(detail.getText(), "detail.character.starving",
+                                    new String[]{character.getName()});
+                    notification.getDetails().add(detail);
+                    notification.setInjury(notification.getInjury() + 1);
+
+                    if (character.getHitpoints() < 1) {
+                        log.debug("Character {} died of starvation.", character.getName());
+
+                        NotificationDetail detailDeath = new NotificationDetail();
+                        notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.starvationdeath",
+                                new String[]{character.getName()});
+                        notification.getDetails().add(detailDeath);
+
+                        delete(character);
+                    } else {
+                        characterRepository.save(character);
+                    }
+                }
             }
+            notificationService.save(notification);
         }
     }
 
@@ -198,6 +222,7 @@ public class CharacterService implements ICharacterService {
             ClanNotification notification = new ClanNotification();
             notification.setTurnId(turnId);
             notification.setClanId(character.getClan().getId());
+            notification.setHeader(character.getName());
 
             // each character that is ready heals
             int points = randomService.getRandomInt(1, 2);
@@ -223,7 +248,7 @@ public class CharacterService implements ICharacterService {
             characterRepository.save(character);
 
             notificationService
-                    .addLocalizedTexts(notification.getText(), "character.healing", new String[]{character.getName()});
+                    .addLocalizedTexts(notification.getText(), "character.healing", new String[]{});
             notification.setHealing(points);
 
             notificationService.save(notification);
@@ -247,11 +272,11 @@ public class CharacterService implements ICharacterService {
                 character.setHitpoints(character.getHitpoints() + hpIncrease);
                 character.setLevel(character.getLevel() + 1);
 
-
                 // notification
                 ClanNotification notification = new ClanNotification();
                 notification.setTurnId(turnId);
                 notification.setClanId(character.getClan().getId());
+                notification.setHeader(character.getName());
                 notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[]{character.getName()});
 
                 // add random trait to character
@@ -280,6 +305,13 @@ public class CharacterService implements ICharacterService {
         trait.setDetails(details);
 
         return trait;
+    }
+
+    private void delete(Character character) {
+        log.debug("Deleting dead character: {}", character.getName());
+        character.getClan().getCharacters().remove(character);
+        characterRepository.delete(character);
+        clanService.saveClan(character.getClan());
     }
 
 }

@@ -8,7 +8,7 @@ import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
-import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.notification.INotificationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -30,13 +30,16 @@ public class CharacterServiceTest {
     private CharacterRepository characterRepository;
 
     @Mock
+    private IClanService clanService;
+
+    @Mock
     private RandomService randomService;
 
     @Mock
     private NameService nameService;
 
     @Mock
-    private NotificationService notificationService;
+    private INotificationService notificationService;
 
     @Mock
     private TraitDetailsRepository traitDetailsRepository;
@@ -45,7 +48,7 @@ public class CharacterServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        characterService = new CharacterService(characterRepository, randomService, nameService, traitDetailsRepository,
+        characterService = new CharacterService(characterRepository, clanService, randomService, nameService, traitDetailsRepository,
                 notificationService);
     }
 

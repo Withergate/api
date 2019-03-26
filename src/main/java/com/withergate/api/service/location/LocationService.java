@@ -1,6 +1,7 @@
 package com.withergate.api.service.location;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.notification.ClanNotification;
@@ -82,6 +83,7 @@ public class LocationService implements ILocationService {
             ClanNotification notification = new ClanNotification();
             notification.setClanId(character.getClan().getId());
             notification.setTurnId(turnId);
+            notification.setHeader(character.getName());
 
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
@@ -104,7 +106,7 @@ public class LocationService implements ILocationService {
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
 
-                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[]{character.getName(), hired.getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[]{hired.getName()});
 
                     NotificationDetail detail = new NotificationDetail();
                     notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{hired.getName()});
@@ -149,6 +151,7 @@ public class LocationService implements ILocationService {
         for (ArenaResult result : results) {
             // save results
             result.getNotification().setTurnId(turnId);
+            result.getNotification().setHeader(result.getCharacter().getName());
             notificationService.save(result.getNotification());
             characterService.save(result.getCharacter());
         }
@@ -184,7 +187,7 @@ public class LocationService implements ILocationService {
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[]{character.getName()});
+            notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[]{});
             itemService.generateItemForCharacter(character, notification);
 
             return;
@@ -197,23 +200,35 @@ public class LocationService implements ILocationService {
          */
         if (randomService.getRandomInt(1, 100) > 50) {
             log.debug("Junk found!");
-            int junk = character.getScavenge() * junkRatio;
+            int junk = character.getScavenge() * junkRatio + getIncomeBonus(character, notification);
             Clan clan = character.getClan();
             clan.setJunk(clan.getJunk() + junk);
             clanService.saveClan(clan);
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.junk", new String[]{character.getName()});
+            notificationService.addLocalizedTexts(notification.getText(), "location.junk", new String[]{});
             notification.setJunkIncome(junk);
         } else {
             log.debug("Food found!");
-            int food = character.getScavenge() * foodRatio;
+            int food = character.getScavenge() * foodRatio + getIncomeBonus(character, notification);;
             Clan clan = character.getClan();
             clan.setFood(clan.getFood() + food);
             clanService.saveClan(clan);
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.food", new String[]{character.getName()});
+            notificationService.addLocalizedTexts(notification.getText(), "location.food", new String[]{});
             notification.setFoodIncome(food);
         }
 
+    }
+
+    // add bonus to found junk and food when character has certain traits
+    private int getIncomeBonus(Character character, ClanNotification notification) {
+        if (character.getTraits().containsKey(TraitDetails.TraitName.STRONG)) {
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.strong", new String[]{character.getName()});
+            notification.getDetails().add(detail);
+
+            return 2;
+        }
+        return 0;
     }
 }

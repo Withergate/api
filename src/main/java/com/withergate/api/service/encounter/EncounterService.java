@@ -60,7 +60,7 @@ public class EncounterService implements IEncounterService {
 
         log.debug("Processing {} with {} at {}", encounter.getType(), character.getName(), location.name());
 
-        notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[]{character.getName()});
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[]{});
 
         switch (encounter.getType()) {
             case COMBAT:
@@ -76,10 +76,10 @@ public class EncounterService implements IEncounterService {
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
                     handlePenalty(encounter, character, notification);
-                    notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{character.getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
                 } else {
                     handleReward(encounter, character, notification);
-                    notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{character.getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{});
                 }
                 break;
             default:

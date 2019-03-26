@@ -43,6 +43,9 @@ public class ClanNotification {
     @Column(name = "turn_id", updatable = false, nullable = false)
     private int turnId;
 
+    @Column(name = "header")
+    private String header;
+
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
     @JoinColumn(name = "notification_id")

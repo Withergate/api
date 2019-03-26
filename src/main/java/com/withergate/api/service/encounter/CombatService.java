@@ -2,8 +2,10 @@ package com.withergate.api.service.encounter;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.encounter.Encounter;
+import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
@@ -63,15 +65,13 @@ public class CombatService implements ICombatService {
             character.setExperience(character.getExperience() + 1);
             notification.setExperience(1);
 
-            // check if character is still alive
-            if (character.getHitpoints() < 1) {
-                notificationService.addLocalizedTexts(notification.getText(), "combat.death", new String[]{character.getName()});
-            } else {
-                notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{character.getName()});
-            }
+            notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(),
+                    new String[]{character.getName()});
+
         } else {
             // combat won - update notification
-            notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{character.getName()});
+            notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(),
+                    new String[]{character.getName()});
 
             // handle experience
             character.setExperience(character.getExperience() + 2);
@@ -115,9 +115,13 @@ public class CombatService implements ICombatService {
 
             // create results
             ArenaResult winnerResult = getWinnerResult(result.getWinner(), result.getLoser(), winnerNotification);
-            if (winnerResult != null) results.add(winnerResult);
+            if (winnerResult != null) {
+                results.add(winnerResult);
+            }
             ArenaResult loserResult = getLoserResult(result.getLoser(), result.getWinner(), loserNotification);
-            if (loserResult != null) results.add(loserResult);
+            if (loserResult != null) {
+                results.add(loserResult);
+            }
         }
 
         return results;
@@ -138,7 +142,8 @@ public class CombatService implements ICombatService {
         }
     }
 
-    private CombatResult handleCombatRound(Character character1, ClanNotification notification1, Character character2, ClanNotification notification2) {
+    private CombatResult handleCombatRound(Character character1, ClanNotification notification1, Character character2,
+                                           ClanNotification notification2) {
         CombatResult result = new CombatResult();
         List<NotificationDetail> details = new ArrayList<>();
         boolean finished = false;
@@ -152,8 +157,8 @@ public class CombatService implements ICombatService {
         details.add(detailRoll);
 
         // compare combat values
-        int combat1 = character1.getTotalCombat() + roll1;
-        int combat2 = character2.getTotalCombat() + roll2;
+        int combat1 = character1.getTotalCombat() + roll1 + getCombatBonus(character1, notification1);
+        int combat2 = character2.getTotalCombat() + roll2 + getCombatBonus(character2, notification2);
 
         // handle draw
         if (combat1 == combat2) {
@@ -197,14 +202,16 @@ public class CombatService implements ICombatService {
         // update notification
         NotificationDetail detailCombat = new NotificationDetail();
         notificationService.addLocalizedTexts(detailCombat.getText(), "detail.combat.roundresult",
-                new String[]{winner.getName(), String.valueOf(combatWinner), loser.getName(), String.valueOf(combatLoser), loser.getName(), String.valueOf(injury)});
+                new String[]{winner.getName(), String.valueOf(combatWinner), loser.getName(),
+                        String.valueOf(combatLoser), loser.getName(), String.valueOf(injury)});
         details.add(detailCombat);
 
         // check death
         if (loser.getHitpoints() < 1) {
             finished = true;
             NotificationDetail detailDeath = new NotificationDetail();
-            notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.injurydeath", new String[]{loser.getName()});
+            notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.injurydeath",
+                    new String[]{loser.getName()});
             details.add(detailDeath);
         }
 
@@ -239,8 +246,10 @@ public class CombatService implements ICombatService {
         }
 
         notification.setClanId(character.getClan().getId());
-        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description", new String[]{character.getName(), opponent.getName()});
-        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
+        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description",
+                new String[]{character.getName(), opponent.getName()});
+        notificationService
+                .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
         character.getClan()
                 .setCaps(character.getClan().getCaps() + gameProperties.getArenaCaps()); // add caps to the winner
@@ -271,8 +280,10 @@ public class CombatService implements ICombatService {
         }
 
         notification.setClanId(character.getClan().getId());
-        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description", new String[]{character.getName(), opponent.getName()});
-        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
+        notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description",
+                new String[]{character.getName(), opponent.getName()});
+        notificationService
+                .addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
 
         // handle experience
         character.setExperience(character.getExperience() + 1);
@@ -283,6 +294,22 @@ public class CombatService implements ICombatService {
         result.setNotification(notification);
 
         return result;
+    }
+
+    // add combat bonus to a character with certain traits if conditions are met
+    private int getCombatBonus(Character character, ClanNotification notification) {
+        if (character.getTraits().containsKey(TraitDetails.TraitName.FIGHTER) && character.getWeapon() != null
+                && character.getWeapon().getDetails().getType() == WeaponType.MELEE) {
+            if (randomService.getRandomInt(1, 100) < 50) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService
+                        .addLocalizedTexts(detail.getText(), "detail.trait.fighter", new String[]{character.getName()});
+                notification.getDetails().add(detail);
+
+                return 1;
+            }
+        }
+        return 0;
     }
 
 }

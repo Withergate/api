@@ -157,6 +157,7 @@ CREATE TABLE clan_notifications (
     notification_id BIGINT AUTO_INCREMENT,
     clan_id INT NOT NULL,
     turn_id INT NOT NULL,
+    header VARCHAR(64),
     junk_income INT,
     food_income INT,
     caps_income INT,

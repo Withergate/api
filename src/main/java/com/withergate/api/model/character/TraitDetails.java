@@ -30,6 +30,6 @@ public class TraitDetails {
     private String imageUrl;
 
     public enum TraitName {
-        GLADIATOR, BUILDER
+        FIGHTER, BUILDER, ASCETIC, STRONG
     }
 }
