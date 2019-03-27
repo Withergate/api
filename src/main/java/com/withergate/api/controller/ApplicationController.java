@@ -1,7 +1,6 @@
 package com.withergate.api.controller;
 
 import com.withergate.api.service.AdminService;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -39,13 +38,25 @@ public class ApplicationController {
     }
 
     /**
-     * Restarts the game. Drops all game data and starts over. Only accessible by administators.
+     * Restarts the game. Drops all game data and starts over. Only accessible by admins.
      *
      * @return ok status if applied
      */
     @RequestMapping(value = "/restart", method = RequestMethod.POST)
     public ResponseEntity<Void> restartGame() {
         adminService.restartGame();
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Ends the current turn. Only accessible by admins.
+     *
+     * @return ok status if applied
+     */
+    @RequestMapping(value = "/turn/end", method = RequestMethod.POST)
+    public ResponseEntity<Void> endTurn() {
+        adminService.endTurn();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -29,7 +29,7 @@ public class TurnScheduler {
     }
 
     // @Scheduled(cron = "0 0 0 * * *") // every midnight
-    @Scheduled(cron = "0 0/2 * * * ?") // testing
+    @Scheduled(cron = "0 0 0/1 * * ?") // testing
     public void processTurn() {
 
         /**

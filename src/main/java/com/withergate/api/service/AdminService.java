@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 /**
  * Admin service interface.
  *
@@ -7,5 +9,16 @@ package com.withergate.api.service;
  */
 public interface AdminService {
 
+    /**
+     * Restarts the whole game.
+     */
+    @PreAuthorize("hasRole('ADMIN')")
     void restartGame();
+
+    /**
+     * Forces the current turn to end.
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    void endTurn();
+
 }

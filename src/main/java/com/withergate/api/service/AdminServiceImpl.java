@@ -2,10 +2,9 @@ package com.withergate.api.service;
 
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
-
+import com.withergate.api.scheduling.TurnScheduler;
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,13 +19,14 @@ public class AdminServiceImpl implements AdminService {
 
     private final Flyway flyway;
     private final TurnRepository turnRepository;
+    private final TurnScheduler turnScheduler;
 
-    public AdminServiceImpl(Flyway flyway, TurnRepository turnRepository) {
+    public AdminServiceImpl(Flyway flyway, TurnRepository turnRepository, TurnScheduler turnScheduler) {
         this.flyway = flyway;
         this.turnRepository = turnRepository;
+        this.turnScheduler = turnScheduler;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void restartGame() {
         log.info("Restart request accepted.");
@@ -41,5 +41,12 @@ public class AdminServiceImpl implements AdminService {
         turnRepository.save(turn);
 
         log.info("Game restarted.");
+    }
+
+    @Override
+    public void endTurn() {
+        log.info("End turn requested manually.");
+
+        turnScheduler.processTurn();
     }
 }
