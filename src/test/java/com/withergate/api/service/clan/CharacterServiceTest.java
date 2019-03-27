@@ -7,8 +7,10 @@ import com.withergate.api.model.character.Gender;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.NameService;
+import com.withergate.api.service.NameServiceImpl;
 import com.withergate.api.service.RandomService;
-import com.withergate.api.service.notification.INotificationService;
+import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.notification.NotificationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,13 +26,13 @@ import static org.junit.Assert.assertEquals;
 
 public class CharacterServiceTest {
 
-    private CharacterService characterService;
+    private CharacterServiceImpl characterService;
 
     @Mock
     private CharacterRepository characterRepository;
 
     @Mock
-    private IClanService clanService;
+    private ClanService clanService;
 
     @Mock
     private RandomService randomService;
@@ -39,7 +41,7 @@ public class CharacterServiceTest {
     private NameService nameService;
 
     @Mock
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @Mock
     private TraitDetailsRepository traitDetailsRepository;
@@ -48,7 +50,7 @@ public class CharacterServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        characterService = new CharacterService(characterRepository, clanService, randomService, nameService, traitDetailsRepository,
+        characterService = new CharacterServiceImpl(characterRepository, clanService, randomService, nameService, traitDetailsRepository,
                 notificationService);
     }
 
@@ -91,7 +93,7 @@ public class CharacterServiceTest {
         // when generating random character
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
         Mockito.when(nameService.generateRandomName(Gender.MALE)).thenReturn("Rusty Nick");
-        Mockito.when(randomService.getRandomInt(1, RandomService.K10)).thenReturn(8); // hp
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K10)).thenReturn(8); // hp
         Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 4, 2, 3, 4);
 
         Character result = characterService.generateRandomCharacter();

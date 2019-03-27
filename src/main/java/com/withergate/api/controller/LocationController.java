@@ -3,7 +3,7 @@ package com.withergate.api.controller;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
-import com.withergate.api.service.action.IActionService;
+import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,10 +25,10 @@ import java.util.List;
 @RestController
 public class LocationController {
 
-    private final IActionService locationService;
+    private final ActionService locationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
 
-    public LocationController(IActionService locationService,
+    public LocationController(ActionService locationService,
                               LocationDescriptionRepository locationDescriptionRepository) {
         this.locationService = locationService;
         this.locationDescriptionRepository = locationDescriptionRepository;

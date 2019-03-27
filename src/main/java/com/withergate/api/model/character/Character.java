@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.view.Views;
-import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.CharacterServiceImpl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -114,7 +114,7 @@ public class Character {
      */
     @JsonProperty("nextLevel")
     public int getNextLevelExperience() {
-        return level * CharacterService.LEVEL_QUOCIENT;
+        return level * CharacterServiceImpl.LEVEL_QUOCIENT;
     }
 
     /**

@@ -2,18 +2,17 @@ package com.withergate.api.service.action;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -25,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ActionServiceTest {
 
-    private ActionService actionService;
+    private ActionServiceImpl actionService;
 
     @Mock
     private CharacterService characterService;
@@ -51,7 +50,7 @@ public class ActionServiceTest {
         gameProperties.setCityEncounterProbability(40);
         gameProperties.setCityJunkMultiplier(2);
 
-        actionService = new ActionService(characterService, locationService, clanService, gameProperties, buildingService);
+        actionService = new ActionServiceImpl(characterService, locationService, clanService, gameProperties, buildingService);
     }
 
     @Test

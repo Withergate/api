@@ -1,38 +1,27 @@
 package com.withergate.api.service;
 
 import com.withergate.api.model.character.Gender;
-import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 /**
- * Random service.
+ * RandomService interface. Used for generating random entities and numbers.
  *
  * @author Martin Myslik
  */
-@Service
-public class RandomService implements IRandomService {
+public interface RandomService {
 
-    // random dice rolls
-    public static final int K6 = 6;
-    public static final int K10 = 10;
-    public static final int K100 = 100;
+    /**
+     * Gets a random gender.
+     *
+     * @return random Gender
+     */
+    Gender getRandomGender();
 
-    @Override
-    public Gender getRandomGender() {
-        Random rand = new Random();
-        double random = rand.nextDouble();
-
-        if (random < 0.5) {
-            return Gender.FEMALE;
-        } else {
-            return Gender.MALE;
-        }
-    }
-
-    @Override
-    public int getRandomInt(int min, int max) {
-        Random rand = new Random();
-        return min + rand.nextInt((max - min) + 1);
-    }
+    /**
+     * Generates a random integer for the specified range.
+     *
+     * @param min min value
+     * @param max max value
+     * @return the generated integer
+     */
+    int getRandomInt(int min, int max);
 }

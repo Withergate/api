@@ -3,9 +3,6 @@ package com.withergate.api.model.building;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.WeaponDetails;
-import com.withergate.api.service.clan.CharacterService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;

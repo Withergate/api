@@ -13,8 +13,9 @@ import com.withergate.api.repository.item.ConsumableRepository;
 import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
-import com.withergate.api.service.notification.INotificationService;
+import com.withergate.api.service.notification.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ItemServiceTest {
 
-    private ItemService itemService;
+    private ItemServiceImpl itemService;
 
     @Mock
     private CharacterRepository characterRepository;
@@ -53,7 +54,7 @@ public class ItemServiceTest {
     private RandomService randomService;
 
     @Mock
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @Before
     public void setUp() {
@@ -62,7 +63,7 @@ public class ItemServiceTest {
         GameProperties gameProperties = new GameProperties();
         gameProperties.setRareItemChance(10);
 
-        itemService = new ItemService(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository, consumableRepository,
+        itemService = new ItemServiceImpl(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository, consumableRepository,
                 consumableDetailsRepository, randomService, gameProperties, notificationService);
     }
 

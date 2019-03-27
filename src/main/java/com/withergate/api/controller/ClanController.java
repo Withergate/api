@@ -6,8 +6,8 @@ import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.view.Views;
-import com.withergate.api.service.building.IBuildingService;
-import com.withergate.api.service.clan.IClanService;
+import com.withergate.api.service.building.BuildingService;
+import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 
 import java.security.Principal;
@@ -32,11 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ClanController {
 
-    private final IClanService clanService;
-    private final IBuildingService buildingService;
+    private final ClanService clanService;
+    private final BuildingService buildingService;
 
-    public ClanController(IClanService clanService,
-                          IBuildingService buildingService) {
+    public ClanController(ClanService clanService,
+                          BuildingService buildingService) {
         this.clanService = clanService;
         this.buildingService = buildingService;
     }

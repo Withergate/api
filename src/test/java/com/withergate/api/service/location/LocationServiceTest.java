@@ -2,24 +2,21 @@ package com.withergate.api.service.location;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.repository.notification.ClanNotificationRepository;
+import com.withergate.api.model.location.Location;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.encounter.EncounterService;
-import com.withergate.api.service.encounter.ICombatService;
 import com.withergate.api.service.item.ItemService;
-import com.withergate.api.service.notification.INotificationService;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.withergate.api.service.notification.NotificationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,11 +24,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class LocationServiceTest {
 
-    private LocationService locationService;
+    private LocationServiceImpl locationService;
 
     @Mock
     private LocationActionRepository locationActionRepository;
@@ -54,10 +54,10 @@ public class LocationServiceTest {
     private ItemService itemService;
 
     @Mock
-    private ICombatService combatService;
+    private CombatService combatService;
 
     @Mock
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @Before
     public void setUp() {
@@ -71,7 +71,7 @@ public class LocationServiceTest {
         gameProperties.setCityEncounterProbability(20);
         gameProperties.setCityJunkMultiplier(2);
 
-        locationService = new LocationService(locationActionRepository, gameProperties, clanService, characterService,
+        locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService, characterService,
                 randomService, encounterService, itemService, combatService, notificationService);
     }
 
@@ -99,7 +99,7 @@ public class LocationServiceTest {
         Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when performing pending actions
-        Mockito.when(randomService.getRandomInt(1, RandomService.K100)).thenReturn(10); // low roll
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
 
         locationService.processLocationActions(1);
 
@@ -134,7 +134,7 @@ public class LocationServiceTest {
         // when performing pending actions
 
         // high encounter roll followed by low loot roll
-        Mockito.when(randomService.getRandomInt(1, RandomService.K100)).thenReturn(50, 10);
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50, 10);
 
         locationService.processLocationActions(1);
 
@@ -171,7 +171,7 @@ public class LocationServiceTest {
         // when performing pending actions
 
         // high encounter roll followed by high loot roll
-        Mockito.when(randomService.getRandomInt(1, RandomService.K100)).thenReturn(50, 60);
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50, 60);
 
         locationService.processLocationActions(1);
 

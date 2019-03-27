@@ -1,6 +1,6 @@
 package com.withergate.api.controller;
 
-import com.withergate.api.service.IAdminService;
+import com.withergate.api.service.AdminService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +22,9 @@ public class ApplicationController {
     @Value("${info.build.version}")
     private String buildVersion;
 
-    private final IAdminService adminService;
+    private final AdminService adminService;
 
-    public ApplicationController(IAdminService adminService) {
+    public ApplicationController(AdminService adminService) {
         this.adminService = adminService;
     }
 

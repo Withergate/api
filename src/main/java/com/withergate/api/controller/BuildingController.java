@@ -1,7 +1,7 @@
 package com.withergate.api.controller;
 
 import com.withergate.api.model.request.BuildingRequest;
-import com.withergate.api.service.action.IActionService;
+import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
 
 import java.security.Principal;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BuildingController {
 
-    private final IActionService actionService;
+    private final ActionService actionService;
 
-    public BuildingController(IActionService actionService) {
+    public BuildingController(ActionService actionService) {
         this.actionService = actionService;
     }
 

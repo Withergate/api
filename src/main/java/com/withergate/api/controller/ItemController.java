@@ -2,7 +2,7 @@ package com.withergate.api.controller;
 
 import com.withergate.api.model.request.ConsumableRequest;
 import com.withergate.api.model.request.WeaponEquipRequest;
-import com.withergate.api.service.item.IItemService;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,9 +23,9 @@ import java.security.Principal;
 @RestController
 public class ItemController {
 
-    private final IItemService itemService;
+    private final ItemService itemService;
 
-    public ItemController(IItemService itemService) {
+    public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
 

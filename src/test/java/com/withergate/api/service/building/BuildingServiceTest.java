@@ -6,16 +6,11 @@ import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.repository.notification.ClanNotificationRepository;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +19,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class BuildingServiceTest {
 
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
 
     @Mock
     private CharacterService characterService;
@@ -47,7 +46,7 @@ public class BuildingServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        buildingService = new BuildingService(characterService, clanService, buildingActionRepository, buildingDetailsRepository,
+        buildingService = new BuildingServiceImpl(characterService, clanService, buildingActionRepository, buildingDetailsRepository,
                 notificationService);
     }
 

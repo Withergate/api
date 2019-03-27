@@ -9,12 +9,12 @@ import com.withergate.api.model.encounter.EncounterType;
 import com.withergate.api.model.encounter.PenaltyType;
 import com.withergate.api.model.encounter.RewardType;
 import com.withergate.api.repository.EncounterRepository;
-import com.withergate.api.service.IRandomService;
 import com.withergate.api.service.RandomService;
-import com.withergate.api.service.clan.ICharacterService;
-import com.withergate.api.service.clan.IClanService;
-import com.withergate.api.service.item.IItemService;
-import com.withergate.api.service.notification.INotificationService;
+import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.item.ItemService;
+import com.withergate.api.service.notification.NotificationService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,34 +30,34 @@ import static org.junit.Assert.assertEquals;
 
 public class EncounterServiceTest {
 
-    private EncounterService encounterService;
+    private EncounterServiceImpl encounterService;
 
     @Mock
     private EncounterRepository encounterRepository;
 
     @Mock
-    private IItemService itemService;
+    private ItemService itemService;
 
     @Mock
-    private IRandomService randomService;
+    private RandomService randomService;
 
     @Mock
-    private ICombatService combatService;
+    private CombatService combatService;
 
     @Mock
-    private IClanService clanService;
+    private ClanService clanService;
 
     @Mock
-    private ICharacterService characterService;
+    private CharacterService characterService;
 
     @Mock
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        encounterService = new EncounterService(encounterRepository, itemService, randomService, combatService,
+        encounterService = new EncounterServiceImpl(encounterRepository, itemService, randomService, combatService,
                 clanService, characterService, notificationService);
     }
 
@@ -123,7 +123,7 @@ public class EncounterServiceTest {
         ClanNotification notification = Mockito.mock(ClanNotification.class);
 
         // when character succeeds with high roll followed by roll for caps
-        Mockito.when(randomService.getRandomInt(1, RandomService.K6)).thenReturn(6, 3);
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(6, 3);
 
         encounterService.handleEncounter(notification, character, Location.CITY_CENTER);
 

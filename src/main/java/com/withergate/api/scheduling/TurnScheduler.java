@@ -4,7 +4,6 @@ import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

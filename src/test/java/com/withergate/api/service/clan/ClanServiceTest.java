@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ClanServiceTest {
 
-    private ClanService clanService;
+    private ClanServiceImpl clanService;
 
     @Mock
     private ClanRepository clanRepository;
@@ -34,7 +34,7 @@ public class ClanServiceTest {
         GameProperties gameProperties = new GameProperties();
         gameProperties.setInitialClanSize(5);
 
-        clanService = new ClanService(clanRepository, characterService, gameProperties);
+        clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties);
     }
 
     @Test(expected = EntityConflictException.class)

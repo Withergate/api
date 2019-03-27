@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class NameServiceIT {
 
     @Autowired
-    private NameService nameService;
+    private NameServiceImpl nameService;
 
     @Test
     public void testGivenGenderWhenGeneratingRandomNameThenVerifyNameContainsSpace() {
