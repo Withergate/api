@@ -78,6 +78,9 @@ public class ClanNotification {
     @Column(name = "experience")
     private int experience;
 
+    @Column(name = "information")
+    private int information;
+
     public ClanNotification() {
         injury = 0;
         if (text == null) text = new HashMap<>();

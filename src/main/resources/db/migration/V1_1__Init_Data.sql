@@ -41,16 +41,16 @@ INSERT INTO trait_details(identifier, trait_name, description, image_url) VALUES
     'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
 
 -- Location descriptions
-INSERT INTO location_descriptions(location, name, description, info, image_url) VALUES
-    ('NEIGHBORHOOD', 'locations.neighborhood.name', 'locations.neighborhood.description', 'locations.neighborhood.info',
+INSERT INTO location_descriptions(location, scouting, name, description, info, image_url) VALUES
+    ('NEIGHBORHOOD', false, 'locations.neighborhood.name', 'locations.neighborhood.description', 'locations.neighborhood.info',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
-    ('WASTELAND', 'locations.wasteland.name', 'locations.wasteland.description', 'locations.wasteland.info',
+    ('WASTELAND', true, 'locations.wasteland.name', 'locations.wasteland.description', 'locations.wasteland.info',
     'https://image.ibb.co/dxwXkK/wasteland.jpg'),
-    ('CITY_CENTER', 'locations.citycenter.name', 'locations.citycenter.description', 'locations.citycenter.info',
+    ('CITY_CENTER', true, 'locations.citycenter.name', 'locations.citycenter.description', 'locations.citycenter.info',
     'https://image.ibb.co/jVgMee/city.jpg'),
-    ('TAVERN', 'locations.tavern.name', 'locations.tavern.description', 'locations.tavern.info',
+    ('TAVERN', false, 'locations.tavern.name', 'locations.tavern.description', 'locations.tavern.info',
     'https://image.ibb.co/iZAMZp/tavern.jpg'),
-    ('ARENA', 'locations.arena.name', 'locations.arena.description', 'locations.arena.info',
+    ('ARENA', false, 'locations.arena.name', 'locations.arena.description', 'locations.arena.info',
     'https://image.ibb.co/edVRNK/arena.jpg');
 
 -- Placeholder texts general
@@ -63,6 +63,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.food', 'cs', 'Postava  našla jídlo.'),
     ('location.loot', 'en', 'Character found loot.'),
     ('location.loot', 'cs', 'Postava našla předmět.'),
+    ('location.information', 'en', 'Character found valuable information when scouting.'),
+    ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
     ('building.work', 'en', 'Character worked on the construction of [{}]'),
     ('building.work', 'cs', 'Postava  pracovala na stavbě [{}].'),
     ('building.monument.income', 'en', 'Your [{}] generated fame for your clan.'),
@@ -100,6 +102,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.character.levelup.trait', 'cs', '{} získal/a novou schopnost: [{}].'),
     ('detail.character.starving', 'en', '{} is starving.'),
     ('detail.character.starving', 'cs', '{} hladoví.'),
+    ('detail.information.levelup', 'en', 'Your clan advanced to the next information level.'),
+    ('detail.information.levelup', 'cs', 'Tvůj klan postoupil na další úroveň informací.'),
     ('detail.healing.roll', 'en', 'Rolled {} when computing healing.'),
     ('detail.healing.roll', 'cs', 'Na kostce padlo {} při hodu na léčení.'),
     ('detail.healing.building', 'en', 'Healing increased by {} due to [{}].'),

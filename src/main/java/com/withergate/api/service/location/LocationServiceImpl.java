@@ -8,8 +8,10 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.location.Location;
+import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -44,12 +46,13 @@ public class LocationServiceImpl implements LocationService {
     private final ItemService itemService;
     private final CombatService combatService;
     private final NotificationService notificationService;
+    private final LocationDescriptionRepository locationDescriptionRepository;
 
     public LocationServiceImpl(LocationActionRepository locationActionRepository,
                                GameProperties gameProperties, ClanService clanService,
                                CharacterService characterService, RandomService randomService,
                                EncounterService encounterService, ItemService itemService,
-                               CombatService combatService, NotificationService notificationService) {
+                               CombatService combatService, NotificationService notificationService, LocationDescriptionRepository locationDescriptionRepository) {
         this.locationActionRepository = locationActionRepository;
         this.gameProperties = gameProperties;
         this.clanService = clanService;
@@ -59,6 +62,12 @@ public class LocationServiceImpl implements LocationService {
         this.itemService = itemService;
         this.combatService = combatService;
         this.notificationService = notificationService;
+        this.locationDescriptionRepository = locationDescriptionRepository;
+    }
+
+    @Override
+    public LocationDescription getLocationDescription(Location location) {
+        return locationDescriptionRepository.getOne(location);
     }
 
     @Override
@@ -85,21 +94,22 @@ public class LocationServiceImpl implements LocationService {
 
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
-                    processLocationAction(notification, character, action.getLocation(),
-                            gameProperties.getNeighborhoodEncounterProbability(),
-                            gameProperties.getNeighborhoodLootProbability(),
-                            gameProperties.getNeighborhoodJunkMultiplier(), gameProperties.getNeighborhoodFoodMultiplier());
+                    processLocationAction(notification, character, action,
+                            gameProperties.getNeighborhoodEncounterProbability(), gameProperties.getNeighborhoodLootProbability(),
+                            gameProperties.getNeighborhoodJunkMultiplier(), gameProperties.getNeighborhoodFoodMultiplier(),
+                            0);
                     break;
                 case WASTELAND:
-                    processLocationAction(notification, character, action.getLocation(),
-                            gameProperties.getWastelandEncounterProbability(),
-                            gameProperties.getWastelandLootProbability(),
-                            gameProperties.getWastelandJunkMultiplier(), gameProperties.getWastelandFoodMultiplier());
+                    processLocationAction(notification, character, action,
+                            gameProperties.getWastelandEncounterProbability(),gameProperties.getWastelandLootProbability(),
+                            gameProperties.getWastelandJunkMultiplier(), gameProperties.getWastelandFoodMultiplier(),
+                            gameProperties.getWastelandInformationMultiplier());
                     break;
                 case CITY_CENTER:
-                    processLocationAction(notification, character, action.getLocation(),
+                    processLocationAction(notification, character, action,
                             gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(),
-                            gameProperties.getCityJunkMultiplier(), gameProperties.getCityFoodMultiplier());
+                            gameProperties.getCityJunkMultiplier(), gameProperties.getCityFoodMultiplier(),
+                            gameProperties.getCityInformationMultiplier());
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
@@ -158,8 +168,8 @@ public class LocationServiceImpl implements LocationService {
         clanService.clearArenaCharacters();
     }
 
-    private void processLocationAction(ClanNotification notification, Character character, Location location,
-                                       int encounterProbability, int lootProbability, int junkRatio, int foodRatio) {
+    private void processLocationAction(ClanNotification notification, Character character, LocationAction action,
+                                       int encounterProbability, int lootProbability, int junkRatio, int foodRatio, int informationRatio) {
         /*
          * ENCOUNTER
          *
@@ -170,7 +180,35 @@ public class LocationServiceImpl implements LocationService {
         if (encounterRoll <= encounterProbability) {
             log.debug("Random encounter triggered!");
 
-            encounterService.handleEncounter(notification, character, location);
+            encounterService.handleEncounter(notification, character, action.getLocation());
+            return;
+        }
+
+        /*
+         * INFORMATION
+         */
+        if (action.getType() == LocationAction.LocationActionType.SCOUT) {
+            log.debug("Information increased.");
+            int information = action.getCharacter().getIntellect() * informationRatio;
+
+            Clan clan = character.getClan();
+            clan.setInformation(clan.getInformation() + information);
+
+            notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[]{});
+            notification.setInformation(information);
+
+            // handle next level
+            if (clan.getInformation() > clan.getNextLevelInformation()) {
+                clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
+                clan.setInformationLevel(clan.getInformationLevel() + 1);
+
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.information.levelup", new String[]{});
+                notification.getDetails().add(detail);
+            }
+
+            clanService.saveClan(clan);
+
             return;
         }
 

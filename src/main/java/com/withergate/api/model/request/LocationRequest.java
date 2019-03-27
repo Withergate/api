@@ -1,5 +1,6 @@
 package com.withergate.api.model.request;
 
+import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.location.Location;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,6 @@ public class LocationRequest {
 
     private int characterId;
     private Location location;
+    private LocationAction.LocationActionType type;
 
 }

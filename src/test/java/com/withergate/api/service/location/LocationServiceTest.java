@@ -8,6 +8,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -59,6 +60,9 @@ public class LocationServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private LocationDescriptionRepository locationDescriptionRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -68,11 +72,13 @@ public class LocationServiceTest {
         gameProperties.setRareItemChance(10);
         gameProperties.setWastelandEncounterProbability(20);
         gameProperties.setWastelandJunkMultiplier(2);
+        gameProperties.setWastelandInformationMultiplier(1);
         gameProperties.setCityEncounterProbability(20);
         gameProperties.setCityJunkMultiplier(2);
+        gameProperties.setCityInformationMultiplier(2);
 
         locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService, characterService,
-                randomService, encounterService, itemService, combatService, notificationService);
+                randomService, encounterService, itemService, combatService, notificationService, locationDescriptionRepository);
     }
 
     @Test

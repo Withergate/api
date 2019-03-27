@@ -33,4 +33,12 @@ public class LocationAction extends BaseAction {
     @Enumerated(EnumType.STRING)
     private Location location;
 
+    @Column(name = "action_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LocationActionType type;
+
+    public enum LocationActionType {
+        VISIT, SCOUT
+    }
+
 }

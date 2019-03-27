@@ -7,6 +7,7 @@ import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.location.Location;
+import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
@@ -59,6 +60,7 @@ public class ActionServiceTest {
         LocationRequest request = new LocationRequest();
         request.setCharacterId(1);
         request.setLocation(Location.WASTELAND);
+        request.setType(LocationAction.LocationActionType.VISIT);
 
         Clan clan = new Clan();
         clan.setId(1);
@@ -71,6 +73,11 @@ public class ActionServiceTest {
         character.setClan(clan);
         character.setState(CharacterState.READY);
         Mockito.when(characterService.load(1)).thenReturn(character);
+
+        LocationDescription description = new LocationDescription();
+        description.setLocation(Location.WASTELAND);
+        description.setScouting(true);
+        Mockito.when(locationService.getLocationDescription(Location.WASTELAND)).thenReturn(description);
 
         // when creating location action
         actionService.createLocationAction(request, 1);

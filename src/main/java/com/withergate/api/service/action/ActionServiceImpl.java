@@ -10,6 +10,7 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.WeaponType;
+import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.service.building.BuildingService;
@@ -62,6 +63,12 @@ public class ActionServiceImpl implements ActionService {
             clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
         }
 
+        // check if this location supports given action type
+        LocationDescription description = locationService.getLocationDescription(request.getLocation());
+        if (description == null || (request.getType() == LocationAction.LocationActionType.SCOUT && !description.isScouting())) {
+            throw new InvalidActionException("Location not found or does not support specified action!");
+        }
+
         // check arena requirements
         if (request.getLocation() == Location.ARENA) {
             if (clan.isArena()) {
@@ -77,6 +84,7 @@ public class ActionServiceImpl implements ActionService {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setLocation(request.getLocation());
+        action.setType(request.getType());
 
         locationService.saveLocationAction(action);
 

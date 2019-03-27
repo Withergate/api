@@ -1,5 +1,5 @@
-INSERT INTO clans (clan_id, clan_name, fame, caps, junk, food, arena) VALUES
-    (1, 'Stalkers', 10, 100, 250, 10, false);
+INSERT INTO clans (clan_id, clan_name, fame, caps, junk, food, information, information_level, arena) VALUES
+    (1, 'Stalkers', 10, 100, 250, 10, 7, 0, false);
 
 INSERT INTO weapons (weapon_id, item_identifier, clan_id) VALUES
     (1, 'KNIFE', null),
@@ -21,6 +21,6 @@ INSERT INTO traits(trait_id, identifier, character_id) VALUES
     (2, 'ASCETIC', 1),
     (3, 'BUILDER', 3);
 
-INSERT INTO location_actions (action_id, state, character_id, location) VALUES
-    (1, 'COMPLETED', 1, 'WASTELEND'),
-    (2, 'PENDING', 1, 'CITY_CENTER');
+INSERT INTO location_actions (action_id, state, character_id, location, action_type) VALUES
+    (1, 'COMPLETED', 1, 'WASTELEND', 'VISIT'),
+    (2, 'PENDING', 1, 'CITY_CENTER', 'VISIT');

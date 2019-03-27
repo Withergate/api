@@ -8,10 +8,10 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.view.Views;
+import com.withergate.api.service.clan.ClanServiceImpl;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,8 +24,9 @@ import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -61,6 +62,14 @@ public class Clan {
     @Column(name = "junk", nullable = false)
     @JsonView(Views.Internal.class)
     private int junk;
+
+    @Column(name = "information", nullable = false)
+    @JsonView(Views.Internal.class)
+    private int information;
+
+    @Column(name = "information_level", nullable = false)
+    @JsonView(Views.Internal.class)
+    private int informationLevel;
 
     @Column(name = "food", nullable = false)
     @JsonView(Views.Internal.class)
@@ -103,6 +112,16 @@ public class Clan {
     @JsonProperty("buildings")
     public Collection<Building> getBuildingsAsList() {
         return buildings.values();
+    }
+
+    /**
+     * Returns the information needed for next level
+     *
+     * @return the information needed for next level
+     */
+    @JsonProperty("nextInformationLevel")
+    public int getNextLevelInformation() {
+        return (informationLevel + 1) * ClanServiceImpl.INFORMATION_QUOCIENT;
     }
 
 }

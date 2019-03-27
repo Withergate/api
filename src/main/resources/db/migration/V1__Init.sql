@@ -20,6 +20,8 @@ CREATE TABLE clans (
     caps INT NOT NULL,
     junk INT NOT NULL,
     food INT NOT NULL,
+    information INT NOT NULL,
+    information_level INT NOT NULL,
     arena BIT NOT NULL DEFAULT FALSE,
     PRIMARY KEY (clan_id)
 );
@@ -136,6 +138,7 @@ CREATE TABLE traits (
 DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,
+    scouting BIT NOT NULL DEFAULT FALSE,
     name VARCHAR(64) NOT NULL,
     description VARCHAR(64) NOT NULL,
     info VARCHAR(64) NOT NULL,
@@ -165,6 +168,7 @@ CREATE TABLE clan_notifications (
     injury INT,
     healing INT,
     experience INT,
+    information INT,
     PRIMARY KEY (notification_id),
     CONSTRAINT p_notification_turn_fk FOREIGN KEY (turn_id) REFERENCES turns (turn_id),
     CONSTRAINT p_notification_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
@@ -211,6 +215,7 @@ CREATE TABLE location_actions (
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
     location VARCHAR(16) NOT NULL,
+    action_type VARCHAR(8) NOT NULL,
     PRIMARY KEY (action_id)
 );
 

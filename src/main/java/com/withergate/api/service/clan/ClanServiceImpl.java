@@ -25,6 +25,8 @@ import java.util.List;
 @Service
 public class ClanServiceImpl implements ClanService {
 
+    public static final int INFORMATION_QUOCIENT = 10;
+
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
     private final GameProperties gameProperties;
@@ -79,6 +81,8 @@ public class ClanServiceImpl implements ClanService {
         clan.setCaps(50);
         clan.setJunk(20);
         clan.setFood(20);
+        clan.setInformation(0);
+        clan.setInformationLevel(0);
         clan.setCharacters(new ArrayList<>());
 
         // assign random initial characters to clan.
