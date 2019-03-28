@@ -73,8 +73,7 @@ public class BuildingServiceImpl implements BuildingService {
                 if (character.getTraits().containsKey(TraitDetails.TraitName.BUILDER)) {
                     progress = progress + 2;
                     NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[]{character.getName(),
-                            character.getTraits().get(TraitDetails.TraitName.BUILDER).getDetails().getName()});
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[]{character.getName()});
                     notification.getDetails().add(detail);
                 }
 

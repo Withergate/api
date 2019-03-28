@@ -297,7 +297,7 @@ public class CharacterServiceImpl implements CharacterService {
                 log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
 
                 NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait", new String[]{character.getName(), trait.getDetails().getName()});
+                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait", new String[]{character.getName()});
                 notification.getDetails().add(detail);
 
                 // save

@@ -119,8 +119,6 @@ CREATE TABLE characters (
 DROP TABLE IF EXISTS trait_details;
 CREATE TABLE trait_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
-    trait_name VARCHAR(64) NOT NULL,
-    description VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (identifier)
 );
@@ -191,12 +189,16 @@ CREATE TABLE localized_texts (
     location_name VARCHAR(16),
     location_description VARCHAR(16),
     location_info VARCHAR(16),
+    trait_name VARCHAR(16),
+    trait_description VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
     CONSTRAINT localized_text_location_name_fk FOREIGN KEY (location_name) REFERENCES location_descriptions (location),
     CONSTRAINT localized_text_location_description_fk FOREIGN KEY (location_description) REFERENCES location_descriptions (location),
-    CONSTRAINT localized_text_location_info_fk FOREIGN KEY (location_info) REFERENCES location_descriptions (location)
+    CONSTRAINT localized_text_location_info_fk FOREIGN KEY (location_info) REFERENCES location_descriptions (location),
+    CONSTRAINT localized_text_trait_name_fk FOREIGN KEY (trait_name) REFERENCES trait_details (identifier),
+    CONSTRAINT localized_text_trait_description_fk FOREIGN KEY (trait_description) REFERENCES trait_details (identifier)
 );
 
 DROP TABLE IF EXISTS encounters;

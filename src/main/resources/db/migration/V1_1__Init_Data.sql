@@ -30,15 +30,31 @@ INSERT INTO building_details(identifier, building_name, cost, visitable, descrip
     'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
 
 --- Trait details
-INSERT INTO trait_details(identifier, trait_name, description, image_url) VALUES
-    ('FIGHTER', 'traits.fighter.name', 'traits.fighter.description',
-    'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
-    ('ASCETIC', 'traits.ascetic.name', 'traits.ascetic.description',
-    'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
-    ('STRONG', 'traits.strong.name', 'traits.strong.description',
-    'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
-    ('BUILDER', 'traits.builder.name', 'traits.builder.description',
-    'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
+INSERT INTO trait_details(identifier, image_url) VALUES
+    ('FIGHTER', 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
+    ('ASCETIC', 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
+    ('STRONG', 'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
+    ('BUILDER', 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
+
+INSERT INTO localized_texts(trait_name, lang, text) VALUES
+    ('FIGHTER', 'en', 'Fighter'),
+    ('FIGHTER', 'cs', 'Rváč'),
+    ('ASCETIC', 'en', 'Ascetic'),
+    ('ASCETIC', 'cs', 'Asketa'),
+    ('STRONG', 'en', 'Strong'),
+    ('STRONG', 'cs', 'Silák'),
+    ('BUILDER', 'en', 'Builder'),
+    ('BUILDER', 'cs', 'Stavitel');
+
+INSERT INTO localized_texts(trait_description, lang, text) VALUES
+    ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
+    ('FIGHTER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji se zbraní nablízko.'),
+    ('ASCETIC', 'en', 'Character with this trait does not need to consume any food at the end of each turn.'),
+    ('ASCETIC', 'cs', 'Postava s touto schopností nepotřebuje žádné jídlo na konci kola.'),
+    ('STRONG', 'en', 'Character with this trait can carry additional junk and food when scavenging.'),
+    ('STRONG', 'cs', 'Postava s touto schopností unese více šrotu a jídla při prohledávání lokací.'),
+    ('BUILDER', 'en', 'Character with this trait constructs building faster without paying extra junk for the construction.'),
+    ('BUILDER', 'cs', 'Postava s touto schopností staví budovy rychleji, aniž musela platit šrot navíc.');
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, scouting, description, info, image_url) VALUES
@@ -53,7 +69,6 @@ INSERT INTO location_descriptions(location, scouting, description, info, image_u
     ('ARENA', false, 'locations.arena.description', 'locations.arena.info',
     'https://image.ibb.co/edVRNK/arena.jpg');
 
--- Location texts
 INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood'),
     ('NEIGHBORHOOD', 'cs', 'Sousedství'),
@@ -170,8 +185,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.character.foodConsumption', 'cs', '{} konzumuje jídlo.'),
     ('detail.character.injurydeath', 'en', '{} died from suffering the injury.'),
     ('detail.character.injurydeath', 'cs', '{} podlehl/a zraněním.'),
-    ('detail.character.levelup.trait', 'en', '{} got a new trait: [{}].'),
-    ('detail.character.levelup.trait', 'cs', '{} získal/a novou schopnost: [{}].'),
+    ('detail.character.levelup.trait', 'en', '{} got a new trait.'),
+    ('detail.character.levelup.trait', 'cs', '{} získal/a novou schopnost.'),
     ('detail.character.starving', 'en', '{} is starving.'),
     ('detail.character.starving', 'cs', '{} hladoví.'),
     ('detail.information.levelup', 'en', 'Your clan advanced to the next information level.'),
@@ -192,8 +207,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.item.found.storage', 'cs', '{} nalezl/a [{}] a vzal tento úlovek do klanového skladu.'),
     ('detail.building.levelup', 'en', '[{}] advanced to the next level.'),
     ('detail.building.levelup', 'cs', 'Tvé budově [{}] se zvýšila úroveň.'),
-    ('detail.trait.builder', 'en', '{} used his trait [{}] and increased the construction speed.'),
-    ('detail.trait.builder', 'cs', '{} použil svou schopnost [{}] a rychlost stavby se zvýšila.'),
+    ('detail.trait.builder', 'en', '{} used his/her Builder trait and increased the construction speed.'),
+    ('detail.trait.builder', 'cs', '{} použil svou schopnost Stavitel a rychlost stavby se zvýšila.'),
     ('detail.trait.fighter', 'en', '{} got a combat bonus for having a trait Fighter and fighting with a melee weapon.'),
     ('detail.trait.fighter', 'cs', '{} získal/a bonus k bojové síly za schopnost Rváč při boji se zbraní nablízko.'),
     ('detail.trait.ascetic', 'en', '{} does not need to consume any food because of his Ascetic trait.'),
