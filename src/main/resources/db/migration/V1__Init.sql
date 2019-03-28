@@ -139,7 +139,6 @@ DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,
     scouting BIT NOT NULL DEFAULT FALSE,
-    name VARCHAR(64) NOT NULL,
     description VARCHAR(64) NOT NULL,
     info VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
@@ -189,9 +188,15 @@ CREATE TABLE localized_texts (
     text VARCHAR(1024) NOT NULL,
     notification_id BIGINT,
     notification_detail_id BIGINT,
+    location_name VARCHAR(16),
+    location_description VARCHAR(16),
+    location_info VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
-    CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id)
+    CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
+    CONSTRAINT localized_text_location_name_fk FOREIGN KEY (location_name) REFERENCES location_descriptions (location),
+    CONSTRAINT localized_text_location_description_fk FOREIGN KEY (location_description) REFERENCES location_descriptions (location),
+    CONSTRAINT localized_text_location_info_fk FOREIGN KEY (location_info) REFERENCES location_descriptions (location)
 );
 
 DROP TABLE IF EXISTS encounters;

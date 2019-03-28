@@ -41,19 +41,91 @@ INSERT INTO trait_details(identifier, trait_name, description, image_url) VALUES
     'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
 
 -- Location descriptions
-INSERT INTO location_descriptions(location, scouting, name, description, info, image_url) VALUES
-    ('NEIGHBORHOOD', false, 'locations.neighborhood.name', 'locations.neighborhood.description', 'locations.neighborhood.info',
+INSERT INTO location_descriptions(location, scouting, description, info, image_url) VALUES
+    ('NEIGHBORHOOD', false, 'locations.neighborhood.description', 'locations.neighborhood.info',
     'https://image.ibb.co/gcR9Xz/vault.jpg'),
-    ('WASTELAND', true, 'locations.wasteland.name', 'locations.wasteland.description', 'locations.wasteland.info',
+    ('WASTELAND', true, 'locations.wasteland.description', 'locations.wasteland.info',
     'https://image.ibb.co/dxwXkK/wasteland.jpg'),
-    ('CITY_CENTER', true, 'locations.citycenter.name', 'locations.citycenter.description', 'locations.citycenter.info',
+    ('CITY_CENTER', true, 'locations.citycenter.description', 'locations.citycenter.info',
     'https://image.ibb.co/jVgMee/city.jpg'),
-    ('TAVERN', false, 'locations.tavern.name', 'locations.tavern.description', 'locations.tavern.info',
+    ('TAVERN', false, 'locations.tavern.description', 'locations.tavern.info',
     'https://image.ibb.co/iZAMZp/tavern.jpg'),
-    ('ARENA', false, 'locations.arena.name', 'locations.arena.description', 'locations.arena.info',
+    ('ARENA', false, 'locations.arena.description', 'locations.arena.info',
     'https://image.ibb.co/edVRNK/arena.jpg');
 
--- Placeholder texts general
+-- Location texts
+INSERT INTO localized_texts(location_name, lang, text) VALUES
+    ('NEIGHBORHOOD', 'en', 'Neighborhood'),
+    ('NEIGHBORHOOD', 'cs', 'Sousedství'),
+    ('WASTELAND', 'en', 'Wasteland'),
+    ('WASTELAND', 'cs', 'Pustina'),
+    ('CITY_CENTER', 'en', 'City center'),
+    ('CITY_CENTER', 'cs', 'Centrum města'),
+    ('TAVERN', 'en', 'Tavern'),
+    ('TAVERN', 'cs', 'Hospoda'),
+    ('ARENA', 'en', 'Arena'),
+    ('ARENA', 'cs', 'Aréna');
+
+INSERT INTO localized_texts(location_description, lang, text) VALUES
+    ('NEIGHBORHOOD', 'en', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk and food. Do not expect to find anything too valuable, though.'),
+    ('NEIGHBORHOOD', 'cs', 'Sousedství je území v okolí tvého kempu. Je to relativně klidné místo, už tady přeci jen chvíli žijete. Ideální kratochvílí v této oblasti je sbírání jídla a šrotu. Nečekejte, že tady narazíte na nějaké zázraky.'),
+    ('WASTELAND', 'en', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.'),
+    ('WASTELAND', 'cs', 'Pustina je vyprahlá oblast všude okolo. Může se zdát opuštěná, ale věz, že se zde nachází mnoho nebezpečí.'),
+    ('CITY_CENTER', 'en', 'The ruins of the center of Withergate hides the most valuable treasures. Unofrtunately, run by local gangs and roamed by scavengers, this place can sometimes prove to be very dangerous. On the other hand, if you are lucky, you can find some useful items here.'),
+    ('CITY_CENTER', 'cs', 'Ruiny centra Withergate ukrývají ty největěí poklady. Bohužel se jedná o velmi nebezpečnou oblast obývající lokálními gangy, mutanty a tím nejhorším, co pustina vyplivla. Pokud budete mít štěstí, můžete zde nalézt opravdové poklady.'),
+    ('TAVERN', 'en', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash. '),
+    ('TAVERN', 'cs', 'Na kraji Withergate je malá hospoda, kam se stahují všechny pochybné existence utrácet své pracně vydsělané zátky. Třeba zde narazíš na někoho, kdo by se ti mohl hodit.'),
+    ('ARENA', 'en', 'Glory for your best warriors and caps for your clan. Show your strenght in the arena and fight against other gladiators. Be warned, though, that this is no place for weaklings and safety is not guaranteed.'),
+    ('ARENA', 'cs', 'Sláva pro vítěze a zátky pro tvůj klan. Ukaž svou sílu a utkej se s ostatními gladiátory. Měj ale na paměti, že tohle není místo pro slabochy a snadno může dojít i ke smrtelným zraněním.');
+
+INSERT INTO localized_texts(location_info, lang, text) VALUES
+    ('NEIGHBORHOOD', 'en', 'Neighborhood is a relatively safe location. The most probable outcome is finding some junk or food.'),
+    ('NEIGHBORHOOD', 'cs', 'Sousedství je relativně klidná oblast. Nejpravděpodobnější výsledek průzkumu bude jídlo a šrot.'),
+    ('WASTELAND', 'en', 'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.'),
+    ('WASTELAND', 'cs', 'V pustině je vyšší šance na nebezpečné události. Na druhou stranu, při úspěchu je zde také šance na vyšší odměnu. Je možné zde zjistit zajímavé informace.'),
+    ('CITY_CENTER', 'en', 'City has the highest risk of encoutering dangerous events. On the other hand, it also provides higher chances for finding valuable loot.'),
+    ('CITY_CENTER', 'cs', 'Centrum města má nejvyšší riziko na nebezpečné události. Pokud se vám podaří přežít, tak je zde ale i šance na vysoké odměny. Také se zde postavy mohou dozvědět hodně zajímavých informací při pátrání.'),
+    ('TAVERN', 'en', 'Tavern is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.'),
+    ('TAVERN', 'cs', 'V hospodě máš možnost najmout nové postavu. Každá postava stojí [100] zátek, tak měj tuto sumu připravenou, než sem vyrazíš.'),
+    ('ARENA', 'en', 'Only one character per day can be sent to the arena. This character will be matched with random opponent and fight. Only melee weapons are allowed. Fame and glory awarded in case of victory but characters can get injured.'),
+    ('ARENA', 'cs', 'Každý den můžeš do arény poslat jednu postavu ze svého klanu. Utkáš se s náhodným protivníkem a vítěz vyhraje slávu a zátky. Jsou dovolené pouze kontaktní zbraně.');
+
+-- Placeholder texts notifications
+INSERT INTO placeholder_texts(code, lang, text) VALUES
+    ('location.tavern.hired', 'en', 'Character went to the tavern to hire someone for your clan. After spending the evening chatting with several people, the decision fell on {}'),
+    ('location.tavern.hired', 'cs', 'Postava šla do hospody s nabídkou lehce vydělaných zátek. Po několika hodinách padlo rozhodnutí na {}.'),
+    ('location.junk', 'en', 'Character found some junk.'),
+    ('location.junk', 'cs', 'Postava  našla šrot.'),
+    ('location.food', 'en', 'Character found some food.'),
+    ('location.food', 'cs', 'Postava  našla jídlo.'),
+    ('location.loot', 'en', 'Character found loot.'),
+    ('location.loot', 'cs', 'Postava našla předmět.'),
+    ('location.information', 'en', 'Character found valuable information when scouting.'),
+    ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
+    ('building.work', 'en', 'Character worked on the construction of [{}]'),
+    ('building.work', 'cs', 'Postava  pracovala na stavbě [{}].'),
+    ('building.monument.income', 'en', 'Your [{}] generated fame for your clan.'),
+    ('building.monument.income', 'cs', 'Tvůj [{}] získal slávu pro tvůj klan.'),
+    ('building.gmofarm.income', 'en', 'Your [{}] generated food for your clan.'),
+    ('building.gmofarm.income', 'cs', 'Na [{}] se podařilo vyprodukovat jídlo pro tvůj klan.'),
+    ('building.traininggrounds.income', 'en', 'Character gained experience when training at [{}].'),
+    ('building.traininggrounds.income', 'cs', 'Postava získala zkušenosti tréninkem v [{}].'),
+    ('character.healing', 'en', 'Character has recovered some health when resting.'),
+    ('character.healing', 'cs', 'Postavě se zvedlo zdraví zdraví při odpočinku.'),
+    ('character.levelup', 'en', 'Character has advanced to a higher level.'),
+    ('character.levelup', 'cs', 'Postava postoupila na další úroveň.'),
+    ('clan.foodConsumption', 'en', 'Characters are consuming food.'),
+    ('clan.foodConsumption', 'cs', 'Postavy konzumují jídlo.'),
+    ('combat.arena.description', 'en', '{} faced {} in the arena.'),
+    ('combat.arena.description', 'cs', '{} se utkal/a s {} v aréně.'),
+    ('combat.arena.win', 'en', '{} won the fight.'),
+    ('combat.arena.win', 'cs', '{} vyhrál/a souboj.'),
+    ('combat.arena.lose', 'en', '{} lost the fight.'),
+    ('combat.arena.lose', 'cs', '{} prohrál/a souboj.'),
+    ('combat.death', 'en', 'Unfortunately, {} died during the combat.'),
+    ('combat.death', 'cs', 'Bohužel, {} zemřel/a během souboje.');
+
+-- Placeholder texts notifications
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.tavern.hired', 'en', 'Character went to the tavern to hire someone for your clan. After spending the evening chatting with several people, the decision fell on {}'),
     ('location.tavern.hired', 'cs', 'Postava šla do hospody s nabídkou lehce vydělaných zátek. Po několika hodinách padlo rozhodnutí na {}.'),

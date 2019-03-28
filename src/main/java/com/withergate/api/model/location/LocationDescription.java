@@ -1,14 +1,20 @@
 package com.withergate.api.model.location;
 
+import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Map;
 
 
 @Entity
@@ -25,14 +31,20 @@ public class LocationDescription {
     @Column(name = "scouting", nullable = false)
     private boolean scouting;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "location_name")
+    private Map<String, LocalizedText> name;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "location_description")
+    private Map<String, LocalizedText> description;
 
-    @Column(name = "info", nullable = false)
-    private String info;
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "location_info")
+    private Map<String, LocalizedText> info;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
