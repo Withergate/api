@@ -77,7 +77,7 @@ public class BuildingServiceImpl implements BuildingService {
                     notification.getDetails().add(detail);
                 }
 
-                notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{});
+                notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{}, details.getName());
 
                 if (clan.getBuildings().containsKey(action.getBuilding())) {
                     log.debug("Improving existing building {}.", action.getBuilding());
@@ -90,7 +90,7 @@ public class BuildingServiceImpl implements BuildingService {
                         building.setLevel(building.getLevel() + 1);
 
                         NotificationDetail detail = new NotificationDetail();
-                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[]{});
+                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[]{}, details.getName());
                         notification.getDetails().add(detail);
                     }
 

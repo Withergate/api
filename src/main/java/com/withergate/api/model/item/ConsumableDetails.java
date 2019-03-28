@@ -38,22 +38,11 @@ public class ConsumableDetails extends ItemDetails {
     @JoinColumn(name = "consumable_description")
     private Map<String, LocalizedText> description;
 
-    @JsonIgnore
     @Column(name = "effect", updatable = false, nullable = false)
     private int effect;
 
     @Column(name = "effect_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private EffectType effectType;
-
-    @JsonProperty("effect")
-    public String getEffectText() {
-        switch (effectType){
-            case HEALING:
-                return "Heals [" + effect + "] hitpoints to a wounded character.";
-            default:
-                return "Unknown effect.";
-        }
-    }
 
 }
