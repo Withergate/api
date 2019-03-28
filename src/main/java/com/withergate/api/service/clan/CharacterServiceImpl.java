@@ -249,7 +249,7 @@ public class CharacterServiceImpl implements CharacterService {
                 if (building.getLevel() > 0) {
                     NotificationDetail healingBuildingDetail = new NotificationDetail();
                     notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
-                            new String[]{String.valueOf(building.getLevel()), building.getDetails().getName()});
+                            new String[]{String.valueOf(building.getLevel())});
                     notification.getDetails().add(healingBuildingDetail);
                 }
             }

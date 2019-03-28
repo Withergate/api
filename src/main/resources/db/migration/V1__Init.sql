@@ -29,9 +29,6 @@ CREATE TABLE clans (
 DROP TABLE IF EXISTS building_details;
 CREATE TABLE building_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
-    building_name VARCHAR(64) NOT NULL,
-    description VARCHAR(64) NOT NULL,
-    info VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     cost INT NOT NULL,
     visitable BIT NOT NULL,
@@ -191,6 +188,9 @@ CREATE TABLE localized_texts (
     location_info VARCHAR(16),
     trait_name VARCHAR(16),
     trait_description VARCHAR(16),
+    building_name VARCHAR(16),
+    building_description VARCHAR(16),
+    building_info VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -198,7 +198,10 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_location_description_fk FOREIGN KEY (location_description) REFERENCES location_descriptions (location),
     CONSTRAINT localized_text_location_info_fk FOREIGN KEY (location_info) REFERENCES location_descriptions (location),
     CONSTRAINT localized_text_trait_name_fk FOREIGN KEY (trait_name) REFERENCES trait_details (identifier),
-    CONSTRAINT localized_text_trait_description_fk FOREIGN KEY (trait_description) REFERENCES trait_details (identifier)
+    CONSTRAINT localized_text_trait_description_fk FOREIGN KEY (trait_description) REFERENCES trait_details (identifier),
+    CONSTRAINT localized_text_building_name_fk FOREIGN KEY (building_name) REFERENCES building_details (identifier),
+    CONSTRAINT localized_text_building_description_fk FOREIGN KEY (building_description) REFERENCES building_details (identifier),
+    CONSTRAINT localized_text_building_info_fk FOREIGN KEY (building_info) REFERENCES building_details (identifier)
 );
 
 DROP TABLE IF EXISTS encounters;

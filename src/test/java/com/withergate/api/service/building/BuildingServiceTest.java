@@ -72,7 +72,6 @@ public class BuildingServiceTest {
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
-        details.setName("Monument");
         details.setIdentifier(BuildingDetails.BuildingName.MONUMENT);
         Mockito.when(buildingDetailsRepository.getOne(BuildingDetails.BuildingName.MONUMENT)).thenReturn(details);
 

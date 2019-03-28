@@ -77,7 +77,7 @@ public class BuildingServiceImpl implements BuildingService {
                     notification.getDetails().add(detail);
                 }
 
-                notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{details.getName()});
+                notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{});
 
                 if (clan.getBuildings().containsKey(action.getBuilding())) {
                     log.debug("Improving existing building {}.", action.getBuilding());
@@ -90,7 +90,7 @@ public class BuildingServiceImpl implements BuildingService {
                         building.setLevel(building.getLevel() + 1);
 
                         NotificationDetail detail = new NotificationDetail();
-                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[]{details.getName()});
+                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[]{});
                         notification.getDetails().add(detail);
                     }
 
@@ -141,7 +141,7 @@ public class BuildingServiceImpl implements BuildingService {
                     notification.setHeader(clan.getName());
                     notification.setFameIncome(building.getLevel());
 
-                    notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[]{building.getDetails().getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[]{});
                     notificationService.save(notification);
                 }
             }
@@ -158,7 +158,7 @@ public class BuildingServiceImpl implements BuildingService {
                     notification.setClanId(clan.getId());
                     notification.setHeader(clan.getName());
                     notification.setFoodIncome(building.getLevel());
-                    notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[]{building.getDetails().getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[]{});
                     notificationService.save(notification);
 
                 }
@@ -178,7 +178,7 @@ public class BuildingServiceImpl implements BuildingService {
                             notification.setClanId(clan.getId());
                             notification.setHeader(character.getName());
                             notification.setExperience(building.getLevel());
-                            notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[]{building.getDetails().getName()});
+                            notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[]{});
                             notificationService.save(notification);
                         }
                     }

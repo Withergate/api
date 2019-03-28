@@ -19,15 +19,41 @@ INSERT INTO consumable_details(item_identifier, item_name, description, rarity, 
     ('LARGE_MEDKIT', 'items.largemedkit.name', 'items.largemedkit.description', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
 
 -- Building details
-INSERT INTO building_details(identifier, building_name, cost, visitable, description, info, image_url) VALUES
-    ('SICK_BAY', 'buildings.sickbay.name', 15, false, 'buildings.sickbay.description', 'buildings.sickbay.info',
-    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('GMO_FARM', 'buildings.gmofarm.name', 15, false, 'buildings.gmofarm.description', 'buildings.gmofarm.info',
-    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('TRAINING_GROUNDS', 'buildings.traininggrounds.name', 20, false, 'buildings.traininggrounds.description', 'buildings.traininggrounds.info',
-    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('MONUMENT', 'buildings.monument.name', 20, false, 'buildings.monument.description', 'buildings.monument.info',
-    'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
+INSERT INTO building_details(identifier, cost, visitable, image_url) VALUES
+    ('SICK_BAY', 15, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('GMO_FARM', 10, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('TRAINING_GROUNDS', 20, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
+    ('MONUMENT', 20, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
+
+INSERT INTO localized_texts(building_name, lang, text) VALUES
+    ('SICK_BAY', 'en', 'Sick bay'),
+    ('SICK_BAY', 'cs', 'Marodka'),
+    ('GMO_FARM', 'en', 'GMO farm'),
+    ('GMO_FARM', 'cs', 'GMO farma'),
+    ('TRAINING_GROUNDS', 'en', 'Training grounds'),
+    ('TRAINING_GROUNDS', 'cs', 'Cvičiště'),
+    ('MONUMENT', 'en', 'Monument'),
+    ('MONUMENT', 'cs', 'Monument');
+
+INSERT INTO localized_texts(building_description, lang, text) VALUES
+    ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
+    ('SICK_BAY', 'cs', 'Je vám pod psa? Pojďte se u nás natáhnout!'),
+    ('GMO_FARM', 'en', 'We finally realized how to genetically modify our animals without them growing a third head!'),
+    ('GMO_FARM', 'cs', 'Teď už víme, jak těch našich pár zvířat geneticky vylepšit, aniž by jim narostla třetí hlava!'),
+    ('TRAINING_GROUNDS', 'en', 'There is nothing we cant learn!'),
+    ('TRAINING_GROUNDS', 'cs', 'Není nic, co by se tvůj velkolepý klan nemohl naučit!'),
+    ('MONUMENT', 'en', 'Let everybody know the glory of your mighty clan by building a monument near your campsite!'),
+    ('MONUMENT', 'cs', 'Ať všichni vidí, jak je náš klan úžasný!');
+
+INSERT INTO localized_texts(building_info, lang, text) VALUES
+    ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
+    ('SICK_BAY', 'cs', 'Každá úroveň této budovy zvyšuje počet vyléčených životů postav, které odpočívají.'),
+    ('GMO_FARM', 'en', 'Each level of this building grants free food every turn.'),
+    ('GMO_FARM', 'cs', 'Každá úroveň této budovy poskytuje jídlo zdarma každé kolo.'),
+    ('TRAINING_GROUNDS', 'en', 'Each level of this building grants free experience to all resting characters every turn.'),
+    ('TRAINING_GROUNDS', 'cs', 'Odpočívající postavy dostanou každé kolo zkušenosti zdarma.'),
+    ('MONUMENT', 'en', 'Each level of this building grants free fame every turn.'),
+    ('MONUMENT', 'cs', 'Každá úroveň této budovy poskutuje slávu každé kolo.');
 
 --- Trait details
 INSERT INTO trait_details(identifier, image_url) VALUES
@@ -117,43 +143,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.loot', 'cs', 'Postava našla předmět.'),
     ('location.information', 'en', 'Character found valuable information when scouting.'),
     ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
-    ('building.work', 'en', 'Character worked on the construction of [{}]'),
-    ('building.work', 'cs', 'Postava  pracovala na stavbě [{}].'),
-    ('building.monument.income', 'en', 'Your [{}] generated fame for your clan.'),
-    ('building.monument.income', 'cs', 'Tvůj [{}] získal slávu pro tvůj klan.'),
-    ('building.gmofarm.income', 'en', 'Your [{}] generated food for your clan.'),
-    ('building.gmofarm.income', 'cs', 'Na [{}] se podařilo vyprodukovat jídlo pro tvůj klan.'),
-    ('building.traininggrounds.income', 'en', 'Character gained experience when training at [{}].'),
-    ('building.traininggrounds.income', 'cs', 'Postava získala zkušenosti tréninkem v [{}].'),
-    ('character.healing', 'en', 'Character has recovered some health when resting.'),
-    ('character.healing', 'cs', 'Postavě se zvedlo zdraví zdraví při odpočinku.'),
-    ('character.levelup', 'en', 'Character has advanced to a higher level.'),
-    ('character.levelup', 'cs', 'Postava postoupila na další úroveň.'),
-    ('clan.foodConsumption', 'en', 'Characters are consuming food.'),
-    ('clan.foodConsumption', 'cs', 'Postavy konzumují jídlo.'),
-    ('combat.arena.description', 'en', '{} faced {} in the arena.'),
-    ('combat.arena.description', 'cs', '{} se utkal/a s {} v aréně.'),
-    ('combat.arena.win', 'en', '{} won the fight.'),
-    ('combat.arena.win', 'cs', '{} vyhrál/a souboj.'),
-    ('combat.arena.lose', 'en', '{} lost the fight.'),
-    ('combat.arena.lose', 'cs', '{} prohrál/a souboj.'),
-    ('combat.death', 'en', 'Unfortunately, {} died during the combat.'),
-    ('combat.death', 'cs', 'Bohužel, {} zemřel/a během souboje.');
-
--- Placeholder texts notifications
-INSERT INTO placeholder_texts(code, lang, text) VALUES
-    ('location.tavern.hired', 'en', 'Character went to the tavern to hire someone for your clan. After spending the evening chatting with several people, the decision fell on {}'),
-    ('location.tavern.hired', 'cs', 'Postava šla do hospody s nabídkou lehce vydělaných zátek. Po několika hodinách padlo rozhodnutí na {}.'),
-    ('location.junk', 'en', 'Character found some junk.'),
-    ('location.junk', 'cs', 'Postava  našla šrot.'),
-    ('location.food', 'en', 'Character found some food.'),
-    ('location.food', 'cs', 'Postava  našla jídlo.'),
-    ('location.loot', 'en', 'Character found loot.'),
-    ('location.loot', 'cs', 'Postava našla předmět.'),
-    ('location.information', 'en', 'Character found valuable information when scouting.'),
-    ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
-    ('building.work', 'en', 'Character worked on the construction of [{}]'),
-    ('building.work', 'cs', 'Postava  pracovala na stavbě [{}].'),
+    ('building.work', 'en', 'Character worked on a building construction.'),
+    ('building.work', 'cs', 'Postava  pracovala na stavbě.'),
     ('building.monument.income', 'en', 'Your [{}] generated fame for your clan.'),
     ('building.monument.income', 'cs', 'Tvůj [{}] získal slávu pro tvůj klan.'),
     ('building.gmofarm.income', 'en', 'Your [{}] generated food for your clan.'),
@@ -193,8 +184,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.information.levelup', 'cs', 'Tvůj klan postoupil na další úroveň informací.'),
     ('detail.healing.roll', 'en', 'Rolled {} when computing healing.'),
     ('detail.healing.roll', 'cs', 'Na kostce padlo {} při hodu na léčení.'),
-    ('detail.healing.building', 'en', 'Healing increased by {} due to [{}].'),
-    ('detail.healing.building', 'cs', 'Léčba zvýšena o {} díky [{}].'),
+    ('detail.healing.building', 'en', 'Sick bay increased healing by {}.'),
+    ('detail.healing.building', 'cs', 'Marodka zlepšila léčbu o {}.'),
     ('detail.combat.rolls', 'en', '{} rolled {} on combat dice. {} rolled {}.'),
     ('detail.combat.rolls', 'cs', '{} hodil/a při souboji {}. {} hodil/a {}.'),
     ('detail.combat.roundresult', 'en', '{} won the round with combat value {}. {} had combat value {}. {} lost {} health'),
@@ -205,8 +196,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.item.found.equipped', 'cs', '{} přidal do své výzbroje [{}].'),
     ('detail.item.found.storage', 'en', '{} found [{}] took it to your clan storage.'),
     ('detail.item.found.storage', 'cs', '{} nalezl/a [{}] a vzal tento úlovek do klanového skladu.'),
-    ('detail.building.levelup', 'en', '[{}] advanced to the next level.'),
-    ('detail.building.levelup', 'cs', 'Tvé budově [{}] se zvýšila úroveň.'),
+    ('detail.building.levelup', 'en', 'Building advanced to the next level.'),
+    ('detail.building.levelup', 'cs', 'Tvé budově se zvýšila úroveň.'),
     ('detail.trait.builder', 'en', '{} used his/her Builder trait and increased the construction speed.'),
     ('detail.trait.builder', 'cs', '{} použil svou schopnost Stavitel a rychlost stavby se zvýšila.'),
     ('detail.trait.fighter', 'en', '{} got a combat bonus for having a trait Fighter and fighting with a melee weapon.'),
