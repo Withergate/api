@@ -16,7 +16,6 @@ public class CharacterTest {
         character.setCombat(3);
 
         WeaponDetails details = new WeaponDetails();
-        details.setName("Knife");
         details.setCombat(1);
         Weapon weapon = new Weapon();
         weapon.setDetails(details);

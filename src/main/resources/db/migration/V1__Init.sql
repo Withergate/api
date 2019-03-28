@@ -49,14 +49,12 @@ CREATE TABLE buildings (
 
 DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE weapon_details (
-    item_identifier VARCHAR(16) NOT NULL,
-    item_name VARCHAR(64) NOT NULL,
-    description VARCHAR(256) NOT NULL,
+    identifier VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     combat INT NOT NULL,
     weapon_type VARCHAR(8) NOT NULL,
-    PRIMARY KEY (item_identifier)
+    PRIMARY KEY (identifier)
 );
 
 DROP TABLE IF EXISTS weapons;
@@ -65,20 +63,18 @@ CREATE TABLE weapons (
     item_identifier VARCHAR(16),
     clan_id INT DEFAULT NULL,
     PRIMARY KEY (weapon_id),
-    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (item_identifier) REFERENCES weapon_details (item_identifier),
+    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (item_identifier) REFERENCES weapon_details (identifier),
     CONSTRAINT weapon_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
 DROP TABLE IF EXISTS consumable_details;
 CREATE TABLE consumable_details (
-    item_identifier VARCHAR(16) NOT NULL,
-    item_name VARCHAR(64) NOT NULL,
-    description VARCHAR(256) NOT NULL,
+    identifier VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     effect_type VARCHAR(8) NOT NULL,
     effect INT NOT NULL,
-    PRIMARY KEY (item_identifier)
+    PRIMARY KEY (identifier)
 );
 
 DROP TABLE IF EXISTS consumables;
@@ -87,7 +83,7 @@ CREATE TABLE consumables (
     item_identifier VARCHAR(16),
     clan_id INT DEFAULT NULL,
     PRIMARY KEY (consumable_id),
-    CONSTRAINT consumable_consumable_details_fk FOREIGN KEY (item_identifier) REFERENCES consumable_details (item_identifier),
+    CONSTRAINT consumable_consumable_details_fk FOREIGN KEY (item_identifier) REFERENCES consumable_details (identifier),
     CONSTRAINT consumable_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
@@ -191,6 +187,10 @@ CREATE TABLE localized_texts (
     building_name VARCHAR(16),
     building_description VARCHAR(16),
     building_info VARCHAR(16),
+    weapon_name VARCHAR(16),
+    weapon_description VARCHAR(16),
+    consumable_name VARCHAR(16),
+    consumable_description VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -201,7 +201,11 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_trait_description_fk FOREIGN KEY (trait_description) REFERENCES trait_details (identifier),
     CONSTRAINT localized_text_building_name_fk FOREIGN KEY (building_name) REFERENCES building_details (identifier),
     CONSTRAINT localized_text_building_description_fk FOREIGN KEY (building_description) REFERENCES building_details (identifier),
-    CONSTRAINT localized_text_building_info_fk FOREIGN KEY (building_info) REFERENCES building_details (identifier)
+    CONSTRAINT localized_text_building_info_fk FOREIGN KEY (building_info) REFERENCES building_details (identifier),
+    CONSTRAINT localized_text_weapon_name_fk FOREIGN KEY (weapon_name) REFERENCES weapon_details (identifier),
+    CONSTRAINT localized_text_weapon_description_fk FOREIGN KEY (weapon_description) REFERENCES weapon_details (identifier),
+    CONSTRAINT localized_text_consumable_name_fk FOREIGN KEY (consumable_name) REFERENCES consumable_details (identifier),
+    CONSTRAINT localized_text_consumable_description_fk FOREIGN KEY (consumable_description) REFERENCES consumable_details (identifier)
 );
 
 DROP TABLE IF EXISTS encounters;

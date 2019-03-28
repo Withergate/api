@@ -82,7 +82,6 @@ public class ItemServiceTest {
         character.setWeapon(null);
 
         WeaponDetails weaponDetails = new WeaponDetails();
-        weaponDetails.setName("Knife");
 
         Weapon weapon = new Weapon();
         weapon.setId(3);
@@ -129,7 +128,6 @@ public class ItemServiceTest {
         character.setClan(clan);
 
         WeaponDetails weaponDetails = new WeaponDetails();
-        weaponDetails.setName("Knife");
 
         Weapon weapon = new Weapon();
         weapon.setId(3);
@@ -176,7 +174,6 @@ public class ItemServiceTest {
         character.setWeapon(null);
 
         WeaponDetails weaponDetails = new WeaponDetails();
-        weaponDetails.setName("Knife");
 
         Weapon weapon = new Weapon();
         weapon.setId(3);

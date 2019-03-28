@@ -256,7 +256,7 @@ public class ItemServiceImpl implements ItemService {
 
             // update notification
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.equipped", new String[]{character.getName(), details.getName()});
+            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.equipped", new String[]{character.getName()});
             notification.getDetails().add(detail);
         } else {
             Clan clan = character.getClan();
@@ -268,7 +268,7 @@ public class ItemServiceImpl implements ItemService {
 
             // update notification
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName(), details.getName()});
+            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()});
             notification.getDetails().add(detail);
         }
     }
@@ -301,7 +301,7 @@ public class ItemServiceImpl implements ItemService {
          * Update notification.
          */
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName(), details.getName()});
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()});
         notification.getDetails().add(detail);
 
     }

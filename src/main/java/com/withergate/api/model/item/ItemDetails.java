@@ -15,14 +15,8 @@ import javax.persistence.MappedSuperclass;
 public class ItemDetails {
 
     @Id
-    @Column(name = "item_identifier", updatable = false, nullable = false)
+    @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
-
-    @Column(name = "item_name", updatable = false, nullable = false)
-    private String name;
-
-    @Column(name = "description", nullable = false)
-    private String description;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;

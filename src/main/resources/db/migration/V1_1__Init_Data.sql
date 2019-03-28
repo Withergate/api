@@ -3,20 +3,68 @@ INSERT INTO turns (turn_id) VALUES
     (1);
 
 -- Weapon details
-INSERT INTO weapon_details(item_identifier, item_name, description, rarity, weapon_type, combat, image_url) VALUES
-    ('KNIFE', 'items.knife.name', 'items.knife.description', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/vxtBRdS/knife.jpg'),
-    ('BAT', 'items.bat.name', 'items.bat.description', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/SXJ5Ywb/bat.jpg'),
-    ('AXE', 'items.axe.name', 'items.axe.description', 'RARE', 'MELEE', 2, 'https://i.ibb.co/BwwPWcC/axe.jpg'),
-    ('CHAINSAW', 'items.chainsaw.name', 'items.chainsaw.description', 'RARE', 'MELEE', 3, 'https://i.ibb.co/stVSRjG/chainsaw.jpg'),
-    ('BOOMERANG', 'items.boomerang.name', 'items.boomerang.description', 'COMMON', 'RANGED', 1, 'https://i.ibb.co/3NdWXS5/boomerang.jpg'),
-    ('THROWING_KNIFES', 'items.throwingknifes.name', 'items.throwingknifes.description', 'COMMON', 'RANGED', 2, 'https://i.ibb.co/2yjF8pr/throwing-knifes.jpg'),
-    ('CROSSBOW', 'items.crossbow.name', 'items.crossbow.description', 'RARE', 'RANGED', 3, 'https://i.ibb.co/HN0yYqt/crossbow.jpg'),
-    ('HAND_GUN', 'items.handgun.name', 'items.handgun.description', 'RARE', 'RANGED', 4, 'https://i.ibb.co/nCW17gy/handgun.jpg');
+INSERT INTO weapon_details(identifier, rarity, weapon_type, combat, image_url) VALUES
+    ('KNIFE', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/vxtBRdS/knife.jpg'),
+    ('AXE', 'RARE', 'MELEE', 2, 'https://i.ibb.co/BwwPWcC/axe.jpg'),
+    ('BAT', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/SXJ5Ywb/bat.jpg'),
+    ('CHAINSAW', 'RARE', 'MELEE', 3, 'https://i.ibb.co/stVSRjG/chainsaw.jpg'),
+    ('BOOMERANG', 'COMMON', 'RANGED', 1, 'https://i.ibb.co/3NdWXS5/boomerang.jpg'),
+    ('THROWING_KNIFES', 'COMMON', 'RANGED', 2, 'https://i.ibb.co/2yjF8pr/throwing-knifes.jpg'),
+    ('CROSSBOW', 'RARE', 'RANGED', 3, 'https://i.ibb.co/HN0yYqt/crossbow.jpg'),
+    ('HAND_GUN', 'RARE', 'RANGED', 4, 'https://i.ibb.co/nCW17gy/handgun.jpg');
+
+INSERT INTO localized_texts(weapon_name, lang, text) VALUES
+    ('KNIFE', 'en', 'Knife'),
+    ('KNIFE', 'cs', 'Nůž'),
+    ('AXE', 'en', 'Axe'),
+    ('AXE', 'cs', 'Sekera'),
+    ('BAT', 'en', 'Baseball bat'),
+    ('BAT', 'cs', 'Palice'),
+    ('CHAINSAW', 'en', 'Chainsaw'),
+    ('CHAINSAW', 'cs', 'Motorová pila'),
+    ('BOOMERANG', 'en', 'Boomerang'),
+    ('BOOMERANG', 'cs', 'Boomerang'),
+    ('THROWING_KNIFES', 'en', 'Throwing knifes'),
+    ('THROWING_KNIFES', 'cs', 'Vrhací nože'),
+    ('CROSSBOW', 'en', 'Crossbow'),
+    ('CROSSBOW', 'cs', 'Kuše'),
+    ('HAND_GUN', 'en', 'Hand gun'),
+    ('HAND_GUN', 'cs', 'Pistole');
+
+INSERT INTO localized_texts(weapon_description, lang, text) VALUES
+    ('KNIFE', 'en', 'A dull edged, rusty kitchen knife stained with blood.'),
+    ('KNIFE', 'cs', 'Orezlý kuchyňský nůž od krve.'),
+    ('AXE', 'en', 'One-handed axe.'),
+    ('AXE', 'cs', 'Jednoruční sekera.'),
+    ('BAT', 'en', 'Baseball bat full of splinters enhanced with some nails.'),
+    ('BAT', 'cs', 'Baseballová pálka vylepšená několika hřebíky.'),
+    ('CHAINSAW', 'en', 'Gas powered chainsaw with some fuel still left in the tank.'),
+    ('CHAINSAW', 'cs', 'Benzinová motorová pila s palivem v nádrži.'),
+    ('BOOMERANG', 'en', 'Wooden boomerang. With some razors attached to it.'),
+    ('BOOMERANG', 'cs', 'Dřevěný boomerang s přidělanými žiletkami.'),
+    ('THROWING_KNIFES', 'en', 'A set of well balanced throwing knives.'),
+    ('THROWING_KNIFES', 'cs', 'Několik dobře vybalancovaných vrhacích nožů.'),
+    ('CROSSBOW', 'en', 'Modern crossbows can be precise and silent at the same time.'),
+    ('CROSSBOW', 'cs', 'Moderní kuše. Přesná a tichá.'),
+    ('HAND_GUN', 'en', 'Hand gun. Light, practical, deadly.'),
+    ('HAND_GUN', 'cs', 'Pistole. Lehká, praktická, smrtící.');
 
 -- Consumable details
-INSERT INTO consumable_details(item_identifier, item_name, description, rarity, effect, effect_type, image_url) VALUES
-    ('SMALL_MEDKIT', 'items.smallmedkit.name', 'items.smallmedkit.description', 'COMMON', 2, 'HEALING', 'https://i.ibb.co/XC6jLZS/small-medkit.jpg'),
-    ('LARGE_MEDKIT', 'items.largemedkit.name', 'items.largemedkit.description', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
+INSERT INTO consumable_details(identifier, rarity, effect, effect_type, image_url) VALUES
+    ('SMALL_MEDKIT', 'COMMON', 2, 'HEALING', 'https://i.ibb.co/XC6jLZS/small-medkit.jpg'),
+    ('LARGE_MEDKIT', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
+
+INSERT INTO localized_texts(consumable_name, lang, text) VALUES
+    ('SMALL_MEDKIT', 'en', 'Small medkit'),
+    ('SMALL_MEDKIT', 'cs', 'Malá lékárnička'),
+    ('LARGE_MEDKIT', 'en', 'Large medkit'),
+    ('LARGE_MEDKIT', 'cs', 'Velká lékárnička');
+
+INSERT INTO localized_texts(consumable_description, lang, text) VALUES
+    ('SMALL_MEDKIT', 'en', 'Basic medical equipment for providing first aid and treating minor wounds.'),
+    ('SMALL_MEDKIT', 'cs', 'Malá lékárnička se základními potřebami pro první pomoc.'),
+    ('LARGE_MEDKIT', 'en', 'Large bag containing all sorts of medical equipment. Useful for treating more dangerous wounds.'),
+    ('LARGE_MEDKIT', 'cs', 'Velká lékárnička s vybavením na ošetření težších zranění.');
 
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, image_url) VALUES
@@ -145,12 +193,12 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
     ('building.work', 'en', 'Character worked on a building construction.'),
     ('building.work', 'cs', 'Postava  pracovala na stavbě.'),
-    ('building.monument.income', 'en', 'Your [{}] generated fame for your clan.'),
-    ('building.monument.income', 'cs', 'Tvůj [{}] získal slávu pro tvůj klan.'),
-    ('building.gmofarm.income', 'en', 'Your [{}] generated food for your clan.'),
-    ('building.gmofarm.income', 'cs', 'Na [{}] se podařilo vyprodukovat jídlo pro tvůj klan.'),
-    ('building.traininggrounds.income', 'en', 'Character gained experience when training at [{}].'),
-    ('building.traininggrounds.income', 'cs', 'Postava získala zkušenosti tréninkem v [{}].'),
+    ('building.monument.income', 'en', 'Your Monument generated fame for your clan.'),
+    ('building.monument.income', 'cs', 'Tvůj Monument získal slávu pro tvůj klan.'),
+    ('building.gmofarm.income', 'en', 'Your GMO farm generated food for your clan.'),
+    ('building.gmofarm.income', 'cs', 'Na GMO farmě se podařilo vyprodukovat jídlo pro tvůj klan.'),
+    ('building.traininggrounds.income', 'en', 'Character gained experience when training at the Training grounds.'),
+    ('building.traininggrounds.income', 'cs', 'Postava získala zkušenosti tréninkem na cvičišti.'),
     ('character.healing', 'en', 'Character has recovered some health when resting.'),
     ('character.healing', 'cs', 'Postavě se zvedlo zdraví zdraví při odpočinku.'),
     ('character.levelup', 'en', 'Character has advanced to a higher level.'),
@@ -192,10 +240,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.combat.roundresult', 'cs', '{} vyhrál/a kolo souboje s bojovým číslem {}. {} měl bojové číslo {}. {} ztrácí {} životy.'),
     ('detail.combat.flee', 'en', '{} fleed the combat with {} dice roll and {}% flee chance.'),
     ('detail.combat.flee', 'cs', '{} uprchl/a ze souboje s hodem {} při šanci {}% na útěk.'),
-    ('detail.item.found.equipped', 'en', '{} found [{}] and equipped it.'),
-    ('detail.item.found.equipped', 'cs', '{} přidal do své výzbroje [{}].'),
-    ('detail.item.found.storage', 'en', '{} found [{}] took it to your clan storage.'),
-    ('detail.item.found.storage', 'cs', '{} nalezl/a [{}] a vzal tento úlovek do klanového skladu.'),
+    ('detail.item.found.equipped', 'en', '{} found item and equipped it.'),
+    ('detail.item.found.equipped', 'cs', '{} přidal do svého inventáře nový předmět.'),
+    ('detail.item.found.storage', 'en', '{} found loot and took it to your clan storage.'),
+    ('detail.item.found.storage', 'cs', '{} nalezl/a předmět a vzal tento úlovek do klanového skladu.'),
     ('detail.building.levelup', 'en', 'Building advanced to the next level.'),
     ('detail.building.levelup', 'cs', 'Tvé budově se zvýšila úroveň.'),
     ('detail.trait.builder', 'en', '{} used his/her Builder trait and increased the construction speed.'),
