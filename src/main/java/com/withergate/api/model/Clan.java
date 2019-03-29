@@ -121,7 +121,7 @@ public class Clan {
      */
     @JsonProperty("nextInformationLevel")
     public int getNextLevelInformation() {
-        return (informationLevel + 1) * ClanServiceImpl.INFORMATION_QUOCIENT;
+        return (informationLevel + 1) * ClanServiceImpl.INFORMATION_QUOTIENT;
     }
 
 }

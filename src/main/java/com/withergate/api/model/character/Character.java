@@ -114,7 +114,7 @@ public class Character {
      */
     @JsonProperty("nextLevel")
     public int getNextLevelExperience() {
-        return level * CharacterServiceImpl.LEVEL_QUOCIENT;
+        return level * CharacterServiceImpl.LEVEL_QUOTIENT;
     }
 
     /**

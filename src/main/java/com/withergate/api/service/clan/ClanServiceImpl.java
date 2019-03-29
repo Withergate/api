@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 public class ClanServiceImpl implements ClanService {
 
-    public static final int INFORMATION_QUOCIENT = 10;
+    public static final int INFORMATION_QUOTIENT = 10;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;

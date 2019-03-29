@@ -34,7 +34,8 @@ import java.util.stream.Collectors;
 @Service
 public class CharacterServiceImpl implements CharacterService {
 
-    public static final int LEVEL_QUOCIENT = 10;
+    public static final int LEVEL_QUOTIENT = 10;
+    public static final int FREE_TRAIT_THRESHOLD = 10;
 
     private final CharacterRepository characterRepository;
     private final ClanService clanService;
@@ -142,6 +143,15 @@ public class CharacterServiceImpl implements CharacterService {
          */
         character.setLevel(1);
         character.setExperience(0);
+
+        /*
+         * Add random trait to weak characters.
+         */
+        if ((character.getCombat() + character.getScavenge() + character.getCraftsmanship()
+                + character.getIntellect()) <= FREE_TRAIT_THRESHOLD ) {
+            Trait trait = getRandomTrait(character);
+            character.getTraits().put(trait.getDetails().getIdentifier(), trait);
+        }
 
         return character;
     }
