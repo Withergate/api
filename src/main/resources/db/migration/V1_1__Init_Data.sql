@@ -4,14 +4,14 @@ INSERT INTO turns (turn_id) VALUES
 
 -- Weapon details
 INSERT INTO weapon_details(identifier, rarity, weapon_type, combat, image_url) VALUES
-    ('KNIFE', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/vxtBRdS/knife.jpg'),
-    ('AXE', 'RARE', 'MELEE', 2, 'https://i.ibb.co/BwwPWcC/axe.jpg'),
-    ('BAT', 'COMMON', 'MELEE', 1, 'https://i.ibb.co/SXJ5Ywb/bat.jpg'),
-    ('CHAINSAW', 'RARE', 'MELEE', 3, 'https://i.ibb.co/stVSRjG/chainsaw.jpg'),
-    ('BOOMERANG', 'COMMON', 'RANGED', 1, 'https://i.ibb.co/3NdWXS5/boomerang.jpg'),
-    ('THROWING_KNIFES', 'COMMON', 'RANGED', 2, 'https://i.ibb.co/2yjF8pr/throwing-knifes.jpg'),
-    ('CROSSBOW', 'RARE', 'RANGED', 3, 'https://i.ibb.co/HN0yYqt/crossbow.jpg'),
-    ('HAND_GUN', 'RARE', 'RANGED', 4, 'https://i.ibb.co/nCW17gy/handgun.jpg');
+    ('KNIFE', 'COMMON', 'MELEE', 1, 'https://storage.googleapis.com/withergate-images/items/knife.jpg'),
+    ('AXE', 'RARE', 'MELEE', 2, 'https://storage.googleapis.com/withergate-images/items/axe.jpg'),
+    ('BAT', 'COMMON', 'MELEE', 1, 'https://storage.googleapis.com/withergate-images/items/bat.jpg'),
+    ('CHAINSAW', 'RARE', 'MELEE', 3, 'https://storage.googleapis.com/withergate-images/items/chainsaw.jpg'),
+    ('BOOMERANG', 'COMMON', 'RANGED', 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.jpg'),
+    ('THROWING_KNIFES', 'COMMON', 'RANGED', 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knifes.jpg'),
+    ('CROSSBOW', 'RARE', 'RANGED', 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.jpg'),
+    ('HAND_GUN', 'RARE', 'RANGED', 4, 'https://storage.googleapis.com/withergate-images/items/handgun.jpg');
 
 INSERT INTO localized_texts(weapon_name, lang, text) VALUES
     ('KNIFE', 'en', 'Knife'),
@@ -51,8 +51,8 @@ INSERT INTO localized_texts(weapon_description, lang, text) VALUES
 
 -- Consumable details
 INSERT INTO consumable_details(identifier, rarity, effect, effect_type, image_url) VALUES
-    ('SMALL_MEDKIT', 'COMMON', 2, 'HEALING', 'https://i.ibb.co/XC6jLZS/small-medkit.jpg'),
-    ('LARGE_MEDKIT', 'RARE', 4, 'HEALING', 'https://i.ibb.co/SxYKsHv/large-medkit.jpg');
+    ('SMALL_MEDKIT', 'COMMON', 2, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.jpg'),
+    ('LARGE_MEDKIT', 'RARE', 4, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg');
 
 INSERT INTO localized_texts(consumable_name, lang, text) VALUES
     ('SMALL_MEDKIT', 'en', 'Small medkit'),
@@ -68,10 +68,10 @@ INSERT INTO localized_texts(consumable_description, lang, text) VALUES
 
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, image_url) VALUES
-    ('SICK_BAY', 15, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('GMO_FARM', 10, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('TRAINING_GROUNDS', 20, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg'),
-    ('MONUMENT', 20, false, 'https://cdn1.imggmi.com/uploads/2019/3/19/5f8fd7d7618937d5b38537e3dc9f1b02-full.jpg');
+    ('SICK_BAY', 15, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('GMO_FARM', 10, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('TRAINING_GROUNDS', 20, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('MONUMENT', 20, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -133,15 +133,15 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
 -- Location descriptions
 INSERT INTO location_descriptions(location, scouting, description, info, image_url) VALUES
     ('NEIGHBORHOOD', false, 'locations.neighborhood.description', 'locations.neighborhood.info',
-    'https://image.ibb.co/gcR9Xz/vault.jpg'),
+    'https://storage.googleapis.com/withergate-images/locations/neighborhood.jpg'),
     ('WASTELAND', true, 'locations.wasteland.description', 'locations.wasteland.info',
-    'https://image.ibb.co/dxwXkK/wasteland.jpg'),
+    'https://storage.googleapis.com/withergate-images/locations/wasteland.jpg'),
     ('CITY_CENTER', true, 'locations.citycenter.description', 'locations.citycenter.info',
-    'https://image.ibb.co/jVgMee/city.jpg'),
+    'https://storage.googleapis.com/withergate-images/locations/city.jpg'),
     ('TAVERN', false, 'locations.tavern.description', 'locations.tavern.info',
-    'https://image.ibb.co/iZAMZp/tavern.jpg'),
+    'https://storage.googleapis.com/withergate-images/locations/tavern.jpg'),
     ('ARENA', false, 'locations.arena.description', 'locations.arena.info',
-    'https://image.ibb.co/edVRNK/arena.jpg');
+    'https://storage.googleapis.com/withergate-images/locations/arena.jpg');
 
 INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood'),
@@ -408,6 +408,6 @@ INSERT INTO names (gender, value) VALUES
     ('FEMALE', 'Kara');
 
 INSERT INTO avatars (avatar_id, gender, image_url) VALUES
-    (1, 'MALE', 'https://i.ibb.co/pnQ12b8/male01.jpg'),
-    (2, 'FEMALE', 'https://i.ibb.co/kJYvvWK/female01.jpg');
+    (1, 'MALE', 'https://storage.googleapis.com/withergate-images/characters/male01.jpg'),
+    (2, 'FEMALE', 'https://storage.googleapis.com/withergate-images/characters/female01.jpg');
 
