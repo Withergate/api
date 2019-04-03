@@ -25,4 +25,8 @@ public class ItemDetails {
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
+    public enum Rarity {
+        COMMON, RARE
+    }
+
 }

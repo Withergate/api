@@ -14,6 +14,7 @@ import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,18 @@ public class BuildingServiceImpl implements BuildingService {
 
     private final CharacterService characterService;
     private final ClanService clanService;
+    private final ItemService itemService;
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final NotificationService notificationService;
 
     public BuildingServiceImpl(CharacterService characterService, ClanService clanService,
-                               BuildingActionRepository buildingActionRepository,
+                               ItemService itemService, BuildingActionRepository buildingActionRepository,
                                BuildingDetailsRepository buildingDetailsRepository,
                                NotificationService notificationService) {
         this.characterService = characterService;
         this.clanService = clanService;
+        this.itemService = itemService;
         this.buildingActionRepository = buildingActionRepository;
         this.buildingDetailsRepository = buildingDetailsRepository;
         this.notificationService = notificationService;
@@ -106,7 +109,16 @@ public class BuildingServiceImpl implements BuildingService {
                 }
             }
 
-            // TODO: implement visit actions
+            // visit actions
+            if (action.getType() == BuildingAction.Type.VISIT && action.getBuilding().equals(BuildingDetails.BuildingName.FORGE)) {
+                if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.FORGE)
+                        && character.getClan().getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel() > 0) {
+                    log.debug("{} is crafting weapon.", character.getName());
+                    notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon", new String[]{character.getName()});
+                    itemService.generateCraftableWeapon(character, character.getClan().getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(), notification);
+                }
+
+            }
 
             // award experience
             character.setExperience(character.getExperience() + 1);

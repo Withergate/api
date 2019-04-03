@@ -1,7 +1,7 @@
 package com.withergate.api.repository.item;
 
 import com.withergate.api.model.item.ConsumableDetails;
-import com.withergate.api.model.item.Rarity;
+import com.withergate.api.model.item.ItemDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +15,5 @@ import java.util.List;
 @Repository
 public interface ConsumableDetailsRepository extends JpaRepository<ConsumableDetails, String> {
 
-    List<ConsumableDetails> findAllByRarity(Rarity rarity);
+    List<ConsumableDetails> findAllByRarity(ItemDetails.Rarity rarity);
 }

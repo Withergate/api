@@ -1,7 +1,7 @@
 package com.withergate.api.service.item;
 
-import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -34,17 +34,26 @@ public interface ItemService {
     /**
      * Generate a random item for the provided character.
      *
-     * @param character the character
+     * @param character    the character
      * @param notification the notification to be updated
      */
     void generateItemForCharacter(Character character, ClanNotification notification);
 
     /**
+     * Generates craftable weapon.
+     *
+     * @param character     the character performing the crafting
+     * @param buildingLevel the construction building level
+     * @param notification  the crafted weapon
+     */
+    void generateCraftableWeapon(Character character, int buildingLevel, ClanNotification notification);
+
+    /**
      * Use the consumable with the provided character.
      *
      * @param consumableId the consumable ID
-     * @param characterId the character ID
-     * @param clanId the clan ID
+     * @param characterId  the character ID
+     * @param clanId       the clan ID
      * @throws InvalidActionException
      */
     void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException;

@@ -6,7 +6,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.ConsumableDetails;
-import com.withergate.api.model.item.Rarity;
+import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.model.notification.ClanNotification;
@@ -180,6 +180,27 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @Override
+    public void generateCraftableWeapon(Character character, int buildingLevel, ClanNotification notification) {
+        log.debug("Crafting weapon with {}", character.getName());
+
+        if (buildingLevel < 1) return;
+
+        ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel);
+        List<WeaponDetails> detailsList = weaponDetailsRepository.findAllByRarityAndCraftable(rarity, true);
+        WeaponDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
+
+        Weapon weapon = new Weapon();
+        weapon.setDetails(details);
+        weapon.setClan(character.getClan());
+        weaponRepository.save(weapon);
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[]{character.getName()}, details.getName());
+        notification.getDetails().add(detail);
+
+    }
+
     @Transactional
     @Override
     public void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException {
@@ -229,7 +250,7 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
-    private void generateWeapon(Character character, ClanNotification notification, Rarity rarity) {
+    private void generateWeapon(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
         log.debug("Generating random weapon!");
 
         /*
@@ -273,7 +294,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    private void generateConsumable(Character character, ClanNotification notification, Rarity rarity) {
+    private void generateConsumable(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
         log.debug("Generating random consumable.");
 
         /*
@@ -306,12 +327,21 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
-    private Rarity getRandomRarity() {
+    private ItemDetails.Rarity getRandomRarity() {
         int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (diceRoll < gameProperties.getRareItemChance()) {
-            return Rarity.RARE;
+            return ItemDetails.Rarity.RARE;
         } else {
-            return Rarity.COMMON;
+            return ItemDetails.Rarity.COMMON;
+        }
+    }
+
+    private ItemDetails.Rarity getRandomRarity(int craftsmanship, int buildingLevel) {
+        int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
+        if (diceRoll < (craftsmanship * 5 + buildingLevel * 5)) {
+            return ItemDetails.Rarity.RARE;
+        } else {
+            return ItemDetails.Rarity.COMMON;
         }
     }
 }

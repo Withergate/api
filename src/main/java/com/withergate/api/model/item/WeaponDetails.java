@@ -36,6 +36,9 @@ public class WeaponDetails extends ItemDetails {
     @JoinColumn(name = "weapon_description")
     private Map<String, LocalizedText> description;
 
+    @Column(name = "craftable", updatable = false, nullable = false)
+    private boolean craftable;
+
     @Column(name = "combat", nullable = false)
     private int combat;
 

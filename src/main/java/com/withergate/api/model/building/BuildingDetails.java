@@ -53,11 +53,14 @@ public class BuildingDetails {
     @Column(name = "visitable", nullable = false)
     private boolean visitable;
 
+    @Column(name = "visit_junk_cost")
+    private int visitJunkCost;
+
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost; // cost per level
 
     public enum BuildingName {
-        SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT
+        SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT, FORGE
     }
 
 }

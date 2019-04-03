@@ -32,6 +32,7 @@ CREATE TABLE building_details (
     image_url VARCHAR(256) NOT NULL,
     cost INT NOT NULL,
     visitable BIT NOT NULL,
+    visit_junk_cost INT DEFAULT 0,
     PRIMARY KEY (identifier)
 );
 
@@ -54,6 +55,7 @@ CREATE TABLE weapon_details (
     rarity VARCHAR(8) NOT NULL,
     combat INT NOT NULL,
     weapon_type VARCHAR(8) NOT NULL,
+    craftable BIT NOT NULL DEFAULT FALSE,
     PRIMARY KEY (identifier)
 );
 

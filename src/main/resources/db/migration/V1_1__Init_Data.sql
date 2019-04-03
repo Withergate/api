@@ -3,15 +3,15 @@ INSERT INTO turns (turn_id) VALUES
     (1);
 
 -- Weapon details
-INSERT INTO weapon_details(identifier, rarity, weapon_type, combat, image_url) VALUES
-    ('KNIFE', 'COMMON', 'MELEE', 1, 'https://storage.googleapis.com/withergate-images/items/knife.jpg'),
-    ('AXE', 'RARE', 'MELEE', 2, 'https://storage.googleapis.com/withergate-images/items/axe.jpg'),
-    ('BAT', 'COMMON', 'MELEE', 1, 'https://storage.googleapis.com/withergate-images/items/bat.jpg'),
-    ('CHAINSAW', 'RARE', 'MELEE', 3, 'https://storage.googleapis.com/withergate-images/items/chainsaw.jpg'),
-    ('BOOMERANG', 'COMMON', 'RANGED', 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.jpg'),
-    ('THROWING_KNIFES', 'COMMON', 'RANGED', 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knifes.jpg'),
-    ('CROSSBOW', 'RARE', 'RANGED', 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.jpg'),
-    ('HAND_GUN', 'RARE', 'RANGED', 4, 'https://storage.googleapis.com/withergate-images/items/handgun.jpg');
+INSERT INTO weapon_details(identifier, rarity, weapon_type, combat, craftable, image_url) VALUES
+    ('KNIFE', 'COMMON', 'MELEE', 1, true, 'https://storage.googleapis.com/withergate-images/items/knife.jpg'),
+    ('AXE', 'RARE', 'MELEE', 2, true, 'https://storage.googleapis.com/withergate-images/items/axe.jpg'),
+    ('BAT', 'COMMON', 'MELEE', 1, true, 'https://storage.googleapis.com/withergate-images/items/bat.jpg'),
+    ('CHAINSAW', 'RARE', 'MELEE', 3, false, 'https://storage.googleapis.com/withergate-images/items/chainsaw.jpg'),
+    ('BOOMERANG', 'COMMON', 'RANGED', 1, true, 'https://storage.googleapis.com/withergate-images/items/boomerang.jpg'),
+    ('THROWING_KNIFES', 'COMMON', 'RANGED', true, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knifes.jpg'),
+    ('CROSSBOW', 'RARE', 'RANGED', 3, true, 'https://storage.googleapis.com/withergate-images/items/crossbow.jpg'),
+    ('HAND_GUN', 'RARE', 'RANGED', 4, false, 'https://storage.googleapis.com/withergate-images/items/handgun.jpg');
 
 INSERT INTO localized_texts(weapon_name, lang, text) VALUES
     ('KNIFE', 'en', 'Knife'),
@@ -67,11 +67,12 @@ INSERT INTO localized_texts(consumable_description, lang, text) VALUES
     ('LARGE_MEDKIT', 'cs', 'Velká lékárnička s vybavením na ošetření težších zranění.');
 
 -- Building details
-INSERT INTO building_details(identifier, cost, visitable, image_url) VALUES
-    ('SICK_BAY', 15, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('GMO_FARM', 10, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('TRAINING_GROUNDS', 20, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('MONUMENT', 20, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image_url) VALUES
+    ('SICK_BAY', 15, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('GMO_FARM', 10, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('TRAINING_GROUNDS', 20, 0, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('MONUMENT', 20, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('FORGE', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -81,7 +82,9 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('TRAINING_GROUNDS', 'en', 'Training grounds'),
     ('TRAINING_GROUNDS', 'cs', 'Cvičiště'),
     ('MONUMENT', 'en', 'Monument'),
-    ('MONUMENT', 'cs', 'Monument');
+    ('MONUMENT', 'cs', 'Monument'),
+    ('FORGE', 'en', 'Forge'),
+    ('FORGE', 'cs', 'Kovárna');
 
 INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
@@ -91,7 +94,9 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('TRAINING_GROUNDS', 'en', 'There is nothing we cant learn!'),
     ('TRAINING_GROUNDS', 'cs', 'Není nic, co by se tvůj velkolepý klan nemohl naučit!'),
     ('MONUMENT', 'en', 'Let everybody know the glory of your mighty clan by building a monument near your campsite!'),
-    ('MONUMENT', 'cs', 'Ať všichni vidí, jak je náš klan úžasný!');
+    ('MONUMENT', 'cs', 'Ať všichni vidí, jak je náš klan úžasný!'),
+    ('FORGE', 'en', 'Got some junk? Let`s forge some weapons for the arena!'),
+    ('FORGE', 'cs', 'Roztavíme všechno. A slijeme z toho něco do arény!');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -101,7 +106,9 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('TRAINING_GROUNDS', 'en', 'Each level of this building grants free experience to all resting characters every turn.'),
     ('TRAINING_GROUNDS', 'cs', 'Odpočívající postavy dostanou každé kolo zkušenosti zdarma.'),
     ('MONUMENT', 'en', 'Each level of this building grants free fame every turn.'),
-    ('MONUMENT', 'cs', 'Každá úroveň této budovy poskutuje slávu každé kolo.');
+    ('MONUMENT', 'cs', 'Každá úroveň této budovy poskutuje slávu každé kolo.'),
+    ('FORGE', 'en', 'Pay [10] junk and craft a random weapon! High craftsmanship affects the rarity of the crafted item.'),
+    ('FORGE', 'cs', 'Zaplať [10] šrotu a vyrob náhodnou zbraň! Zručnost ovlivňuje šanci na vyšší raritu předmětu.');
 
 --- Trait details
 INSERT INTO trait_details(identifier, image_url) VALUES
@@ -193,6 +200,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
     ('building.work', 'en', 'Character worked on a construction of [].'),
     ('building.work', 'cs', 'Postava  pracovala na stavbě [].'),
+    ('building.crafting.weapon', 'en', 'Character was crafting a weapon..'),
+    ('building.crafting.weapon', 'cs', 'Postava vyráběla zbraně.'),
     ('building.monument.income', 'en', 'Your Monument generated fame for your clan.'),
     ('building.monument.income', 'cs', 'Tvůj Monument získal slávu pro tvůj klan.'),
     ('building.gmofarm.income', 'en', 'Your GMO farm generated food for your clan.'),
@@ -228,6 +237,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.character.levelup.trait', 'cs', '{} získal/a novou schopnost.'),
     ('detail.character.starving', 'en', '{} is starving.'),
     ('detail.character.starving', 'cs', '{} hladoví.'),
+    ('detail.character.crafting', 'en', '{} crafted [].'),
+    ('detail.character.crafting', 'cs', '{} vyrobil/a [].'),
     ('detail.information.levelup', 'en', 'Your clan advanced to the next information level.'),
     ('detail.information.levelup', 'cs', 'Tvůj klan postoupil na další úroveň informací.'),
     ('detail.healing.roll', 'en', 'Rolled {} when computing healing.'),

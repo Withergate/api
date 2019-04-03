@@ -111,16 +111,26 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("This building is not constructed yet!");
         }
 
+        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getBuildings()
+                .get(request.getBuilding()).getLevel() < 1) {
+            throw new InvalidActionException("This building has not reached sufficient level yet!!");
+        }
+
         if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings()
                 .get(request.getBuilding()).getDetails().isVisitable()) {
             throw new InvalidActionException("This building does not support this type of action.");
+        }
 
+        if (request.getType() == BuildingAction.Type.VISIT && clan.getJunk() < buildingDetails.getVisitJunkCost()) {
+            throw new InvalidActionException("Not enough junk to perform this action!");
         }
 
         if (request.getType() == BuildingAction.Type.CONSTRUCT && character.getClan().getJunk() < character
                 .getCraftsmanship()) {
             throw new InvalidActionException("Not enough junk to perform this action.");
         }
+
+
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
@@ -131,7 +141,11 @@ public class ActionServiceImpl implements ActionService {
         buildingService.saveBuildingAction(action);
 
         // pay junk
-        clan.setJunk(clan.getJunk() - character.getCraftsmanship());
+        if (request.getType().equals(BuildingAction.Type.CONSTRUCT)) {
+            clan.setJunk(clan.getJunk() - character.getCraftsmanship());
+        } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
+            clan.setJunk(clan.getJunk() - buildingDetails.getVisitJunkCost());
+        }
         clanService.saveClan(clan);
 
         // character needs to be marked as busy

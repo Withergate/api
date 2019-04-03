@@ -10,6 +10,7 @@ import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,11 +43,14 @@ public class BuildingServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private ItemService itemService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        buildingService = new BuildingServiceImpl(characterService, clanService, buildingActionRepository, buildingDetailsRepository,
+        buildingService = new BuildingServiceImpl(characterService, clanService, itemService, buildingActionRepository, buildingDetailsRepository,
                 notificationService);
     }
 
