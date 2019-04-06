@@ -2,6 +2,7 @@ package com.withergate.api.service.action;
 
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -28,6 +29,15 @@ public interface ActionService {
      * @throws InvalidActionException
      */
     void createBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Creates and persists a quest action based on the request. Throws an exception if this action
+     * cannot be performed.
+     *
+     * @param request the building request
+     * @throws InvalidActionException
+     */
+    void createQuestAction(QuestRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Executes all pending location actions.

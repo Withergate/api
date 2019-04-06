@@ -2,6 +2,7 @@ package com.withergate.api.service.action;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
@@ -11,13 +12,16 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.LocationDescription;
+import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
+import com.withergate.api.service.quest.QuestService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,14 +41,18 @@ public class ActionServiceImpl implements ActionService {
     private final ClanService clanService;
     private final GameProperties gameProperties;
     private final BuildingService buildingService;
+    private final QuestService questService;
 
-    public ActionServiceImpl(CharacterService characterService, LocationService locationService, ClanService clanService,
-                             GameProperties gameProperties, BuildingService buildingService) {
+    public ActionServiceImpl(CharacterService characterService, LocationService locationService,
+                             ClanService clanService,
+                             GameProperties gameProperties, BuildingService buildingService,
+                             QuestService questService) {
         this.characterService = characterService;
         this.locationService = locationService;
         this.clanService = clanService;
         this.gameProperties = gameProperties;
         this.buildingService = buildingService;
+        this.questService = questService;
     }
 
     @Transactional
@@ -130,8 +138,6 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Not enough junk to perform this action.");
         }
 
-
-
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
@@ -147,6 +153,37 @@ public class ActionServiceImpl implements ActionService {
             clan.setJunk(clan.getJunk() - buildingDetails.getVisitJunkCost());
         }
         clanService.saveClan(clan);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
+        characterService.save(character);
+    }
+
+    @Transactional
+    @Override
+    public void createQuestAction(QuestRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting quest action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if the clan contains this quest
+        Quest quest = null;
+        for (Quest q : clan.getQuests()) {
+            if (q.getId() == request.getQuestId()) {
+                // check if not completed
+                if (q.isCompleted()) throw new InvalidActionException("This quest has already been completed.");
+                quest = q;
+                break;
+            }
+        }
+
+        if (quest == null) throw new InvalidActionException("This quest does not exist.");
+
+        // persist the action
+        QuestAction action = new QuestAction();
+        action.setCharacter(character);
+        action.setQuest(quest);
+        questService.saveQuestAction(action);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);

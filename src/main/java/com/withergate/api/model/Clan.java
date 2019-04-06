@@ -7,6 +7,7 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.Weapon;
+import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
@@ -97,6 +98,10 @@ public class Clan {
     @MapKeyEnumerated(EnumType.STRING)
     @JsonView(Views.Internal.class)
     private Map<BuildingDetails.BuildingName, Building> buildings;
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonView(Views.Internal.class)
+    private List<Quest> quests;
 
     /**
      * List of unconstructed buildings. This list is assembled dynamically and is not persisted.

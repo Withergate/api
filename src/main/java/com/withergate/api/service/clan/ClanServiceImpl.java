@@ -3,9 +3,14 @@ package com.withergate.api.service.clan;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.quest.QuestService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +35,18 @@ public class ClanServiceImpl implements ClanService {
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
     private final GameProperties gameProperties;
+    private final NotificationService notificationService;
+    private final QuestService questService;
 
     public ClanServiceImpl(ClanRepository clanRepository, CharacterService characterService,
-                           GameProperties gameProperties) {
+                           GameProperties gameProperties,
+                           NotificationService notificationService,
+                           QuestService questService) {
         this.clanRepository = clanRepository;
         this.characterService = characterService;
         this.gameProperties = gameProperties;
+        this.notificationService = notificationService;
+        this.questService = questService;
     }
 
     @Override
@@ -124,5 +135,24 @@ public class ClanServiceImpl implements ClanService {
             clan.setArena(false);
             clanRepository.save(clan);
         }
+    }
+
+    @Transactional
+    @Override
+    public void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel) {
+        log.debug("Increasing clan's information level for clan: {}", clan.getName());
+
+        // handle level up
+        clan.setInformationLevel(informationLevel);
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.information.levelup", new String[]{});
+        notification.getDetails().add(detail);
+
+        // assign quests
+        questService.assignQuests(clan, notification, informationLevel);
+
+        // save clan
+        clanRepository.save(clan);
     }
 }

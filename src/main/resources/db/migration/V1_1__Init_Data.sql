@@ -186,6 +186,33 @@ INSERT INTO localized_texts(location_info, lang, text) VALUES
     ('ARENA', 'en', 'Only one character per day can be sent to the arena. This character will be matched with random opponent and fight. Only melee weapons are allowed. Fame and glory awarded in case of victory but characters can get injured.'),
     ('ARENA', 'cs', 'Každý den můžeš do arény poslat jednu postavu ze svého klanu. Utkáš se s náhodným protivníkem a vítěz vyhraje slávu a zátky. Jsou dovolené pouze kontaktní zbraně.');
 
+-- Quests
+INSERT INTO quest_details (identifier, quest_type, difficulty, information_level, completion, caps_reward, fame_reward, image_url) VALUES
+    ('quest.info1.1', 'COMBAT', 3, 1, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.info1.2', 'INTELLECT', 0, 1, 20, 60, 25, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.info2.1', 'CRAFTSMANSHIP', 0, 2, 30, 60, 50, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.info3.1', 'COMBAT', 6, 3, 2, 100, 3, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+
+INSERT INTO localized_texts(quest_name, lang, text) VALUES
+    ('quest.info1.1', 'en', 'Deratization'),
+    ('quest.info1.1', 'cs', 'Deratizace'),
+    ('quest.info1.2', 'en', 'Encrypted message'),
+    ('quest.info1.2', 'cs', 'Zašifrovaná zpráva'),
+    ('quest.info2.1', 'en', 'Water purifier renovation'),
+    ('quest.info2.1', 'cs', 'Oprava čističky vody'),
+    ('quest.info3.1', 'en', 'Wolf den'),
+    ('quest.info3.1', 'cs', 'Vlčí doupě');
+
+INSERT INTO localized_texts(quest_description, lang, text) VALUES
+    ('quest.info1.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours!'),
+    ('quest.info1.1', 'cs', 'Ve sklepení pod hospodou se usídlily zmutované krysy. Zbav se jich a odměna tě nemine.'),
+    ('quest.info1.2', 'en', 'Hey, pst! I found this encrypted message from one of my colleages, who passed away long time ago. Help me with the decryption and I will pay you.'),
+    ('quest.info1.2', 'cs', 'Hej, ty! Můžeš mi pomoct? Našel jsem zápisky od svého zesnulého kolegy. Text je ale zašifrovaný. Když mi ho pomůžeš rozluštit, tak ti zaplatím.'),
+    ('quest.info2.1', 'en', 'Our water purifier broke down and we are running out of clean water. Help us with the renovation and we will spread the fame of your clan!'),
+    ('quest.info2.1', 'cs', 'Naše čistička vod se rozbila a nám dochází voda. Když nám ji pomůžeš opravit, tak budeme šířit slávu tvého klanu!'),
+    ('quest.info3.1', 'en', 'There is a wolf den in the forest. Those bloody beasts are killing our sheep! Get rid of them for us and we will never forget your courage.'),
+    ('quest.info3.1', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu.');
+
 -- Placeholder texts notifications
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.tavern.hired', 'en', 'Character went to the tavern to hire someone for your clan. After spending the evening chatting with several people, the decision fell on {}'),
@@ -241,6 +268,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.character.crafting', 'cs', '{} vyrobil/a [].'),
     ('detail.information.levelup', 'en', 'Your clan advanced to the next information level.'),
     ('detail.information.levelup', 'cs', 'Tvůj klan postoupil na další úroveň informací.'),
+    ('detail.quest.assigned', 'en', 'New quest assigned: [].'),
+    ('detail.quest.assigned', 'cs', 'Nový úkol: [].'),
     ('detail.healing.roll', 'en', 'Rolled {} when computing healing.'),
     ('detail.healing.roll', 'cs', 'Na kostce padlo {} při hodu na léčení.'),
     ('detail.healing.building', 'en', 'Sick bay increased healing by {}.'),

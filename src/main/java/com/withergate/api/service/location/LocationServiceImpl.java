@@ -200,11 +200,7 @@ public class LocationServiceImpl implements LocationService {
             // handle next level
             if (clan.getInformation() > clan.getNextLevelInformation()) {
                 clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
-                clan.setInformationLevel(clan.getInformationLevel() + 1);
-
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.information.levelup", new String[]{});
-                notification.getDetails().add(detail);
+                clanService.increaseInformationLevel(clan, notification, clan.getInformationLevel() + 1);
             }
 
             clanService.saveClan(clan);

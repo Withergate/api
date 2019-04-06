@@ -14,6 +14,8 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
+import com.withergate.api.service.quest.QuestService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -39,6 +41,9 @@ public class ActionServiceTest {
     @Mock
     private LocationService locationService;
 
+    @Mock
+    private QuestService questService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -51,7 +56,8 @@ public class ActionServiceTest {
         gameProperties.setCityEncounterProbability(40);
         gameProperties.setCityJunkMultiplier(2);
 
-        actionService = new ActionServiceImpl(characterService, locationService, clanService, gameProperties, buildingService);
+        actionService = new ActionServiceImpl(characterService, locationService, clanService, gameProperties, buildingService,
+                questService);
     }
 
     @Test

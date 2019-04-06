@@ -2,6 +2,7 @@ package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 
@@ -69,4 +70,13 @@ public interface ClanService {
      * Un-assigns all arena characters from all clans.
      */
     void clearArenaCharacters();
+
+    /**
+     * Increase clan's information level.
+     *
+     * @param clan             the clan
+     * @param notification     the clan's notification to be updated
+     * @param informationLevel the new information level
+     */
+    void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel);
 }
