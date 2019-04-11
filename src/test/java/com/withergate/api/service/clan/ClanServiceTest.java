@@ -3,6 +3,7 @@ package com.withergate.api.service.clan;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -16,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -103,4 +106,111 @@ public class ClanServiceTest {
         assertEquals(5, captor.getValue().getCharacters().size());
         assertEquals(0, captor.getValue().getFame());
     }
+
+    @Test
+    public void testGivenClanIdWhenGettingClanThenVerifyCorrectClanRetrieved() {
+        // given clan ID
+        int clanId = 1;
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Stalkers");
+        Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(clan));
+
+        // when getting clan
+        Clan result = clanService.getClan(clanId);
+
+        // then verify correct clan returned
+        assertEquals(clan, result);
+    }
+
+    @Test
+    public void testGivenServiceWhenGettingAllClansThenVerifyListRetrieved() {
+        // given service when getting all clans
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Stalkers");
+        List<Clan> clanList = new ArrayList<>();
+
+        Mockito.when(clanRepository.findAll()).thenReturn(clanList);
+
+        List<Clan> result = clanService.getAllClans();
+
+        // then verify correct list returned
+        assertEquals(clanList, result);
+    }
+
+    @Test
+    public void testGivenClanWhenSavingClanThenVerifyClanSaved() {
+        // given clan
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Stalkers");
+
+        // when saving a clan
+        clanService.saveClan(clan);
+
+        // then verify clan saved
+        Mockito.verify(clanRepository).save(clan);
+    }
+
+    @Test
+    public void testGivenClanWhenHiringCharacterThenVerifyClanSavedWithCharacter() {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Stalkers");
+        clan.setCharacters(new ArrayList<>());
+
+        Character hired = new Character();
+        hired.setName("Hired");
+        Mockito.when(characterService.generateRandomCharacter()).thenReturn(hired);
+
+        // when hiring character
+        clanService.hireCharacter(clan);
+
+        // then verify clan saved with character
+        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
+        Mockito.verify(clanRepository).save(captor.capture());
+        assertEquals(hired, captor.getValue().getCharacters().get(0));
+    }
+
+    @Test
+    public void testGivenClanListWhenClearingArenaFlagsThenVerifyClansUnmarked() {
+        // given clans
+        List<Clan> clans = new ArrayList<>();
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Stalkers");
+        clan.setArena(true);
+        clans.add(clan);
+
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when clearing arena flags
+        clanService.clearArenaCharacters();
+
+        // then verify clan unmarked
+        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
+        Mockito.verify(clanRepository).save(captor.capture());
+        assertEquals(false, captor.getValue().isArena());
+    }
+
+    @Test
+    public void testGivenClanWhenIncreasingInformationLevelThenVerifyQuestServiceCalled() {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Stalkers");
+
+        // when increasing information level
+        ClanNotification notification = new ClanNotification();
+        clanService.increaseInformationLevel(clan, notification, 1);
+
+        // then verify quest service called
+        Mockito.verify(questService).assignQuests(clan, notification, 1);
+    }
+
 }

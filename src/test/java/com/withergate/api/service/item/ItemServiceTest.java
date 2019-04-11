@@ -4,8 +4,12 @@ import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.item.ConsumableDetails;
+import com.withergate.api.model.item.EffectType;
+import com.withergate.api.model.item.ItemDetails.Rarity;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.item.ConsumableDetailsRepository;
@@ -193,4 +197,128 @@ public class ItemServiceTest {
 
         // then verify exception thrown
     }
+
+    @Test
+    public void testGivenCharacterWhenCraftingWeaponThenVerifyWeaponSaved() {
+        // given character
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setCraftsmanship(4);
+
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50);
+        Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
+
+        List<WeaponDetails> detailsList = new ArrayList<>(0);
+        WeaponDetails details = new WeaponDetails();
+        details.setCraftable(true);
+        details.setIdentifier("Knife");
+        detailsList.add(details);
+        Mockito.when(weaponDetailsRepository.findAllByRarityAndCraftable(Rarity.COMMON, true)).thenReturn(detailsList);
+
+        // when crafting weapon
+        ClanNotification notification = new ClanNotification();
+        itemService.generateCraftableWeapon(character, 1, notification);
+
+        // then verify weapon saved
+        ArgumentCaptor<Weapon> captor = ArgumentCaptor.forClass(Weapon.class);
+        Mockito.verify(weaponRepository).save(captor.capture());
+        assertEquals(details, captor.getValue().getDetails());
+    }
+
+    @Test
+    public void testGivenCharacterWhenGeneratingRandomItemWithHighRollThenVerifyConsumableGenerated() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(2);
+        clan.setName("Dragons");
+        clan.setConsumables(new ArrayList<>());
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(80);
+        Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
+
+        List<ConsumableDetails> detailsList = new ArrayList<>(0);
+        ConsumableDetails details = new ConsumableDetails();
+        details.setIdentifier("Medkit");
+        details.setEffectType(EffectType.HEALING);
+        detailsList.add(details);
+
+        Mockito.when(consumableDetailsRepository.findAllByRarity(Rarity.COMMON)).thenReturn(detailsList);
+
+        // when generating random item
+        ClanNotification notification = new ClanNotification();
+        itemService.generateItemForCharacter(character, notification);
+
+        // then verify consumable generated
+        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
+        Mockito.verify(clanRepository).save(captor.capture());
+        assertEquals(details, captor.getValue().getConsumables().get(0).getDetails());
+    }
+
+    @Test
+    public void testGivenCharacterWithWeaponWhenGeneratingRandomItemWithLowRollThenVerifyWeaponGenerated() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(2);
+        clan.setName("Dragons");
+        clan.setWeapons(new ArrayList<>());
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setWeapon(new Weapon());
+
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(20,80);
+        Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
+
+        List<WeaponDetails> detailsList = new ArrayList<>(0);
+        WeaponDetails details = new WeaponDetails();
+        details.setIdentifier("Knife");
+        detailsList.add(details);
+
+        Mockito.when(weaponDetailsRepository.findAllByRarity(Rarity.COMMON)).thenReturn(detailsList);
+
+        // when generating random item
+        ClanNotification notification = new ClanNotification();
+        itemService.generateItemForCharacter(character, notification);
+
+        // then verify weapon generated
+        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
+        Mockito.verify(clanRepository).save(captor.capture());
+        assertEquals(details, captor.getValue().getWeapons().get(0).getDetails());
+    }
+
+    @Test
+    public void testGivenCharacterWithoutWeaponWhenGeneratingRandomItemWithLowRollThenVerifyWeaponGeneratedAndEquipped() {
+        // given character
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(20,80);
+        Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
+
+        List<WeaponDetails> detailsList = new ArrayList<>(0);
+        WeaponDetails details = new WeaponDetails();
+        details.setIdentifier("Knife");
+        detailsList.add(details);
+
+        Mockito.when(weaponDetailsRepository.findAllByRarity(Rarity.COMMON)).thenReturn(detailsList);
+
+        // when generating random item
+        ClanNotification notification = new ClanNotification();
+        itemService.generateItemForCharacter(character, notification);
+
+        // then verify weapon generated and equipped
+        ArgumentCaptor<Character> captor = ArgumentCaptor.forClass(Character.class);
+        Mockito.verify(characterRepository).save(captor.capture());
+        assertEquals(details, captor.getValue().getWeapon().getDetails());
+    }
+
 }

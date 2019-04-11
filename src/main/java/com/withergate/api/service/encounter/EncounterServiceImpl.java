@@ -165,8 +165,9 @@ public class EncounterServiceImpl implements EncounterService {
                     notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath", new String[]{character.getName()});
                     notification.getDetails().add(detail);
                 }
+                break;
             default:
-                log.error("Unknown type of penalty!");
+                log.error("Unknown type of penalty: {}!", encounter.getPenalty());
                 break;
         }
     }

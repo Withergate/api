@@ -27,4 +27,5 @@ public class NameServiceIT {
         // then verify name contains space\
         assertTrue(name.contains(" "));
     }
+
 }
