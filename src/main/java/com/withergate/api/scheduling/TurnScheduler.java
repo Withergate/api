@@ -44,6 +44,9 @@ public class TurnScheduler {
         // process building actions
         actionService.processBuildingActions(currentTurn.getTurnId());
 
+        // process quest actions
+        actionService.processQuestActions(currentTurn.getTurnId());
+
         // update characters
         characterService.performCharacterTurnUpdates(currentTurn.getTurnId());
 

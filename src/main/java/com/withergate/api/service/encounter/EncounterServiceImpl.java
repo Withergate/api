@@ -65,7 +65,7 @@ public class EncounterServiceImpl implements EncounterService {
         switch (encounter.getType()) {
             case COMBAT:
                 // handle combat and check if character won, if yes, handle reward
-                if (combatService.handleEncounterCombat(notification, encounter, character, location)) {
+                if (combatService.handleSingleCombat(notification, encounter, character)) {
                     handleReward(encounter, character, notification);
                 } else {
                     handlePenalty(encounter, character, notification);

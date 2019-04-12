@@ -183,6 +183,7 @@ public class ActionServiceImpl implements ActionService {
         QuestAction action = new QuestAction();
         action.setCharacter(character);
         action.setQuest(quest);
+        action.setState(ActionState.PENDING);
         questService.saveQuestAction(action);
 
         // character needs to be marked as busy
@@ -208,6 +209,12 @@ public class ActionServiceImpl implements ActionService {
 
         // building actions
         buildingService.processBuildingActions(turnId);
+    }
+
+    @Override
+    public void processQuestActions(int turnId) {
+        // quest actions
+        questService.processQuestActions(turnId);
     }
 
     private Character getCharacter(int characterId, int clanId) throws InvalidActionException {

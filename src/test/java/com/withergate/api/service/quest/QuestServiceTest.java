@@ -12,6 +12,8 @@ import com.withergate.api.model.quest.QuestDetails;
 import com.withergate.api.model.quest.QuestDetails.Type;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
+import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,11 +35,17 @@ public class QuestServiceTest {
     @Mock
     private QuestActionRepository questActionRepository;
 
+    @Mock
+    private CombatService combatService;
+
+    @Mock
+    private ClanService clanService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository);
+        questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository, combatService, clanService);
     }
 
     @Test

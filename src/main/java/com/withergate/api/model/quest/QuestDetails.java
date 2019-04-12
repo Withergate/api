@@ -59,6 +59,9 @@ public class QuestDetails {
     @Column(name = "fame_reward", nullable = false)
     private int fameReward;
 
+    @Column(name = "difficulty", nullable = false)
+    private int difficulty;
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 

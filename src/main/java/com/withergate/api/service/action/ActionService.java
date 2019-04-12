@@ -53,4 +53,11 @@ public interface ActionService {
      */
     void processBuildingActions(int turnId);
 
+    /**
+     * Executes all pending quest actions.
+     *
+     * @param turnId turn ID
+     */
+    void processQuestActions(int turnId);
+
 }

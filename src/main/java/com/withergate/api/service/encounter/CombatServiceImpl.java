@@ -44,8 +44,7 @@ public class CombatServiceImpl implements CombatService {
     }
 
     @Override
-    public boolean handleEncounterCombat(ClanNotification notification, Encounter encounter, Character character,
-                                         Location location) {
+    public boolean handleSingleCombat(ClanNotification notification, Encounter encounter, Character character) {
         log.debug("Handling encounter combat for character {} and encounter difficulty {}.", character.getName(),
                 encounter.getDifficulty());
 
