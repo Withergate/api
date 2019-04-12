@@ -70,6 +70,9 @@ public class CharacterServiceImpl implements CharacterService {
         for (Character character : characterRepository.findAll()) {
             if (character.getHitpoints() < 1) {
                 log.debug("Deleting character {}.", character.getName());
+                character.getClan().getCharacters().remove(character);
+                clanService.saveClan(character.getClan());
+
                 characterRepository.delete(character);
             }
         }
