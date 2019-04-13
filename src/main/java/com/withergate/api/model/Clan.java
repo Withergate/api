@@ -28,6 +28,7 @@ import javax.persistence.Transient;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -101,7 +102,23 @@ public class Clan {
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
-    private List<Quest> quests;
+    private Set<Quest> quests;
+
+    /**
+     * Gets the maximum number of characters that could be part of the clan.
+     *
+     * @return the population limit
+     */
+    @JsonProperty("populationLimit")
+    public int getPopulationLimit() {
+        int limit = ClanServiceImpl.BASIC_POPULATION_LIMIT;
+
+        if (buildings.containsKey(BuildingDetails.BuildingName.QUARTERS)) {
+            limit += buildings.get(BuildingDetails.BuildingName.QUARTERS).getLevel();
+        }
+
+        return limit;
+    }
 
     /**
      * List of unconstructed buildings. This list is assembled dynamically and is not persisted.

@@ -1,6 +1,7 @@
 package com.withergate.api.service.quest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import com.withergate.api.model.Clan;
@@ -53,7 +54,7 @@ public class QuestServiceTest {
         // given clan
         Clan clan = new Clan();
         clan.setName("Stalkers");
-        clan.setQuests(new ArrayList<>());
+        clan.setQuests(new HashSet<>());
 
         List<QuestDetails> detailsList = new ArrayList<>();
         QuestDetails details = new QuestDetails();
@@ -67,7 +68,7 @@ public class QuestServiceTest {
         questService.assignQuests(clan, notification, 1);
 
         // then verify quests added
-        Assert.assertEquals(details, clan.getQuests().get(0).getDetails());
+        Assert.assertEquals(1, clan.getQuests().toArray().length);
     }
 
     @Test

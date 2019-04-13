@@ -31,6 +31,7 @@ import java.util.List;
 public class ClanServiceImpl implements ClanService {
 
     public static final int INFORMATION_QUOTIENT = 10;
+    public static final int BASIC_POPULATION_LIMIT = 6;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;

@@ -72,7 +72,8 @@ INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image
     ('GMO_FARM', 10, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
     ('TRAINING_GROUNDS', 20, 0, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
     ('MONUMENT', 20, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('FORGE', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('FORGE', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('QUARTERS', 10, false, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -84,7 +85,9 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('MONUMENT', 'en', 'Monument'),
     ('MONUMENT', 'cs', 'Monument'),
     ('FORGE', 'en', 'Forge'),
-    ('FORGE', 'cs', 'Kovárna');
+    ('FORGE', 'cs', 'Kovárna'),
+    ('QUARTERS', 'en', 'Quarters'),
+    ('QUARTERS', 'cs', 'Ubikace');
 
 INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
@@ -96,7 +99,9 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('MONUMENT', 'en', 'Let everybody know the glory of your mighty clan by building a monument near your campsite!'),
     ('MONUMENT', 'cs', 'Ať všichni vidí, jak je náš klan úžasný!'),
     ('FORGE', 'en', 'Got some junk? Let`s forge some weapons for the arena!'),
-    ('FORGE', 'cs', 'Roztavíme všechno. A slijeme z toho něco do arény!');
+    ('FORGE', 'cs', 'Roztavíme všechno. A slijeme z toho něco do arény!'),
+    ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),
+    ('FORGE', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -108,7 +113,9 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('MONUMENT', 'en', 'Each level of this building grants free fame every turn.'),
     ('MONUMENT', 'cs', 'Každá úroveň této budovy poskutuje slávu každé kolo.'),
     ('FORGE', 'en', 'Pay [10] junk and craft a random weapon! High craftsmanship affects the rarity of the crafted item.'),
-    ('FORGE', 'cs', 'Zaplať [10] šrotu a vyrob náhodnou zbraň! Zručnost ovlivňuje šanci na vyšší raritu předmětu.');
+    ('FORGE', 'cs', 'Zaplať [10] šrotu a vyrob náhodnou zbraň! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
+    ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
+    ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.');
 
 --- Trait details
 INSERT INTO trait_details(identifier, image_url) VALUES

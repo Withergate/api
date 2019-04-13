@@ -1,8 +1,5 @@
 package com.withergate.api.service.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -31,13 +28,15 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.quest.QuestService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -366,7 +365,7 @@ public class ActionServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setQuests(new ArrayList<>());
+        clan.setQuests(new HashSet<>());
         clan.setName("Dragons");
 
         Character character = new Character();
@@ -392,7 +391,7 @@ public class ActionServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setQuests(new ArrayList<>());
+        clan.setQuests(new HashSet<>());
         clan.setName("Dragons");
 
         Quest quest = new Quest();
@@ -423,7 +422,7 @@ public class ActionServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setQuests(new ArrayList<>());
+        clan.setQuests(new HashSet<>());
         clan.setName("Dragons");
 
         Quest quest = new Quest();
