@@ -6,5 +6,7 @@ package com.withergate.api.model.item;
  * @author Martin Myslik
  */
 public enum EffectType {
-    HEALING
+
+    HEALING, EXPERIENCE
+
 }

@@ -9,7 +9,8 @@ INSERT INTO buildings (building_id, identifier, level, progress, clan_id) VALUES
     (1, 'SICK_BAY', 1, 8, 1);
 
 INSERT INTO consumables(consumable_id, item_identifier, clan_id) VALUES
-    (1, 'SMALL_MEDKIT', 1);
+    (1, 'SMALL_MEDKIT', 1),
+    (2, 'MANUSCRIPT', 1);
 
 INSERT INTO characters (character_id, clan_id, character_name, gender, state, level, experience, hitpoints, max_hitpoints, combat, scavenge, craftsmanship, intellect, weapon_id, image_url) VALUES
     (1, 1, 'Rusty Nick', 'MALE', 'BUSY', 1, 9, 7, 9, 3, 2, 1, 2, null, 'https://i.ibb.co/pnQ12b8/male01.jpg'),

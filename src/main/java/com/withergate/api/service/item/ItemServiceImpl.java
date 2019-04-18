@@ -6,6 +6,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.ConsumableDetails;
+import com.withergate.api.model.item.EffectType;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
@@ -223,6 +224,14 @@ public class ItemServiceImpl implements ItemService {
         }
 
         /*
+         * Check prerequizities
+         */
+        if (consumable.getDetails().getEffectType().equals(EffectType.EXPERIENCE)
+                && character.getIntellect() < consumable.getDetails().getPrereq()) {
+            throw new InvalidActionException("Character's intellect is too low to perform this action.");
+        }
+
+        /*
          * Process the effect.
          */
         Clan clan = character.getClan();
@@ -235,18 +244,19 @@ public class ItemServiceImpl implements ItemService {
                 }
                 int healing = Math.min(hitpointsMissing, consumable.getDetails().getEffect());
                 character.setHitpoints(character.getHitpoints() + healing);
-                log.debug("{} healed {} from consumable.", character.getName(), healing);
-
-                // delete consumable
-                consumableRepository.delete(consumable);
-
-                // update
-                clanRepository.save(clan);
-
+                break;
+            case EXPERIENCE:
+                character.setExperience(character.getExperience() + consumable.getDetails().getEffect());
                 break;
             default:
                 log.error("Unknown consumable type: {}!", consumable.getDetails().getEffectType());
         }
+
+        // delete consumable
+        consumableRepository.delete(consumable);
+
+        // update
+        clanRepository.save(clan);
 
     }
 

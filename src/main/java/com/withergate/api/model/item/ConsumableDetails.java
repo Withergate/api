@@ -1,10 +1,6 @@
 package com.withergate.api.model.item;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.withergate.api.model.notification.LocalizedText;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Map;
+
+import com.withergate.api.model.notification.LocalizedText;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * ConsumableDetails entity.
@@ -40,6 +39,9 @@ public class ConsumableDetails extends ItemDetails {
 
     @Column(name = "effect", updatable = false, nullable = false)
     private int effect;
+
+    @Column(name = "prereq", updatable = false, nullable = false)
+    private int prereq;
 
     @Column(name = "effect_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)

@@ -74,8 +74,9 @@ CREATE TABLE consumable_details (
     identifier VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
-    effect_type VARCHAR(8) NOT NULL,
+    effect_type VARCHAR(16) NOT NULL,
     effect INT NOT NULL,
+    prereq INT DEFAULT 0,
     PRIMARY KEY (identifier)
 );
 
