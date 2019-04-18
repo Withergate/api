@@ -1,28 +1,21 @@
 package com.withergate.api.model.notification;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.view.Views;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,7 +46,7 @@ public class ClanNotification {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "notification_id")
-    private List<NotificationDetail> details;
+    private Set<NotificationDetail> details;
 
     // INCOME
 
@@ -84,7 +77,7 @@ public class ClanNotification {
     public ClanNotification() {
         injury = 0;
         if (text == null) text = new HashMap<>();
-        if (details == null) details = new ArrayList<>();
+        if (details == null) details = new HashSet<>();
     }
 
 }

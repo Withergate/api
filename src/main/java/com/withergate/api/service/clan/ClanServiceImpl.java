@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -95,7 +96,7 @@ public class ClanServiceImpl implements ClanService {
         clan.setFood(20);
         clan.setInformation(0);
         clan.setInformationLevel(0);
-        clan.setCharacters(new ArrayList<>());
+        clan.setCharacters(new HashSet<>());
 
         // assign random initial characters to clan.
         for (int i = 0; i < gameProperties.getInitialClanSize(); i++) {

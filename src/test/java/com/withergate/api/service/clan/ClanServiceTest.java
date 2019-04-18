@@ -1,5 +1,10 @@
 package com.withergate.api.service.clan;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -9,17 +14,12 @@ import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,8 +46,7 @@ public class ClanServiceTest {
         GameProperties gameProperties = new GameProperties();
         gameProperties.setInitialClanSize(5);
 
-        clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties, notificationService,
-                questService);
+        clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties, notificationService, questService);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -91,8 +90,15 @@ public class ClanServiceTest {
 
         Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(clan));
 
-        Character character = new Character();
-        Mockito.when(characterService.generateRandomCharacter()).thenReturn(character);
+        Character[] characters = new Character[5];
+        for (int i = 0; i < 5; i++) {
+            Character character = new Character();
+            character.setId(i);
+            characters[i] = character;
+        }
+
+        Mockito.when(characterService.generateRandomCharacter())
+                .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
         // when creating new clan
         ClanRequest clanRequest = new ClanRequest("Dragons");
@@ -162,7 +168,7 @@ public class ClanServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setName("Stalkers");
-        clan.setCharacters(new ArrayList<>());
+        clan.setCharacters(new HashSet<>());
 
         Character hired = new Character();
         hired.setName("Hired");
@@ -174,7 +180,7 @@ public class ClanServiceTest {
         // then verify clan saved with character
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
         Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(hired, captor.getValue().getCharacters().get(0));
+        assertEquals(hired, captor.getValue().getCharacters().iterator().next());
     }
 
     @Test

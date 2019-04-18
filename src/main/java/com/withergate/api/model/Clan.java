@@ -1,17 +1,8 @@
 package com.withergate.api.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Consumable;
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.quest.Quest;
-import com.withergate.api.model.view.Views;
-import com.withergate.api.service.clan.ClanServiceImpl;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,10 +16,19 @@ import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Consumable;
+import com.withergate.api.model.item.Weapon;
+import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.view.Views;
+import com.withergate.api.service.clan.ClanServiceImpl;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -83,15 +83,15 @@ public class Clan {
 
     @OneToMany(mappedBy = "clan", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
-    private List<Character> characters;
+    private Set<Character> characters;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
-    private List<Weapon> weapons;
+    private Set<Weapon> weapons;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
-    private List<Consumable> consumables;
+    private Set<Consumable> consumables;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapKeyColumn(name = "identifier")
@@ -124,7 +124,7 @@ public class Clan {
      * List of unconstructed buildings. This list is assembled dynamically and is not persisted.
      */
     @Transient
-    private List<Building> unconstructedBuildings;
+    private Set<Building> unconstructedBuildings;
 
     /**
      * Returns the buildings as List.

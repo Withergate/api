@@ -1,5 +1,10 @@
 package com.withergate.api.service.item;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -20,9 +25,6 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -92,7 +94,7 @@ public class ItemServiceTest {
         weapon.setDetails(weaponDetails);
         weapon.setClan(clan);
 
-        List<Weapon> weapons = new ArrayList<>();
+        Set<Weapon> weapons = new HashSet<>();
         weapons.add(weapon);
         clan.setWeapons(weapons);
 
@@ -140,7 +142,7 @@ public class ItemServiceTest {
         weapon.setCharacter(character);
         character.setWeapon(weapon);
 
-        List<Weapon> weapons = new ArrayList<>();
+        Set<Weapon> weapons = new HashSet<>();
         clan.setWeapons(weapons);
 
         // when equipping weapon
@@ -161,7 +163,7 @@ public class ItemServiceTest {
         assertEquals(null, weaponCaptor.getValue().getCharacter());
         assertEquals(clan, weaponCaptor.getValue().getClan());
         assertEquals(null, characterCaptor.getValue().getWeapon());
-        assertEquals(weapon, clanCaptor.getValue().getWeapons().get(0));
+        assertEquals(weapon, clanCaptor.getValue().getWeapons().iterator().next());
     }
 
     @Test(expected = InvalidActionException.class)
@@ -184,7 +186,7 @@ public class ItemServiceTest {
         weapon.setDetails(weaponDetails);
         weapon.setClan(clan);
 
-        List<Weapon> weapons = new ArrayList<>();
+        Set<Weapon> weapons = new HashSet<>();
         weapons.add(weapon);
         clan.setWeapons(weapons);
 
@@ -232,7 +234,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(2);
         clan.setName("Dragons");
-        clan.setConsumables(new ArrayList<>());
+        clan.setConsumables(new HashSet<>());
 
         Character character = new Character();
         character.setId(1);
@@ -257,7 +259,7 @@ public class ItemServiceTest {
         // then verify consumable generated
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
         Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(details, captor.getValue().getConsumables().get(0).getDetails());
+        assertEquals(details, captor.getValue().getConsumables().iterator().next().getDetails());
     }
 
     @Test
@@ -266,7 +268,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(2);
         clan.setName("Dragons");
-        clan.setWeapons(new ArrayList<>());
+        clan.setWeapons(new HashSet<>());
 
         Character character = new Character();
         character.setId(1);
@@ -291,7 +293,7 @@ public class ItemServiceTest {
         // then verify weapon generated
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
         Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(details, captor.getValue().getWeapons().get(0).getDetails());
+        assertEquals(details, captor.getValue().getWeapons().iterator().next().getDetails());
     }
 
     @Test

@@ -1,5 +1,9 @@
 package com.withergate.api.controller;
 
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
@@ -9,10 +13,6 @@ import com.withergate.api.model.view.Views;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
-
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +57,7 @@ public class ClanController {
         }
 
         // assemble unconstructed buildings list
-        List<Building> unconstructed = new ArrayList<>();
+        Set<Building> unconstructed = new HashSet<>();
         for (BuildingDetails details : buildingService.getAllBuildingDetails()) {
             if (!clan.getBuildings().containsKey(details.getIdentifier())) {
                 Building building = new Building();
