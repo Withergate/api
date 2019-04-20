@@ -4,6 +4,7 @@ import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -28,8 +29,7 @@ public class TurnScheduler {
         this.characterService = characterService;
     }
 
-    // @Scheduled(cron = "0 0 0 * * *") // every midnight
-    @Scheduled(cron = "0 0 0/1 * * ?") // testing
+    @Scheduled(cron = "0 0 0 * * *") // every midnight
     public void processTurn() {
 
         /**
@@ -46,6 +46,9 @@ public class TurnScheduler {
 
         // process quest actions
         actionService.processQuestActions(currentTurn.getTurnId());
+
+        // process trade actions
+        actionService.processTradeActions(currentTurn.getTurnId());
 
         // update characters
         characterService.performCharacterTurnUpdates(currentTurn.getTurnId());

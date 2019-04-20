@@ -2,26 +2,31 @@ package com.withergate.api.service.action;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.QuestAction;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.LocationAction;
+import com.withergate.api.model.action.QuestAction;
+import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.WeaponType;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.model.request.ResourceTradeRequest;
+import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.trade.TradeService;
+import com.withergate.api.service.trade.TradeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,17 +47,19 @@ public class ActionServiceImpl implements ActionService {
     private final GameProperties gameProperties;
     private final BuildingService buildingService;
     private final QuestService questService;
+    private final TradeService tradeService;
 
     public ActionServiceImpl(CharacterService characterService, LocationService locationService,
                              ClanService clanService,
                              GameProperties gameProperties, BuildingService buildingService,
-                             QuestService questService) {
+                             QuestService questService, TradeService tradeService) {
         this.characterService = characterService;
         this.locationService = locationService;
         this.clanService = clanService;
         this.gameProperties = gameProperties;
         this.buildingService = buildingService;
         this.questService = questService;
+        this.tradeService = tradeService;
     }
 
     @Transactional
@@ -198,6 +205,58 @@ public class ActionServiceImpl implements ActionService {
 
     @Transactional
     @Override
+    public void createResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting resource trade action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        ResourceTradeAction action = new ResourceTradeAction();
+        action.setCharacter(character);
+        action.setType(request.getType());
+        action.setFood(request.getFood());
+        action.setJunk(request.getJunk());
+        action.setState(ActionState.PENDING);
+
+        // check resource limit
+        if (request.getJunk() + request.getFood() > TradeServiceImpl.RESOURCE_TRADE_LIMIT) {
+            throw new InvalidActionException("Your character cannot carry that much!");
+        }
+
+        // check if clan has enough resources
+        if (request.getType().equals(TradeType.BUY)) {
+            int resourcesToBuy = request.getFood() + request.getJunk();
+            int cost = resourcesToBuy * 2;
+            if (clan.getCaps() < cost) {
+                throw new InvalidActionException("Not enough caps!");
+            }
+
+            // pay the price and save the action
+            clan.setCaps(clan.getCaps() - cost);
+        }
+
+        if (request.getType().equals(TradeType.SELL)) {
+            if (clan.getFood() < request.getFood()) {
+                throw new InvalidActionException("Not enough food!");
+            }
+            if (clan.getJunk() < request.getJunk()) {
+                throw new InvalidActionException("Not enough junk!");
+            }
+
+            // pay the price
+            clan.setFood(clan.getFood() - request.getFood());
+            clan.setJunk(clan.getJunk() - request.getJunk());
+        }
+
+        // save the action
+        tradeService.saveResourceTradeAction(action);
+
+        // mark character as busy and save the clan
+        character.setState(CharacterState.BUSY);
+        clanService.saveClan(clan);
+    }
+
+    @Transactional
+    @Override
     public void processLocationActions(int turnId) {
         // arena actions
         locationService.processArenaActions(turnId);
@@ -220,6 +279,12 @@ public class ActionServiceImpl implements ActionService {
     public void processQuestActions(int turnId) {
         // quest actions
         questService.processQuestActions(turnId);
+    }
+
+    @Override
+    public void processTradeActions(int turnId) {
+        // resource trade actions
+        tradeService.processResourceTradeActions(turnId);
     }
 
     private Character getCharacter(int characterId, int clanId) throws InvalidActionException {

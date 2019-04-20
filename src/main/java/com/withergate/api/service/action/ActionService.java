@@ -3,6 +3,7 @@ package com.withergate.api.service.action;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -34,10 +35,19 @@ public interface ActionService {
      * Creates and persists a quest action based on the request. Throws an exception if this action
      * cannot be performed.
      *
-     * @param request the building request
+     * @param request the quest request
      * @throws InvalidActionException
      */
     void createQuestAction(QuestRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Creates and persists a resource trade action based on the request. Throws an exception if this action
+     * cannot be performed.
+     *
+     * @param request the resource trade request
+     * @throws InvalidActionException
+     */
+    void createResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Executes all pending location actions.
@@ -59,5 +69,12 @@ public interface ActionService {
      * @param turnId turn ID
      */
     void processQuestActions(int turnId);
+
+    /**
+     * Executes all pending trade actions.
+     *
+     * @param turnId turn ID
+     */
+    void processTradeActions(int turnId);
 
 }

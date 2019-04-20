@@ -284,6 +284,17 @@ CREATE TABLE quest_actions (
     PRIMARY KEY (action_id)
 );
 
+DROP TABLE IF EXISTS resource_trade_actions;
+CREATE TABLE resource_trade_actions (
+    action_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    character_id INT NOT NULL,
+    trade_type VARCHAR(8) NOT NULL,
+    food INT DEFAULT 0,
+    junk INT DEFAULT 0,
+    PRIMARY KEY (action_id)
+);
+
 DROP TABLE IF EXISTS name_prefixes;
 CREATE TABLE name_prefixes (
     value VARCHAR(16) UNIQUE NOT NULL,

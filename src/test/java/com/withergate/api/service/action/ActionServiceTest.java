@@ -28,15 +28,16 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.trade.TradeService;
+
+import java.util.HashMap;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -59,6 +60,9 @@ public class ActionServiceTest {
     @Mock
     private QuestService questService;
 
+    @Mock
+    private TradeService tradeService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -72,7 +76,7 @@ public class ActionServiceTest {
         gameProperties.setCityJunkMultiplier(2);
 
         actionService = new ActionServiceImpl(characterService, locationService, clanService, gameProperties, buildingService,
-                questService);
+                questService, tradeService);
     }
 
     @Test

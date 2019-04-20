@@ -1,6 +1,6 @@
 package com.withergate.api.controller;
 
-import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
 
@@ -14,31 +14,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Quest controller.
+ * Trade controller.
  *
  * @author Martin Myslik
  */
 @Slf4j
 @RestController
-public class QuestController {
+public class TradeController {
 
     private final ActionService actionService;
 
-    public QuestController(ActionService actionService) {
-        this.actionService = actionService;
-    }
+    public TradeController(ActionService actionService) {this.actionService = actionService;}
 
     /**
-     * Submits a new quest action and checks if this action is applicable. Throws an exception if not.
+     * Submits a new resource trade action and checks if this action is applicable. Throws an exception if not.
      *
      * @param principal the principal
      * @param request   the trade action request
      * @throws InvalidActionException
      */
-    @RequestMapping(value = "/quests/action", method = RequestMethod.POST)
-    public ResponseEntity<Void> submitQuestAction(Principal principal, @RequestBody QuestRequest request) throws InvalidActionException {
-        actionService.createQuestAction(request, Integer.parseInt(principal.getName()));
+    @RequestMapping(value = "/trade/resources/action", method = RequestMethod.POST)
+    public ResponseEntity<Void> submitResourceTradeAction(Principal principal, @RequestBody ResourceTradeRequest request)
+            throws InvalidActionException {
+        actionService.createResourceTradeAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
