@@ -1,4 +1,4 @@
-package com.withergate.api.controller;
+package com.withergate.api.controller.building;
 
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.service.action.ActionService;

@@ -1,4 +1,4 @@
-package com.withergate.api.controller;
+package com.withergate.api.controller.location;
 
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.LocationRequest;

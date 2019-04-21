@@ -1,4 +1,4 @@
-package com.withergate.api.controller;
+package com.withergate.api.controller.turn;
 
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;

@@ -1,4 +1,4 @@
-package com.withergate.api.controller;
+package com.withergate.api.controller.trade;
 
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.service.action.ActionService;

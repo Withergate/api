@@ -24,4 +24,5 @@ public interface RandomService {
      * @return the generated integer
      */
     int getRandomInt(int min, int max);
+
 }

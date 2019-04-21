@@ -32,6 +32,26 @@ public interface ItemService {
     void unequipWeapon(int weaponId, int characterId, int clanId) throws InvalidActionException;
 
     /**
+     * Equip a gear with the specified character. Throws an exception if this action is not allowed.
+     *
+     * @param gearId    the gear ID
+     * @param characterId the character ID
+     * @param clanId      the clan ID
+     * @throws InvalidActionException
+     */
+    void equipGear(int gearId, int characterId, int clanId) throws InvalidActionException;
+
+    /**
+     * Un-equip a gear from the specified character. Throws an exception if this action is not allowed.
+     *
+     * @param gearId    the gear ID
+     * @param characterId the character ID
+     * @param clanId      the clan ID
+     * @throws InvalidActionException
+     */
+    void unequipGear(int gearId, int characterId, int clanId) throws InvalidActionException;
+
+    /**
      * Generate a random item for the provided character.
      *
      * @param character    the character

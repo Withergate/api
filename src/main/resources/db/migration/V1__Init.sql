@@ -90,6 +90,26 @@ CREATE TABLE consumables (
     CONSTRAINT consumable_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
+DROP TABLE IF EXISTS gear_details;
+CREATE TABLE gear_details (
+    identifier VARCHAR(16) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
+    rarity VARCHAR(8) NOT NULL,
+    bonus INT NOT NULL,
+    bonus_type VARCHAR(16) NOT NULL,
+    PRIMARY KEY (identifier)
+);
+
+DROP TABLE IF EXISTS gear;
+CREATE TABLE gear (
+    gear_id INT AUTO_INCREMENT,
+    item_identifier VARCHAR(16),
+    clan_id INT DEFAULT NULL,
+    PRIMARY KEY (gear_id),
+    CONSTRAINT gear_gear_details_fk FOREIGN KEY (item_identifier) REFERENCES gear_details (identifier),
+    CONSTRAINT gear_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
 DROP TABLE IF EXISTS characters;
 CREATE TABLE characters (
     character_id INT AUTO_INCREMENT,
@@ -107,9 +127,11 @@ CREATE TABLE characters (
     craftsmanship INT NOT NULL,
     intellect INT NOT NULL,
     weapon_id INT DEFAULT NULL,
+    gear_id INT DEFAULT NULL,
     PRIMARY KEY (character_id),
     CONSTRAINT character_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
-    CONSTRAINT character_weapon_fk FOREIGN KEY (weapon_id) REFERENCES weapons (weapon_id)
+    CONSTRAINT character_weapon_fk FOREIGN KEY (weapon_id) REFERENCES weapons (weapon_id),
+    CONSTRAINT character_gear_fk FOREIGN KEY (gear_id) REFERENCES gear (gear_id)
 );
 
 DROP TABLE IF EXISTS trait_details;
@@ -233,6 +255,8 @@ CREATE TABLE localized_texts (
     weapon_description VARCHAR(16),
     consumable_name VARCHAR(16),
     consumable_description VARCHAR(16),
+    gear_name VARCHAR(16),
+    gear_description VARCHAR(16),
     quest_name VARCHAR(16),
     quest_description VARCHAR(16),
     PRIMARY KEY (text_id),
@@ -250,6 +274,8 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_weapon_description_fk FOREIGN KEY (weapon_description) REFERENCES weapon_details (identifier),
     CONSTRAINT localized_text_consumable_name_fk FOREIGN KEY (consumable_name) REFERENCES consumable_details (identifier),
     CONSTRAINT localized_text_consumable_description_fk FOREIGN KEY (consumable_description) REFERENCES consumable_details (identifier),
+    CONSTRAINT localized_text_gear_name_fk FOREIGN KEY (gear_name) REFERENCES gear_details (identifier),
+    CONSTRAINT localized_text_gear_description_fk FOREIGN KEY (gear_description) REFERENCES gear_details (identifier),
     CONSTRAINT localized_text_quest_name_fk FOREIGN KEY (quest_name) REFERENCES quest_details (identifier),
     CONSTRAINT localized_text_quest_description_fk FOREIGN KEY (quest_description) REFERENCES quest_details (identifier)
 );

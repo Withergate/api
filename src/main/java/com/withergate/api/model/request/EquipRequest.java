@@ -14,8 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class WeaponEquipRequest {
+public class EquipRequest {
 
-    private int weaponId;
+    private int itemId;
     private int characterId;
 }

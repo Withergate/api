@@ -7,6 +7,8 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.ConsumableDetails;
 import com.withergate.api.model.item.EffectType;
+import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
@@ -16,17 +18,19 @@ import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.item.ConsumableDetailsRepository;
 import com.withergate.api.repository.item.ConsumableRepository;
+import com.withergate.api.repository.item.GearDetailsRepository;
+import com.withergate.api.repository.item.GearRepository;
 import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Item service.
@@ -43,20 +47,28 @@ public class ItemServiceImpl implements ItemService {
     private final WeaponDetailsRepository weaponDetailsRepository;
     private final ConsumableRepository consumableRepository;
     private final ConsumableDetailsRepository consumableDetailsRepository;
+    private final GearRepository gearRepository;
+    private final GearDetailsRepository gearDetailsRepository;
     private final RandomService randomService;
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
 
     public ItemServiceImpl(CharacterRepository characterRepository, ClanRepository clanRepository,
                            WeaponRepository weaponRepository, WeaponDetailsRepository weaponDetailsRepository,
-                           ConsumableRepository consumableRepository, ConsumableDetailsRepository consumableDetailsRepository,
-                           RandomService randomService, GameProperties gameProperties, NotificationService notificationService) {
+                           ConsumableRepository consumableRepository,
+                           ConsumableDetailsRepository consumableDetailsRepository,
+                           GearRepository gearRepository,
+                           GearDetailsRepository gearDetailsRepository,
+                           RandomService randomService, GameProperties gameProperties,
+                           NotificationService notificationService) {
         this.characterRepository = characterRepository;
         this.clanRepository = clanRepository;
         this.weaponRepository = weaponRepository;
         this.weaponDetailsRepository = weaponDetailsRepository;
         this.consumableRepository = consumableRepository;
         this.consumableDetailsRepository = consumableDetailsRepository;
+        this.gearRepository = gearRepository;
+        this.gearDetailsRepository = gearDetailsRepository;
         this.randomService = randomService;
         this.gameProperties = gameProperties;
         this.notificationService = notificationService;
@@ -117,6 +129,108 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
+    public void equipGear(int gearId, int characterId, int clanId) throws InvalidActionException {
+        log.debug("Processing equip request with gear {} and character {}", gearId, characterId);
+
+        /*
+         * Load the gear.
+         */
+        Gear gear = gearRepository.getOne(gearId);
+
+        if (gear == null) {
+            log.error("Gear with ID {} not found!", gearId);
+            throw new InvalidActionException("Gear with this ID was not found!");
+        }
+
+        Clan clan = gear.getClan();
+
+        /*
+         * Check if this weapon is present in the clan storage.
+         */
+        if (gear.getClan() == null || gear.getClan().getId() != clanId) {
+            log.error("Gear with ID {} is not available in the clan storage of clan ID {}!", gearId, clanId);
+            throw new InvalidActionException("Gear with this ID does not belong the the provided clan!");
+        }
+
+        /*
+         * Check if the provided character exists and does not hold another gear already.
+         */
+        Character character = characterRepository.getOne(characterId);
+
+        if (character == null || character.getGear() != null) {
+            log.error("Character with ID {} is not able to equip the gear!", characterId);
+            throw new InvalidActionException("The provided character either does not exist or already has a gear!");
+        }
+
+        if (character.getState() != CharacterState.READY) {
+            throw new InvalidActionException("Character must be READY to equip gear.");
+        }
+
+        /*
+         * Equip the gear by attaching it to the character and removing it from the clan storage.
+         */
+        character.setGear(gear);
+        characterRepository.save(character);
+
+        clan.getGear().remove(gear);
+        clanRepository.save(clan);
+
+        gear.setClan(null);
+        gear.setCharacter(character);
+        gearRepository.save(gear);
+    }
+
+    @Transactional
+    @Override
+    public void unequipGear(int gearId, int characterId, int clanId) throws InvalidActionException {
+        log.debug("Processing un-equip request with gear {} and character {}", gearId, characterId);
+
+        /*
+         * Load the gear.
+         */
+        Gear gear = gearRepository.getOne(gearId);
+
+        if (gear == null) {
+            log.error("Gear with ID {} not found!", gearId);
+            throw new InvalidActionException("Gear with this ID was not found!");
+        }
+
+        Character character = gear.getCharacter();
+        Clan clan = clanRepository.getOne(clanId);
+
+        /*
+         * Check if the gear and character belong to the provided clan.
+         */
+        if (character == null || character.getId() != characterId || character.getClan().getId() != clanId) {
+            log.error("Character with ID {} does not match the requested character!", characterId);
+            throw new InvalidActionException("Cannot equip weapon to the provided character!");
+        }
+
+        if (character.getState() != CharacterState.READY) {
+            throw new InvalidActionException("Character must be READY to un-equip weapon.");
+        }
+
+        /*
+         * Check if the character already equips this gear.
+         */
+        if (character.getGear().getId() != gearId) {
+            log.error("Character {} is not carrying the specified gear!", characterId);
+            throw new InvalidActionException("Gear with this ID is not equipped by the provided character!");
+        }
+
+        character.setGear(null);
+        characterRepository.save(character);
+
+        clan.getGear().add(gear);
+        clanRepository.save(clan);
+
+        gear.setCharacter(null);
+        gear.setClan(clan);
+        gearRepository.save(gear);
+    }
+
+    @Transactional
+    @Override
     public void unequipWeapon(int weaponId, int characterId, int clanId) throws InvalidActionException {
         log.debug("Processing un-equip request with weapon {} and character {}", weaponId, characterId);
 
@@ -173,11 +287,17 @@ public class ItemServiceImpl implements ItemService {
         /*
          * Get random item type
          */
-        int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
-        if (diceRoll < 50) {
-            generateWeapon(character, notification, getRandomRarity());
-        } else {
-            generateConsumable(character, notification, getRandomRarity());
+        int diceRoll = randomService.getRandomInt(1, 3);
+        switch (diceRoll) {
+            case 1:
+                generateWeapon(character, notification, getRandomRarity());
+                break;
+            case 2:
+                generateConsumable(character, notification, getRandomRarity());
+                break;
+            case 3:
+                generateGear(character, notification, getRandomRarity());
+                break;
         }
     }
 
@@ -185,7 +305,9 @@ public class ItemServiceImpl implements ItemService {
     public void generateCraftableWeapon(Character character, int buildingLevel, ClanNotification notification) {
         log.debug("Crafting weapon with {}", character.getName());
 
-        if (buildingLevel < 1) return;
+        if (buildingLevel < 1) {
+            return;
+        }
 
         ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel);
         List<WeaponDetails> detailsList = weaponDetailsRepository.findAllByRarityAndCraftable(rarity, true);
@@ -197,7 +319,9 @@ public class ItemServiceImpl implements ItemService {
         weaponRepository.save(weapon);
 
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[]{character.getName()}, details.getName());
+        notificationService
+                .addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[]{character.getName()},
+                        details.getName());
         notification.getDetails().add(detail);
 
     }
@@ -261,8 +385,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void generateWeapon(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
-        log.debug("Generating random weapon!");
-
         /*
          * Load random weapon details .
          */
@@ -276,32 +398,21 @@ public class ItemServiceImpl implements ItemService {
         weapon.setDetails(details);
 
         /*
-         * Either equip the weapon with the character or place it in the clan storage.
+         * Place item it in the clan storage.
          */
-        if (character.getWeapon() == null) {
-            character.setWeapon(weapon);
-            weapon.setCharacter(character);
+        Clan clan = character.getClan();
+        clan.getWeapons().add(weapon);
+        weapon.setClan(clan);
 
-            characterRepository.save(character);
-            weaponRepository.save(weapon);
+        clanRepository.save(clan);
+        weaponRepository.save(weapon);
 
-            // update notification
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.equipped", new String[]{character.getName()}, details.getName());
-            notification.getDetails().add(detail);
-        } else {
-            Clan clan = character.getClan();
-            clan.getWeapons().add(weapon);
-            weapon.setClan(clan);
-
-            clanRepository.save(clan);
-            weaponRepository.save(weapon);
-
-            // update notification
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()}, details.getName());
-            notification.getDetails().add(detail);
-        }
+        // update notification
+        NotificationDetail detail = new NotificationDetail();
+        notificationService
+                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
+                        details.getName());
+        notification.getDetails().add(detail);
     }
 
     private void generateConsumable(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
@@ -332,9 +443,41 @@ public class ItemServiceImpl implements ItemService {
          * Update notification.
          */
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()}, details.getName());
+        notificationService
+                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
+                        details.getName());
         notification.getDetails().add(detail);
+    }
 
+    private void generateGear(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
+        /*
+         * Load random weapon details .
+         */
+        List<GearDetails> gearDetailsList = gearDetailsRepository.findAllByRarity(rarity);
+        GearDetails details = gearDetailsList.get(randomService.getRandomInt(0, gearDetailsList.size() - 1));
+
+        /*
+         * Create gear.
+         */
+        Gear gear = new Gear();
+        gear.setDetails(details);
+
+        /*
+         * Place item it in the clan storage.
+         */
+        Clan clan = character.getClan();
+        clan.getGear().add(gear);
+        gear.setClan(clan);
+
+        clanRepository.save(clan);
+        gearRepository.save(gear);
+
+        // update notification
+        NotificationDetail detail = new NotificationDetail();
+        notificationService
+                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
+                        details.getName());
+        notification.getDetails().add(detail);
     }
 
     private ItemDetails.Rarity getRandomRarity() {

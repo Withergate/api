@@ -1,10 +1,9 @@
 package com.withergate.api.model.notification;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,7 +44,7 @@ public class ClanNotification {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "notification_id")
-    private Set<NotificationDetail> details;
+    private List<NotificationDetail> details;
 
     // INCOME
 
@@ -77,7 +75,7 @@ public class ClanNotification {
     public ClanNotification() {
         injury = 0;
         if (text == null) text = new HashMap<>();
-        if (details == null) details = new HashSet<>();
+        if (details == null) details = new ArrayList<>();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.withergate.api.controller;
+package com.withergate.api.controller.clan;
 
 import java.security.Principal;
 import java.util.HashSet;

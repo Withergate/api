@@ -6,6 +6,8 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.item.BonusType;
+import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
@@ -21,12 +23,12 @@ import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Location service implementation.
@@ -232,7 +234,7 @@ public class LocationServiceImpl implements LocationService {
          */
         if (randomService.getRandomInt(1, 100) > 50) {
             log.debug("Junk found!");
-            int junk = character.getScavenge() * junkRatio + getIncomeBonus(character, notification);
+            int junk = character.getScavenge() * junkRatio + getIncomeBonus(character, notification, BonusType.SCAVENGE_JUNK);
             Clan clan = character.getClan();
             clan.setJunk(clan.getJunk() + junk);
             clanService.saveClan(clan);
@@ -241,7 +243,7 @@ public class LocationServiceImpl implements LocationService {
             notification.setJunkIncome(junk);
         } else {
             log.debug("Food found!");
-            int food = character.getScavenge() * foodRatio + getIncomeBonus(character, notification);
+            int food = character.getScavenge() * foodRatio + getIncomeBonus(character, notification, BonusType.SCAVENGE_FOOD);
             ;
             Clan clan = character.getClan();
             clan.setFood(clan.getFood() + food);
@@ -254,14 +256,36 @@ public class LocationServiceImpl implements LocationService {
     }
 
     // add bonus to found junk and food when character has certain traits
-    private int getIncomeBonus(Character character, ClanNotification notification) {
+    private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
+        int bonus = 0;
+
         if (character.getTraits().containsKey(TraitDetails.TraitName.STRONG)) {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.strong", new String[]{character.getName()});
             notification.getDetails().add(detail);
 
-            return 2;
+            bonus += 2;
         }
-        return 0;
+
+        Gear gear = character.getGear();
+        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null
+                && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.junk", new String[]{}, gear.getDetails().getName());
+            notification.getDetails().add(detail);
+
+            bonus += character.getGear().getDetails().getBonus();
+        }
+
+        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null
+                && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.food", new String[]{}, gear.getDetails().getName());
+            notification.getDetails().add(detail);
+
+            bonus += character.getGear().getDetails().getBonus();
+        }
+
+        return bonus;
     }
 }

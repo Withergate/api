@@ -8,6 +8,9 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.item.BonusType;
+import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.BuildingActionRepository;
@@ -72,13 +75,8 @@ public class BuildingServiceImpl implements BuildingService {
             if (action.getType() == BuildingAction.Type.CONSTRUCT) {
                 int progress = character.getCraftsmanship(); // progress to be done
 
-                // builder trait
-                if (character.getTraits().containsKey(TraitDetails.TraitName.BUILDER)) {
-                    progress = progress + 2;
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[]{character.getName()});
-                    notification.getDetails().add(detail);
-                }
+                // calculate bonus for gear and traits
+                progress += getBonus(character, notification, BonusType.CONSTRUCT);
 
                 notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{}, details.getName());
 
@@ -207,5 +205,37 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<BuildingDetails> getAllBuildingDetails() {
         return buildingDetailsRepository.findAll();
+    }
+
+    private int getBonus(Character character, ClanNotification notification, BonusType bonusType) {
+        int bonus = 0;
+
+        if (bonusType.equals(BonusType.CONSTRUCT) && character.getTraits().containsKey(TraitDetails.TraitName.BUILDER)) {
+            bonus += 2;
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[]{character.getName()});
+            notification.getDetails().add(detail);
+        }
+
+        Gear gear = character.getGear();
+        if (bonusType.equals(BonusType.CONSTRUCT) && gear != null
+                && gear.getDetails().getBonusType().equals(BonusType.CONSTRUCT)) {
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.work", new String[]{}, gear.getDetails().getName());
+            notification.getDetails().add(detail);
+
+            bonus += character.getGear().getDetails().getBonus();
+        }
+
+        if (bonusType.equals(BonusType.FORGE) && gear != null
+                && gear.getDetails().getBonusType().equals(BonusType.FORGE)) {
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.work", new String[]{}, gear.getDetails().getName());
+            notification.getDetails().add(detail);
+
+            bonus += character.getGear().getDetails().getBonus();
+        }
+
+        return bonus;
     }
 }

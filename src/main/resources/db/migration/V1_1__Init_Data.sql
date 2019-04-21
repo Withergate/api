@@ -71,10 +71,32 @@ INSERT INTO localized_texts(consumable_description, lang, text) VALUES
     ('SMALL_MEDKIT', 'cs', 'Malá lékárnička se základními potřebami pro první pomoc.'),
     ('LARGE_MEDKIT', 'en', 'Large bag containing all sorts of medical equipment. Useful for treating more dangerous wounds.'),
     ('LARGE_MEDKIT', 'cs', 'Velká lékárnička s vybavením na ošetření težších zranění.'),
-    ('MANUSCRIPT', 'en', 'Those who are able to read can learn a lot from this ancient texts.'),
+    ('MANUSCRIPT', 'en', 'Those who are able to read can learn a lot from this ancient text.'),
     ('MANUSCRIPT', 'cs', 'Z těchto starodávných textů se můžeš naučit mnoho, pokud tedy umíš číst.'),
     ('OLD_BOOK', 'en', 'Not everyone can understand an ancient source of knowledge - but if you are the one, a powerful knowledge is waiting for you as a reward.'),
     ('OLD_BOOK', 'cs', 'Ne každý pochopí tento starodávný zdroj vědění - ale pokud to zvládneš, odměnou ti budou mocné znalosti.');
+
+-- Gear details
+INSERT INTO gear_details(identifier, rarity, bonus, bonus_type, image_url) VALUES
+    ('SAW', 'COMMON', 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg'),
+    ('TRAP', 'COMMON', 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('DETECTOR', 'RARE', 4, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+
+INSERT INTO localized_texts(gear_name, lang, text) VALUES
+    ('SAW', 'en', 'Saw'),
+    ('SAW', 'cs', 'Pila'),
+    ('TRAP', 'en', 'Trap'),
+    ('TRAP', 'cs', 'Past'),
+    ('DETECTOR', 'en', 'Detector'),
+    ('DETECTOR', 'cs', 'Detektor');
+
+INSERT INTO localized_texts(gear_description, lang, text) VALUES
+    ('SAW', 'en', 'Somewhat toothless, but still working. Improves craftsmanship when building without the necessity to pay any extra junk.'),
+    ('SAW', 'cs', 'Poněkud bezzubá, ale svůj účel splní. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
+    ('TRAP', 'en', 'All you need is to place it and tomorrow you can collect it. Improves the chance of finding food.'),
+    ('TRAP', 'cs', 'Stačí rozmístit a zítra sesbírat. Zvýší šanci na nalezení jídla.'),
+    ('DETECTOR', 'en', 'A few decades old, so it doesn’t work really well. Improves the chance of finding junk.'),
+    ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
 
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image_url) VALUES
@@ -307,8 +329,6 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.combat.roundresult', 'cs', '{} vyhrál/a kolo souboje s bojovým číslem {}. {} měl bojové číslo {}. {} ztrácí {} životy.'),
     ('detail.combat.flee', 'en', '{} fleed the combat with {} dice roll and {}% flee chance.'),
     ('detail.combat.flee', 'cs', '{} uprchl/a ze souboje s hodem {} při šanci {}% na útěk.'),
-    ('detail.item.found.equipped', 'en', '{} found [] and equipped it.'),
-    ('detail.item.found.equipped', 'cs', '{} přidal/a [] do svého inventáře.'),
     ('detail.item.found.storage', 'en', '{} found [] and took it to your clan storage.'),
     ('detail.item.found.storage', 'cs', '{} nalezl/a [] a vzal/a tento úlovek do klanového skladu.'),
     ('detail.building.levelup', 'en', '[] advanced to the next level.'),
@@ -320,7 +340,13 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.trait.ascetic', 'en', '{} does not need to consume any food because of his Ascetic trait.'),
     ('detail.trait.ascetic', 'cs', '{} nemusí konzumovat žádné jídlo díky své schopnosti Asketa.'),
     ('detail.trait.strong', 'en', 'The amount of the carried loot was increased since {} has a trait Strong.'),
-    ('detail.trait.strong', 'cs', '{} je Silák a proto se mu podařilo odnést více kořisti.');
+    ('detail.trait.strong', 'cs', '{} je Silák a proto se mu podařilo odnést více kořisti.'),
+    ('gear.bonus.junk', 'en', 'Character found more junk thanks to the quipped gear: [].'),
+    ('gear.bonus.junk', 'cs', 'Postava našla více šrotu díky předmětu: [].'),
+    ('gear.bonus.food', 'en', 'Character found more food thanks to the quipped gear: [].'),
+    ('gear.bonus.food', 'cs', 'Postava našla více jídla díky předmětu: [].'),
+    ('gear.bonus.work', 'en', 'Character worked more efficiently thanks to the quipped gear: [].'),
+    ('gear.bonus.work', 'cs', 'Postava pracovala efektivněji díky svému vybavení: [].');
 
 -- Placeholder texts encounters
 INSERT INTO placeholder_texts(code, lang, text) VALUES

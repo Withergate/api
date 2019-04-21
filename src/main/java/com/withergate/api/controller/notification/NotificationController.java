@@ -1,4 +1,4 @@
-package com.withergate.api.controller;
+package com.withergate.api.controller.notification;
 
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.notification.ClanNotificationRepository;

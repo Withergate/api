@@ -1,9 +1,20 @@
 package com.withergate.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Consumable;
+import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Weapon;
+import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.view.Views;
+import com.withergate.api.service.clan.ClanServiceImpl;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,17 +27,6 @@ import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Consumable;
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.quest.Quest;
-import com.withergate.api.model.view.Views;
-import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -88,6 +88,10 @@ public class Clan {
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private Set<Weapon> weapons;
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @JsonView(Views.Internal.class)
+    private Set<Gear> gear;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
