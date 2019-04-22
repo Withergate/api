@@ -1,16 +1,21 @@
 package com.withergate.api.controller.trade;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.request.ResourceTradeRequest;
+import com.withergate.api.model.trade.MarketOffer;
+import com.withergate.api.model.view.Views;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.trade.TradeService;
 
 import java.security.Principal;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,8 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TradeController {
 
     private final ActionService actionService;
+    private final TradeService tradeService;
 
-    public TradeController(ActionService actionService) {this.actionService = actionService;}
+    public TradeController(ActionService actionService, TradeService tradeService) {
+        this.actionService = actionService;
+        this.tradeService = tradeService;
+    }
 
     /**
      * Submits a new resource trade action and checks if this action is applicable. Throws an exception if not.
@@ -33,10 +42,22 @@ public class TradeController {
      * @param request   the trade action request
      * @throws InvalidActionException
      */
-    @RequestMapping(value = "/trade/resources/action", method = RequestMethod.POST)
+    @PostMapping("/trade/resources/action")
     public ResponseEntity<Void> submitResourceTradeAction(Principal principal, @RequestBody ResourceTradeRequest request)
             throws InvalidActionException {
         actionService.createResourceTradeAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * Gets all clan items as market offers.
+     *
+     * @param principal the principal
+     */
+    @JsonView(Views.Public.class)
+    @GetMapping("/trade/offers")
+    public ResponseEntity<List<MarketOffer>> getClanTradeOffers(Principal principal) {
+        return new ResponseEntity<>(tradeService.prepareClanMarketOffers(Integer.parseInt(principal.getName())), HttpStatus.OK);
+    }
+
 }

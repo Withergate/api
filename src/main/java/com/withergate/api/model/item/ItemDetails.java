@@ -18,12 +18,15 @@ public class ItemDetails {
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
+    @Column(name = "price", nullable = false)
+    private int price;
 
     @Column(name = "rarity", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
+
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
 
     public enum Rarity {
         COMMON, RARE

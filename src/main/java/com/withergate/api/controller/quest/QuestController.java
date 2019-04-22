@@ -8,9 +8,8 @@ import java.security.Principal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,7 +34,7 @@ public class QuestController {
      * @param request   the trade action request
      * @throws InvalidActionException
      */
-    @RequestMapping(value = "/quests/action", method = RequestMethod.POST)
+    @PostMapping("/quests/action")
     public ResponseEntity<Void> submitQuestAction(Principal principal, @RequestBody QuestRequest request) throws InvalidActionException {
         actionService.createQuestAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);

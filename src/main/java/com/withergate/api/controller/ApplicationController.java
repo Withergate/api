@@ -1,12 +1,13 @@
 package com.withergate.api.controller;
 
 import com.withergate.api.service.AdminService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,7 +33,7 @@ public class ApplicationController {
      *
      * @return the application version
      */
-    @RequestMapping("/version")
+    @GetMapping("/version")
     public ResponseEntity<String> getVerison() {
         return new ResponseEntity<>(buildVersion, HttpStatus.OK);
     }
@@ -42,7 +43,7 @@ public class ApplicationController {
      *
      * @return ok status if applied
      */
-    @RequestMapping(value = "/restart", method = RequestMethod.POST)
+    @PostMapping("/restart")
     public ResponseEntity<Void> restartGame() {
         adminService.restartGame();
 
@@ -54,7 +55,7 @@ public class ApplicationController {
      *
      * @return ok status if applied
      */
-    @RequestMapping(value = "/turn/end", method = RequestMethod.POST)
+    @PostMapping("/turn/end")
     public ResponseEntity<Void> endTurn() {
         adminService.endTurn();
 

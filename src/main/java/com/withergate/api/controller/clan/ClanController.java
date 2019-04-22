@@ -1,9 +1,5 @@
 package com.withergate.api.controller.clan;
 
-import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
@@ -13,14 +9,18 @@ import com.withergate.api.model.view.Views;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
+
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -47,7 +47,7 @@ public class ClanController {
      * @param principal the principal
      * @return the clan matching the id of the authenticated user
      */
-    @RequestMapping("/clan")
+    @GetMapping("/clan")
     public ResponseEntity<Clan> getClan(Principal principal) {
         Clan clan = clanService.getClan(Integer.parseInt(principal.getName()));
 
@@ -81,7 +81,7 @@ public class ClanController {
      * @return the created clan
      * @throws EntityConflictException
      */
-    @RequestMapping(value = "/clan", method = RequestMethod.POST)
+    @PostMapping("/clan")
     public ResponseEntity<Clan> createClan(Principal principal, @RequestBody ClanRequest clanRequest)
             throws EntityConflictException {
         log.debug("Creating a new clan for player {}", principal.getName());
@@ -98,8 +98,9 @@ public class ClanController {
      * @return the page containing clans in the specified order
      */
     @JsonView(Views.Public.class)
-    @RequestMapping("/clans")
+    @GetMapping("/clans")
     public ResponseEntity<Page<Clan>> getClans(Pageable pageable) {
         return new ResponseEntity<>(clanService.getClans(pageable), HttpStatus.OK);
     }
+
 }

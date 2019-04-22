@@ -53,6 +53,7 @@ CREATE TABLE weapon_details (
     identifier VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
+    price INT NOT NULL,
     combat INT NOT NULL,
     weapon_type VARCHAR(8) NOT NULL,
     craftable BIT NOT NULL DEFAULT FALSE,
@@ -74,6 +75,7 @@ CREATE TABLE consumable_details (
     identifier VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
+    price INT NOT NULL,
     effect_type VARCHAR(16) NOT NULL,
     effect INT NOT NULL,
     prereq INT DEFAULT 0,
@@ -95,6 +97,7 @@ CREATE TABLE gear_details (
     identifier VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
+    price INT NOT NULL,
     bonus INT NOT NULL,
     bonus_type VARCHAR(16) NOT NULL,
     PRIMARY KEY (identifier)

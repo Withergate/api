@@ -5,16 +5,16 @@ import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * LocationAction controller. Enables the execution of location actions.
@@ -41,7 +41,7 @@ public class LocationController {
      * @param request   the location action request
      * @throws InvalidActionException
      */
-    @RequestMapping(value = "/locations/action", method = RequestMethod.POST)
+    @PostMapping("/locations/action")
     public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) throws InvalidActionException {
         log.debug("Executing location action for player {}", principal.getName());
 
@@ -49,7 +49,7 @@ public class LocationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/locations", method = RequestMethod.GET)
+    @GetMapping("/locations")
     public ResponseEntity<List<LocationDescription>> getLocations() {
         return new ResponseEntity<>(locationDescriptionRepository.findAll(), HttpStatus.OK);
     }

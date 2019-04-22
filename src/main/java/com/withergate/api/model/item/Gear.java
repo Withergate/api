@@ -1,7 +1,6 @@
 package com.withergate.api.model.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 
 import javax.persistence.Column;
@@ -25,7 +24,7 @@ import lombok.Setter;
 @Table(name = "gear")
 @Getter
 @Setter
-public class Gear {
+public class Gear extends Item {
 
     @Id
     @Column(name = "gear_id", updatable = false, nullable = false)
@@ -40,8 +39,4 @@ public class Gear {
     @OneToOne(mappedBy = "gear")
     private Character character;
 
-    @ManyToOne
-    @JoinColumn(name = "clan_id")
-    @JsonIgnore
-    private Clan clan;
 }

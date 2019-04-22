@@ -9,6 +9,7 @@ import java.security.Principal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,25 +30,25 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @RequestMapping(value = "/items/weapons/equip", method = RequestMethod.POST)
+    @PostMapping("/items/weapons/equip")
     public ResponseEntity<Void> equipWeapon(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
         itemService.equipWeapon(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/items/weapons/unequip", method = RequestMethod.POST)
+    @PostMapping("/items/weapons/unequip")
     public ResponseEntity<Void> unequipWeapon(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
         itemService.unequipWeapon(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/items/gear/equip", method = RequestMethod.POST)
+    @PostMapping("/items/gear/equip")
     public ResponseEntity<Void> equipGear(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
         itemService.equipGear(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/items/gear/unequip", method = RequestMethod.POST)
+    @PostMapping("/items/gear/unequip")
     public ResponseEntity<Void> unequipGear(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
         itemService.unequipGear(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);

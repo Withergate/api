@@ -3,12 +3,18 @@ package com.withergate.api.service.trade;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResourceTradeAction;
+import com.withergate.api.model.item.Consumable;
+import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.notification.NotificationService;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,6 +62,27 @@ public class TradeServiceImpl implements TradeService {
             action.setState(ActionState.COMPLETED);
             resourceTradeActionRepository.save(action);
         }
+    }
+
+    @Override
+    public List<MarketOffer> prepareClanMarketOffers(int clanId) {
+        Clan clan = clanService.getClan(clanId);
+
+        List<MarketOffer> marketOffers = new ArrayList<>();
+
+        for (Weapon weapon : clan.getWeapons()) {
+            marketOffers.add(new MarketOffer(weapon));
+        }
+
+        for (Gear gear : clan.getGear()) {
+            marketOffers.add(new MarketOffer(gear));
+        }
+
+        for (Consumable consumable : clan.getConsumables()) {
+            marketOffers.add(new MarketOffer(consumable));
+        }
+
+        return marketOffers;
     }
 
     private void processResourceTradeAction(ResourceTradeAction action, ClanNotification notification) {

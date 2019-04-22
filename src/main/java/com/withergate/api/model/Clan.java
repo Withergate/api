@@ -114,6 +114,7 @@ public class Clan {
      * @return the population limit
      */
     @JsonProperty("populationLimit")
+    @JsonView(Views.Internal.class)
     public int getPopulationLimit() {
         int limit = ClanServiceImpl.BASIC_POPULATION_LIMIT;
 
@@ -128,6 +129,7 @@ public class Clan {
      * List of unconstructed buildings. This list is assembled dynamically and is not persisted.
      */
     @Transient
+    @JsonView(Views.Internal.class)
     private Set<Building> unconstructedBuildings;
 
     /**
@@ -136,6 +138,7 @@ public class Clan {
      * @return the list of buildings
      */
     @JsonProperty("buildings")
+    @JsonView(Views.Internal.class)
     public Collection<Building> getBuildingsAsList() {
         return buildings.values();
     }
@@ -146,6 +149,7 @@ public class Clan {
      * @return the information needed for next level
      */
     @JsonProperty("nextInformationLevel")
+    @JsonView(Views.Internal.class)
     public int getNextLevelInformation() {
         return (informationLevel + 1) * ClanServiceImpl.INFORMATION_QUOTIENT;
     }

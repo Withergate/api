@@ -8,9 +8,8 @@ import java.security.Principal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,7 +34,7 @@ public class BuildingController {
      * @param request   the building action request
      * @throws InvalidActionException
      */
-    @RequestMapping(value = "/buildings/action", method = RequestMethod.POST)
+    @PostMapping("/buildings/action")
     public ResponseEntity<Void> submitBuildingAction(Principal principal, @RequestBody BuildingRequest request) throws InvalidActionException {
         actionService.createBuildingAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);

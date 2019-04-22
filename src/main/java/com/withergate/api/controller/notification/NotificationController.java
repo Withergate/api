@@ -1,16 +1,16 @@
 package com.withergate.api.controller.notification;
 
 import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.repository.notification.ClanNotificationRepository;
 import com.withergate.api.repository.TurnRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.withergate.api.repository.notification.ClanNotificationRepository;
 
 import java.security.Principal;
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Turn controller.
@@ -35,7 +35,7 @@ public class NotificationController {
      * @param principal the principal
      * @return the retrieved list of notifications
      */
-    @RequestMapping("/notifications")
+    @GetMapping("/notifications")
     public ResponseEntity<List<ClanNotification>> getPlayerNotificationsForTurn(
             Principal principal, @RequestParam(name = "turn", required = false) Integer turn) {
 
