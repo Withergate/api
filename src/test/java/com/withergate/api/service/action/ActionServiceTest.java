@@ -69,11 +69,11 @@ public class ActionServiceTest {
 
         GameProperties gameProperties = new GameProperties();
         gameProperties.setNeighborhoodEncounterProbability(0);
-        gameProperties.setNeighborhoodJunkMultiplier(1);
+        gameProperties.setNeighborhoodJunkBonus(0);
         gameProperties.setWastelandEncounterProbability(20);
-        gameProperties.setWastelandJunkMultiplier(2);
+        gameProperties.setWastelandJunkBonus(2);
         gameProperties.setCityEncounterProbability(40);
-        gameProperties.setCityJunkMultiplier(2);
+        gameProperties.setCityJunkBonus(4);
 
         actionService = new ActionServiceImpl(characterService, locationService, clanService, gameProperties, buildingService,
                 questService, tradeService);

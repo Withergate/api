@@ -256,10 +256,8 @@ INSERT INTO localized_texts(quest_description, lang, text) VALUES
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.tavern.hired', 'en', 'Character went to the tavern to hire someone for your clan. After spending the evening chatting with several people, the decision fell on {}'),
     ('location.tavern.hired', 'cs', 'Postava šla do hospody s nabídkou lehce vydělaných zátek. Po několika hodinách padlo rozhodnutí na {}.'),
-    ('location.junk', 'en', 'Character found some junk.'),
-    ('location.junk', 'cs', 'Postava  našla šrot.'),
-    ('location.food', 'en', 'Character found some food.'),
-    ('location.food', 'cs', 'Postava  našla jídlo.'),
+    ('location.resources', 'en', 'Character found some resources.'),
+    ('location.resources', 'cs', 'Postava  našla suroviny.'),
     ('location.loot', 'en', 'Character found loot.'),
     ('location.loot', 'cs', 'Postava našla předmět.'),
     ('location.information', 'en', 'Character found valuable information when scouting.'),

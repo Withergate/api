@@ -26,6 +26,7 @@ import com.withergate.api.service.notification.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,11 +51,18 @@ public class LocationServiceImpl implements LocationService {
     private final NotificationService notificationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
 
-    public LocationServiceImpl(LocationActionRepository locationActionRepository,
-                               GameProperties gameProperties, ClanService clanService,
-                               CharacterService characterService, RandomService randomService,
-                               EncounterService encounterService, ItemService itemService,
-                               CombatService combatService, NotificationService notificationService, LocationDescriptionRepository locationDescriptionRepository) {
+    public LocationServiceImpl(
+            LocationActionRepository locationActionRepository,
+            GameProperties gameProperties,
+            ClanService clanService,
+            CharacterService characterService,
+            RandomService randomService,
+            EncounterService encounterService,
+            ItemService itemService,
+            CombatService combatService,
+            NotificationService notificationService,
+            LocationDescriptionRepository locationDescriptionRepository
+    ) {
         this.locationActionRepository = locationActionRepository;
         this.gameProperties = gameProperties;
         this.clanService = clanService;
@@ -96,30 +104,27 @@ public class LocationServiceImpl implements LocationService {
 
             switch (action.getLocation()) {
                 case NEIGHBORHOOD:
-                    processLocationAction(notification, character, action,
-                            gameProperties.getNeighborhoodEncounterProbability(), gameProperties.getNeighborhoodLootProbability(),
-                            gameProperties.getNeighborhoodJunkMultiplier(), gameProperties.getNeighborhoodFoodMultiplier(),
-                            0);
+                    processLocationAction(notification, character, action, gameProperties.getNeighborhoodEncounterProbability(),
+                            gameProperties.getNeighborhoodLootProbability(), gameProperties.getNeighborhoodJunkBonus(),
+                            gameProperties.getNeighborhoodFoodBonus(), 0);
                     break;
                 case WASTELAND:
-                    processLocationAction(notification, character, action,
-                            gameProperties.getWastelandEncounterProbability(),gameProperties.getWastelandLootProbability(),
-                            gameProperties.getWastelandJunkMultiplier(), gameProperties.getWastelandFoodMultiplier(),
-                            gameProperties.getWastelandInformationMultiplier());
+                    processLocationAction(notification, character, action, gameProperties.getWastelandEncounterProbability(),
+                            gameProperties.getWastelandLootProbability(), gameProperties.getWastelandJunkBonus(),
+                            gameProperties.getWastelandFoodBonus(), gameProperties.getWastelandInformationBonus());
                     break;
                 case CITY_CENTER:
-                    processLocationAction(notification, character, action,
-                            gameProperties.getCityEncounterProbability(), gameProperties.getCityLootProbability(),
-                            gameProperties.getCityJunkMultiplier(), gameProperties.getCityFoodMultiplier(),
-                            gameProperties.getCityInformationMultiplier());
+                    processLocationAction(notification, character, action, gameProperties.getCityEncounterProbability(),
+                            gameProperties.getCityLootProbability(), gameProperties.getCityJunkBonus(),
+                            gameProperties.getCityFoodBonus(), gameProperties.getCityInformationBonus());
                     break;
                 case TAVERN:
                     Character hired = clanService.hireCharacter(character.getClan());
 
-                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[]{hired.getName()});
+                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[] {hired.getName()});
 
                     NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{hired.getName()});
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[] {hired.getName()});
                     notification.getDetails().add(detail);
                     break;
                 case ARENA:
@@ -141,8 +146,7 @@ public class LocationServiceImpl implements LocationService {
     public void processArenaActions(int turnId) {
         log.debug("Executing arena actions");
 
-        List<LocationAction> actions =
-                locationActionRepository.findAllByStateAndLocation(ActionState.PENDING, Location.ARENA);
+        List<LocationAction> actions = locationActionRepository.findAllByStateAndLocation(ActionState.PENDING, Location.ARENA);
         List<Character> characters = new ArrayList<>(actions.size());
 
         for (LocationAction action : actions) {
@@ -170,8 +174,8 @@ public class LocationServiceImpl implements LocationService {
         clanService.clearArenaCharacters();
     }
 
-    private void processLocationAction(ClanNotification notification, Character character, LocationAction action,
-                                       int encounterProbability, int lootProbability, int junkRatio, int foodRatio, int informationRatio) {
+    private void processLocationAction(ClanNotification notification, Character character, LocationAction action, int encounterProbability,
+            int lootProbability, int junkBonus, int foodBonus, int informationBonus) {
         /*
          * ENCOUNTER
          *
@@ -191,12 +195,12 @@ public class LocationServiceImpl implements LocationService {
          */
         if (action.getType() == LocationAction.LocationActionType.SCOUT) {
             log.debug("Information increased.");
-            int information = action.getCharacter().getIntellect() * informationRatio;
+            int information = action.getCharacter().getIntellect() + informationBonus;
 
             Clan clan = character.getClan();
             clan.setInformation(clan.getInformation() + information);
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[]{});
+            notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
             notification.setInformation(information);
 
             // handle next level
@@ -221,7 +225,7 @@ public class LocationServiceImpl implements LocationService {
         if (lootRoll <= lootProbability) {
             log.debug("Loot generated!");
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[]{});
+            notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[] {});
             itemService.generateItemForCharacter(character, notification);
 
             return;
@@ -232,27 +236,18 @@ public class LocationServiceImpl implements LocationService {
          *
          * If nothing from the above triggered, the character finds some junk or food at the location.
          */
-        if (randomService.getRandomInt(1, 100) > 50) {
-            log.debug("Junk found!");
-            int junk = character.getScavenge() * junkRatio + getIncomeBonus(character, notification, BonusType.SCAVENGE_JUNK);
-            Clan clan = character.getClan();
-            clan.setJunk(clan.getJunk() + junk);
-            clanService.saveClan(clan);
+        Clan clan = character.getClan();
+        notificationService.addLocalizedTexts(notification.getText(), "location.resources", new String[] {});
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.junk", new String[]{});
-            notification.setJunkIncome(junk);
-        } else {
-            log.debug("Food found!");
-            int food = character.getScavenge() * foodRatio + getIncomeBonus(character, notification, BonusType.SCAVENGE_FOOD);
-            ;
-            Clan clan = character.getClan();
-            clan.setFood(clan.getFood() + food);
-            clanService.saveClan(clan);
+        int junk = character.getScavenge() + junkBonus + getIncomeBonus(character, notification, BonusType.SCAVENGE_JUNK);
+        clan.setJunk(clan.getJunk() + junk);
+        notification.setJunkIncome(junk);
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.food", new String[]{});
-            notification.setFoodIncome(food);
-        }
+        int food = character.getScavenge() + foodBonus + getIncomeBonus(character, notification, BonusType.SCAVENGE_FOOD);
+        clan.setFood(clan.getFood() + food);
+        notification.setFoodIncome(food);
 
+        clanService.saveClan(clan);
     }
 
     // add bonus to found junk and food when character has certain traits
@@ -261,26 +256,24 @@ public class LocationServiceImpl implements LocationService {
 
         if (character.getTraits().containsKey(TraitDetails.TraitName.STRONG)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.strong", new String[]{character.getName()});
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.strong", new String[] {character.getName()});
             notification.getDetails().add(detail);
 
             bonus += 2;
         }
 
         Gear gear = character.getGear();
-        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null
-                && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
+        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.junk", new String[]{}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.junk", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
         }
 
-        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null
-                && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
+        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.food", new String[]{}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.food", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();

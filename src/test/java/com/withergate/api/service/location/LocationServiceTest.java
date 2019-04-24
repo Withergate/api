@@ -68,14 +68,14 @@ public class LocationServiceTest {
         MockitoAnnotations.initMocks(this);
 
         gameProperties = new GameProperties();
-        gameProperties.setNeighborhoodJunkMultiplier(1);
+        gameProperties.setNeighborhoodJunkBonus(0);
         gameProperties.setRareItemChance(10);
         gameProperties.setWastelandEncounterProbability(20);
-        gameProperties.setWastelandJunkMultiplier(2);
-        gameProperties.setWastelandInformationMultiplier(1);
+        gameProperties.setWastelandJunkBonus(2);
+        gameProperties.setWastelandInformationBonus(0);
         gameProperties.setCityEncounterProbability(20);
-        gameProperties.setCityJunkMultiplier(2);
-        gameProperties.setCityInformationMultiplier(2);
+        gameProperties.setCityJunkBonus(4);
+        gameProperties.setCityInformationBonus(2);
 
         locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService, characterService,
                 randomService, encounterService, itemService, combatService, notificationService, locationDescriptionRepository);
@@ -150,11 +150,12 @@ public class LocationServiceTest {
     }
 
     @Test
-    public void testGivenPendingLocationActionWhenHighDiceRollsThenVerifyJunkFound() {
+    public void testGivenPendingLocationActionWhenHighDiceRollsThenVerifyJunkAndFoodFound() {
         // given pending location action
         Clan clan = new Clan();
         clan.setId(1);
         clan.setJunk(10);
+        clan.setFood(5);
         clan.setName("Dragons");
 
         Character character = new Character();
@@ -177,7 +178,7 @@ public class LocationServiceTest {
         // when performing pending actions
 
         // high encounter roll followed by high loot roll
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50, 60);
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50);
 
         locationService.processLocationActions(1);
 
@@ -189,5 +190,6 @@ public class LocationServiceTest {
         Mockito.verify(clanService).saveClan(captor.capture());
 
         assertEquals(15, captor.getValue().getJunk());
+        assertEquals(10, captor.getValue().getFood());
     }
 }
