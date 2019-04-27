@@ -1,6 +1,7 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * CharacterService interface.
@@ -41,4 +42,13 @@ public interface CharacterService {
      * @return the generated character
      */
     Character generateRandomCharacter();
+
+    /**
+     * Marks character as resting.
+     *
+     * @param characterId the character ID
+     * @param clanId      the clan ID
+     * @throws InvalidActionException
+     */
+    void markCharacterAsResting(int characterId, int clanId) throws InvalidActionException;
 }

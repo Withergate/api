@@ -15,6 +15,7 @@ import com.withergate.api.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -83,6 +84,9 @@ public class CharacterServiceImpl implements CharacterService {
     public void performCharacterTurnUpdates(int turnId) {
         // delete dead characters
         deleteDeadCharacters();
+
+        // handle resting characters
+        markRestingCharactersReady();
 
         // eat food
         performFoodConsumption(turnId);
@@ -157,6 +161,29 @@ public class CharacterServiceImpl implements CharacterService {
         }
 
         return character;
+    }
+
+    @Override
+    public void markCharacterAsResting(int characterId, int clanId) throws InvalidActionException {
+        // check action validity
+        Character character = load(characterId);
+        if (character == null || character.getClan().getId() != clanId) {
+            throw new InvalidActionException("This character either doesn't exist or doesn't belong to your clan.");
+        }
+
+        if (!character.getState().equals(CharacterState.READY)) {
+            throw new InvalidActionException("Character must be ready to perform this action.");
+        }
+
+        character.setState(CharacterState.RESTING);
+        save(character);
+    }
+
+    private void markRestingCharactersReady() {
+        for (Character character : characterRepository.findAllByState(CharacterState.RESTING)) {
+            character.setState(CharacterState.READY);
+            save(character);
+        }
     }
 
     private void performFoodConsumption(int turnId) {
