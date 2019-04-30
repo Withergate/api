@@ -11,6 +11,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,10 +39,13 @@ public class TraitDetails {
     @JoinColumn(name = "trait_description")
     private Map<String, LocalizedText> description;
 
+    @Column(name = "bonus", updatable = false, nullable = false)
+    private int bonus;
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
     public enum TraitName {
-        FIGHTER, BUILDER, ASCETIC, STRONG
+        FIGHTER, BUILDER, ASCETIC, HUNTER, HOARDER
     }
 }

@@ -3,6 +3,7 @@ package com.withergate.api.service.encounter;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.item.WeaponType;
@@ -305,7 +306,7 @@ public class CombatServiceImpl implements CombatService {
                         .addLocalizedTexts(detail.getText(), "detail.trait.fighter", new String[]{character.getName()});
                 notification.getDetails().add(detail);
 
-                return 1;
+                return character.getTraits().get(TraitName.FIGHTER).getDetails().getBonus();
             }
         }
         return 0;

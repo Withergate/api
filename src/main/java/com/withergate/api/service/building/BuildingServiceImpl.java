@@ -8,9 +8,9 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.item.BonusType;
+import com.withergate.api.model.character.TraitDetails.TraitName;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.BuildingActionRepository;
@@ -211,7 +211,7 @@ public class BuildingServiceImpl implements BuildingService {
         int bonus = 0;
 
         if (bonusType.equals(BonusType.CONSTRUCT) && character.getTraits().containsKey(TraitDetails.TraitName.BUILDER)) {
-            bonus += 2;
+            bonus += character.getTraits().get(TraitName.BUILDER).getDetails().getBonus();
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[]{character.getName()});
             notification.getDetails().add(detail);

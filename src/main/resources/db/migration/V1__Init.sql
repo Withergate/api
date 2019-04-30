@@ -121,6 +121,7 @@ CREATE TABLE characters (
 DROP TABLE IF EXISTS trait_details;
 CREATE TABLE trait_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
+    bonus INT,
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (identifier)
 );

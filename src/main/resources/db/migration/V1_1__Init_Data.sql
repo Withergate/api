@@ -150,19 +150,22 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.');
 
 --- Trait details
-INSERT INTO trait_details(identifier, image_url) VALUES
-    ('FIGHTER', 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
-    ('ASCETIC', 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
-    ('STRONG', 'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
-    ('BUILDER', 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
+INSERT INTO trait_details(identifier, bonus, image_url) VALUES
+    ('FIGHTER', 1, 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
+    ('ASCETIC', 0, 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
+    ('HUNTER', 2, 'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
+    ('HOARDER', 2, 'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
+    ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
     ('FIGHTER', 'cs', 'Rváč'),
     ('ASCETIC', 'en', 'Ascetic'),
     ('ASCETIC', 'cs', 'Asketa'),
-    ('STRONG', 'en', 'Strong'),
-    ('STRONG', 'cs', 'Silák'),
+    ('HUNTER', 'en', 'Hunter'),
+    ('HUNTER', 'cs', 'Lovec'),
+    ('HOARDER', 'en', 'Hoarder'),
+    ('HOARDER', 'cs', 'Křeček'),
     ('BUILDER', 'en', 'Builder'),
     ('BUILDER', 'cs', 'Stavitel');
 
@@ -171,8 +174,10 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji se zbraní nablízko.'),
     ('ASCETIC', 'en', 'Character with this trait does not need to consume any food at the end of each turn.'),
     ('ASCETIC', 'cs', 'Postava s touto schopností nepotřebuje žádné jídlo na konci kola.'),
-    ('STRONG', 'en', 'Character with this trait can carry additional junk and food when scavenging.'),
-    ('STRONG', 'cs', 'Postava s touto schopností unese více šrotu a jídla při prohledávání lokací.'),
+    ('HUNTER', 'en', 'Character with this trait will get bonus food when scavenging.'),
+    ('HUNTER', 'cs', 'Postava s touto schopností najde více jídla při prohledávání lokací.'),
+    ('HOARDER', 'en', 'Character with this trait will get bonus junk when scavenging.'),
+    ('HOARDER', 'cs', 'Postava s touto schopností najde více šrotu při prohledávání lokací.'),
     ('BUILDER', 'en', 'Character with this trait constructs building faster without paying extra junk for the construction.'),
     ('BUILDER', 'cs', 'Postava s touto schopností staví budovy rychleji, aniž musela platit šrot navíc.');
 
@@ -337,8 +342,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.trait.fighter', 'cs', '{} získal/a bonus k bojové síly za schopnost Rváč při boji se zbraní nablízko.'),
     ('detail.trait.ascetic', 'en', '{} does not need to consume any food because of his Ascetic trait.'),
     ('detail.trait.ascetic', 'cs', '{} nemusí konzumovat žádné jídlo díky své schopnosti Asketa.'),
-    ('detail.trait.strong', 'en', 'The amount of the carried loot was increased since {} has a trait Strong.'),
-    ('detail.trait.strong', 'cs', '{} je Silák a proto se mu podařilo odnést více kořisti.'),
+    ('detail.trait.scavenge', 'en', 'Additional resources were found because of character`s trait [].'),
+    ('detail.trait.scavenge', 'cs', 'Bylo nalezeno více kořisti díky schopnosti [].'),
     ('gear.bonus.junk', 'en', 'Character found more junk thanks to the quipped gear: [].'),
     ('gear.bonus.junk', 'cs', 'Postava našla více šrotu díky předmětu: [].'),
     ('gear.bonus.food', 'en', 'Character found more food thanks to the quipped gear: [].'),

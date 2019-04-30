@@ -6,7 +6,8 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.item.BonusType;
+import com.withergate.api.model.character.TraitDetails.TraitName;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.location.Location;
@@ -250,16 +251,26 @@ public class LocationServiceImpl implements LocationService {
         clanService.saveClan(clan);
     }
 
-    // add bonus to found junk and food when character has certain traits
+    // add bonus to found junk and food when character has certain traits or items
     private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
         int bonus = 0;
 
-        if (character.getTraits().containsKey(TraitDetails.TraitName.STRONG)) {
+        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && character.getTraits().containsKey(TraitName.HUNTER)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.strong", new String[] {character.getName()});
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.scavenge", new String[]{},
+                    character.getTraits().get(TraitName.HUNTER).getDetails().getName());
             notification.getDetails().add(detail);
 
-            bonus += 2;
+            bonus += character.getTraits().get(TraitName.HUNTER).getDetails().getBonus();
+        }
+
+        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && character.getTraits().containsKey(TraitName.HOARDER)) {
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.scavenge", new String[]{},
+                    character.getTraits().get(TraitName.HOARDER).getDetails().getName());
+            notification.getDetails().add(detail);
+
+            bonus += character.getTraits().get(TraitName.HOARDER).getDetails().getBonus();
         }
 
         Gear gear = character.getGear();

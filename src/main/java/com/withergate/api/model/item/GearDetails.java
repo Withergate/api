@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import com.withergate.api.model.BonusType;
 import lombok.Getter;
 import lombok.Setter;
 
