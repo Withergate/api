@@ -86,7 +86,6 @@ public class LocationServiceImpl implements LocationService {
         locationActionRepository.save(action);
     }
 
-    @Transactional
     @Override
     public void processLocationActions(int turnId) {
         log.info("Executing location actions...");
@@ -168,7 +167,6 @@ public class LocationServiceImpl implements LocationService {
             result.getNotification().setTurnId(turnId);
             result.getNotification().setHeader(result.getCharacter().getName());
             notificationService.save(result.getNotification());
-            characterService.save(result.getCharacter());
         }
 
         // clear arena data
@@ -205,12 +203,10 @@ public class LocationServiceImpl implements LocationService {
             notification.setInformation(information);
 
             // handle next level
-            if (clan.getInformation() > clan.getNextLevelInformation()) {
+            if (clan.getInformation() >= clan.getNextLevelInformation()) {
                 clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
                 clanService.increaseInformationLevel(clan, notification, clan.getInformationLevel() + 1);
             }
-
-            clanService.saveClan(clan);
 
             return;
         }

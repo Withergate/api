@@ -65,7 +65,6 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.save(character);
     }
 
-    @Transactional
     @Override
     public void deleteDeadCharacters() {
         for (Character character : characterRepository.findAll()) {
@@ -100,7 +99,6 @@ public class CharacterServiceImpl implements CharacterService {
         // mark characters as ready
         for (Character character : characterRepository.findAll()) {
             character.setState(CharacterState.READY);
-            characterRepository.save(character);
         }
     }
 
@@ -182,7 +180,6 @@ public class CharacterServiceImpl implements CharacterService {
     private void markRestingCharactersReady() {
         for (Character character : characterRepository.findAllByState(CharacterState.RESTING)) {
             character.setState(CharacterState.READY);
-            save(character);
         }
     }
 
@@ -243,8 +240,6 @@ public class CharacterServiceImpl implements CharacterService {
                         // delte and remove from clan
                         characterRepository.delete(character);
                         iterator.remove();
-                    } else {
-                        characterRepository.save(character);
                     }
                 }
             }
@@ -297,8 +292,6 @@ public class CharacterServiceImpl implements CharacterService {
             int healing = Math.min(points, hitpointsMissing);
             character.setHitpoints(character.getHitpoints() + healing);
 
-            characterRepository.save(character);
-
             notificationService
                     .addLocalizedTexts(notification.getText(), "character.healing", new String[]{});
             notification.setHealing(points);
@@ -341,7 +334,6 @@ public class CharacterServiceImpl implements CharacterService {
                 notification.getDetails().add(detail);
 
                 // save
-                characterRepository.save(character);
                 notificationService.save(notification);
             }
         }

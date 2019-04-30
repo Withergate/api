@@ -275,12 +275,14 @@ public class ActionServiceImpl implements ActionService {
         buildingService.processBuildingActions(turnId);
     }
 
+    @Transactional
     @Override
     public void processQuestActions(int turnId) {
         // quest actions
         questService.processQuestActions(turnId);
     }
 
+    @Transactional
     @Override
     public void processTradeActions(int turnId) {
         // resource trade actions

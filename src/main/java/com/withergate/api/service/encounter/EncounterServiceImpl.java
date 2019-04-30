@@ -50,7 +50,6 @@ public class EncounterServiceImpl implements EncounterService {
         this.notificationService = notificationService;
     }
 
-    @Transactional
     @Override
     public void handleEncounter(ClanNotification notification, Character character, Location location) {
         // load random encounter from the repository
@@ -122,7 +121,6 @@ public class EncounterServiceImpl implements EncounterService {
                 Character generated = characterService.generateRandomCharacter();
                 generated.setClan(clan);
                 clan.getCharacters().add(generated);
-                clanService.saveClan(clan);
 
                 // update notification
                 NotificationDetail detail = new NotificationDetail();
@@ -149,7 +147,6 @@ public class EncounterServiceImpl implements EncounterService {
                 int caps = Math.min(clan.getCaps(), diceRoll);
 
                 clan.setCaps(clan.getCaps() - caps);
-                clanService.saveClan(clan);
 
                 // update notification
                 notification.setCapsIncome(- caps);

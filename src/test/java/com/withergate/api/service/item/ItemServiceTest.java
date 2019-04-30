@@ -160,18 +160,10 @@ public class ItemServiceTest {
         itemService.unequipWeapon(3, 2, 1);
 
         // then verify entities updated
-        ArgumentCaptor<Weapon> weaponCaptor = ArgumentCaptor.forClass(Weapon.class);
-        ArgumentCaptor<Character> characterCaptor = ArgumentCaptor.forClass(Character.class);
-        ArgumentCaptor<Clan> clanCaptor = ArgumentCaptor.forClass(Clan.class);
-
-        Mockito.verify(weaponRepository).save(weaponCaptor.capture());
-        Mockito.verify(characterRepository).save(characterCaptor.capture());
-        Mockito.verify(clanRepository).save(clanCaptor.capture());
-
-        assertEquals(null, weaponCaptor.getValue().getCharacter());
-        assertEquals(clan, weaponCaptor.getValue().getClan());
-        assertEquals(null, characterCaptor.getValue().getWeapon());
-        assertEquals(weapon, clanCaptor.getValue().getWeapons().iterator().next());
+        assertEquals(null, weapon.getCharacter());
+        assertEquals(clan, weapon.getClan());
+        assertEquals(null, character.getWeapon());
+        assertEquals(weapon, clan.getWeapons().iterator().next());
     }
 
     @Test(expected = InvalidActionException.class)
@@ -266,9 +258,7 @@ public class ItemServiceTest {
         itemService.generateItemForCharacter(character, notification);
 
         // then verify consumable generated
-        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
-        Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(details, captor.getValue().getConsumables().iterator().next().getDetails());
+        assertEquals(details, clan.getConsumables().iterator().next().getDetails());
     }
 
     @Test
@@ -301,9 +291,7 @@ public class ItemServiceTest {
         itemService.generateItemForCharacter(character, notification);
 
         // then verify weapon generated
-        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
-        Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(details, captor.getValue().getWeapons().iterator().next().getDetails());
+        assertEquals(details, clan.getWeapons().iterator().next().getDetails());
     }
 
 }

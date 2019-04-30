@@ -58,7 +58,6 @@ public class BuildingServiceImpl implements BuildingService {
         buildingActionRepository.save(action);
     }
 
-    @Transactional
     @Override
     public void processBuildingActions(int turnId) {
         log.debug("Processing building actions...");
@@ -121,18 +120,15 @@ public class BuildingServiceImpl implements BuildingService {
             // award experience
             character.setExperience(character.getExperience() + 1);
             notification.setExperience(1);
-            characterService.save(character);
 
             // dismiss action
             action.setState(ActionState.COMPLETED);
-            buildingActionRepository.save(action);
 
             // save notification
             notificationService.save(notification);
         }
     }
 
-    @Transactional
     @Override
     public void processPassiveBuildingBonuses(int turnId) {
         log.debug("Processing passive building bonuses");
@@ -143,7 +139,6 @@ public class BuildingServiceImpl implements BuildingService {
                 Building building = clan.getBuildings().get(BuildingDetails.BuildingName.MONUMENT);
                 if (building.getLevel() > 0) {
                     clan.setFame(clan.getFame() + building.getLevel());
-                    clanService.saveClan(clan);
 
                     ClanNotification notification = new ClanNotification();
                     notification.setTurnId(turnId);
@@ -161,7 +156,6 @@ public class BuildingServiceImpl implements BuildingService {
                 Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
                 if (building.getLevel() > 0) {
                     clan.setFood(clan.getFood() + building.getLevel());
-                    clanService.saveClan(clan);
 
                     ClanNotification notification = new ClanNotification();
                     notification.setTurnId(turnId);
@@ -181,7 +175,6 @@ public class BuildingServiceImpl implements BuildingService {
                     for (Character character : clan.getCharacters()) {
                         if (character.getState() == CharacterState.READY) {
                             character.setExperience(character.getExperience() + building.getLevel());
-                            characterService.save(character);
 
                             ClanNotification notification = new ClanNotification();
                             notification.setTurnId(turnId);

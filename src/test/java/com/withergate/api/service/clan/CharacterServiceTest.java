@@ -136,11 +136,7 @@ public class CharacterServiceTest {
         characterService.performCharacterTurnUpdates(1);
 
         // then verify character updated
-        ArgumentCaptor<Character> captor = ArgumentCaptor.forClass(Character.class);
-
-        Mockito.verify(characterRepository).save(captor.capture());
-        assertEquals(1, captor.getValue().getId());
-        assertEquals(6, captor.getValue().getHitpoints());
+        assertEquals(6, character.getHitpoints());
     }
 
     @Test

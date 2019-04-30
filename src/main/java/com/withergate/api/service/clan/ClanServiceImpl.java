@@ -110,7 +110,6 @@ public class ClanServiceImpl implements ClanService {
         return clanRepository.save(clan);
     }
 
-    @Transactional
     @Override
     public Character hireCharacter(Clan clan) {
         log.debug("Hiring new character for clan {}", clan.getId());
@@ -121,13 +120,11 @@ public class ClanServiceImpl implements ClanService {
 
         // deduct price and add the character to the clan
         clan.getCharacters().add(character);
-        clanRepository.save(clan);
 
         log.debug("Hired new character: {}", character.getName());
         return character;
     }
 
-    @Transactional
     @Override
     public void clearArenaCharacters() {
         log.debug("Clearing arena characters...");
@@ -135,11 +132,9 @@ public class ClanServiceImpl implements ClanService {
 
         for (Clan clan : clans) {
             clan.setArena(false);
-            clanRepository.save(clan);
         }
     }
 
-    @Transactional
     @Override
     public void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel) {
         log.debug("Increasing clan's information level for clan: {}", clan.getName());
@@ -153,8 +148,5 @@ public class ClanServiceImpl implements ClanService {
 
         // assign quests
         questService.assignQuests(clan, notification, informationLevel);
-
-        // save clan
-        clanRepository.save(clan);
     }
 }

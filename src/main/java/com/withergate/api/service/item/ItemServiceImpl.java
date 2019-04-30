@@ -170,14 +170,11 @@ public class ItemServiceImpl implements ItemService {
          * Equip the gear by attaching it to the character and removing it from the clan storage.
          */
         character.setGear(gear);
-        characterRepository.save(character);
 
         clan.getGear().remove(gear);
-        clanRepository.save(clan);
 
         gear.setClan(null);
         gear.setCharacter(character);
-        gearRepository.save(gear);
     }
 
     @Transactional
@@ -219,14 +216,11 @@ public class ItemServiceImpl implements ItemService {
         }
 
         character.setGear(null);
-        characterRepository.save(character);
 
         clan.getGear().add(gear);
-        clanRepository.save(clan);
 
         gear.setCharacter(null);
         gear.setClan(clan);
-        gearRepository.save(gear);
     }
 
     @Transactional
@@ -269,17 +263,13 @@ public class ItemServiceImpl implements ItemService {
         }
 
         character.setWeapon(null);
-        characterRepository.save(character);
 
         clan.getWeapons().add(weapon);
-        clanRepository.save(clan);
 
         weapon.setCharacter(null);
         weapon.setClan(clan);
-        weaponRepository.save(weapon);
     }
 
-    @Transactional
     @Override
     public void generateItemForCharacter(Character character, ClanNotification notification) {
         log.debug("Generating random item for character {}", character.getId());
@@ -378,10 +368,6 @@ public class ItemServiceImpl implements ItemService {
 
         // delete consumable
         consumableRepository.delete(consumable);
-
-        // update
-        clanRepository.save(clan);
-
     }
 
     private void generateWeapon(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
@@ -404,7 +390,6 @@ public class ItemServiceImpl implements ItemService {
         clan.getWeapons().add(weapon);
         weapon.setClan(clan);
 
-        clanRepository.save(clan);
         weaponRepository.save(weapon);
 
         // update notification
@@ -437,7 +422,6 @@ public class ItemServiceImpl implements ItemService {
 
         consumable.setClan(clan);
         clan.getConsumables().add(consumable);
-        clanRepository.save(clan);
 
         /*
          * Update notification.
@@ -469,7 +453,6 @@ public class ItemServiceImpl implements ItemService {
         clan.getGear().add(gear);
         gear.setClan(clan);
 
-        clanRepository.save(clan);
         gearRepository.save(gear);
 
         // update notification

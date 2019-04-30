@@ -1,9 +1,5 @@
 package com.withergate.api.service.quest;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
@@ -13,9 +9,13 @@ import com.withergate.api.model.quest.QuestDetails;
 import com.withergate.api.model.quest.QuestDetails.Type;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
-import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.notification.NotificationService;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,13 +40,14 @@ public class QuestServiceTest {
     private CombatService combatService;
 
     @Mock
-    private ClanService clanService;
+    private RandomService randomService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository, combatService, clanService);
+        questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository,
+                combatService, randomService);
     }
 
     @Test

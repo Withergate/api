@@ -1,10 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -14,6 +9,11 @@ import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -178,9 +178,7 @@ public class ClanServiceTest {
         clanService.hireCharacter(clan);
 
         // then verify clan saved with character
-        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
-        Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(hired, captor.getValue().getCharacters().iterator().next());
+        assertEquals(hired, clan.getCharacters().iterator().next());
     }
 
     @Test
@@ -199,9 +197,7 @@ public class ClanServiceTest {
         clanService.clearArenaCharacters();
 
         // then verify clan unmarked
-        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
-        Mockito.verify(clanRepository).save(captor.capture());
-        assertEquals(false, captor.getValue().isArena());
+        assertEquals(false, clan.isArena());
     }
 
     @Test

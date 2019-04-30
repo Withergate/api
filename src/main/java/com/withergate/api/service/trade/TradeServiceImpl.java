@@ -102,7 +102,5 @@ public class TradeServiceImpl implements TradeService {
 
             notificationService.addLocalizedTexts(notification.getText(), "character.trade.resourcesSell", new String[]{});
         }
-
-        clanService.saveClan(clan);
     }
 }

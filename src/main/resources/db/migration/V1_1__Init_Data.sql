@@ -233,8 +233,8 @@ INSERT INTO localized_texts(location_info, lang, text) VALUES
 -- Quests
 INSERT INTO quest_details (identifier, quest_type, difficulty, information_level, completion, caps_reward, fame_reward, image_url) VALUES
     ('quest.info1.1', 'COMBAT', 3, 1, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.info1.2', 'INTELLECT', 0, 1, 20, 60, 25, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.info2.1', 'CRAFTSMANSHIP', 0, 2, 30, 60, 50, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.info1.2', 'INTELLECT', 4, 1, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.info2.1', 'CRAFTSMANSHIP', 3, 2, 4, 60, 50, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
     ('quest.info3.1', 'COMBAT', 6, 3, 2, 100, 3, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES

@@ -14,17 +14,16 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 public class BuildingServiceTest {
 
@@ -89,14 +88,10 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify progress saved
-        ArgumentCaptor<Character> characterCaptor = ArgumentCaptor.forClass(Character.class);
-        Mockito.verify(characterService).save(characterCaptor.capture());
-        Assert.assertTrue(characterCaptor.getValue().getClan().getBuildings().containsKey(BuildingDetails.BuildingName.MONUMENT));
-        Assert.assertEquals(4, characterCaptor.getValue().getClan().getBuildings().get(BuildingDetails.BuildingName.MONUMENT).getProgress());
+        Assert.assertTrue(character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.MONUMENT));
+        Assert.assertEquals(4, character.getClan().getBuildings().get(BuildingDetails.BuildingName.MONUMENT).getProgress());
 
-        ArgumentCaptor<BuildingAction> actionCaptor = ArgumentCaptor.forClass(BuildingAction.class);
-        Mockito.verify(buildingActionRepository).save(actionCaptor.capture());
-        Assert.assertEquals(ActionState.COMPLETED, actionCaptor.getValue().getState());
+        Assert.assertEquals(ActionState.COMPLETED, action.getState());
 
         Mockito.verify(notificationService).save(Mockito.any());
     }
@@ -140,10 +135,8 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify progress saved
-        ArgumentCaptor<Character> characterCaptor = ArgumentCaptor.forClass(Character.class);
-        Mockito.verify(characterService).save(characterCaptor.capture());
-        Assert.assertEquals(0, characterCaptor.getValue().getClan().getBuildings().get(BuildingName.FORGE).getProgress());
-        Assert.assertEquals(1, characterCaptor.getValue().getClan().getBuildings().get(BuildingName.FORGE).getLevel());
+        Assert.assertEquals(0, character.getClan().getBuildings().get(BuildingName.FORGE).getProgress());
+        Assert.assertEquals(1, character.getClan().getBuildings().get(BuildingName.FORGE).getLevel());
     }
 
     @Test
