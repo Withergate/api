@@ -7,6 +7,7 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.ConsumableDetails;
 import com.withergate.api.model.item.EffectType;
 import com.withergate.api.model.item.ItemDetails.Rarity;
+import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.model.notification.ClanNotification;
@@ -16,6 +17,8 @@ import com.withergate.api.repository.item.ConsumableDetailsRepository;
 import com.withergate.api.repository.item.ConsumableRepository;
 import com.withergate.api.repository.item.GearDetailsRepository;
 import com.withergate.api.repository.item.GearRepository;
+import com.withergate.api.repository.item.OutfitDetailsRepository;
+import com.withergate.api.repository.item.OutfitRepository;
 import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
@@ -65,6 +68,12 @@ public class ItemServiceTest {
     private GearDetailsRepository gearDetailsRepository;
 
     @Mock
+    private OutfitRepository outfitRepository;
+
+    @Mock
+    private OutfitDetailsRepository outfitDetailsRepository;
+
+    @Mock
     private RandomService randomService;
 
     @Mock
@@ -78,7 +87,8 @@ public class ItemServiceTest {
         gameProperties.setRareItemChance(10);
 
         itemService = new ItemServiceImpl(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository, consumableRepository,
-                consumableDetailsRepository, gearRepository, gearDetailsRepository, randomService, gameProperties, notificationService);
+                consumableDetailsRepository, gearRepository, gearDetailsRepository, outfitRepository,
+                outfitDetailsRepository, randomService, gameProperties, notificationService);
     }
 
     @Test
@@ -111,21 +121,13 @@ public class ItemServiceTest {
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
         Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
-        itemService.equipWeapon(3, 2, 1);
+        itemService.equipItem(3, ItemType.WEAPON, 2, 1);
 
         // then verify entities updated
-        ArgumentCaptor<Weapon> weaponCaptor = ArgumentCaptor.forClass(Weapon.class);
-        ArgumentCaptor<Character> characterCaptor = ArgumentCaptor.forClass(Character.class);
-        ArgumentCaptor<Clan> clanCaptor = ArgumentCaptor.forClass(Clan.class);
-
-        Mockito.verify(weaponRepository).save(weaponCaptor.capture());
-        Mockito.verify(characterRepository).save(characterCaptor.capture());
-        Mockito.verify(clanRepository).save(clanCaptor.capture());
-
-        assertEquals(character, weaponCaptor.getValue().getCharacter());
-        assertEquals(null, weaponCaptor.getValue().getClan());
-        assertEquals(weapon, characterCaptor.getValue().getWeapon());
-        assertEquals(0, clanCaptor.getValue().getWeapons().size());
+        assertEquals(character, weapon.getCharacter());
+        assertEquals(null, weapon.getClan());
+        assertEquals(weapon, character.getWeapon());
+        assertEquals(0, clan.getWeapons().size());
     }
 
     @Test
@@ -157,7 +159,7 @@ public class ItemServiceTest {
         Mockito.when(weaponRepository.getOne(3)).thenReturn(weapon);
         Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
-        itemService.unequipWeapon(3, 2, 1);
+        itemService.unequipItem(3, ItemType.WEAPON, 2, 1);
 
         // then verify entities updated
         assertEquals(null, weapon.getCharacter());
@@ -195,7 +197,7 @@ public class ItemServiceTest {
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
         Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
-        itemService.equipWeapon(3, 2, 1);
+        itemService.equipItem(3, ItemType.WEAPON, 2, 1);
 
         // then verify exception thrown
     }
@@ -242,7 +244,7 @@ public class ItemServiceTest {
         character.setClan(clan);
 
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(80); // rarity
-        Mockito.when(randomService.getRandomInt(1, 3)).thenReturn(2); // item type
+        Mockito.when(randomService.getRandomInt(1, 4)).thenReturn(2); // item type
         Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0); // item index
 
         List<ConsumableDetails> detailsList = new ArrayList<>(0);
@@ -276,7 +278,7 @@ public class ItemServiceTest {
         character.setWeapon(new Weapon());
 
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(20); // rarity
-        Mockito.when(randomService.getRandomInt(1, 3)).thenReturn(1); // item type
+        Mockito.when(randomService.getRandomInt(1, 4)).thenReturn(1); // item type
         Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0); // item index
 
         List<WeaponDetails> detailsList = new ArrayList<>(0);

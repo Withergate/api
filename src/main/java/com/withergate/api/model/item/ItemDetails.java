@@ -61,8 +61,4 @@ public abstract class ItemDetails {
         COMMON, RARE
     }
 
-    public enum ItemType {
-        WEAPON, GEAR, OUTFIT, CONSUMABLE
-    }
-
 }

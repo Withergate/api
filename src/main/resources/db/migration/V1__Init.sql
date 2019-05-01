@@ -94,6 +94,16 @@ CREATE TABLE gear (
     CONSTRAINT gear_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
+DROP TABLE IF EXISTS outfits;
+CREATE TABLE outfits (
+    outfit_id INT AUTO_INCREMENT,
+    item_identifier VARCHAR(16),
+    clan_id INT DEFAULT NULL,
+    PRIMARY KEY (outfit_id),
+    CONSTRAINT outfit_outfit_details_fk FOREIGN KEY (item_identifier) REFERENCES item_details (identifier),
+    CONSTRAINT outfit_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
 DROP TABLE IF EXISTS characters;
 CREATE TABLE characters (
     character_id INT AUTO_INCREMENT,
@@ -112,10 +122,12 @@ CREATE TABLE characters (
     intellect INT NOT NULL,
     weapon_id INT DEFAULT NULL,
     gear_id INT DEFAULT NULL,
+    outfit_id INT DEFAULT NULL,
     PRIMARY KEY (character_id),
     CONSTRAINT character_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
     CONSTRAINT character_weapon_fk FOREIGN KEY (weapon_id) REFERENCES weapons (weapon_id),
-    CONSTRAINT character_gear_fk FOREIGN KEY (gear_id) REFERENCES gear (gear_id)
+    CONSTRAINT character_gear_fk FOREIGN KEY (gear_id) REFERENCES gear (gear_id),
+    CONSTRAINT character_outfit_fk FOREIGN KEY (outfit_id) REFERENCES outfits (outfit_id)
 );
 
 DROP TABLE IF EXISTS trait_details;

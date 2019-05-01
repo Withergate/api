@@ -30,27 +30,17 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @PostMapping("/items/weapons/equip")
+    @PostMapping("/items/equip")
     public ResponseEntity<Void> equipWeapon(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
-        itemService.equipWeapon(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
+        itemService.equipItem(request.getItemId(), request.getItemType(), request.getCharacterId(),
+                Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/items/weapons/unequip")
+    @PostMapping("/items/unequip")
     public ResponseEntity<Void> unequipWeapon(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
-        itemService.unequipWeapon(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/items/gear/equip")
-    public ResponseEntity<Void> equipGear(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
-        itemService.equipGear(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/items/gear/unequip")
-    public ResponseEntity<Void> unequipGear(Principal principal, @RequestBody EquipRequest request) throws InvalidActionException {
-        itemService.unequipGear(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
+        itemService.unequipItem(request.getItemId(), request.getItemType(), request.getCharacterId(),
+                Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

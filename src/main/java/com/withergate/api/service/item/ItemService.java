@@ -1,6 +1,7 @@
 package com.withergate.api.service.item;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
 
@@ -14,42 +15,24 @@ public interface ItemService {
     /**
      * Equip a weapon with the specified character. Throws an exception if this action is not allowed.
      *
-     * @param weaponId    the weapon ID
+     * @param itemId      the weapon ID
+     * @param type        item type
      * @param characterId the character ID
      * @param clanId      the clan ID
      * @throws InvalidActionException
      */
-    void equipWeapon(int weaponId, int characterId, int clanId) throws InvalidActionException;
+    void equipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException;
 
     /**
      * Un-equip a weapon from the specified character. Throws an exception if this action is not allowed.
      *
-     * @param weaponId    the weapon ID
+     * @param itemId      the weapon ID
+     * @param type        item type
      * @param characterId the character ID
      * @param clanId      the clan ID
      * @throws InvalidActionException
      */
-    void unequipWeapon(int weaponId, int characterId, int clanId) throws InvalidActionException;
-
-    /**
-     * Equip a gear with the specified character. Throws an exception if this action is not allowed.
-     *
-     * @param gearId    the gear ID
-     * @param characterId the character ID
-     * @param clanId      the clan ID
-     * @throws InvalidActionException
-     */
-    void equipGear(int gearId, int characterId, int clanId) throws InvalidActionException;
-
-    /**
-     * Un-equip a gear from the specified character. Throws an exception if this action is not allowed.
-     *
-     * @param gearId    the gear ID
-     * @param characterId the character ID
-     * @param clanId      the clan ID
-     * @throws InvalidActionException
-     */
-    void unequipGear(int gearId, int characterId, int clanId) throws InvalidActionException;
+    void unequipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException;
 
     /**
      * Generate a random item for the provided character.

@@ -77,10 +77,10 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('OLD_BOOK', 'cs', 'Ne každý pochopí tento starodávný zdroj vědění - ale pokud to zvládneš, odměnou ti budou mocné znalosti.');
 
 -- Gear details
-INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
-    ('SAW', 'GEAR', 'COMMON', 20, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg'),
-    ('TRAP', 'GEAR', 'COMMON', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('DETECTOR', 'GEAR', 'RARE', 50, 4, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+INSERT INTO item_details(identifier, item_type, rarity, craftable, price, bonus, bonus_type, image_url) VALUES
+    ('SAW', 'GEAR', 'COMMON', true, 20, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg'),
+    ('TRAP', 'GEAR', 'COMMON', true, 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('DETECTOR', 'GEAR', 'RARE', false, 50, 4, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SAW', 'en', 'Saw'),
@@ -97,6 +97,28 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('TRAP', 'cs', 'Stačí rozmístit a zítra sesbírat. Zvýší šanci na nalezení jídla.'),
     ('DETECTOR', 'en', 'A few decades old, so it doesn’t work really well. Improves the chance of finding junk.'),
     ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
+
+-- Outfit details
+INSERT INTO item_details(identifier, item_type, rarity, craftable, price, bonus, image_url) VALUES
+    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', true, 20, 1, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('LEATHER_COVERED', 'OUTFIT', 'RARE', true, 40, 2, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('KEVLAR', 'OUTFIT', 'RARE', false, 100, 3, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+
+INSERT INTO localized_texts(item_name, lang, text) VALUES
+    ('LEATHER_CLOTHES', 'en', 'Leather clothes'),
+    ('LEATHER_CLOTHES', 'cs', 'Kožené oblečení'),
+    ('LEATHER_COVERED', 'en', 'Leather clothes covered with nails'),
+    ('LEATHER_COVERED', 'cs', 'Hřeby pobité kožené oblečení'),
+    ('KEVLAR', 'en', 'Kevlar vest'),
+    ('KEVLAR', 'cs', 'Kevlarová vesta');
+
+INSERT INTO localized_texts(item_description, lang, text) VALUES
+    ('LEATHER_CLOTHES', 'en', 'Standard clothing providing a basic defense.'),
+    ('LEATHER_CLOTHES', 'cs', 'Standardní oděv poskytující základní ochranu.'),
+    ('LEATHER_COVERED', 'en', 'Clothing made of leather covered with nails and other metal junk. Unattractive, yes, but it protects every important parts of the body.'),
+    ('LEATHER_COVERED', 'cs', 'Oděv z kůže pobité hřeby a dalšími kovovými zbytky. Nevzhledně vypadající, leč dostatečně chránící všechny důležité části těla.'),
+    ('KEVLAR', 'en', 'Vest made of ancient material which nobody can produce today. Apart from few scratches, it is a real masterpiece.'),
+    ('KEVLAR', 'cs', 'Vesta z pradávného materiálu, který dnes již nikdo neumí vyrobit. Až na pár odřenin je to skutečný skvost..');
 
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image_url) VALUES

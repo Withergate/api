@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Outfit;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.CharacterServiceImpl;
@@ -99,6 +100,10 @@ public class Character {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gear_id")
     private Gear gear;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "outfit_id")
+    private Outfit outfit;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id")

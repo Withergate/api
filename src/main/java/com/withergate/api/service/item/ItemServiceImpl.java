@@ -9,7 +9,11 @@ import com.withergate.api.model.item.ConsumableDetails;
 import com.withergate.api.model.item.EffectType;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.GearDetails;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
+import com.withergate.api.model.item.ItemType;
+import com.withergate.api.model.item.Outfit;
+import com.withergate.api.model.item.OutfitDetails;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.model.notification.ClanNotification;
@@ -20,6 +24,8 @@ import com.withergate.api.repository.item.ConsumableDetailsRepository;
 import com.withergate.api.repository.item.ConsumableRepository;
 import com.withergate.api.repository.item.GearDetailsRepository;
 import com.withergate.api.repository.item.GearRepository;
+import com.withergate.api.repository.item.OutfitDetailsRepository;
+import com.withergate.api.repository.item.OutfitRepository;
 import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
@@ -49,6 +55,8 @@ public class ItemServiceImpl implements ItemService {
     private final ConsumableDetailsRepository consumableDetailsRepository;
     private final GearRepository gearRepository;
     private final GearDetailsRepository gearDetailsRepository;
+    private final OutfitRepository outfitRepository;
+    private final OutfitDetailsRepository outfitDetailsRepository;
     private final RandomService randomService;
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
@@ -59,6 +67,8 @@ public class ItemServiceImpl implements ItemService {
                            ConsumableDetailsRepository consumableDetailsRepository,
                            GearRepository gearRepository,
                            GearDetailsRepository gearDetailsRepository,
+                           OutfitRepository outfitRepository,
+                           OutfitDetailsRepository outfitDetailsRepository,
                            RandomService randomService, GameProperties gameProperties,
                            NotificationService notificationService) {
         this.characterRepository = characterRepository;
@@ -69,6 +79,8 @@ public class ItemServiceImpl implements ItemService {
         this.consumableDetailsRepository = consumableDetailsRepository;
         this.gearRepository = gearRepository;
         this.gearDetailsRepository = gearDetailsRepository;
+        this.outfitRepository = outfitRepository;
+        this.outfitDetailsRepository = outfitDetailsRepository;
         this.randomService = randomService;
         this.gameProperties = gameProperties;
         this.notificationService = notificationService;
@@ -76,192 +88,137 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public void equipWeapon(int weaponId, int characterId, int clanId) throws InvalidActionException {
-        log.debug("Processing equip request with weapon {} and character {}", weaponId, characterId);
+    public void equipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException {
+        Item item = null;
+        boolean equipped = false; // item already equipped
 
-        /*
-         * Load the weapon.
-         */
-        Weapon weapon = weaponRepository.getOne(weaponId);
-
-        if (weapon == null) {
-            log.error("Weapon with ID {} not found!", weaponId);
-            throw new InvalidActionException("Weapon with this ID was not found!");
-        }
-
-        Clan clan = weapon.getClan();
-
-        /*
-         * Check if this weapon is present in the clan storage.
-         */
-        if (weapon.getClan() == null || weapon.getClan().getId() != clanId) {
-            log.error("Weapon with ID {} is not available in the clan storage of clan ID {}!", weaponId, clanId);
-            throw new InvalidActionException("Weapon with this ID does not belong the the provided clan!");
-        }
-
-        /*
-         * Check if the provided character exists and does not hold another weapon already.
-         */
         Character character = characterRepository.getOne(characterId);
 
-        if (character == null || character.getWeapon() != null) {
-            log.error("Character with ID {} is not able to equip the weapon!", characterId);
-            throw new InvalidActionException("The provided character either does not exist or already has a weapon!");
+        if (character == null) {
+            log.error("Character with ID {} not found!", characterId);
+            throw new InvalidActionException("The provided character not found!");
+        }
+
+        // load item
+        if (type.equals(ItemType.WEAPON)) {
+            item = weaponRepository.getOne(itemId);
+            if (character.getWeapon() != null) equipped = true;
+        }
+        if (type.equals(ItemType.GEAR)) {
+            item = gearRepository.getOne(itemId);
+            if (character.getGear() != null) equipped = true;
+        }
+        if (type.equals(ItemType.OUTFIT)) {
+            item = outfitRepository.getOne(itemId);
+            if (character.getOutfit() != null) equipped = true;
+        }
+
+        if (item == null) {
+            log.error("Item with ID {} not found!", itemId);
+            throw new InvalidActionException("Item with this ID was not found!");
+        }
+
+        if (equipped) {
+            log.error("Character with ID {} is not able to equip the item!", characterId);
+            throw new InvalidActionException("The provided character already has an item of the same type!");
+        }
+
+        Clan clan = item.getClan();
+
+        // check clan
+        if (item.getClan() == null || item.getClan().getId() != clanId) {
+            log.error("Item with ID {} is not available in the clan storage of clan ID {}!", itemId, clanId);
+            throw new InvalidActionException("Item with this ID does not belong the the provided clan!");
         }
 
         if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to equip weapon.");
+            throw new InvalidActionException("Character must be READY to equip item.");
         }
 
-        /*
-         * Equip the weapon by attaching it to the character and removing it from the clan storage.
-         */
+        // process equip actions
+        if (type.equals(ItemType.WEAPON)) {
+            equipWeapon((Weapon) item, character, clan);
+        }
+        if (type.equals(ItemType.GEAR)) {
+            equipGear((Gear) item, character, clan);
+        }
+        if (type.equals(ItemType.OUTFIT)) {
+            equipOutfit((Outfit) item, character, clan);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void unequipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException {
+        Item item = null;
+        Character character = null;
+        int equippedId = 0;
+
+        // load item
+        if (type.equals(ItemType.WEAPON)) {
+            Weapon weapon = weaponRepository.getOne(itemId);
+            item = weapon;
+            character = weapon.getCharacter();
+            equippedId = character.getWeapon().getId();
+        }
+        if (type.equals(ItemType.GEAR)) {
+            Gear gear = gearRepository.getOne(itemId);
+            item = gear;
+            character = gear.getCharacter();
+            equippedId = character.getGear().getId();
+        }
+        if (type.equals(ItemType.OUTFIT)) {
+            Outfit outfit = outfitRepository.getOne(itemId);
+            item = outfit;
+            character = outfit.getCharacter();
+            equippedId = character.getOutfit().getId();
+        }
+
+        if (item == null) {
+            log.error("Item with ID {} not found!", itemId);
+            throw new InvalidActionException("Item with this ID was not found!");
+        }
+
+        Clan clan = clanRepository.getOne(clanId);
+
+        // check clan and character
+        if (character.getId() != characterId || character.getClan().getId() != clanId) {
+            log.error("Character with ID {} does not match the requested character!", characterId);
+            throw new InvalidActionException("Cannot equip item to the provided character!");
+        }
+
+        if (character.getState() != CharacterState.READY) {
+            throw new InvalidActionException("Character must be READY to un-equip item.");
+        }
+
+        // check if item quipped
+        if (equippedId != itemId) {
+            log.error("Character {} is not carrying the specified item!", characterId);
+            throw new InvalidActionException("item with this ID is not equipped by the provided character!");
+        }
+
+        // process unequip action
+        if (type.equals(ItemType.WEAPON)) {
+            unequipWeapon((Weapon) item, character, clan);
+        }
+        if (type.equals(ItemType.GEAR)) {
+            unequipGear((Gear) item, character, clan);
+        }
+        if (type.equals(ItemType.OUTFIT)) {
+            unequipOutfit((Outfit) item, character, clan);
+        }
+    }
+
+    private void equipWeapon(Weapon weapon, Character character, Clan clan) {
         character.setWeapon(weapon);
-        characterRepository.save(character);
 
         clan.getWeapons().remove(weapon);
-        clanRepository.save(clan);
 
         weapon.setClan(null);
         weapon.setCharacter(character);
-        weaponRepository.save(weapon);
     }
 
-    @Transactional
-    @Override
-    public void equipGear(int gearId, int characterId, int clanId) throws InvalidActionException {
-        log.debug("Processing equip request with gear {} and character {}", gearId, characterId);
-
-        /*
-         * Load the gear.
-         */
-        Gear gear = gearRepository.getOne(gearId);
-
-        if (gear == null) {
-            log.error("Gear with ID {} not found!", gearId);
-            throw new InvalidActionException("Gear with this ID was not found!");
-        }
-
-        Clan clan = gear.getClan();
-
-        /*
-         * Check if this weapon is present in the clan storage.
-         */
-        if (gear.getClan() == null || gear.getClan().getId() != clanId) {
-            log.error("Gear with ID {} is not available in the clan storage of clan ID {}!", gearId, clanId);
-            throw new InvalidActionException("Gear with this ID does not belong the the provided clan!");
-        }
-
-        /*
-         * Check if the provided character exists and does not hold another gear already.
-         */
-        Character character = characterRepository.getOne(characterId);
-
-        if (character == null || character.getGear() != null) {
-            log.error("Character with ID {} is not able to equip the gear!", characterId);
-            throw new InvalidActionException("The provided character either does not exist or already has a gear!");
-        }
-
-        if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to equip gear.");
-        }
-
-        /*
-         * Equip the gear by attaching it to the character and removing it from the clan storage.
-         */
-        character.setGear(gear);
-
-        clan.getGear().remove(gear);
-
-        gear.setClan(null);
-        gear.setCharacter(character);
-    }
-
-    @Transactional
-    @Override
-    public void unequipGear(int gearId, int characterId, int clanId) throws InvalidActionException {
-        log.debug("Processing un-equip request with gear {} and character {}", gearId, characterId);
-
-        /*
-         * Load the gear.
-         */
-        Gear gear = gearRepository.getOne(gearId);
-
-        if (gear == null) {
-            log.error("Gear with ID {} not found!", gearId);
-            throw new InvalidActionException("Gear with this ID was not found!");
-        }
-
-        Character character = gear.getCharacter();
-        Clan clan = clanRepository.getOne(clanId);
-
-        /*
-         * Check if the gear and character belong to the provided clan.
-         */
-        if (character == null || character.getId() != characterId || character.getClan().getId() != clanId) {
-            log.error("Character with ID {} does not match the requested character!", characterId);
-            throw new InvalidActionException("Cannot equip weapon to the provided character!");
-        }
-
-        if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to un-equip weapon.");
-        }
-
-        /*
-         * Check if the character already equips this gear.
-         */
-        if (character.getGear().getId() != gearId) {
-            log.error("Character {} is not carrying the specified gear!", characterId);
-            throw new InvalidActionException("Gear with this ID is not equipped by the provided character!");
-        }
-
-        character.setGear(null);
-
-        clan.getGear().add(gear);
-
-        gear.setCharacter(null);
-        gear.setClan(clan);
-    }
-
-    @Transactional
-    @Override
-    public void unequipWeapon(int weaponId, int characterId, int clanId) throws InvalidActionException {
-        log.debug("Processing un-equip request with weapon {} and character {}", weaponId, characterId);
-
-        /*
-         * Load the weapon.
-         */
-        Weapon weapon = weaponRepository.getOne(weaponId);
-
-        if (weapon == null) {
-            log.error("Weapon with ID {} not found!", weaponId);
-            throw new InvalidActionException("Weapon with this ID was not found!");
-        }
-
-        Character character = weapon.getCharacter();
-        Clan clan = clanRepository.getOne(clanId);
-
-        /*
-         * Check if the weapon and character belong to the provided clan.
-         *
-         */
-        if (character == null || character.getId() != characterId || character.getClan().getId() != clanId) {
-            log.error("Character with ID {} does not match the requested character!", characterId);
-            throw new InvalidActionException("Cannot equip weapon to the provided character!");
-        }
-
-        if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to un-equip weapon.");
-        }
-
-        /*
-         * Check if the character is currently holding the weapon.
-         */
-        if (character.getWeapon().getId() != weaponId) {
-            log.error("Character {} is not holding the specified weapon!", characterId);
-            throw new InvalidActionException("Weapon with this ID is not equipped by the provided character!");
-        }
-
+    private void unequipWeapon(Weapon weapon, Character character, Clan clan) {
         character.setWeapon(null);
 
         clan.getWeapons().add(weapon);
@@ -270,14 +227,48 @@ public class ItemServiceImpl implements ItemService {
         weapon.setClan(clan);
     }
 
+    private void equipGear(Gear gear, Character character, Clan clan) {
+        character.setGear(gear);
+
+        clan.getGear().remove(gear);
+
+        gear.setClan(null);
+        gear.setCharacter(character);
+    }
+
+    private void unequipGear(Gear gear, Character character, Clan clan) {
+        character.setGear(null);
+
+        clan.getGear().add(gear);
+
+        gear.setCharacter(null);
+        gear.setClan(clan);
+    }
+
+    private void equipOutfit(Outfit outfit, Character character, Clan clan) {
+        character.setOutfit(outfit);
+
+        clan.getOutfits().remove(outfit);
+
+        outfit.setClan(null);
+        outfit.setCharacter(character);
+    }
+
+    private void unequipOutfit(Outfit outfit, Character character, Clan clan) {
+        character.setOutfit(null);
+
+        clan.getOutfits().add(outfit);
+
+        outfit.setCharacter(null);
+        outfit.setClan(clan);
+    }
+
     @Override
     public void generateItemForCharacter(Character character, ClanNotification notification) {
         log.debug("Generating random item for character {}", character.getId());
 
-        /*
-         * Get random item type
-         */
-        int diceRoll = randomService.getRandomInt(1, 3);
+        // get random item type
+        int diceRoll = randomService.getRandomInt(1, 4);
         switch (diceRoll) {
             case 1:
                 generateWeapon(character, notification, getRandomRarity());
@@ -287,6 +278,9 @@ public class ItemServiceImpl implements ItemService {
                 break;
             case 3:
                 generateGear(character, notification, getRandomRarity());
+                break;
+            case 4:
+                generateOutfit(character, notification, getRandomRarity());
                 break;
         }
     }
@@ -321,35 +315,25 @@ public class ItemServiceImpl implements ItemService {
     public void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException {
         log.debug("Using consumable {} with character {}", consumableId, characterId);
 
-        /*
-         * Load the character.
-         */
+        // load character
         Character character = characterRepository.getOne(characterId);
         if (character == null || character.getClan().getId() != clanId) {
             throw new InvalidActionException("Character not found or doesn't belong to your clan!");
         }
 
-        /*
-         * Load the consumable.
-         */
+        // load consumable
         Consumable consumable = consumableRepository.getOne(consumableId);
         if (consumable == null || consumable.getClan().getId() != clanId) {
             throw new InvalidActionException("Consumable not found or doesn't belong to your clan!");
         }
 
-        /*
-         * Check prerequizities
-         */
+        // check prerequizities
         if (consumable.getDetails().getEffectType().equals(EffectType.EXPERIENCE)
                 && character.getIntellect() < consumable.getDetails().getPrereq()) {
             throw new InvalidActionException("Character's intellect is too low to perform this action.");
         }
 
-        /*
-         * Process the effect.
-         */
-        Clan clan = character.getClan();
-
+        // process the effect
         switch (consumable.getDetails().getEffectType()) {
             case HEALING:
                 int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
@@ -435,7 +419,7 @@ public class ItemServiceImpl implements ItemService {
 
     private void generateGear(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
         /*
-         * Load random weapon details .
+         * Load random outfit details .
          */
         List<GearDetails> gearDetailsList = gearDetailsRepository.findAllByRarity(rarity);
         GearDetails details = gearDetailsList.get(randomService.getRandomInt(0, gearDetailsList.size() - 1));
@@ -454,6 +438,30 @@ public class ItemServiceImpl implements ItemService {
         gear.setClan(clan);
 
         gearRepository.save(gear);
+
+        // update notification
+        NotificationDetail detail = new NotificationDetail();
+        notificationService
+                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
+                        details.getName());
+        notification.getDetails().add(detail);
+    }
+
+    private void generateOutfit(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
+        // load random outfit details
+        List<OutfitDetails> outfitDetailsList = outfitDetailsRepository.findAllByRarity(rarity);
+        OutfitDetails details = outfitDetailsList.get(randomService.getRandomInt(0, outfitDetailsList.size() - 1));
+
+        // create outfit
+        Outfit outfit = new Outfit();
+        outfit.setDetails(details);
+
+        // clan storage
+        Clan clan = character.getClan();
+        clan.getOutfits().add(outfit);
+        outfit.setClan(clan);
+
+        outfitRepository.save(outfit);
 
         // update notification
         NotificationDetail detail = new NotificationDetail();

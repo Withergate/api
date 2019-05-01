@@ -8,6 +8,9 @@ INSERT INTO weapons (weapon_id, item_identifier, clan_id) VALUES
 INSERT INTO gear (gear_id, item_identifier, clan_id) VALUES
     (1, 'DETECTOR', 1);
 
+INSERT INTO outfits (outfit_id, item_identifier, clan_id) VALUES
+    (1, 'LEATHER_CLOTHES', 1);
+
 INSERT INTO buildings (building_id, identifier, level, progress, clan_id) VALUES
     (1, 'SICK_BAY', 1, 8, 1);
 

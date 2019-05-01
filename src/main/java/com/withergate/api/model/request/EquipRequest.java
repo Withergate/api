@@ -1,5 +1,7 @@
 package com.withergate.api.model.request;
 
+import com.withergate.api.model.item.ItemType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +20,5 @@ public class EquipRequest {
 
     private int itemId;
     private int characterId;
+    private ItemType itemType;
 }

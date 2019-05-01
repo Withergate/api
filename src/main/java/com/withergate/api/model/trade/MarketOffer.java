@@ -16,10 +16,6 @@ public class MarketOffer {
     private Consumable consumable;
     private int price;
 
-    public enum ItemType {
-        WEAPON, GEAR, CONSUMABLE
-    }
-
     public MarketOffer() {}
 
     public MarketOffer(Weapon weapon) {

@@ -195,7 +195,8 @@ public class CombatServiceImpl implements CombatService {
         }
 
         // compute injury
-        injury = combatWinner - combatLoser;
+        injury = combatWinner - combatLoser - getArmor(loser);
+        if (injury < 1) injury = 1;
         loser.setHitpoints(loser.getHitpoints() - injury);
         loserNotification.setInjury(loserNotification.getInjury() + injury);
 
@@ -309,6 +310,14 @@ public class CombatServiceImpl implements CombatService {
                 return character.getTraits().get(TraitName.FIGHTER).getDetails().getBonus();
             }
         }
+        return 0;
+    }
+
+    private int getArmor(Character character) {
+        if (character.getOutfit() != null) {
+            return character.getOutfit().getDetails().getArmor();
+        }
+
         return 0;
     }
 
