@@ -65,6 +65,9 @@ public class QuestDetails {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    /**
+     * Quest type.
+     */
     public enum Type {
         COMBAT, INTELLECT, CRAFTSMANSHIP
     }

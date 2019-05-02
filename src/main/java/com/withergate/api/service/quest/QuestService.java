@@ -21,7 +21,7 @@ public interface QuestService {
     void assignQuests(Clan clan, ClanNotification notification, int informationLevel);
 
     /**
-     * Saves the provided action
+     * Saves the provided action.
      *
      * @param action the action to be saved
      */

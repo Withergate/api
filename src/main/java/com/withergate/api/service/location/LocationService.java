@@ -20,7 +20,7 @@ public interface LocationService {
     LocationDescription getLocationDescription(Location location);
 
     /**
-     * Saves the provided action
+     * Saves the provided action.
      *
      * @param action the action to be saved
      */

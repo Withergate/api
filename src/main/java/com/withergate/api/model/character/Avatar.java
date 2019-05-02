@@ -11,6 +11,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Avatar entity. Container for character images.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "avatars")
 @Getter

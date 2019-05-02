@@ -5,6 +5,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Outfit;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.trade.MarketOffer;
@@ -25,12 +26,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class TradeServiceImpl implements TradeService {
 
-    public final static int RESOURCE_TRADE_LIMIT = 20;
+    public static final int RESOURCE_TRADE_LIMIT = 20;
 
     private final ResourceTradeActionRepository resourceTradeActionRepository;
     private final ClanService clanService;
     private final NotificationService notificationService;
 
+    /**
+     * Constructor.
+     */
     public TradeServiceImpl(
             ResourceTradeActionRepository resourceTradeActionRepository,
             ClanService clanService, NotificationService notificationService) {
@@ -72,6 +76,10 @@ public class TradeServiceImpl implements TradeService {
 
         for (Weapon weapon : clan.getWeapons()) {
             marketOffers.add(new MarketOffer(weapon));
+        }
+
+        for (Outfit outfit : clan.getOutfits()) {
+            marketOffers.add(new MarketOffer(outfit));
         }
 
         for (Gear gear : clan.getGear()) {

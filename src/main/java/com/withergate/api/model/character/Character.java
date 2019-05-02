@@ -32,6 +32,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Character entity.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "characters")
 @Getter
@@ -62,18 +67,15 @@ public class Character {
     @Enumerated(EnumType.STRING)
     private CharacterState state;
 
-    /**
-     * LEVEL
-     */
+    // Level
+
     @Column(name = "level", nullable = false)
     private int level;
 
     @Column(name = "experience", nullable = false)
     private int experience;
 
-    /**
-     * ATTRIBUTES
-     */
+    // Attributes
 
     @Column(name = "hitpoints", nullable = false)
     private int hitpoints;
@@ -93,6 +95,8 @@ public class Character {
     @Column(name = "intellect", nullable = false)
     private int intellect;
 
+    // Items
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "weapon_id")
     private Weapon weapon;
@@ -105,6 +109,8 @@ public class Character {
     @JoinColumn(name = "outfit_id")
     private Outfit outfit;
 
+    // Traits
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id")
     @MapKeyColumn(name = "identifier")
@@ -113,12 +119,16 @@ public class Character {
     @JsonView(Views.Internal.class)
     private Map<TraitDetails.TraitName, Trait> traits;
 
+    // Constructor
+
     public Character() {
         if (traits == null) traits = new HashMap<>();
     }
 
+    // Helper functions
+
     /**
-     * Returns the experience needed for next level
+     * Returns the experience needed for next level.
      *
      * @return the experience needed for next level
      */

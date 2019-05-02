@@ -1,5 +1,7 @@
 package com.withergate.api.service.quest;
 
+import java.util.List;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
@@ -13,16 +15,11 @@ import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.List;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Quest service implementation.
@@ -30,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class QuestServiceImpl implements QuestService {
 
@@ -38,20 +36,6 @@ public class QuestServiceImpl implements QuestService {
     private final QuestActionRepository questActionRepository;
     private final CombatService combatService;
     private final RandomService randomService;
-
-    public QuestServiceImpl(
-            QuestDetailsRepository questDetailsRepository,
-            NotificationService notificationService,
-            QuestActionRepository questActionRepository,
-            CombatService combatService,
-            RandomService randomService
-    ) {
-        this.questDetailsRepository = questDetailsRepository;
-        this.notificationService = notificationService;
-        this.questActionRepository = questActionRepository;
-        this.combatService = combatService;
-        this.randomService = randomService;
-    }
 
     @Override
     public void assignQuests(Clan clan, ClanNotification notification, int informationLevel) {
@@ -165,7 +149,8 @@ public class QuestServiceImpl implements QuestService {
             completionNotification.setClanId(notification.getClanId());
             completionNotification.setTurnId(notification.getTurnId());
             completionNotification.setHeader(quest.getClan().getName());
-            notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[]{}, quest.getDetails().getName());
+            notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[]{},
+                    quest.getDetails().getName());
 
             quest.setCompleted(true);
 

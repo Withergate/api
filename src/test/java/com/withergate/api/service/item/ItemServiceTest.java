@@ -233,7 +233,7 @@ public class ItemServiceTest {
         character.setClan(clan);
 
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(80); // rarity
-        Mockito.when(randomService.getRandomInt(1, 4)).thenReturn(2); // item type
+        Mockito.when(randomService.getRandomItemType()).thenReturn(ItemType.CONSUMABLE);
         Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0); // item index
 
         List<ConsumableDetails> detailsList = new ArrayList<>(0);
@@ -267,7 +267,7 @@ public class ItemServiceTest {
         character.setWeapon(new Weapon());
 
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(20); // rarity
-        Mockito.when(randomService.getRandomInt(1, 4)).thenReturn(1); // item type
+        Mockito.when(randomService.getRandomItemType()).thenReturn(ItemType.WEAPON);
         Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0); // item index
 
         List<WeaponDetails> detailsList = new ArrayList<>(0);

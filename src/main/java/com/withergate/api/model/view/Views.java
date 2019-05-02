@@ -11,10 +11,17 @@ public class Views {
         // disable constructor
     }
 
+    /**
+     * Public view.
+     */
     public static class Public {
         // public view
     }
 
+
+    /**
+     * Internal view.
+     */
     public static class Internal extends Public {
         // internal view
     }

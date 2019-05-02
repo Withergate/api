@@ -18,6 +18,11 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * TraitDetails entity.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "trait_details")
 @Getter
@@ -45,6 +50,10 @@ public class TraitDetails {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+
+    /**
+     * Trait name. Declared as enum for restricting database values and easier code referencing.
+     */
     public enum TraitName {
         FIGHTER, BUILDER, ASCETIC, HUNTER, HOARDER
     }

@@ -47,7 +47,7 @@ public class Building {
     private Clan clan;
 
     /**
-     * Returns the work needed for next level
+     * Returns the work needed for next level.
      *
      * @return the work needed for next level
      */

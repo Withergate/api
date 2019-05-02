@@ -9,6 +9,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Placeholder text. Used as a template for generating localized text messages.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "placeholder_texts")
 @Getter

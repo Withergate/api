@@ -1,10 +1,12 @@
 package com.withergate.api.service.encounter;
 
+import java.util.List;
+
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
+import com.withergate.api.model.location.Location;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.RandomService;
@@ -13,12 +15,9 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Encounter service.
@@ -26,6 +25,7 @@ import java.util.List;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class EncounterServiceImpl implements EncounterService {
 
@@ -36,19 +36,6 @@ public class EncounterServiceImpl implements EncounterService {
     private final ClanService clanService;
     private final CharacterService characterService;
     private final NotificationService notificationService;
-
-    public EncounterServiceImpl(EncounterRepository encounterRepository, ItemService itemService,
-                                RandomService randomService, CombatService combatService, ClanService clanService,
-                                CharacterService characterService,
-                                NotificationService notificationService) {
-        this.encounterRepository = encounterRepository;
-        this.itemService = itemService;
-        this.randomService = randomService;
-        this.combatService = combatService;
-        this.clanService = clanService;
-        this.characterService = characterService;
-        this.notificationService = notificationService;
-    }
 
     @Override
     public void handleEncounter(ClanNotification notification, Character character, Location location) {
@@ -159,7 +146,8 @@ public class EncounterServiceImpl implements EncounterService {
 
                 if (character.getHitpoints() < 1) {
                     NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath", new String[]{character.getName()});
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath",
+                            new String[]{character.getName()});
                     notification.getDetails().add(detail);
                 }
                 break;

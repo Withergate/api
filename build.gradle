@@ -32,7 +32,19 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
+
+// Checkstyle
+checkstyle {
+	toolVersion = '8.2'
+	configFile = rootProject.file('checkstyle/checkstyle.xml')
+
+	ignoreFailures = true
+	showViolations = true
+
+	checkstyleTest.enabled = false
+}
 
 jacocoTestReport {
 	reports {

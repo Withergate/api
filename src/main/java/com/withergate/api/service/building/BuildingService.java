@@ -13,7 +13,7 @@ import java.util.List;
 public interface BuildingService {
 
     /**
-     * Saves the provided action
+     * Saves the provided action.
      *
      * @param action the action to be saved
      */

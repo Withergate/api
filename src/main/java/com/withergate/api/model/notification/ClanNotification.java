@@ -17,6 +17,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Notification entity. Used for turn-based clan notifications.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "clan_notifications")
 @Getter
@@ -72,6 +77,9 @@ public class ClanNotification {
     @Column(name = "information")
     private int information;
 
+    /**
+     * Constructor.
+     */
     public ClanNotification() {
         injury = 0;
         if (text == null) text = new HashMap<>();

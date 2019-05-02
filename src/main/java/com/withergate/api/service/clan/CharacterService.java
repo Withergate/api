@@ -48,7 +48,7 @@ public interface CharacterService {
      *
      * @param characterId the character ID
      * @param clanId      the clan ID
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void markCharacterAsResting(int characterId, int clanId) throws InvalidActionException;
 }

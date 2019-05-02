@@ -1,5 +1,8 @@
 package com.withergate.api.service.building;
 
+import java.util.List;
+
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
@@ -9,7 +12,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.BonusType;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -19,11 +21,9 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Building service implementation.
@@ -31,6 +31,7 @@ import java.util.List;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
@@ -40,18 +41,6 @@ public class BuildingServiceImpl implements BuildingService {
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final NotificationService notificationService;
-
-    public BuildingServiceImpl(CharacterService characterService, ClanService clanService,
-                               ItemService itemService, BuildingActionRepository buildingActionRepository,
-                               BuildingDetailsRepository buildingDetailsRepository,
-                               NotificationService notificationService) {
-        this.characterService = characterService;
-        this.clanService = clanService;
-        this.itemService = itemService;
-        this.buildingActionRepository = buildingActionRepository;
-        this.buildingDetailsRepository = buildingDetailsRepository;
-        this.notificationService = notificationService;
-    }
 
     @Override
     public void saveBuildingAction(BuildingAction action) {
@@ -77,7 +66,8 @@ public class BuildingServiceImpl implements BuildingService {
                 // calculate bonus for gear and traits
                 progress += getBonus(character, notification, BonusType.CONSTRUCT);
 
-                notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[]{}, details.getName());
+                notificationService.addLocalizedTexts(notification.getText(), "building.work",
+                        new String[]{}, details.getName());
 
                 if (clan.getBuildings().containsKey(action.getBuilding())) {
                     log.debug("Improving existing building {}.", action.getBuilding());
@@ -90,7 +80,8 @@ public class BuildingServiceImpl implements BuildingService {
                         building.setLevel(building.getLevel() + 1);
 
                         NotificationDetail detail = new NotificationDetail();
-                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[]{}, details.getName());
+                        notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup",
+                                new String[]{}, details.getName());
                         notification.getDetails().add(detail);
                     }
 
@@ -111,8 +102,10 @@ public class BuildingServiceImpl implements BuildingService {
                 if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.FORGE)
                         && character.getClan().getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel() > 0) {
                     log.debug("{} is crafting weapon.", character.getName());
-                    notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon", new String[]{character.getName()});
-                    itemService.generateCraftableWeapon(character, character.getClan().getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(), notification);
+                    notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon",
+                            new String[]{character.getName()});
+                    itemService.generateCraftableWeapon(character, clan.getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(),
+                            notification);
                 }
 
             }
@@ -181,7 +174,8 @@ public class BuildingServiceImpl implements BuildingService {
                             notification.setClanId(clan.getId());
                             notification.setHeader(character.getName());
                             notification.setExperience(building.getLevel());
-                            notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[]{});
+                            notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income",
+                                    new String[]{});
                             notificationService.save(notification);
                         }
                     }

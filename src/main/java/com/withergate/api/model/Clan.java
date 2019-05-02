@@ -149,7 +149,7 @@ public class Clan {
     }
 
     /**
-     * Returns the information needed for next level
+     * Returns the information needed for next level.
      *
      * @return the information needed for next level
      */

@@ -1,10 +1,9 @@
 package com.withergate.api.service.trade;
 
-import com.withergate.api.model.Clan;
+import java.util.List;
+
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.trade.MarketOffer;
-
-import java.util.List;
 
 /**
  * Trade service interface.
@@ -14,7 +13,7 @@ import java.util.List;
 public interface TradeService {
 
     /**
-     * Saves the provided action
+     * Saves the provided action.
      *
      * @param action the action to be saved
      */

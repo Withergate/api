@@ -20,15 +20,31 @@ import java.util.Date;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
+    /**
+     * Handles all invalid action exceptions as bad requests.
+     *
+     * @param ex the exception
+     * @param request the request
+     * @return modified response with changed http status
+     */
     @ExceptionHandler(InvalidActionException.class)
-    public @ResponseBody ResponseEntity<ErrorDetails> handleInvalidActionException(InvalidActionException ex, WebRequest request) {
+    public @ResponseBody
+    ResponseEntity<ErrorDetails> handleInvalidActionException(InvalidActionException ex, WebRequest request) {
         ErrorDetails details = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles all entity conflict exceptions as conflicts.
+     *
+     * @param ex the exception
+     * @param request the request
+     * @return modified response with changed http status
+     */
     @ExceptionHandler(EntityConflictException.class)
-    public @ResponseBody ResponseEntity<ErrorDetails> handleEntityConflictException(InvalidActionException ex, WebRequest request) {
+    public @ResponseBody
+    ResponseEntity<ErrorDetails> handleEntityConflictException(InvalidActionException ex, WebRequest request) {
         ErrorDetails details = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(details, HttpStatus.CONFLICT);

@@ -9,6 +9,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Localized text. Used for both static and dynamic text translations.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "localized_texts")
 @Getter

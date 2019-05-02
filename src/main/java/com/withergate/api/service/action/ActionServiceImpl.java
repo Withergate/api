@@ -27,7 +27,7 @@ import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class ActionServiceImpl implements ActionService {
 
@@ -48,19 +49,6 @@ public class ActionServiceImpl implements ActionService {
     private final BuildingService buildingService;
     private final QuestService questService;
     private final TradeService tradeService;
-
-    public ActionServiceImpl(CharacterService characterService, LocationService locationService,
-                             ClanService clanService,
-                             GameProperties gameProperties, BuildingService buildingService,
-                             QuestService questService, TradeService tradeService) {
-        this.characterService = characterService;
-        this.locationService = locationService;
-        this.clanService = clanService;
-        this.gameProperties = gameProperties;
-        this.buildingService = buildingService;
-        this.questService = questService;
-        this.tradeService = tradeService;
-    }
 
     @Transactional
     @Override
@@ -118,7 +106,6 @@ public class ActionServiceImpl implements ActionService {
     public void createBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting building action for request {}.", request);
         Character character = getCharacter(request.getCharacterId(), clanId);
-        Clan clan = character.getClan();
 
         // check if action is applicable
         BuildingDetails buildingDetails = buildingService.getBuildingDetails(request.getBuilding());
@@ -141,7 +128,7 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("This building does not support this type of action.");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && clan.getJunk() < buildingDetails.getVisitJunkCost()) {
+        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getJunk() < buildingDetails.getVisitJunkCost()) {
             throw new InvalidActionException("Not enough junk to perform this action!");
         }
 
@@ -159,16 +146,15 @@ public class ActionServiceImpl implements ActionService {
         buildingService.saveBuildingAction(action);
 
         // pay junk
+        Clan clan = character.getClan();
         if (request.getType().equals(BuildingAction.Type.CONSTRUCT)) {
             clan.setJunk(clan.getJunk() - character.getCraftsmanship());
         } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
             clan.setJunk(clan.getJunk() - buildingDetails.getVisitJunkCost());
         }
-        clanService.saveClan(clan);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
-        characterService.save(character);
     }
 
     @Transactional

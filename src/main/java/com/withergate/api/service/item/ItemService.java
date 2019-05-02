@@ -19,7 +19,7 @@ public interface ItemService {
      * @param type        item type
      * @param characterId the character ID
      * @param clanId      the clan ID
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void equipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException;
 
@@ -30,7 +30,7 @@ public interface ItemService {
      * @param type        item type
      * @param characterId the character ID
      * @param clanId      the clan ID
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void unequipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException;
 
@@ -57,7 +57,7 @@ public interface ItemService {
      * @param consumableId the consumable ID
      * @param characterId  the character ID
      * @param clanId       the clan ID
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException;
 

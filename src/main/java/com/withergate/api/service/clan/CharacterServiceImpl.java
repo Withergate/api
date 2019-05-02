@@ -45,8 +45,12 @@ public class CharacterServiceImpl implements CharacterService {
     private final TraitDetailsRepository traitDetailsRepository;
     private final NotificationService notificationService;
 
+    /**
+     * Constructor.
+     */
     public CharacterServiceImpl(CharacterRepository characterRepository, @Lazy ClanService clanService, RandomService randomService,
-                                NameService nameService, TraitDetailsRepository traitDetailsRepository, NotificationService notificationService) {
+                                NameService nameService, TraitDetailsRepository traitDetailsRepository,
+                                NotificationService notificationService) {
         this.characterRepository = characterRepository;
         this.clanService = clanService;
         this.randomService = randomService;
@@ -153,7 +157,7 @@ public class CharacterServiceImpl implements CharacterService {
          * Add random trait to weak characters.
          */
         if ((character.getCombat() + character.getScavenge() + character.getCraftsmanship()
-                + character.getIntellect()) <= FREE_TRAIT_THRESHOLD ) {
+                + character.getIntellect()) <= FREE_TRAIT_THRESHOLD) {
             Trait trait = getRandomTrait(character);
             character.getTraits().put(trait.getDetails().getIdentifier(), trait);
         }
@@ -214,7 +218,8 @@ public class CharacterServiceImpl implements CharacterService {
                     clan.setFood(clan.getFood() - 1);
 
                     NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption", new String[]{character.getName()});
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
+                            new String[]{character.getName()});
                     notification.getDetails().add(detail);
                     notification.setFoodIncome(notification.getFoodIncome() - 1);
                 } else {
@@ -330,7 +335,8 @@ public class CharacterServiceImpl implements CharacterService {
                 log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
 
                 NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait", new String[]{character.getName()});
+                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
+                        new String[]{character.getName()});
                 notification.getDetails().add(detail);
 
                 // save

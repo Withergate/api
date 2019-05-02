@@ -1,5 +1,7 @@
 package com.withergate.api.service.item;
 
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -29,8 +31,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
 
@@ -54,30 +56,6 @@ public class ItemServiceImpl implements ItemService {
     private final RandomService randomService;
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
-
-    public ItemServiceImpl(
-            CharacterRepository characterRepository,
-            ClanRepository clanRepository,
-            ItemDetailsRepository itemDetailsRepository,
-            WeaponRepository weaponRepository,
-            ConsumableRepository consumableRepository,
-            GearRepository gearRepository,
-            OutfitRepository outfitRepository,
-            RandomService randomService,
-            GameProperties gameProperties,
-            NotificationService notificationService
-    ) {
-        this.characterRepository = characterRepository;
-        this.clanRepository = clanRepository;
-        this.itemDetailsRepository = itemDetailsRepository;
-        this.weaponRepository = weaponRepository;
-        this.consumableRepository = consumableRepository;
-        this.gearRepository = gearRepository;
-        this.outfitRepository = outfitRepository;
-        this.randomService = randomService;
-        this.gameProperties = gameProperties;
-        this.notificationService = notificationService;
-    }
 
     @Transactional
     @Override
@@ -261,20 +239,21 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Generating random item for character {}", character.getId());
 
         // get random item type
-        int diceRoll = randomService.getRandomInt(1, 4);
-        switch (diceRoll) {
-            case 1:
+        switch (randomService.getRandomItemType()) {
+            case WEAPON:
                 generateWeapon(character, notification, getRandomRarity());
                 break;
-            case 2:
+            case CONSUMABLE:
                 generateConsumable(character, notification, getRandomRarity());
                 break;
-            case 3:
+            case GEAR:
                 generateGear(character, notification, getRandomRarity());
                 break;
-            case 4:
+            case OUTFIT:
                 generateOutfit(character, notification, getRandomRarity());
                 break;
+            default:
+                log.error("Invalid item type.");
         }
     }
 

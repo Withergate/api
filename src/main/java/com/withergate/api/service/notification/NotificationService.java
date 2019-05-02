@@ -1,9 +1,9 @@
 package com.withergate.api.service.notification;
 
+import java.util.Map;
+
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.LocalizedText;
-
-import java.util.Map;
 
 /**
  * Notification service interface.
@@ -13,7 +13,7 @@ import java.util.Map;
 public interface NotificationService {
 
     /**
-     * Saves the notification to database
+     * Saves the notification to database.
      *
      * @param notification the notification
      * @return the saved notification

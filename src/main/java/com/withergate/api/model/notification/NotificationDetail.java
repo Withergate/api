@@ -16,6 +16,11 @@ import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Notification detail. Used only in scope of clan notifications.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "notification_details")
 @Getter

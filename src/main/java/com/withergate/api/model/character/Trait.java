@@ -11,6 +11,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Trait entity.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "traits")
 @Getter

@@ -8,6 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Name prefix entity. Used for random name generation.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "name_prefixes")
 @Getter

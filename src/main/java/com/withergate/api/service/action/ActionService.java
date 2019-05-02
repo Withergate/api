@@ -18,7 +18,7 @@ public interface ActionService {
      * cannot be performed.
      *
      * @param request the location request
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void createLocationAction(LocationRequest request, int clanId) throws InvalidActionException;
 
@@ -27,7 +27,7 @@ public interface ActionService {
      * cannot be performed.
      *
      * @param request the building request
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void createBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException;
 
@@ -36,7 +36,7 @@ public interface ActionService {
      * cannot be performed.
      *
      * @param request the quest request
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void createQuestAction(QuestRequest request, int clanId) throws InvalidActionException;
 
@@ -45,7 +45,7 @@ public interface ActionService {
      * cannot be performed.
      *
      * @param request the resource trade request
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void createResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException;
 

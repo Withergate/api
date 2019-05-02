@@ -1,11 +1,12 @@
 package com.withergate.api.controller.notification;
 
+import java.security.Principal;
+import java.util.List;
+
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.notification.ClanNotificationRepository;
-
-import java.security.Principal;
-import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Martin Myslik
  */
+@AllArgsConstructor
 @RestController
 public class NotificationController {
 
     private final ClanNotificationRepository clanNotificationRepository;
     private final TurnRepository turnRepository;
-
-    public NotificationController(ClanNotificationRepository clanNotificationRepository,
-                                  TurnRepository turnRepository) {
-        this.clanNotificationRepository = clanNotificationRepository;
-        this.turnRepository = turnRepository;
-    }
 
     /**
      * Retrieves all notifications for the specified player.
@@ -45,6 +41,7 @@ public class NotificationController {
         }
 
         int playerId = Integer.parseInt(principal.getName());
-        return new ResponseEntity<>(clanNotificationRepository.findAllByClanIdAndTurnId(playerId, turn), HttpStatus.OK);
+        return new ResponseEntity<>(clanNotificationRepository.findAllByClanIdAndTurnId(playerId, turn),
+                HttpStatus.OK);
     }
 }

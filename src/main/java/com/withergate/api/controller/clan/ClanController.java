@@ -1,5 +1,9 @@
 package com.withergate.api.controller.clan;
 
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
@@ -9,10 +13,7 @@ import com.withergate.api.model.view.Views;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
-
-import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,17 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @RestController
 public class ClanController {
 
     private final ClanService clanService;
     private final BuildingService buildingService;
-
-    public ClanController(ClanService clanService,
-                          BuildingService buildingService) {
-        this.clanService = clanService;
-        this.buildingService = buildingService;
-    }
 
     /**
      * Retrieves the clan for the authenticated player.
@@ -79,7 +75,7 @@ public class ClanController {
      * @param principal   the principal
      * @param clanRequest the clan request containing necessary clan details
      * @return the created clan
-     * @throws EntityConflictException
+     * @throws EntityConflictException entity conflict
      */
     @PostMapping("/clan")
     public ResponseEntity<Clan> createClan(Principal principal, @RequestBody ClanRequest clanRequest)

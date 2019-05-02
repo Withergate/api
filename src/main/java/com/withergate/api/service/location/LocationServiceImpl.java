@@ -1,13 +1,15 @@
 package com.withergate.api.service.location;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.BonusType;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.location.Location;
@@ -24,13 +26,9 @@ import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Location service implementation.
@@ -38,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class LocationServiceImpl implements LocationService {
 
@@ -51,30 +50,6 @@ public class LocationServiceImpl implements LocationService {
     private final CombatService combatService;
     private final NotificationService notificationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
-
-    public LocationServiceImpl(
-            LocationActionRepository locationActionRepository,
-            GameProperties gameProperties,
-            ClanService clanService,
-            CharacterService characterService,
-            RandomService randomService,
-            EncounterService encounterService,
-            ItemService itemService,
-            CombatService combatService,
-            NotificationService notificationService,
-            LocationDescriptionRepository locationDescriptionRepository
-    ) {
-        this.locationActionRepository = locationActionRepository;
-        this.gameProperties = gameProperties;
-        this.clanService = clanService;
-        this.characterService = characterService;
-        this.randomService = randomService;
-        this.encounterService = encounterService;
-        this.itemService = itemService;
-        this.combatService = combatService;
-        this.notificationService = notificationService;
-        this.locationDescriptionRepository = locationDescriptionRepository;
-    }
 
     @Override
     public LocationDescription getLocationDescription(Location location) {

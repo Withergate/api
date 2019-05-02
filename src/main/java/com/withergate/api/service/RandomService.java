@@ -1,6 +1,7 @@
 package com.withergate.api.service;
 
 import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.item.ItemType;
 
 /**
  * RandomService interface. Used for generating random entities and numbers.
@@ -24,5 +25,12 @@ public interface RandomService {
      * @return the generated integer
      */
     int getRandomInt(int min, int max);
+
+    /**
+     * Generates random item type.
+     *
+     * @return random item type
+     */
+    ItemType getRandomItemType();
 
 }

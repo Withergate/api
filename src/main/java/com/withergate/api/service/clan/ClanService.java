@@ -54,7 +54,7 @@ public interface ClanService {
      * @param clanId      the clan ID
      * @param clanRequest the clan request date
      * @return the created clan
-     * @throws EntityConflictException
+     * @throws EntityConflictException entity conflict
      */
     Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException;
 

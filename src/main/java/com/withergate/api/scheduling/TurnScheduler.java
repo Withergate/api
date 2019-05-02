@@ -4,7 +4,7 @@ import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Component
 public class TurnScheduler {
 
@@ -22,19 +23,13 @@ public class TurnScheduler {
     private final ActionService actionService;
     private final CharacterService characterService;
 
-    public TurnScheduler(TurnRepository turnRepository, ActionService actionService,
-                         CharacterService characterService) {
-        this.turnRepository = turnRepository;
-        this.actionService = actionService;
-        this.characterService = characterService;
-    }
-
+    /**
+     * Processes all turn-related events every midnight.
+     */
     @Scheduled(cron = "0 0 0 * * *") // every midnight
     public void processTurn() {
 
-        /**
-         * Process current turn.
-         */
+        // process current turn
         Turn currentTurn = turnRepository.findFirstByOrderByTurnIdDesc();
         log.info("Processing current turn: {}", currentTurn.getTurnId());
 
@@ -53,9 +48,7 @@ public class TurnScheduler {
         // update characters
         characterService.performCharacterTurnUpdates(currentTurn.getTurnId());
 
-        /**
-         * Prepare next turn data.
-         */
+        // prepare next turn
         log.info("Turn finished - preparing next turn.");
 
         Turn nextTurn = new Turn();

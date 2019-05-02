@@ -9,10 +9,15 @@ import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Item entity. Base class for all item types.
+ *
+ * @author Martin Myslik
+ */
 @MappedSuperclass
 @Getter
 @Setter
-public class Item {
+public abstract class Item {
 
     @ManyToOne
     @JoinColumn(name = "clan_id")

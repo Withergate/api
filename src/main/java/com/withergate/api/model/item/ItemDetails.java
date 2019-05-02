@@ -19,6 +19,11 @@ import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * ItemDetails entity. Base class for all item details types.
+ *
+ * @author Martin Myslik
+ */
 @Entity(name = "item_details")
 @DiscriminatorColumn(name = "item_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -57,6 +62,10 @@ public abstract class ItemDetails {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+
+    /**
+     * Item rarity.
+     */
     public enum Rarity {
         COMMON, RARE
     }

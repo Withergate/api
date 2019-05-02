@@ -10,6 +10,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Name entity. Used for random name generation.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "names")
 @Getter

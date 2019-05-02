@@ -59,6 +59,10 @@ public class BuildingDetails {
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost; // cost per level
 
+
+    /**
+     * Building name. Declared as enum for easier code references and for restricting allowed database values.
+     */
     public enum BuildingName {
         SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT, FORGE, QUARTERS
     }

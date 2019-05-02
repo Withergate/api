@@ -1,5 +1,8 @@
 package com.withergate.api.service.encounter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails;
@@ -8,18 +11,15 @@ import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.notification.NotificationService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Combat service.
@@ -27,6 +27,7 @@ import java.util.List;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class CombatServiceImpl implements CombatService {
 
@@ -34,15 +35,6 @@ public class CombatServiceImpl implements CombatService {
     private final CharacterService characterService;
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
-
-    public CombatServiceImpl(RandomService randomService, CharacterService characterService,
-                             GameProperties gameProperties,
-                             NotificationService notificationService) {
-        this.randomService = randomService;
-        this.characterService = characterService;
-        this.gameProperties = gameProperties;
-        this.notificationService = notificationService;
-    }
 
     @Override
     public boolean handleSingleCombat(ClanNotification notification, Encounter encounter, Character character) {
@@ -144,7 +136,6 @@ public class CombatServiceImpl implements CombatService {
 
     private CombatResult handleCombatRound(Character character1, ClanNotification notification1, Character character2,
                                            ClanNotification notification2) {
-        CombatResult result = new CombatResult();
         List<NotificationDetail> details = new ArrayList<>();
         boolean finished = false;
 
@@ -228,7 +219,8 @@ public class CombatServiceImpl implements CombatService {
             details.add(fleeDetail);
         }
 
-        // update result
+        // create result
+        CombatResult result = new CombatResult();
         result.setFinished(finished);
         result.setWinner(winner);
         result.setLoser(loser);

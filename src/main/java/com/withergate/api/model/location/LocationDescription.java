@@ -16,7 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Map;
 
-
+/**
+ * Location details entity.
+ *
+ * @author Martin Myslik
+ */
 @Entity
 @Table(name = "location_descriptions")
 @Getter

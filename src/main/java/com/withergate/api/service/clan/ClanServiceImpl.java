@@ -40,6 +40,9 @@ public class ClanServiceImpl implements ClanService {
     private final NotificationService notificationService;
     private final QuestService questService;
 
+    /**
+     * Constructor.
+     */
     public ClanServiceImpl(ClanRepository clanRepository, CharacterService characterService,
                            GameProperties gameProperties,
                            NotificationService notificationService,

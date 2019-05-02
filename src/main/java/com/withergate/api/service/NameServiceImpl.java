@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import java.util.List;
+
 import com.withergate.api.model.character.Avatar;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.character.Name;
@@ -7,10 +9,9 @@ import com.withergate.api.model.character.NamePrefix;
 import com.withergate.api.repository.AvatarRepository;
 import com.withergate.api.repository.NamePrefixRepository;
 import com.withergate.api.repository.NameRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Name service.
@@ -18,6 +19,7 @@ import java.util.List;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class NameServiceImpl implements NameService {
 
@@ -25,14 +27,6 @@ public class NameServiceImpl implements NameService {
     private final NameRepository nameRepository;
     private final AvatarRepository avatarRepository;
     private final RandomService randomService;
-
-    public NameServiceImpl(NamePrefixRepository namePrefixRepository, NameRepository nameRepository,
-                           AvatarRepository avatarRepository, RandomService randomService) {
-        this.namePrefixRepository = namePrefixRepository;
-        this.nameRepository = nameRepository;
-        this.avatarRepository = avatarRepository;
-        this.randomService = randomService;
-    }
 
     @Override
     public String generateRandomName(Gender gender) {
