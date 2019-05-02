@@ -20,13 +20,10 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.ClanRepository;
-import com.withergate.api.repository.item.ConsumableDetailsRepository;
 import com.withergate.api.repository.item.ConsumableRepository;
-import com.withergate.api.repository.item.GearDetailsRepository;
 import com.withergate.api.repository.item.GearRepository;
-import com.withergate.api.repository.item.OutfitDetailsRepository;
+import com.withergate.api.repository.item.ItemDetailsRepository;
 import com.withergate.api.repository.item.OutfitRepository;
-import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -49,38 +46,34 @@ public class ItemServiceImpl implements ItemService {
 
     private final CharacterRepository characterRepository;
     private final ClanRepository clanRepository;
+    private final ItemDetailsRepository itemDetailsRepository;
     private final WeaponRepository weaponRepository;
-    private final WeaponDetailsRepository weaponDetailsRepository;
     private final ConsumableRepository consumableRepository;
-    private final ConsumableDetailsRepository consumableDetailsRepository;
     private final GearRepository gearRepository;
-    private final GearDetailsRepository gearDetailsRepository;
     private final OutfitRepository outfitRepository;
-    private final OutfitDetailsRepository outfitDetailsRepository;
     private final RandomService randomService;
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
 
-    public ItemServiceImpl(CharacterRepository characterRepository, ClanRepository clanRepository,
-                           WeaponRepository weaponRepository, WeaponDetailsRepository weaponDetailsRepository,
-                           ConsumableRepository consumableRepository,
-                           ConsumableDetailsRepository consumableDetailsRepository,
-                           GearRepository gearRepository,
-                           GearDetailsRepository gearDetailsRepository,
-                           OutfitRepository outfitRepository,
-                           OutfitDetailsRepository outfitDetailsRepository,
-                           RandomService randomService, GameProperties gameProperties,
-                           NotificationService notificationService) {
+    public ItemServiceImpl(
+            CharacterRepository characterRepository,
+            ClanRepository clanRepository,
+            ItemDetailsRepository itemDetailsRepository,
+            WeaponRepository weaponRepository,
+            ConsumableRepository consumableRepository,
+            GearRepository gearRepository,
+            OutfitRepository outfitRepository,
+            RandomService randomService,
+            GameProperties gameProperties,
+            NotificationService notificationService
+    ) {
         this.characterRepository = characterRepository;
         this.clanRepository = clanRepository;
+        this.itemDetailsRepository = itemDetailsRepository;
         this.weaponRepository = weaponRepository;
-        this.weaponDetailsRepository = weaponDetailsRepository;
         this.consumableRepository = consumableRepository;
-        this.consumableDetailsRepository = consumableDetailsRepository;
         this.gearRepository = gearRepository;
-        this.gearDetailsRepository = gearDetailsRepository;
         this.outfitRepository = outfitRepository;
-        this.outfitDetailsRepository = outfitDetailsRepository;
         this.randomService = randomService;
         this.gameProperties = gameProperties;
         this.notificationService = notificationService;
@@ -294,7 +287,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel);
-        List<WeaponDetails> detailsList = weaponDetailsRepository.findAllByRarityAndCraftable(rarity, true);
+        List<WeaponDetails> detailsList = itemDetailsRepository.findWeaponDetailsByRarityAndCraftable(rarity, true);
         WeaponDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
 
         Weapon weapon = new Weapon();
@@ -358,7 +351,7 @@ public class ItemServiceImpl implements ItemService {
         /*
          * Load random weapon details .
          */
-        List<WeaponDetails> weaponDetailsList = weaponDetailsRepository.findAllByRarity(rarity);
+        List<WeaponDetails> weaponDetailsList = itemDetailsRepository.findWeaponDetailsByRarity(rarity);
         WeaponDetails details = weaponDetailsList.get(randomService.getRandomInt(0, weaponDetailsList.size() - 1));
 
         /*
@@ -390,7 +383,7 @@ public class ItemServiceImpl implements ItemService {
         /*
          * Load random weapon details .
          */
-        List<ConsumableDetails> detailsList = consumableDetailsRepository.findAllByRarity(rarity);
+        List<ConsumableDetails> detailsList = itemDetailsRepository.findConsumableDetailsByRarity(rarity);
         ConsumableDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
 
         /*
@@ -421,7 +414,7 @@ public class ItemServiceImpl implements ItemService {
         /*
          * Load random outfit details .
          */
-        List<GearDetails> gearDetailsList = gearDetailsRepository.findAllByRarity(rarity);
+        List<GearDetails> gearDetailsList = itemDetailsRepository.findGearDetailsByRarity(rarity);
         GearDetails details = gearDetailsList.get(randomService.getRandomInt(0, gearDetailsList.size() - 1));
 
         /*
@@ -449,7 +442,7 @@ public class ItemServiceImpl implements ItemService {
 
     private void generateOutfit(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
         // load random outfit details
-        List<OutfitDetails> outfitDetailsList = outfitDetailsRepository.findAllByRarity(rarity);
+        List<OutfitDetails> outfitDetailsList = itemDetailsRepository.findOutfitDetailsByRarity(rarity);
         OutfitDetails details = outfitDetailsList.get(randomService.getRandomInt(0, outfitDetailsList.size() - 1));
 
         // create outfit

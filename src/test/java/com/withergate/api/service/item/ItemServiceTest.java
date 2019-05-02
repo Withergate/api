@@ -13,13 +13,10 @@ import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.ClanRepository;
-import com.withergate.api.repository.item.ConsumableDetailsRepository;
 import com.withergate.api.repository.item.ConsumableRepository;
-import com.withergate.api.repository.item.GearDetailsRepository;
 import com.withergate.api.repository.item.GearRepository;
-import com.withergate.api.repository.item.OutfitDetailsRepository;
+import com.withergate.api.repository.item.ItemDetailsRepository;
 import com.withergate.api.repository.item.OutfitRepository;
-import com.withergate.api.repository.item.WeaponDetailsRepository;
 import com.withergate.api.repository.item.WeaponRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -50,28 +47,19 @@ public class ItemServiceTest {
     private ClanRepository clanRepository;
 
     @Mock
-    private WeaponRepository weaponRepository;
+    private ItemDetailsRepository itemDetailsRepository;
 
     @Mock
-    private WeaponDetailsRepository weaponDetailsRepository;
+    private WeaponRepository weaponRepository;
 
     @Mock
     private ConsumableRepository consumableRepository;
 
     @Mock
-    private ConsumableDetailsRepository consumableDetailsRepository;
-
-    @Mock
     private GearRepository gearRepository;
 
     @Mock
-    private GearDetailsRepository gearDetailsRepository;
-
-    @Mock
     private OutfitRepository outfitRepository;
-
-    @Mock
-    private OutfitDetailsRepository outfitDetailsRepository;
 
     @Mock
     private RandomService randomService;
@@ -86,9 +74,9 @@ public class ItemServiceTest {
         GameProperties gameProperties = new GameProperties();
         gameProperties.setRareItemChance(10);
 
-        itemService = new ItemServiceImpl(characterRepository, clanRepository, weaponRepository, weaponDetailsRepository, consumableRepository,
-                consumableDetailsRepository, gearRepository, gearDetailsRepository, outfitRepository,
-                outfitDetailsRepository, randomService, gameProperties, notificationService);
+        itemService = new ItemServiceImpl(characterRepository, clanRepository, itemDetailsRepository,
+                weaponRepository, consumableRepository, gearRepository, outfitRepository,
+                randomService, gameProperties, notificationService);
     }
 
     @Test
@@ -218,7 +206,8 @@ public class ItemServiceTest {
         details.setCraftable(true);
         details.setIdentifier("Knife");
         detailsList.add(details);
-        Mockito.when(weaponDetailsRepository.findAllByRarityAndCraftable(Rarity.COMMON, true)).thenReturn(detailsList);
+        Mockito.when(itemDetailsRepository.findWeaponDetailsByRarityAndCraftable(Rarity.COMMON, true))
+                .thenReturn(detailsList);
 
         // when crafting weapon
         ClanNotification notification = new ClanNotification();
@@ -253,7 +242,7 @@ public class ItemServiceTest {
         details.setEffectType(EffectType.HEALING);
         detailsList.add(details);
 
-        Mockito.when(consumableDetailsRepository.findAllByRarity(Rarity.COMMON)).thenReturn(detailsList);
+        Mockito.when(itemDetailsRepository.findConsumableDetailsByRarity(Rarity.COMMON)).thenReturn(detailsList);
 
         // when generating random item
         ClanNotification notification = new ClanNotification();
@@ -286,7 +275,7 @@ public class ItemServiceTest {
         details.setIdentifier("Knife");
         detailsList.add(details);
 
-        Mockito.when(weaponDetailsRepository.findAllByRarity(Rarity.COMMON)).thenReturn(detailsList);
+        Mockito.when(itemDetailsRepository.findWeaponDetailsByRarity(Rarity.COMMON)).thenReturn(detailsList);
 
         // when generating random item
         ClanNotification notification = new ClanNotification();
