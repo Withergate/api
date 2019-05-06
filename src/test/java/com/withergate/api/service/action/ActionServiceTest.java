@@ -73,12 +73,6 @@ public class ActionServiceTest {
         MockitoAnnotations.initMocks(this);
 
         GameProperties gameProperties = new GameProperties();
-        gameProperties.setNeighborhoodEncounterProbability(0);
-        gameProperties.setNeighborhoodJunkBonus(0);
-        gameProperties.setWastelandEncounterProbability(20);
-        gameProperties.setWastelandJunkBonus(2);
-        gameProperties.setCityEncounterProbability(40);
-        gameProperties.setCityJunkBonus(4);
 
         actionService = new ActionServiceImpl(characterService, locationService, gameProperties, buildingService,
                 questService, tradeService, arenaService, tavernService);

@@ -35,6 +35,21 @@ public class LocationDescription {
     @Column(name = "scouting", nullable = false)
     private boolean scouting;
 
+    @Column(name = "food_bonus", nullable = false)
+    private int foodBonus;
+
+    @Column(name = "junk_bonus", nullable = false)
+    private int junkBonus;
+
+    @Column(name = "information_bonus", nullable = false)
+    private int informationBonus;
+
+    @Column(name = "encounter_chance", nullable = false)
+    private int encounterChance;
+
+    @Column(name = "item_chance", nullable = false)
+    private int itemChance;
+
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
     @JoinColumn(name = "location_name")

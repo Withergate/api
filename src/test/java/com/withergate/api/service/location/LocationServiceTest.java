@@ -7,6 +7,7 @@ import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.location.Location;
+import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
@@ -19,14 +20,12 @@ import com.withergate.api.service.notification.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.Assert.assertEquals;
 
 public class LocationServiceTest {
 
@@ -60,14 +59,7 @@ public class LocationServiceTest {
         MockitoAnnotations.initMocks(this);
 
         gameProperties = new GameProperties();
-        gameProperties.setNeighborhoodJunkBonus(0);
         gameProperties.setRareItemChance(10);
-        gameProperties.setWastelandEncounterProbability(20);
-        gameProperties.setWastelandJunkBonus(2);
-        gameProperties.setWastelandInformationBonus(0);
-        gameProperties.setCityEncounterProbability(20);
-        gameProperties.setCityJunkBonus(4);
-        gameProperties.setCityInformationBonus(2);
 
         locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService,
                 randomService, encounterService, itemService, notificationService,
@@ -91,6 +83,10 @@ public class LocationServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setLocation(Location.WASTELAND);
+
+        LocationDescription description = new LocationDescription();
+        description.setEncounterChance(25);
+        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
 
         List<LocationAction> actions = new ArrayList<>();
         actions.add(action);
@@ -124,6 +120,9 @@ public class LocationServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setLocation(Location.WASTELAND);
+
+        LocationDescription description = new LocationDescription();
+        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
 
         List<LocationAction> actions = new ArrayList<>();
         actions.add(action);
@@ -163,6 +162,9 @@ public class LocationServiceTest {
         action.setCharacter(character);
         action.setLocation(Location.NEIGHBORHOOD);
 
+        LocationDescription description = new LocationDescription();
+        Mockito.when(locationDescriptionRepository.getOne(Location.NEIGHBORHOOD)).thenReturn(description);
+
         List<LocationAction> actions = new ArrayList<>();
         actions.add(action);
 
@@ -179,10 +181,7 @@ public class LocationServiceTest {
         Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.NEIGHBORHOOD));
         Mockito.verify(itemService, Mockito.never()).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class));
 
-        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
-        Mockito.verify(clanService).saveClan(captor.capture());
-
-        assertEquals(15, captor.getValue().getJunk());
-        assertEquals(10, captor.getValue().getFood());
+        Assert.assertEquals(15, clan.getJunk());
+        Assert.assertEquals(10, clan.getFood());
     }
 }

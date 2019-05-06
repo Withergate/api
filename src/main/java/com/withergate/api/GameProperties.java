@@ -19,23 +19,6 @@ public class GameProperties {
     private int initialClanSize;
     private int characterCost;
 
-    private int neighborhoodLootProbability;
-    private int neighborhoodEncounterProbability;
-    private int neighborhoodJunkBonus;
-    private int neighborhoodFoodBonus;
-
-    private int wastelandLootProbability;
-    private int wastelandEncounterProbability;
-    private int wastelandJunkBonus;
-    private int wastelandFoodBonus;
-    private int wastelandInformationBonus;
-
-    private int cityLootProbability;
-    private int cityEncounterProbability;
-    private int cityJunkBonus;
-    private int cityFoodBonus;
-    private int cityInformationBonus;
-
     private int rareItemChance;
 
     private int arenaCaps;

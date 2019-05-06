@@ -152,6 +152,11 @@ DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,
     scouting BIT NOT NULL DEFAULT FALSE,
+    food_bonus INT DEFAULT 0,
+    junk_bonus INT DEFAULT 0,
+    information_bonus INT DEFAULT 0,
+    encounter_chance INT DEFAULT 0,
+    item_chance INT DEFAULT 0,
     description VARCHAR(64) NOT NULL,
     info VARCHAR(64) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
