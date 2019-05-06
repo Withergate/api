@@ -101,8 +101,6 @@ public class LocationServiceImpl implements LocationService {
                     notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[] {hired.getName()});
                     notification.getDetails().add(detail);
                     break;
-                case ARENA:
-                    // arena processed separately
                 default:
                     log.error("Encountered unknown location: {}", action.getLocation());
 
@@ -114,37 +112,6 @@ public class LocationServiceImpl implements LocationService {
             action.setState(ActionState.COMPLETED);
             locationActionRepository.save(action);
         }
-    }
-
-    @Override
-    public void processArenaActions(int turnId) {
-        log.debug("Executing arena actions");
-
-        List<LocationAction> actions = locationActionRepository.findAllByStateAndLocation(ActionState.PENDING, Location.ARENA);
-        List<Character> characters = new ArrayList<>(actions.size());
-
-        for (LocationAction action : actions) {
-            characters.add(action.getCharacter());
-
-            // mark action as completed
-            action.setState(ActionState.COMPLETED);
-            locationActionRepository.save(action);
-        }
-
-        log.debug("{} characters entered arena.", characters.size());
-
-        // process arena fights
-        List<ArenaResult> results = combatService.handleArenaFights(characters);
-
-        for (ArenaResult result : results) {
-            // save results
-            result.getNotification().setTurnId(turnId);
-            result.getNotification().setHeader(result.getCharacter().getName());
-            notificationService.save(result.getNotification());
-        }
-
-        // clear arena data
-        clanService.clearArenaCharacters();
     }
 
     private void processLocationAction(ClanNotification notification, Character character, LocationAction action, int encounterProbability,

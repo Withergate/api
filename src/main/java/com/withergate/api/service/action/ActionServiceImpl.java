@@ -3,6 +3,7 @@ package com.withergate.api.service.action;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
+import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.action.LocationAction.LocationActionType;
@@ -24,12 +25,13 @@ import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,7 @@ public class ActionServiceImpl implements ActionService {
     private final BuildingService buildingService;
     private final QuestService questService;
     private final TradeService tradeService;
+    private final ArenaService arenaService;
 
     @Transactional
     @Override
@@ -93,13 +96,11 @@ public class ActionServiceImpl implements ActionService {
         }
         clan.setArena(true);
 
-        LocationAction action = new LocationAction();
+        ArenaAction action = new ArenaAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setLocation(Location.ARENA);
-        action.setType(LocationActionType.VISIT);
 
-        locationService.saveLocationAction(action);
+        arenaService.saveArenaAction(action);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -281,7 +282,7 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public void processLocationActions(int turnId) {
         // arena actions
-        locationService.processArenaActions(turnId);
+        arenaService.processArenaActions(turnId);
 
         // location actions
         locationService.processLocationActions(turnId);

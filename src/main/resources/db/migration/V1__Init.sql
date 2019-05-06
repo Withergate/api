@@ -280,6 +280,14 @@ CREATE TABLE location_actions (
     PRIMARY KEY (action_id)
 );
 
+DROP TABLE IF EXISTS arena_actions;
+CREATE TABLE arena_actions (
+    action_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    character_id INT NOT NULL,
+    PRIMARY KEY (action_id)
+);
+
 DROP TABLE IF EXISTS building_actions;
 CREATE TABLE building_actions (
     action_id INT AUTO_INCREMENT,

@@ -27,6 +27,7 @@ import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
@@ -61,6 +62,9 @@ public class ActionServiceTest {
     @Mock
     private TradeService tradeService;
 
+    @Mock
+    private ArenaService arenaService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -74,7 +78,7 @@ public class ActionServiceTest {
         gameProperties.setCityJunkBonus(4);
 
         actionService = new ActionServiceImpl(characterService, locationService, gameProperties, buildingService,
-                questService, tradeService);
+                questService, tradeService, arenaService);
     }
 
     @Test
@@ -445,7 +449,7 @@ public class ActionServiceTest {
 
         // then verify all processed triggered
         Mockito.verify(locationService).processLocationActions(turnId);
-        Mockito.verify(locationService).processArenaActions(turnId);
+        Mockito.verify(arenaService).processArenaActions(turnId);
     }
 
     @Test

@@ -33,11 +33,4 @@ public interface LocationService {
      */
     void processLocationActions(int turnId);
 
-    /**
-     * Handles all pending arena actions.
-     *
-     * @param turnId turn ID
-     */
-    void processArenaActions(int turnId);
-
 }
