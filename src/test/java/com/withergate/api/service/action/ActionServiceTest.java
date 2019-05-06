@@ -19,6 +19,7 @@ import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
@@ -49,9 +50,6 @@ public class ActionServiceTest {
     private CharacterService characterService;
 
     @Mock
-    private ClanService clanService;
-
-    @Mock
     private BuildingService buildingService;
 
     @Mock
@@ -75,7 +73,7 @@ public class ActionServiceTest {
         gameProperties.setCityEncounterProbability(40);
         gameProperties.setCityJunkBonus(4);
 
-        actionService = new ActionServiceImpl(characterService, locationService, clanService, gameProperties, buildingService,
+        actionService = new ActionServiceImpl(characterService, locationService, gameProperties, buildingService,
                 questService, tradeService);
     }
 
@@ -155,10 +153,8 @@ public class ActionServiceTest {
     @Test(expected = InvalidActionException.class)
     public void testGivenArenaRequestWhenCharacterAlreadyInArenaForClanThenVerifyExceptionThrown() throws InvalidActionException {
         // given arena request
-        LocationRequest request = new LocationRequest();
+        ArenaRequest request = new ArenaRequest();
         request.setCharacterId(1);
-        request.setLocation(Location.ARENA);
-        request.setType(LocationActionType.VISIT);
 
         Clan clan = new Clan();
         clan.setId(1);
@@ -173,13 +169,8 @@ public class ActionServiceTest {
         character.setState(CharacterState.READY);
         Mockito.when(characterService.load(1)).thenReturn(character);
 
-        LocationDescription description = new LocationDescription();
-        description.setLocation(Location.ARENA);
-        description.setScouting(false);
-        Mockito.when(locationService.getLocationDescription(Location.ARENA)).thenReturn(description);
-
         // when creating location action
-        actionService.createLocationAction(request, 1);
+        actionService.createArenaAction(request, 1);
 
         // then expect exception
     }
@@ -187,10 +178,8 @@ public class ActionServiceTest {
     @Test(expected = InvalidActionException.class)
     public void testGivenArenaRequestWhenCharacterEquipsRangedWeaponThenVerifyExceptionThrown() throws InvalidActionException {
         // given arena request
-        LocationRequest request = new LocationRequest();
+        ArenaRequest request = new ArenaRequest();
         request.setCharacterId(1);
-        request.setLocation(Location.ARENA);
-        request.setType(LocationActionType.VISIT);
 
         Clan clan = new Clan();
         clan.setId(1);
@@ -212,13 +201,8 @@ public class ActionServiceTest {
 
         Mockito.when(characterService.load(1)).thenReturn(character);
 
-        LocationDescription description = new LocationDescription();
-        description.setLocation(Location.ARENA);
-        description.setScouting(false);
-        Mockito.when(locationService.getLocationDescription(Location.ARENA)).thenReturn(description);
-
         // when creating location action
-        actionService.createLocationAction(request, 1);
+        actionService.createArenaAction(request, 1);
 
         // then expect exception
     }

@@ -43,9 +43,6 @@ public class LocationServiceTest {
     private ClanService clanService;
 
     @Mock
-    private CharacterService characterService;
-
-    @Mock
     private RandomService randomService;
 
     @Mock
@@ -77,7 +74,7 @@ public class LocationServiceTest {
         gameProperties.setCityJunkBonus(4);
         gameProperties.setCityInformationBonus(2);
 
-        locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService, characterService,
+        locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService,
                 randomService, encounterService, itemService, combatService, notificationService, locationDescriptionRepository);
     }
 

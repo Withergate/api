@@ -5,6 +5,7 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.LocationAction;
+import com.withergate.api.model.action.LocationAction.LocationActionType;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.building.BuildingDetails;
@@ -14,6 +15,7 @@ import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
@@ -44,7 +46,6 @@ public class ActionServiceImpl implements ActionService {
 
     private final CharacterService characterService;
     private final LocationService locationService;
-    private final ClanService clanService;
     private final GameProperties gameProperties;
     private final BuildingService buildingService;
     private final QuestService questService;
@@ -77,22 +78,39 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Location not found or does not support specified action!");
         }
 
-        // check arena requirements
-        if (request.getLocation() == Location.ARENA) {
-            if (clan.isArena()) {
-                throw new InvalidActionException("You already have selected a character to enter arena this turn!");
-            }
-            if (character.getWeapon() != null && character.getWeapon().getDetails().getType() != WeaponType.MELEE) {
-                throw new InvalidActionException("Only melee weapons are allowed to the arena!");
-            }
-            clan.setArena(true);
-        }
-
         LocationAction action = new LocationAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setLocation(request.getLocation());
         action.setType(request.getType());
+
+        locationService.saveLocationAction(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
+        characterService.save(character);
+    }
+
+    @Override
+    public void createArenaAction(ArenaRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting arena action request: {}", request.toString());
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check arena requirements
+        if (clan.isArena()) {
+            throw new InvalidActionException("You already have selected a character to enter arena this turn!");
+        }
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getType() != WeaponType.MELEE) {
+            throw new InvalidActionException("Only melee weapons are allowed to the arena!");
+        }
+        clan.setArena(true);
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setLocation(Location.ARENA);
+        action.setType(LocationActionType.VISIT);
 
         locationService.saveLocationAction(action);
 
@@ -113,18 +131,20 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("This building does not exist");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings()
-                .containsKey(request.getBuilding())) {
+        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings().containsKey(request.getBuilding())) {
             throw new InvalidActionException("This building is not constructed yet!");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getBuildings()
-                .get(request.getBuilding()).getLevel() < 1) {
+        if (request.getType() == BuildingAction.Type.VISIT
+                && character.getClan().getBuildings().get(request.getBuilding()).getLevel() < 1) {
             throw new InvalidActionException("This building has not reached sufficient level yet!!");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings()
-                .get(request.getBuilding()).getDetails().isVisitable()) {
+        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan()
+                .getBuildings()
+                .get(request.getBuilding())
+                .getDetails()
+                .isVisitable()) {
             throw new InvalidActionException("This building does not support this type of action.");
         }
 
@@ -132,8 +152,7 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Not enough junk to perform this action!");
         }
 
-        if (request.getType() == BuildingAction.Type.CONSTRUCT && character.getClan().getJunk() < character
-                .getCraftsmanship()) {
+        if (request.getType() == BuildingAction.Type.CONSTRUCT && character.getClan().getJunk() < character.getCraftsmanship()) {
             throw new InvalidActionException("Not enough junk to perform this action.");
         }
 
@@ -169,13 +188,17 @@ public class ActionServiceImpl implements ActionService {
         for (Quest q : clan.getQuests()) {
             if (q.getId() == request.getQuestId()) {
                 // check if not completed
-                if (q.isCompleted()) throw new InvalidActionException("This quest has already been completed.");
+                if (q.isCompleted()) {
+                    throw new InvalidActionException("This quest has already been completed.");
+                }
                 quest = q;
                 break;
             }
         }
 
-        if (quest == null) throw new InvalidActionException("This quest does not exist.");
+        if (quest == null) {
+            throw new InvalidActionException("This quest does not exist.");
+        }
 
         // persist the action
         QuestAction action = new QuestAction();
@@ -186,7 +209,6 @@ public class ActionServiceImpl implements ActionService {
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
-        characterService.save(character);
     }
 
     @Transactional
@@ -238,7 +260,6 @@ public class ActionServiceImpl implements ActionService {
 
         // mark character as busy and save the clan
         character.setState(CharacterState.BUSY);
-        clanService.saveClan(clan);
     }
 
     @Transactional
@@ -277,8 +298,7 @@ public class ActionServiceImpl implements ActionService {
 
     private Character getCharacter(int characterId, int clanId) throws InvalidActionException {
         Character character = characterService.load(characterId);
-        if (character == null || character.getClan().getId() != clanId
-                || character.getState() != CharacterState.READY) {
+        if (character == null || character.getClan().getId() != clanId || character.getState() != CharacterState.READY) {
             log.error("Action cannot be performed with this character: {}!", character);
             throw new InvalidActionException("Cannot perform exploration with the specified character!");
         }

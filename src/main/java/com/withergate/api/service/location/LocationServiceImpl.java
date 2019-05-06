@@ -43,7 +43,6 @@ public class LocationServiceImpl implements LocationService {
     private final LocationActionRepository locationActionRepository;
     private final GameProperties gameProperties;
     private final ClanService clanService;
-    private final CharacterService characterService;
     private final RandomService randomService;
     private final EncounterService encounterService;
     private final ItemService itemService;

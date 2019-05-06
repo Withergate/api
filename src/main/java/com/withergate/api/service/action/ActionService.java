@@ -1,5 +1,6 @@
 package com.withergate.api.service.action;
 
+import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
@@ -21,6 +22,15 @@ public interface ActionService {
      * @throws InvalidActionException invalid action
      */
     void createLocationAction(LocationRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Creates and persists an arena action based on the request. Throws an exception if this action
+     * cannot be performed.
+     *
+     * @param request the arena request
+     * @throws InvalidActionException invalid action
+     */
+    void createArenaAction(ArenaRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Creates and persists a building action based on the request. Throws an exception if this action

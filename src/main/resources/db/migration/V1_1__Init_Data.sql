@@ -233,9 +233,7 @@ INSERT INTO location_descriptions(location, scouting, description, info, image_u
     ('CITY_CENTER', true, 'locations.citycenter.description', 'locations.citycenter.info',
     'https://storage.googleapis.com/withergate-images/locations/city.jpg'),
     ('TAVERN', false, 'locations.tavern.description', 'locations.tavern.info',
-    'https://storage.googleapis.com/withergate-images/locations/tavern.jpg'),
-    ('ARENA', false, 'locations.arena.description', 'locations.arena.info',
-    'https://storage.googleapis.com/withergate-images/locations/arena.jpg');
+    'https://storage.googleapis.com/withergate-images/locations/tavern.jpg');
 
 INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood'),
@@ -245,9 +243,7 @@ INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('CITY_CENTER', 'en', 'City center'),
     ('CITY_CENTER', 'cs', 'Centrum města'),
     ('TAVERN', 'en', 'Tavern'),
-    ('TAVERN', 'cs', 'Hospoda'),
-    ('ARENA', 'en', 'Arena'),
-    ('ARENA', 'cs', 'Aréna');
+    ('TAVERN', 'cs', 'Hospoda');
 
 INSERT INTO localized_texts(location_description, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk and food. Do not expect to find anything too valuable, though.'),
@@ -257,9 +253,7 @@ INSERT INTO localized_texts(location_description, lang, text) VALUES
     ('CITY_CENTER', 'en', 'The ruins of the center of Withergate hides the most valuable treasures. Unfortunately, run by local gangs and roamed by scavengers, this place can sometimes prove to be very dangerous. On the other hand, if you are lucky, you can find some useful items here.'),
     ('CITY_CENTER', 'cs', 'Ruiny centra Withergate ukrývají ty největší poklady. Jedná o velmi nebezpečnou oblast obývanou lokálními gangy, mutanty a tím nejhorším, co pustina vyplivla. Pokud budete mít štěstí, můžete zde nalézt opravdové poklady.'),
     ('TAVERN', 'en', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash. '),
-    ('TAVERN', 'cs', 'Na kraji Withergate je malá hospoda, kam se stahují všechny pochybné existence utrácet své pracně vydělané zátky. Třeba zde narazíš na někoho, kdo by se ti mohl hodit.'),
-    ('ARENA', 'en', 'Glory for your best warriors and caps for your clan. Show your strenght in the arena and fight against other gladiators. Be warned, though, that this is no place for weaklings and safety is not guaranteed.'),
-    ('ARENA', 'cs', 'Sláva pro vítěze a zátky pro tvůj klan. Ukaž svou sílu a utkej se s ostatními gladiátory. Měj ale na paměti, že tohle není místo pro slabochy a snadno může dojít i ke smrtelným zraněním.');
+    ('TAVERN', 'cs', 'Na kraji Withergate je malá hospoda, kam se stahují všechny pochybné existence utrácet své pracně vydělané zátky. Třeba zde narazíš na někoho, kdo by se ti mohl hodit.');
 
 INSERT INTO localized_texts(location_info, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood is a relatively safe location. The most probable outcome is finding some junk or food.'),
@@ -269,9 +263,7 @@ INSERT INTO localized_texts(location_info, lang, text) VALUES
     ('CITY_CENTER', 'en', 'City has the highest risk of encoutering dangerous events. On the other hand, it also provides higher chances for finding valuable loot.'),
     ('CITY_CENTER', 'cs', 'Centrum města má nejvyšší riziko na nebezpečné události. Pokud se vám podaří přežít, tak je zde ale i šance na vysoké odměny. Také se zde postavy mohou dozvědět hodně zajímavých informací při pátrání.'),
     ('TAVERN', 'en', 'Tavern is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.'),
-    ('TAVERN', 'cs', 'V hospodě máš možnost najmout nové postavu. Každá postava stojí [100] zátek, tak měj tuto sumu připravenou, než sem vyrazíš.'),
-    ('ARENA', 'en', 'Only one character per day can be sent to the arena. This character will be matched with random opponent and fight. Only melee weapons are allowed. Fame and glory awarded in case of victory but characters can get injured.'),
-    ('ARENA', 'cs', 'Každý den můžeš do arény poslat jednu postavu ze svého klanu. Utkáš se s náhodným protivníkem a vítěz vyhraje slávu a zátky. Jsou dovolené pouze kontaktní zbraně.');
+    ('TAVERN', 'cs', 'V hospodě máš možnost najmout nové postavu. Každá postava stojí [100] zátek, tak měj tuto sumu připravenou, než sem vyrazíš.');
 
 -- Quests
 INSERT INTO quest_details (identifier, quest_type, difficulty, information_level, completion, caps_reward, fame_reward, image_url) VALUES
