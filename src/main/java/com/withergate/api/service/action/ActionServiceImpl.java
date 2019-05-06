@@ -6,14 +6,13 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.LocationAction;
-import com.withergate.api.model.action.LocationAction.LocationActionType;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.action.ResourceTradeAction;
+import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.WeaponType;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.request.ArenaRequest;
@@ -28,6 +27,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
+import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
@@ -54,6 +54,7 @@ public class ActionServiceImpl implements ActionService {
     private final QuestService questService;
     private final TradeService tradeService;
     private final ArenaService arenaService;
+    private final TavernService tavernService;
 
     @Transactional
     @Override
@@ -123,13 +124,11 @@ public class ActionServiceImpl implements ActionService {
 
         clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
 
-        LocationAction action = new LocationAction();
+        TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setLocation(Location.TAVERN);
-        action.setType(LocationActionType.VISIT);
 
-        locationService.saveLocationAction(action);
+        tavernService.saveTavernAction(action);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -286,6 +285,9 @@ public class ActionServiceImpl implements ActionService {
 
         // location actions
         locationService.processLocationActions(turnId);
+
+        // tavern actions
+        tavernService.processTavernActions(turnId);
     }
 
     @Transactional

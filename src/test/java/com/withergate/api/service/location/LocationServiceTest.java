@@ -12,21 +12,19 @@ import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
-import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -52,9 +50,6 @@ public class LocationServiceTest {
     private ItemService itemService;
 
     @Mock
-    private CombatService combatService;
-
-    @Mock
     private NotificationService notificationService;
 
     @Mock
@@ -75,7 +70,8 @@ public class LocationServiceTest {
         gameProperties.setCityInformationBonus(2);
 
         locationService = new LocationServiceImpl(locationActionRepository, gameProperties, clanService,
-                randomService, encounterService, itemService, combatService, notificationService, locationDescriptionRepository);
+                randomService, encounterService, itemService, notificationService,
+                locationDescriptionRepository);
     }
 
     @Test

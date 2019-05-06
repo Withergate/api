@@ -25,10 +25,10 @@ import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
+import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
 
@@ -65,6 +65,9 @@ public class ActionServiceTest {
     @Mock
     private ArenaService arenaService;
 
+    @Mock
+    private TavernService tavernService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -78,7 +81,7 @@ public class ActionServiceTest {
         gameProperties.setCityJunkBonus(4);
 
         actionService = new ActionServiceImpl(characterService, locationService, gameProperties, buildingService,
-                questService, tradeService, arenaService);
+                questService, tradeService, arenaService, tavernService);
     }
 
     @Test

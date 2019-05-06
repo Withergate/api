@@ -1,8 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
@@ -11,7 +8,6 @@ import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
@@ -20,12 +16,12 @@ import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
-import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,7 +42,6 @@ public class LocationServiceImpl implements LocationService {
     private final RandomService randomService;
     private final EncounterService encounterService;
     private final ItemService itemService;
-    private final CombatService combatService;
     private final NotificationService notificationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
 
@@ -91,15 +86,6 @@ public class LocationServiceImpl implements LocationService {
                     processLocationAction(notification, character, action, gameProperties.getCityEncounterProbability(),
                             gameProperties.getCityLootProbability(), gameProperties.getCityJunkBonus(),
                             gameProperties.getCityFoodBonus(), gameProperties.getCityInformationBonus());
-                    break;
-                case TAVERN:
-                    Character hired = clanService.hireCharacter(character.getClan());
-
-                    notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[] {hired.getName()});
-
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[] {hired.getName()});
-                    notification.getDetails().add(detail);
                     break;
                 default:
                     log.error("Encountered unknown location: {}", action.getLocation());

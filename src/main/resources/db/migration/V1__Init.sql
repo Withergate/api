@@ -288,6 +288,14 @@ CREATE TABLE arena_actions (
     PRIMARY KEY (action_id)
 );
 
+DROP TABLE IF EXISTS tavern_actions;
+CREATE TABLE tavern_actions (
+    action_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    character_id INT NOT NULL,
+    PRIMARY KEY (action_id)
+);
+
 DROP TABLE IF EXISTS building_actions;
 CREATE TABLE building_actions (
     action_id INT AUTO_INCREMENT,
