@@ -54,7 +54,12 @@ INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, ef
     ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 10, 2, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.jpg'),
     ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 30, 4, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg'),
     ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 20, 5, 3, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 40, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 40, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('STEROIDS', 'CONSUMABLE', 'RARE', 50, 1, 0, 'BUFF_COMBAT', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('TOXICAT', 'CONSUMABLE', 'RARE', 50, 1, 0, 'BUFF_SCAVENGE', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('TRIFFID_HAND', 'CONSUMABLE', 'RARE', 50, 1, 0, 'BUFF_CRAFTSMANSHIP', 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('MIND_PATCH', 'CONSUMABLE', 'RARE', 50, 1, 0, 'BUFF_INTELLECT', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SMALL_MEDKIT', 'en', 'Small medkit'),
@@ -64,7 +69,15 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('MANUSCRIPT', 'en', 'Manuscript'),
     ('MANUSCRIPT', 'cs', 'Rukopis'),
     ('OLD_BOOK', 'en', 'Old book'),
-    ('OLD_BOOK', 'cs', 'Stará kniha');
+    ('OLD_BOOK', 'cs', 'Stará kniha'),
+    ('STEROIDS', 'en', 'Anabolic steroids'),
+    ('STEROIDS', 'cs', 'Anabolické steroidy'),
+    ('TOXICAT', 'en', 'Toxicat'),
+    ('TOXICAT', 'cs', 'Toxiqaat'),
+    ('TRIFFID_HAND', 'en', 'Triffid hand'),
+    ('TRIFFID_HAND', 'cs', 'Triffidí palčák'),
+    ('MIND_PATCH', 'en', 'Mind patch'),
+    ('MIND_PATCH', 'cs', 'Mozkový štěp');
 
 INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('SMALL_MEDKIT', 'en', 'Basic medical equipment for providing first aid and treating minor wounds.'),
@@ -74,7 +87,15 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('MANUSCRIPT', 'en', 'Those who are able to read can learn a lot from this ancient text.'),
     ('MANUSCRIPT', 'cs', 'Z těchto starodávných textů se můžeš naučit mnoho, pokud tedy umíš číst.'),
     ('OLD_BOOK', 'en', 'Not everyone can understand an ancient source of knowledge - but if you are the one, a powerful knowledge is waiting for you as a reward.'),
-    ('OLD_BOOK', 'cs', 'Ne každý pochopí tento starodávný zdroj vědění - ale pokud to zvládneš, odměnou ti budou mocné znalosti.');
+    ('OLD_BOOK', 'cs', 'Ne každý pochopí tento starodávný zdroj vědění - ale pokud to zvládneš, odměnou ti budou mocné znalosti.'),
+    ('STEROIDS', 'en', 'This will make your muscles grow... and put hair on your lips, maybe even hair on your hairs. Permanently improves combat by 1.'),
+    ('STEROIDS', 'cs', 'Po tomhle ti rychle narostou svaly... a chlupy i na rtech, možná chlupy i na chlupech. Trvale zvýší bojovou sílu o 1.'),
+    ('TOXICAT', 'en', 'There is a lot of aromatic and slightly psychadelic herb called khat (or mad cat) so many people love chewing its leafs. Qaat macerated in a suspicious toxic solution reportedly temporaly improves your scavenge by 1.'),
+    ('TOXICAT', 'cs', 'V pustině lze snadno nalézt aromatickou a mírně halucinogenní bylinu jménem qaat a kdekdo tak žvýká její listy. Qaat namočený v pochybném toxickém roztoku údajně trvale zvýší hledání o 1.'),
+    ('TRIFFID_HAND', 'en', 'Some wastelanders are wrapping their hands into a sting of a very aggressive genetically modified plant. This painful procedure makes their hand hardy and, oddly enough, agile - which permanently improves craftsmanship by 1.'),
+    ('TRIFFID_HAND', 'cs', 'Po chvíli bolestivého nošení tohoto módního doplňku vyrobeného z žahadla vysoce agresivní geneticky modifikované rostliny se ruce stávají odolnějšími a z nějakého důvodu i hbitějšími, což trvale zvýší zručnost o 1.'),
+    ('MIND_PATCH', 'en', 'Give your head an injection of ideas of smarter people and improve permanently your intellect by 1. And who is smarter now, huh?'),
+    ('MIND_PATCH', 'cs', 'Injekcí do hlavy lze vpravit myšlenky chytřejších lidí a zvýšit tak intelekt trvale o 1. A kdo je chytřejší teď, co?');
 
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, craftable, price, bonus, bonus_type, image_url) VALUES

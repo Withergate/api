@@ -59,7 +59,7 @@ CREATE TABLE item_details (
     prereq INT,
     bonus INT,
     bonus_type VARCHAR(16),
-    effect_type VARCHAR(16),
+    effect_type VARCHAR(32),
     weapon_type VARCHAR(16),
     PRIMARY KEY (identifier)
 );

@@ -318,6 +318,23 @@ public class ItemServiceImpl implements ItemService {
             case EXPERIENCE:
                 character.setExperience(character.getExperience() + consumable.getDetails().getEffect());
                 break;
+            case BUFF_COMBAT:
+                if (character.getCombat() > 5) throw new InvalidActionException("This character already reached max combat value!");
+                character.setCombat(character.getCombat() + 1);
+                break;
+            case BUFF_SCAVENGE:
+                if (character.getScavenge() > 5) throw new InvalidActionException("This character already reached max scavenge value!");
+                character.setScavenge(character.getScavenge() + 1);
+                break;
+            case BUFF_CRAFTSMANSHIP:
+                if (character.getCraftsmanship() > 5)
+                    throw new InvalidActionException("This character already reached max craftsmanship value!");
+                character.setCraftsmanship(character.getCraftsmanship() + 1);
+                break;
+            case BUFF_INTELLECT:
+                if (character.getIntellect() > 5) throw new InvalidActionException("This character already reached max intellect value!");
+                character.setIntellect(character.getIntellect() + 1);
+                break;
             default:
                 log.error("Unknown consumable type: {}!", consumable.getDetails().getEffectType());
         }
