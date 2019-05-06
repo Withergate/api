@@ -6,6 +6,7 @@ import java.util.List;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LocationController {
 
-    private final ActionService locationService;
+    private final ActionService actionService;
     private final LocationDescriptionRepository locationDescriptionRepository;
 
     /**
@@ -42,7 +43,7 @@ public class LocationController {
     public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) throws InvalidActionException {
         log.debug("Executing location action for player {}", principal.getName());
 
-        locationService.createLocationAction(request, Integer.parseInt(principal.getName()));
+        actionService.createLocationAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -53,11 +54,26 @@ public class LocationController {
      * @param request   the arena action request
      * @throws InvalidActionException invalid action
      */
-    @PostMapping("/locations/arena/action")
+    @PostMapping("/arena/action")
     public ResponseEntity<Void> visitArena(Principal principal, @RequestBody ArenaRequest request) throws InvalidActionException {
         log.debug("Executing arena action for player {}", principal.getName());
 
-        locationService.createArenaAction(request, Integer.parseInt(principal.getName()));
+        actionService.createArenaAction(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Submits a new tavern action and checks if this action is applicable. Throws an exception if not.
+     *
+     * @param principal the principal
+     * @param request   the tavern action request
+     * @throws InvalidActionException invalid action
+     */
+    @PostMapping("/tavern/action")
+    public ResponseEntity<Void> visitTavern(Principal principal, @RequestBody TavernRequest request) throws InvalidActionException {
+        log.debug("Executing tavern action for player {}", principal.getName());
+
+        actionService.createTavernAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

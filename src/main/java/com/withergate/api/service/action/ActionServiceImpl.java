@@ -20,6 +20,7 @@ import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
+import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
@@ -56,21 +57,6 @@ public class ActionServiceImpl implements ActionService {
     public void createLocationAction(LocationRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting location action request: {}", request.toString());
         Character character = getCharacter(request.getCharacterId(), clanId);
-        Clan clan = character.getClan();
-
-        // check if clan has enough resources and population limit
-        if (request.getLocation() == Location.TAVERN) {
-
-            if (clan.getCaps() < gameProperties.getCharacterCost()) {
-                throw new InvalidActionException("Not enough resources to perform this action!");
-            }
-
-            if (clan.getCharacters().size() >= clan.getPopulationLimit()) {
-                throw new InvalidActionException("Population limit exceeded.");
-            }
-
-            clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
-        }
 
         // check if this location supports given action type
         LocationDescription description = locationService.getLocationDescription(request.getLocation());
@@ -91,6 +77,7 @@ public class ActionServiceImpl implements ActionService {
         characterService.save(character);
     }
 
+    @Transactional
     @Override
     public void createArenaAction(ArenaRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting arena action request: {}", request.toString());
@@ -116,7 +103,35 @@ public class ActionServiceImpl implements ActionService {
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
-        characterService.save(character);
+    }
+
+    @Transactional
+    @Override
+    public void createTavernAction(TavernRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting tavern action request: {}", request.toString());
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        if (clan.getCaps() < gameProperties.getCharacterCost()) {
+            throw new InvalidActionException("Not enough resources to perform this action!");
+        }
+
+        if (clan.getCharacters().size() >= clan.getPopulationLimit()) {
+            throw new InvalidActionException("Population limit exceeded.");
+        }
+
+        clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setLocation(Location.TAVERN);
+        action.setType(LocationActionType.VISIT);
+
+        locationService.saveLocationAction(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
     }
 
     @Transactional

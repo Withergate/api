@@ -5,6 +5,7 @@ import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
+import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -31,6 +32,15 @@ public interface ActionService {
      * @throws InvalidActionException invalid action
      */
     void createArenaAction(ArenaRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Creates and persists a tavern action based on the request. Throws an exception if this action
+     * cannot be performed.
+     *
+     * @param request the tavern request
+     * @throws InvalidActionException invalid action
+     */
+    void createTavernAction(TavernRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Creates and persists a building action based on the request. Throws an exception if this action

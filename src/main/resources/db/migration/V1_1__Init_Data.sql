@@ -231,9 +231,7 @@ INSERT INTO location_descriptions(location, scouting, description, info, image_u
     ('WASTELAND', true, 'locations.wasteland.description', 'locations.wasteland.info',
     'https://storage.googleapis.com/withergate-images/locations/wasteland.jpg'),
     ('CITY_CENTER', true, 'locations.citycenter.description', 'locations.citycenter.info',
-    'https://storage.googleapis.com/withergate-images/locations/city.jpg'),
-    ('TAVERN', false, 'locations.tavern.description', 'locations.tavern.info',
-    'https://storage.googleapis.com/withergate-images/locations/tavern.jpg');
+    'https://storage.googleapis.com/withergate-images/locations/city.jpg');
 
 INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood'),
@@ -241,9 +239,7 @@ INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('WASTELAND', 'en', 'Wasteland'),
     ('WASTELAND', 'cs', 'Pustina'),
     ('CITY_CENTER', 'en', 'City center'),
-    ('CITY_CENTER', 'cs', 'Centrum města'),
-    ('TAVERN', 'en', 'Tavern'),
-    ('TAVERN', 'cs', 'Hospoda');
+    ('CITY_CENTER', 'cs', 'Centrum města');
 
 INSERT INTO localized_texts(location_description, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood is the area around your camp. It is a relatively safe place since you have been living there for quite some time. It is a safe location to search for junk and food. Do not expect to find anything too valuable, though.'),
@@ -251,9 +247,7 @@ INSERT INTO localized_texts(location_description, lang, text) VALUES
     ('WASTELAND', 'en', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.'),
     ('WASTELAND', 'cs', 'Pustina je vyprahlá oblast všude okolo. Může se zdát opuštěná, ale věz, že se zde nachází mnoho nebezpečí.'),
     ('CITY_CENTER', 'en', 'The ruins of the center of Withergate hides the most valuable treasures. Unfortunately, run by local gangs and roamed by scavengers, this place can sometimes prove to be very dangerous. On the other hand, if you are lucky, you can find some useful items here.'),
-    ('CITY_CENTER', 'cs', 'Ruiny centra Withergate ukrývají ty největší poklady. Jedná o velmi nebezpečnou oblast obývanou lokálními gangy, mutanty a tím nejhorším, co pustina vyplivla. Pokud budete mít štěstí, můžete zde nalézt opravdové poklady.'),
-    ('TAVERN', 'en', 'On the edge of Withergate, there is a little establishment where many wastelanders go to spend their hard-earned caps in exhange for home-made booze of discutable quality. Here, you can find scavengers that might be interested in joining your clan for certain cash. '),
-    ('TAVERN', 'cs', 'Na kraji Withergate je malá hospoda, kam se stahují všechny pochybné existence utrácet své pracně vydělané zátky. Třeba zde narazíš na někoho, kdo by se ti mohl hodit.');
+    ('CITY_CENTER', 'cs', 'Ruiny centra Withergate ukrývají ty největší poklady. Jedná o velmi nebezpečnou oblast obývanou lokálními gangy, mutanty a tím nejhorším, co pustina vyplivla. Pokud budete mít štěstí, můžete zde nalézt opravdové poklady.');
 
 INSERT INTO localized_texts(location_info, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood is a relatively safe location. The most probable outcome is finding some junk or food.'),
@@ -261,9 +255,7 @@ INSERT INTO localized_texts(location_info, lang, text) VALUES
     ('WASTELAND', 'en', 'Wasteland has an increased chance for encountering some potentially dangerous events. However, handling such event well might lead to an interesting reward.'),
     ('WASTELAND', 'cs', 'V pustině je vyšší šance na nebezpečné události. Na druhou stranu, při úspěchu je zde také šance na vyšší odměnu. Je možné zde zjistit zajímavé informace.'),
     ('CITY_CENTER', 'en', 'City has the highest risk of encoutering dangerous events. On the other hand, it also provides higher chances for finding valuable loot.'),
-    ('CITY_CENTER', 'cs', 'Centrum města má nejvyšší riziko na nebezpečné události. Pokud se vám podaří přežít, tak je zde ale i šance na vysoké odměny. Také se zde postavy mohou dozvědět hodně zajímavých informací při pátrání.'),
-    ('TAVERN', 'en', 'Tavern is used for hiring new characters. Each character costs [100] caps so be prepared to have this amount ready when going to this location.'),
-    ('TAVERN', 'cs', 'V hospodě máš možnost najmout nové postavu. Každá postava stojí [100] zátek, tak měj tuto sumu připravenou, než sem vyrazíš.');
+    ('CITY_CENTER', 'cs', 'Centrum města má nejvyšší riziko na nebezpečné události. Pokud se vám podaří přežít, tak je zde ale i šance na vysoké odměny. Také se zde postavy mohou dozvědět hodně zajímavých informací při pátrání.');
 
 -- Quests
 INSERT INTO quest_details (identifier, quest_type, difficulty, information_level, completion, caps_reward, fame_reward, image_url) VALUES

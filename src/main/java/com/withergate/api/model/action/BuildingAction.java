@@ -37,7 +37,6 @@ public class BuildingAction extends BaseAction {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-
     /**
      * Action type.
      */
