@@ -148,6 +148,8 @@ INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image
     ('TRAINING_GROUNDS', 20, 0, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
     ('MONUMENT', 20, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
     ('FORGE', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('WORKSHOP', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('RAGS_SHOP', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
     ('QUARTERS', 10, false, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
@@ -161,6 +163,10 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('MONUMENT', 'cs', 'Monument'),
     ('FORGE', 'en', 'Forge'),
     ('FORGE', 'cs', 'Kovárna'),
+    ('WORKSHOP', 'en', 'Workshop'),
+    ('WORKSHOP', 'cs', 'Dílna'),
+    ('RAGS_SHOP', 'en', 'Rags shop'),
+    ('RAGS_SHOP', 'cs', 'Hadrárna'),
     ('QUARTERS', 'en', 'Quarters'),
     ('QUARTERS', 'cs', 'Ubikace');
 
@@ -175,8 +181,12 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('MONUMENT', 'cs', 'Ať všichni vidí, jak je náš klan úžasný!'),
     ('FORGE', 'en', 'Got some junk? Let`s forge some weapons for the arena!'),
     ('FORGE', 'cs', 'Roztavíme všechno. A slijeme z toho něco do arény!'),
+    ('WORKSHOP', 'en', 'Great way how to turn junk into different type of junk.'),
+    ('WORKSHOP', 'cs', 'Skvělý způsob jak ze šrotu vyrobit jiný typ šrotu.'),
+    ('RAGS_SHOP', 'en', 'We will make you a great outfit out of everything you found in the wasteland.'),
+    ('RAGS_SHOP', 'cs', 'Uděláme ti skvělý vohoz ze všeho, cos našel v pustině.'),
     ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),
-    ('FORGE', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.');
+    ('QUARTERS', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -189,6 +199,10 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('MONUMENT', 'cs', 'Každá úroveň této budovy poskutuje slávu každé kolo.'),
     ('FORGE', 'en', 'Pay [10] junk and craft a random weapon! High craftsmanship affects the rarity of the crafted item.'),
     ('FORGE', 'cs', 'Zaplať [10] šrotu a vyrob náhodnou zbraň! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
+    ('WORKSHOP', 'en', 'Pay [10] junk and craft a random gear! High craftsmanship affects the rarity of the crafted item.'),
+    ('WORKSHOP', 'cs', 'Zaplať [10] šrotu a vyrob náhodný kus výbavy! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
+    ('RAGS_SHOP', 'en', 'Pay [10] junk and craft a random outfit! High craftsmanship affects the rarity of the crafted item.'),
+    ('RAGS_SHOP', 'cs', 'Zaplať [10] šrotu a vyrob náhodný oděv! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
     ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
     ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.');
 
@@ -296,8 +310,12 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('location.information', 'cs', 'Postava zjistila při pátrání cenné informace.'),
     ('building.work', 'en', 'Character worked on a construction of [].'),
     ('building.work', 'cs', 'Postava  pracovala na stavbě [].'),
-    ('building.crafting.weapon', 'en', 'Character was crafting a weapon..'),
+    ('building.crafting.weapon', 'en', 'Character was crafting a weapon.'),
     ('building.crafting.weapon', 'cs', 'Postava vyráběla zbraně.'),
+    ('building.crafting.outfit', 'en', 'Character was crafting an outfit.'),
+    ('building.crafting.outfit', 'cs', 'Postava vyráběla oděv.'),
+    ('building.crafting.gear', 'en', 'Character was crafting a gear.'),
+    ('building.crafting.gear', 'cs', 'Postava vyráběla vybavení.'),
     ('building.monument.income', 'en', 'Your Monument generated fame for your clan.'),
     ('building.monument.income', 'cs', 'Tvůj Monument získal slávu pro tvůj klan.'),
     ('building.gmofarm.income', 'en', 'Your GMO farm generated food for your clan.'),

@@ -22,8 +22,10 @@ public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String
     List<WeaponDetails> findWeaponDetailsByRarityAndCraftable(ItemDetails.Rarity rarity, boolean craftable);
 
     List<OutfitDetails> findOutfitDetailsByRarity(ItemDetails.Rarity rarity);
+    List<OutfitDetails> findOutfitDetailsByRarityAndCraftable(ItemDetails.Rarity rarity, boolean craftable);
 
     List<GearDetails> findGearDetailsByRarity(ItemDetails.Rarity rarity);
+    List<GearDetails> findGearDetailsByRarityAndCraftable(ItemDetails.Rarity rarity, boolean craftable);
 
     List<ConsumableDetails> findConsumableDetailsByRarity(ItemDetails.Rarity rarity);
 

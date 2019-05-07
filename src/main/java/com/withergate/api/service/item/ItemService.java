@@ -43,13 +43,14 @@ public interface ItemService {
     void generateItemForCharacter(Character character, ClanNotification notification);
 
     /**
-     * Generates craftable weapon.
+     * Generates craftable item.
      *
      * @param character     the character performing the crafting
      * @param buildingLevel the construction building level
      * @param notification  the crafted weapon
+     * @param type          the item type
      */
-    void generateCraftableWeapon(Character character, int buildingLevel, ClanNotification notification);
+    void generateCraftableItem(Character character, int buildingLevel, ClanNotification notification, ItemType type);
 
     /**
      * Use the consumable with the provided character.

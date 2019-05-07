@@ -73,15 +73,21 @@ public class ItemServiceImpl implements ItemService {
         // load item
         if (type.equals(ItemType.WEAPON)) {
             item = weaponRepository.getOne(itemId);
-            if (character.getWeapon() != null) equipped = true;
+            if (character.getWeapon() != null) {
+                equipped = true;
+            }
         }
         if (type.equals(ItemType.GEAR)) {
             item = gearRepository.getOne(itemId);
-            if (character.getGear() != null) equipped = true;
+            if (character.getGear() != null) {
+                equipped = true;
+            }
         }
         if (type.equals(ItemType.OUTFIT)) {
             item = outfitRepository.getOne(itemId);
-            if (character.getOutfit() != null) equipped = true;
+            if (character.getOutfit() != null) {
+                equipped = true;
+            }
         }
 
         if (item == null) {
@@ -258,7 +264,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateCraftableWeapon(Character character, int buildingLevel, ClanNotification notification) {
+    public void generateCraftableItem(Character character, int buildingLevel, ClanNotification notification, ItemType type) {
         log.debug("Crafting weapon with {}", character.getName());
 
         if (buildingLevel < 1) {
@@ -266,20 +272,43 @@ public class ItemServiceImpl implements ItemService {
         }
 
         ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel);
-        List<WeaponDetails> detailsList = itemDetailsRepository.findWeaponDetailsByRarityAndCraftable(rarity, true);
-        WeaponDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
 
-        Weapon weapon = new Weapon();
-        weapon.setDetails(details);
-        weapon.setClan(character.getClan());
-        weaponRepository.save(weapon);
+        ItemDetails details;
+
+        switch (type) {
+            case WEAPON:
+                List<WeaponDetails> weaponList = itemDetailsRepository.findWeaponDetailsByRarityAndCraftable(rarity, true);
+                details = weaponList.get(randomService.getRandomInt(0, weaponList.size() - 1));
+                Weapon weapon = new Weapon();
+                weapon.setDetails((WeaponDetails) details);
+                weapon.setClan(character.getClan());
+                weaponRepository.save(weapon);
+                break;
+            case OUTFIT:
+                List<OutfitDetails> outfitList = itemDetailsRepository.findOutfitDetailsByRarityAndCraftable(rarity, true);
+                details = outfitList.get(randomService.getRandomInt(0, outfitList.size() - 1));
+                Outfit outfit = new Outfit();
+                outfit.setDetails((OutfitDetails) details);
+                outfit.setClan(character.getClan());
+                outfitRepository.save(outfit);
+                break;
+            case GEAR:
+                List<GearDetails> gearList = itemDetailsRepository.findGearDetailsByRarityAndCraftable(rarity, true);
+                details = gearList.get(randomService.getRandomInt(0, gearList.size() - 1));
+                Gear gear = new Gear();
+                gear.setDetails((GearDetails) details);
+                gear.setClan(character.getClan());
+                gearRepository.save(gear);
+                break;
+            default:
+                log.error("Invalid item type: {}", type);
+                return;
+        }
 
         NotificationDetail detail = new NotificationDetail();
-        notificationService
-                .addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[]{character.getName()},
-                        details.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[] {character.getName()},
+                details.getName());
         notification.getDetails().add(detail);
-
     }
 
     @Transactional
@@ -300,8 +329,8 @@ public class ItemServiceImpl implements ItemService {
         }
 
         // check prerequizities
-        if (consumable.getDetails().getEffectType().equals(EffectType.EXPERIENCE)
-                && character.getIntellect() < consumable.getDetails().getPrereq()) {
+        if (consumable.getDetails().getEffectType().equals(EffectType.EXPERIENCE) && character.getIntellect() < consumable.getDetails()
+                .getPrereq()) {
             throw new InvalidActionException("Character's intellect is too low to perform this action.");
         }
 
@@ -319,20 +348,27 @@ public class ItemServiceImpl implements ItemService {
                 character.setExperience(character.getExperience() + consumable.getDetails().getEffect());
                 break;
             case BUFF_COMBAT:
-                if (character.getCombat() > 5) throw new InvalidActionException("This character already reached max combat value!");
+                if (character.getCombat() > 5) {
+                    throw new InvalidActionException("This character already reached max combat value!");
+                }
                 character.setCombat(character.getCombat() + 1);
                 break;
             case BUFF_SCAVENGE:
-                if (character.getScavenge() > 5) throw new InvalidActionException("This character already reached max scavenge value!");
+                if (character.getScavenge() > 5) {
+                    throw new InvalidActionException("This character already reached max scavenge value!");
+                }
                 character.setScavenge(character.getScavenge() + 1);
                 break;
             case BUFF_CRAFTSMANSHIP:
-                if (character.getCraftsmanship() > 5)
+                if (character.getCraftsmanship() > 5) {
                     throw new InvalidActionException("This character already reached max craftsmanship value!");
+                }
                 character.setCraftsmanship(character.getCraftsmanship() + 1);
                 break;
             case BUFF_INTELLECT:
-                if (character.getIntellect() > 5) throw new InvalidActionException("This character already reached max intellect value!");
+                if (character.getIntellect() > 5) {
+                    throw new InvalidActionException("This character already reached max intellect value!");
+                }
                 character.setIntellect(character.getIntellect() + 1);
                 break;
             default:
@@ -367,9 +403,8 @@ public class ItemServiceImpl implements ItemService {
 
         // update notification
         NotificationDetail detail = new NotificationDetail();
-        notificationService
-                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
-                        details.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[] {character.getName()},
+                details.getName());
         notification.getDetails().add(detail);
     }
 
@@ -400,9 +435,8 @@ public class ItemServiceImpl implements ItemService {
          * Update notification.
          */
         NotificationDetail detail = new NotificationDetail();
-        notificationService
-                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
-                        details.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[] {character.getName()},
+                details.getName());
         notification.getDetails().add(detail);
     }
 
@@ -430,9 +464,8 @@ public class ItemServiceImpl implements ItemService {
 
         // update notification
         NotificationDetail detail = new NotificationDetail();
-        notificationService
-                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
-                        details.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[] {character.getName()},
+                details.getName());
         notification.getDetails().add(detail);
     }
 
@@ -454,9 +487,8 @@ public class ItemServiceImpl implements ItemService {
 
         // update notification
         NotificationDetail detail = new NotificationDetail();
-        notificationService
-                .addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[]{character.getName()},
-                        details.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.found.storage", new String[] {character.getName()},
+                details.getName());
         notification.getDetails().add(detail);
     }
 

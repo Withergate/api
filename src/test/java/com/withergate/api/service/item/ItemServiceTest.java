@@ -1,5 +1,10 @@
 package com.withergate.api.service.item;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -22,11 +27,6 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -211,7 +211,7 @@ public class ItemServiceTest {
 
         // when crafting weapon
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableWeapon(character, 1, notification);
+        itemService.generateCraftableItem(character, 1, notification, ItemType.WEAPON);
 
         // then verify weapon saved
         ArgumentCaptor<Weapon> captor = ArgumentCaptor.forClass(Weapon.class);

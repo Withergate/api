@@ -8,11 +8,13 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.BuildingActionRepository;
@@ -99,15 +101,33 @@ public class BuildingServiceImpl implements BuildingService {
 
             // visit actions
             if (action.getType() == BuildingAction.Type.VISIT && action.getBuilding().equals(BuildingDetails.BuildingName.FORGE)) {
-                if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.FORGE)
-                        && character.getClan().getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel() > 0) {
+                if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.FORGE)) {
                     log.debug("{} is crafting weapon.", character.getName());
                     notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon",
                             new String[]{character.getName()});
-                    itemService.generateCraftableWeapon(character, clan.getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(),
-                            notification);
+                    itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(),
+                            notification, ItemType.WEAPON);
                 }
+            }
 
+            if (action.getType() == BuildingAction.Type.VISIT && action.getBuilding().equals(BuildingName.RAGS_SHOP)) {
+                if (character.getClan().getBuildings().containsKey(BuildingName.RAGS_SHOP)) {
+                    log.debug("{} is crafting outfit.", character.getName());
+                    notificationService.addLocalizedTexts(notification.getText(), "building.crafting.outfit",
+                            new String[]{character.getName()});
+                    itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.RAGS_SHOP).getLevel(),
+                            notification, ItemType.OUTFIT);
+                }
+            }
+
+            if (action.getType() == BuildingAction.Type.VISIT && action.getBuilding().equals(BuildingName.WORKSHOP)) {
+                if (character.getClan().getBuildings().containsKey(BuildingName.WORKSHOP)) {
+                    log.debug("{} is crafting gear.", character.getName());
+                    notificationService.addLocalizedTexts(notification.getText(), "building.crafting.gear",
+                            new String[]{character.getName()});
+                    itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.WORKSHOP).getLevel(),
+                            notification, ItemType.GEAR);
+                }
             }
 
             // award experience
