@@ -245,6 +245,10 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Your character cannot carry that much!");
         }
 
+        if (request.getJunk() + request.getFood() < 1) {
+            throw new InvalidActionException("No resources specified!");
+        }
+
         // check if clan has enough resources
         if (request.getType().equals(TradeType.BUY)) {
             int resourcesToBuy = request.getFood() + request.getJunk();
