@@ -99,6 +99,10 @@ public class LocationServiceImpl implements LocationService {
             return;
         }
 
+        // add experience for exploration
+        character.setExperience(character.getExperience() + 1);
+        notification.setExperience(1);
+
         /*
          * INFORMATION
          */
