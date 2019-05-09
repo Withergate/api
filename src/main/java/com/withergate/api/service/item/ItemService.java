@@ -1,6 +1,8 @@
 package com.withergate.api.service.item;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -11,6 +13,24 @@ import com.withergate.api.service.exception.InvalidActionException;
  * @author Martin Myslik
  */
 public interface ItemService {
+
+    /**
+     * Loads single item by type.
+     *
+     * @param itemId item ID
+     * @param type   item type
+     * @return the loaded item
+     */
+    Item loadItemByType(int itemId, ItemType type);
+
+    /**
+     * Loads single item details by type.
+     *
+     * @param itemId item ID
+     * @param type   item type
+     * @return the loaded item details
+     */
+    ItemDetails loadItemDetailsByType(int itemId, ItemType type);
 
     /**
      * Equip a weapon with the specified character. Throws an exception if this action is not allowed.

@@ -274,6 +274,20 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_quest_description_fk FOREIGN KEY (quest_description) REFERENCES quest_details (identifier)
 );
 
+-- Market offers
+DROP TABLE IF EXISTS market_offers;
+CREATE TABLE market_offers (
+    offer_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    seller_id INT NOT NULL,
+    item_id INT NOT NULL,
+    price INT NOT NULL,
+    identifier VARCHAR(16) NOT NULL,
+    CONSTRAINT offer_seller_fk FOREIGN KEY (seller_id) REFERENCES clans (clan_id),
+    CONSTRAINT offer_identifier_fk FOREIGN KEY (identifier) REFERENCES item_details (identifier),
+    PRIMARY KEY (offer_id)
+);
+
 -- Actions
 DROP TABLE IF EXISTS location_actions;
 CREATE TABLE location_actions (

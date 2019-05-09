@@ -57,6 +57,30 @@ public class ItemServiceImpl implements ItemService {
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
 
+    @Override
+    public Item loadItemByType(int itemId, ItemType type) {
+        switch (type) {
+            case WEAPON: return weaponRepository.getOne(itemId);
+            case OUTFIT: return outfitRepository.getOne(itemId);
+            case GEAR: return gearRepository.getOne(itemId);
+            case CONSUMABLE: return consumableRepository.getOne(itemId);
+        }
+
+        return null;
+    }
+
+    @Override
+    public ItemDetails loadItemDetailsByType(int itemId, ItemType type) {
+        switch (type) {
+            case WEAPON: return weaponRepository.getOne(itemId).getDetails();
+            case OUTFIT: return outfitRepository.getOne(itemId).getDetails();
+            case GEAR: return gearRepository.getOne(itemId).getDetails();
+            case CONSUMABLE: return consumableRepository.getOne(itemId).getDetails();
+        }
+
+        return null;
+    }
+
     @Transactional
     @Override
     public void equipItem(int itemId, ItemType type, int characterId, int clanId) throws InvalidActionException {
