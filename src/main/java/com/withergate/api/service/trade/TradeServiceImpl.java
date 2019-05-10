@@ -4,14 +4,17 @@ import java.util.List;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
+import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
+import com.withergate.api.repository.action.MarketTradeActionRepository;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.repository.trade.MarketOfferRepository;
 import com.withergate.api.service.clan.ClanService;
@@ -34,6 +37,7 @@ public class TradeServiceImpl implements TradeService {
     public static final int RESOURCE_TRADE_LIMIT = 20;
 
     private final ResourceTradeActionRepository resourceTradeActionRepository;
+    private final MarketTradeActionRepository marketTradeActionRepository;
     private final NotificationService notificationService;
     private final ItemService itemService;
     private final MarketOfferRepository marketOfferRepository;
@@ -41,6 +45,16 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public void saveResourceTradeAction(ResourceTradeAction action) {
         resourceTradeActionRepository.save(action);
+    }
+
+    @Override
+    public void saveMarketTradeAction(MarketTradeAction action) {
+        marketTradeActionRepository.save(action);
+    }
+
+    @Override
+    public MarketOffer loadMarketOffer(int offerId) {
+        return marketOfferRepository.getOne(offerId);
     }
 
     @Override
@@ -59,7 +73,30 @@ public class TradeServiceImpl implements TradeService {
 
             // mark action as done
             action.setState(ActionState.COMPLETED);
-            resourceTradeActionRepository.save(action);
+        }
+    }
+
+    @Override
+    public void processMarketTradeActions(int turnId) {
+        for (MarketTradeAction action : marketTradeActionRepository.findAllByState(ActionState.PENDING)) {
+            ClanNotification buyerNotification = new ClanNotification();
+            buyerNotification.setClanId(action.getCharacter().getClan().getId());
+            buyerNotification.setTurnId(turnId);
+            buyerNotification.setHeader(action.getCharacter().getName());
+
+            ClanNotification sellerNotification = new ClanNotification();
+            sellerNotification.setClanId(action.getOffer().getSeller().getId());
+            sellerNotification.setTurnId(turnId);
+            sellerNotification.setHeader(action.getOffer().getSeller().getName());
+
+            processMarketTradeAction(action, buyerNotification, sellerNotification);
+
+            // save notification
+            notificationService.save(buyerNotification);
+            notificationService.save(sellerNotification);
+
+            // mark action as done
+            action.setState(ActionState.COMPLETED);
         }
     }
 
@@ -90,6 +127,23 @@ public class TradeServiceImpl implements TradeService {
         item.setClan(null);
     }
 
+    @Transactional
+    @Override
+    public void deleteMarketOffer(int offerId, int clanId) throws InvalidActionException {
+        MarketOffer offer = marketOfferRepository.getOne(offerId);
+
+        if (offer == null || offer.getSeller().getId() != clanId) {
+            throw new InvalidActionException("This offer either does not exist or does not belong to your clan.");
+        }
+
+        // return item to the seller
+        Item item = itemService.loadItemByType(offer.getItemId(), offer.getDetails().getItemType());
+        item.setClan(offer.getSeller());
+
+        // delete the offer
+        marketOfferRepository.delete(offer);
+    }
+
     @Override
     public List<MarketOffer> getMarketOffersByState(State state) {
         return marketOfferRepository.findAllByState(state);
@@ -112,5 +166,31 @@ public class TradeServiceImpl implements TradeService {
 
             notificationService.addLocalizedTexts(notification.getText(), "character.trade.resourcesSell", new String[]{});
         }
+    }
+
+    private void processMarketTradeAction(MarketTradeAction action, ClanNotification buyerNotification,
+                                          ClanNotification sellerNotification) {
+        MarketOffer offer = action.getOffer();
+
+        // add money to seller
+        int price = offer.getPrice();
+        Clan seller = offer.getSeller();
+        seller.setCaps(seller.getCaps() + price);
+        sellerNotification.setCapsIncome(price);
+        notificationService.addLocalizedTexts(sellerNotification.getText(), "clan.trade.item",
+                new String[]{action.getCharacter().getName(), action.getCharacter().getClan().getName()});
+
+        // transfer item
+        Item item = itemService.loadItemByType(offer.getItemId(), offer.getDetails().getItemType());
+        item.setClan(action.getCharacter().getClan());
+
+        // update notification
+        notificationService.addLocalizedTexts(buyerNotification.getText(), "character.trade.item", new String[]{seller.getName()});
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.bought", new String[]{}, offer.getDetails().getName());
+        buyerNotification.getDetails().add(detail);
+
+        // delete offer
+        marketOfferRepository.delete(offer);
     }
 }

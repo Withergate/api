@@ -345,6 +345,15 @@ CREATE TABLE resource_trade_actions (
     PRIMARY KEY (action_id)
 );
 
+DROP TABLE IF EXISTS market_trade_actions;
+CREATE TABLE market_trade_actions (
+    action_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    character_id INT NOT NULL,
+    offer_id INT NOT NULL,
+    PRIMARY KEY (action_id)
+);
+
 DROP TABLE IF EXISTS name_prefixes;
 CREATE TABLE name_prefixes (
     value VARCHAR(16) UNIQUE NOT NULL,

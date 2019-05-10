@@ -6,6 +6,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.LocationAction;
+import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.action.TavernAction;
@@ -18,9 +19,12 @@ import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.request.TavernRequest;
+import com.withergate.api.model.trade.MarketOffer;
+import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
@@ -283,6 +287,44 @@ public class ActionServiceImpl implements ActionService {
 
     @Transactional
     @Override
+    public void createMarketTradeAction(MarketTradeRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting market trade action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        MarketOffer offer = tradeService.loadMarketOffer(request.getOfferId());
+
+        if (offer == null || !offer.getState().equals(State.PUBLISHED)) {
+            throw new InvalidActionException("This offer is not available.");
+        }
+
+        if (clan.getId() == offer.getSeller().getId()) {
+            throw new InvalidActionException("You cannot buy your own item!");
+        }
+
+        if (clan.getCaps() < offer.getPrice()) {
+            throw new InvalidActionException("Not enough caps to perform this action.");
+        }
+
+        // pay caps
+        clan.setCaps(clan.getCaps() - offer.getPrice());
+
+        // create action
+        MarketTradeAction action = new MarketTradeAction();
+        action.setCharacter(character);
+        action.setOffer(offer);
+        action.setState(ActionState.PENDING);
+        tradeService.saveMarketTradeAction(action);
+
+        // mark offer as sold
+        offer.setState(State.SOLD);
+
+        // mark character as busy and save the clan
+        character.setState(CharacterState.BUSY);
+    }
+
+    @Transactional
+    @Override
     public void processLocationActions(int turnId) {
         // arena actions
         arenaService.processArenaActions(turnId);
@@ -316,6 +358,9 @@ public class ActionServiceImpl implements ActionService {
     public void processTradeActions(int turnId) {
         // resource trade actions
         tradeService.processResourceTradeActions(turnId);
+
+        // market trade actions
+        tradeService.processMarketTradeActions(turnId);
     }
 
     private Character getCharacter(int characterId, int clanId) throws InvalidActionException {

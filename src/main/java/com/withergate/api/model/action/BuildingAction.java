@@ -26,7 +26,7 @@ import lombok.Setter;
 public class BuildingAction extends BaseAction {
 
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "character_id", unique = true, nullable = false, updatable = false)
+    @JoinColumn(name = "character_id", nullable = false, updatable = false)
     private Character character;
 
     @Enumerated(EnumType.STRING)

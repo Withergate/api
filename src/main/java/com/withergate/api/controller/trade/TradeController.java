@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.trade.MarketOffer;
@@ -16,7 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +62,34 @@ public class TradeController {
     public ResponseEntity<Void> publishMarketOffer(Principal principal, @RequestBody PublishOfferRequest request)
             throws InvalidActionException {
         tradeService.publishMarketOffer(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Submits market trade action.
+     *
+     * @param principal the principal
+     * @param request   the buy request
+     * @throws InvalidActionException invalid action
+     */
+    @PostMapping("/trade/market/action")
+    public ResponseEntity<Void> submitMarketTradeAction(Principal principal, @RequestBody MarketTradeRequest request)
+            throws InvalidActionException {
+        actionService.createMarketTradeAction(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Deletes existing market offer.
+     *
+     * @param principal the principal
+     * @param offerId   the offer ID
+     * @throws InvalidActionException invalid action
+     */
+    @DeleteMapping("/trade/market/{id}")
+    public ResponseEntity<Void> deleteMarketOffer(Principal principal, @PathVariable(name = "id") int offerId)
+            throws InvalidActionException {
+        tradeService.deleteMarketOffer(offerId, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
