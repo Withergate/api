@@ -9,6 +9,7 @@ import com.withergate.api.repository.notification.PlaceholderTextRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +19,12 @@ import org.springframework.stereotype.Service;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
     private final ClanNotificationRepository notificationRepository;
     private final PlaceholderTextRepository placeholderTextRepository;
-
-    public NotificationServiceImpl(ClanNotificationRepository notificationRepository,
-                                   PlaceholderTextRepository placeholderTextRepository) {
-        this.notificationRepository = notificationRepository;
-        this.placeholderTextRepository = placeholderTextRepository;
-    }
 
     @Override
     public ClanNotification save(ClanNotification notification) {

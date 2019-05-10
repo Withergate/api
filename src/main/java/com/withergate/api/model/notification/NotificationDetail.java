@@ -1,8 +1,7 @@
 package com.withergate.api.model.notification;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.HashMap;
-import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Notification detail. Used only in scope of clan notifications.
@@ -39,6 +38,18 @@ public class NotificationDetail {
 
     public NotificationDetail() {
         if (text == null) text = new HashMap<>();
+    }
+
+    public NotificationDetail(NotificationDetail detail) {
+        text = new HashMap<>();
+
+        // copying notification detail into multiple notifications requires de-referencing all values explicitly
+        for (Map.Entry<String, LocalizedText> entry : detail.getText().entrySet()) {
+            LocalizedText loc = new LocalizedText();
+            loc.setText(entry.getValue().getText());
+            loc.setLang(entry.getValue().getLang());
+            text.put(entry.getKey(), loc);
+        }
     }
 
 }

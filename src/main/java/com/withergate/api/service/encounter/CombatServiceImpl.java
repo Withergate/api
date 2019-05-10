@@ -125,8 +125,11 @@ public class CombatServiceImpl implements CombatService {
             CombatResult result = handleCombatRound(character1, notification1, character2, notification2);
             log.debug("Combat round result: {}", result);
 
-            notification1.getDetails().addAll(result.getDetails());
-            notification2.getDetails().addAll(result.getDetails());
+            // add details to both players
+            for (NotificationDetail detail : result.getDetails()) {
+                notification1.getDetails().add(new NotificationDetail(detail));
+                notification2.getDetails().add(new NotificationDetail(detail));
+            }
 
             if (result.isFinished()) {
                 return result;
