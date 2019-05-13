@@ -66,9 +66,7 @@ public class LocationServiceImpl implements LocationService {
             log.debug("Character {} is exploring {}.", character.getName(), action.getLocation());
 
             // prepare notification
-            ClanNotification notification = new ClanNotification();
-            notification.setClanId(character.getClan().getId());
-            notification.setTurnId(turnId);
+            ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
 
             // process action

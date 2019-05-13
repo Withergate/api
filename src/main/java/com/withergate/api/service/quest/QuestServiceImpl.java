@@ -69,9 +69,7 @@ public class QuestServiceImpl implements QuestService {
         log.debug("Processing quest actions.");
 
         for (QuestAction action : questActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification();
-            notification.setClanId(action.getCharacter().getClan().getId());
-            notification.setTurnId(turnId);
+            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
 
             // process single action
@@ -145,9 +143,7 @@ public class QuestServiceImpl implements QuestService {
         if (quest.getProgress() >= quest.getDetails().getCompletion() && !quest.isCompleted()) {
             log.debug("Quest {} has been completed.", quest.getId());
 
-            ClanNotification completionNotification = new ClanNotification();
-            completionNotification.setClanId(notification.getClanId());
-            completionNotification.setTurnId(notification.getTurnId());
+            ClanNotification completionNotification = new ClanNotification(notification.getTurnId(), notification.getClanId());
             completionNotification.setHeader(quest.getClan().getName());
             notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[]{},
                     quest.getDetails().getName());

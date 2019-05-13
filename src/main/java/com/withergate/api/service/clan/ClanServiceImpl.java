@@ -2,22 +2,25 @@ package com.withergate.api.service.clan;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,19 +42,22 @@ public class ClanServiceImpl implements ClanService {
     private final GameProperties gameProperties;
     private final NotificationService notificationService;
     private final QuestService questService;
+    private final BuildingService buildingService;
 
-    /**
-     * Constructor.
-     */
-    public ClanServiceImpl(ClanRepository clanRepository, CharacterService characterService,
-                           GameProperties gameProperties,
-                           NotificationService notificationService,
-                           QuestService questService) {
+    public ClanServiceImpl(
+            ClanRepository clanRepository,
+            CharacterService characterService,
+            GameProperties gameProperties,
+            NotificationService notificationService,
+            QuestService questService,
+            @Lazy BuildingService buildingService
+    ) {
         this.clanRepository = clanRepository;
         this.characterService = characterService;
         this.gameProperties = gameProperties;
         this.notificationService = notificationService;
         this.questService = questService;
+        this.buildingService = buildingService;
     }
 
     @Override
@@ -108,7 +114,17 @@ public class ClanServiceImpl implements ClanService {
             clan.getCharacters().add(character);
         }
 
+        // set buildings
         clan.setBuildings(new HashMap<>());
+
+        for (BuildingDetails details : buildingService.getAllBuildingDetails()) {
+            Building building = new Building();
+            building.setProgress(0);
+            building.setLevel(0);
+            building.setDetails(details);
+            building.setClan(clan);
+            clan.getBuildings().put(details.getIdentifier(), building);
+        }
 
         return clanRepository.save(clan);
     }

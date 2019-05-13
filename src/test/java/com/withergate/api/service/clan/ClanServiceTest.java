@@ -1,19 +1,20 @@
 package com.withergate.api.service.clan;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -39,6 +40,9 @@ public class ClanServiceTest {
     @Mock
     private QuestService questService;
 
+    @Mock
+    private BuildingService buildingService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -46,7 +50,8 @@ public class ClanServiceTest {
         GameProperties gameProperties = new GameProperties();
         gameProperties.setInitialClanSize(5);
 
-        clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties, notificationService, questService);
+        clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties, notificationService, questService,
+                buildingService);
     }
 
     @Test(expected = EntityConflictException.class)

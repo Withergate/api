@@ -131,13 +131,6 @@ public class Clan {
     }
 
     /**
-     * List of unconstructed buildings. This list is assembled dynamically and is not persisted.
-     */
-    @Transient
-    @JsonView(Views.Internal.class)
-    private Set<Building> unconstructedBuildings;
-
-    /**
      * Returns the buildings as List.
      *
      * @return the list of buildings

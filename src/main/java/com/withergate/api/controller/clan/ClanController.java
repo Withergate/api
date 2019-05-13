@@ -1,16 +1,11 @@
 package com.withergate.api.controller.clan;
 
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.view.Views;
-import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 import lombok.AllArgsConstructor;
@@ -35,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClanController {
 
     private final ClanService clanService;
-    private final BuildingService buildingService;
 
     /**
      * Retrieves the clan for the authenticated player.
@@ -51,20 +45,6 @@ public class ClanController {
             log.warn("Clan with this ID does not exist yet. It should be created first!");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        // assemble unconstructed buildings list
-        Set<Building> unconstructed = new HashSet<>();
-        for (BuildingDetails details : buildingService.getAllBuildingDetails()) {
-            if (!clan.getBuildings().containsKey(details.getIdentifier())) {
-                Building building = new Building();
-                building.setLevel(0);
-                building.setProgress(0);
-                building.setDetails(details);
-
-                unconstructed.add(building);
-            }
-        }
-        clan.setUnconstructedBuildings(unconstructed);
 
         return new ResponseEntity<>(clan, HttpStatus.OK);
     }

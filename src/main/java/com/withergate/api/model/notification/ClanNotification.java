@@ -80,6 +80,18 @@ public class ClanNotification {
     /**
      * Constructor.
      */
+    public ClanNotification(int turnId, int clanId) {
+        this.turnId = turnId;
+        this.clanId = clanId;
+
+        injury = 0;
+        if (text == null) text = new HashMap<>();
+        if (details == null) details = new ArrayList<>();
+    }
+
+    /**
+     * Constructor empty.
+     */
     public ClanNotification() {
         injury = 0;
         if (text == null) text = new HashMap<>();

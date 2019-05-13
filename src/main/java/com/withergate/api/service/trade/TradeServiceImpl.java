@@ -60,9 +60,7 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public void processResourceTradeActions(int turnId) {
         for (ResourceTradeAction action : resourceTradeActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification();
-            notification.setClanId(action.getCharacter().getClan().getId());
-            notification.setTurnId(turnId);
+            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
 
             // process action
@@ -79,14 +77,10 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public void processMarketTradeActions(int turnId) {
         for (MarketTradeAction action : marketTradeActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification buyerNotification = new ClanNotification();
-            buyerNotification.setClanId(action.getCharacter().getClan().getId());
-            buyerNotification.setTurnId(turnId);
+            ClanNotification buyerNotification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             buyerNotification.setHeader(action.getCharacter().getName());
 
-            ClanNotification sellerNotification = new ClanNotification();
-            sellerNotification.setClanId(action.getOffer().getSeller().getId());
-            sellerNotification.setTurnId(turnId);
+            ClanNotification sellerNotification = new ClanNotification(turnId, action.getOffer().getSeller().getId());
             sellerNotification.setHeader(action.getOffer().getSeller().getName());
 
             processMarketTradeAction(action, buyerNotification, sellerNotification);

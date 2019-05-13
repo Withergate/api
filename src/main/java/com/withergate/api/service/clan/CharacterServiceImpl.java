@@ -193,10 +193,8 @@ public class CharacterServiceImpl implements CharacterService {
         for (Clan clan : clanService.getAllClans()) {
             if (clan.getCharacters().size() < 1) continue;
 
-            ClanNotification notification = new ClanNotification();
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
-            notification.setTurnId(turnId);
-            notification.setClanId(clan.getId());
             notification.setFoodIncome(0);
             notification.setInjury(0);
             notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[]{});
@@ -271,9 +269,7 @@ public class CharacterServiceImpl implements CharacterService {
             }
 
             // prepare notification
-            ClanNotification notification = new ClanNotification();
-            notification.setTurnId(turnId);
-            notification.setClanId(character.getClan().getId());
+            ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
 
             // each character that is ready heals
@@ -323,9 +319,7 @@ public class CharacterServiceImpl implements CharacterService {
                 character.setLevel(character.getLevel() + 1);
 
                 // notification
-                ClanNotification notification = new ClanNotification();
-                notification.setTurnId(turnId);
-                notification.setClanId(character.getClan().getId());
+                ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
                 notification.setHeader(character.getName());
                 notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[]{character.getName()});
 

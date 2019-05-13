@@ -12,7 +12,14 @@ INSERT INTO outfits (outfit_id, item_identifier, clan_id) VALUES
     (1, 'LEATHER_CLOTHES', 1);
 
 INSERT INTO buildings (building_id, identifier, level, progress, clan_id) VALUES
-    (1, 'SICK_BAY', 1, 8, 1);
+    (1, 'SICK_BAY', 1, 8, 1),
+    (2, 'TRAINING_GROUNDS', 0, 0, 1),
+    (3, 'MONUMENT', 0, 0, 1),
+    (4, 'GMO_FARM', 0, 0, 1),
+    (5, 'FORGE', 0, 0, 1),
+    (6, 'RAGS_SHOP', 0, 0, 1),
+    (7, 'WORKSHOP', 0, 0, 1),
+    (8, 'QUARTERS', 0, 0, 1);
 
 INSERT INTO consumables(consumable_id, item_identifier, clan_id) VALUES
     (1, 'SMALL_MEDKIT', 1),
