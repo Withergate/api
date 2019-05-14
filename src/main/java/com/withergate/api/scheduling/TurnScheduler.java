@@ -24,9 +24,9 @@ public class TurnScheduler {
     private final CharacterService characterService;
 
     /**
-     * Processes all turn-related events every midnight.
+     * Processes all turn-related events at specified times.
      */
-    @Scheduled(cron = "0 0 0 * * *") // every midnight
+    @Scheduled(cron = "0 0 6,18 * * *") // every day at 6am and 6pm
     public void processTurn() {
 
         // process current turn
