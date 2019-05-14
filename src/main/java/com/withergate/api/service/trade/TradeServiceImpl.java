@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Trade service implementaion.
+ * Trade service implementation.
  *
  * @author Martin Myslik
  */
