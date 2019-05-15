@@ -27,9 +27,11 @@ public interface CharacterService {
     Character save(Character character);
 
     /**
-     * Deletes all characters with less than 1 health remaining.
+     * Deletes the provided character.
+     *
+     * @param character the character to be deleted
      */
-    void deleteDeadCharacters();
+    void delete(Character character);
 
     /**
      * Updates all characters. Meant to be called at the end of each turn.

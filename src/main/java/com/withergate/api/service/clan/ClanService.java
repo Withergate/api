@@ -79,4 +79,11 @@ public interface ClanService {
      * @param informationLevel the new information level
      */
     void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel);
+
+    /**
+     * Performs all clan turn updates.
+     *
+     * @param turnId the turn ID
+     */
+    void performClanTurnUpdates(int turnId);
 }

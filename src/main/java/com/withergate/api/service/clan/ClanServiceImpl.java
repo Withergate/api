@@ -5,6 +5,7 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -167,5 +169,75 @@ public class ClanServiceImpl implements ClanService {
 
         // assign quests
         questService.assignQuests(clan, notification, informationLevel);
+    }
+
+    @Transactional
+    @Override
+    public void performClanTurnUpdates(int turnId) {
+        // food consumption
+        performFoodConsumption(turnId);
+    }
+
+    private void performFoodConsumption(int turnId) {
+        log.debug("Food consumption.");
+
+        for (Clan clan : getAllClans()) {
+            if (clan.getCharacters().size() < 1) continue;
+
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notification.setFoodIncome(0);
+            notification.setInjury(0);
+            notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[]{});
+
+            Iterator<Character> iterator = clan.getCharacters().iterator();
+            while (iterator.hasNext()) {
+                Character character = iterator.next();
+
+                // ascetic
+                if (character.getTraits().containsKey(TraitDetails.TraitName.ASCETIC)) {
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[]{character.getName()});
+                    notification.getDetails().add(detail);
+
+                    continue; // skip food consumption
+                }
+
+                if (clan.getFood() > 0) {
+                    clan.setFood(clan.getFood() - 1);
+
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
+                            new String[]{character.getName()});
+                    notification.getDetails().add(detail);
+                    notification.setFoodIncome(notification.getFoodIncome() - 1);
+                } else {
+                    log.debug("Character {} is starving,", character.getName());
+
+                    character.setHitpoints(character.getHitpoints() - 1);
+
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService
+                            .addLocalizedTexts(detail.getText(), "detail.character.starving",
+                                    new String[]{character.getName()});
+                    notification.getDetails().add(detail);
+                    notification.setInjury(notification.getInjury() + 1);
+
+                    if (character.getHitpoints() < 1) {
+                        log.debug("Character {} died of starvation.", character.getName());
+
+                        NotificationDetail detailDeath = new NotificationDetail();
+                        notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.starvationdeath",
+                                new String[]{character.getName()});
+                        notification.getDetails().add(detailDeath);
+
+                        // delete and remove from clan
+                        characterService.delete(character);
+                        iterator.remove();
+                    }
+                }
+            }
+            notificationService.save(notification);
+        }
     }
 }

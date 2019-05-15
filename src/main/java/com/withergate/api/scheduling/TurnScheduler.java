@@ -4,6 +4,7 @@ import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,6 +23,7 @@ public class TurnScheduler {
     private final TurnRepository turnRepository;
     private final ActionService actionService;
     private final CharacterService characterService;
+    private final ClanService clanService;
 
     /**
      * Processes all turn-related events at specified times.
@@ -47,6 +49,9 @@ public class TurnScheduler {
 
         // update characters
         characterService.performCharacterTurnUpdates(currentTurn.getTurnId());
+
+        // perform clan turn updates
+        clanService.performClanTurnUpdates(currentTurn.getTurnId());
 
         // prepare next turn
         log.info("Turn finished - preparing next turn.");
