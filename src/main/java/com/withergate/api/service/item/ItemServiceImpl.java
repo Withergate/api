@@ -404,21 +404,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void generateWeapon(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
-        /*
-         * Load random weapon details .
-         */
+        // load details
         List<WeaponDetails> weaponDetailsList = itemDetailsRepository.findWeaponDetailsByRarity(rarity);
         WeaponDetails details = weaponDetailsList.get(randomService.getRandomInt(0, weaponDetailsList.size() - 1));
 
-        /*
-         * Create weapon.
-         */
+        // create weapon
         Weapon weapon = new Weapon();
         weapon.setDetails(details);
 
-        /*
-         * Place item it in the clan storage.
-         */
+        // add to storage
         Clan clan = character.getClan();
         clan.getWeapons().add(weapon);
         weapon.setClan(clan);
@@ -435,21 +429,15 @@ public class ItemServiceImpl implements ItemService {
     private void generateConsumable(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
         log.debug("Generating random consumable.");
 
-        /*
-         * Load random weapon details .
-         */
+        // load details
         List<ConsumableDetails> detailsList = itemDetailsRepository.findConsumableDetailsByRarity(rarity);
         ConsumableDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
 
-        /*
-         * Create consumable.
-         */
+        // create consumable
         Consumable consumable = new Consumable();
         consumable.setDetails(details);
 
-        /*
-         * Add it to clan storage.
-         */
+        // add to storage
         Clan clan = character.getClan();
 
         consumable.setClan(clan);
@@ -465,21 +453,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void generateGear(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
-        /*
-         * Load random outfit details .
-         */
+        // load details
         List<GearDetails> gearDetailsList = itemDetailsRepository.findGearDetailsByRarity(rarity);
         GearDetails details = gearDetailsList.get(randomService.getRandomInt(0, gearDetailsList.size() - 1));
 
-        /*
-         * Create gear.
-         */
+        // create gear
         Gear gear = new Gear();
         gear.setDetails(details);
 
-        /*
-         * Place item it in the clan storage.
-         */
+        // add to storage
         Clan clan = character.getClan();
         clan.getGear().add(gear);
         gear.setClan(clan);
@@ -494,7 +476,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void generateOutfit(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
-        // load random outfit details
+        // load details
         List<OutfitDetails> outfitDetailsList = itemDetailsRepository.findOutfitDetailsByRarity(rarity);
         OutfitDetails details = outfitDetailsList.get(randomService.getRandomInt(0, outfitDetailsList.size() - 1));
 
@@ -502,7 +484,7 @@ public class ItemServiceImpl implements ItemService {
         Outfit outfit = new Outfit();
         outfit.setDetails(details);
 
-        // clan storage
+        // add to storage
         Clan clan = character.getClan();
         clan.getOutfits().add(outfit);
         outfit.setClan(clan);
