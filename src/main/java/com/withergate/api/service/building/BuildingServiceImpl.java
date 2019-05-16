@@ -20,7 +20,6 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
@@ -37,7 +36,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
-    private final ClanService clanService;
     private final ItemService itemService;
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
@@ -82,52 +80,51 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public void processPassiveBuildingBonuses(int turnId) {
-        log.debug("Processing passive building bonuses");
+    public void processPassiveBuildingBonuses(int turnId, Clan clan) {
+        log.debug("Processing passive building bonuses for clan {}.", clan.getId());
 
-        for (Clan clan : clanService.getAllClans()) {
-            // monument
-            if (clan.getBuildings().get(BuildingName.MONUMENT).getLevel() > 0) {
-                Building building = clan.getBuildings().get(BuildingName.MONUMENT);
-                clan.setFame(clan.getFame() + building.getLevel());
+        // monument
+        if (clan.getBuildings().get(BuildingName.MONUMENT).getLevel() > 0) {
+            Building building = clan.getBuildings().get(BuildingName.MONUMENT);
+            clan.setFame(clan.getFame() + building.getLevel());
 
-                ClanNotification notification = new ClanNotification(turnId, clan.getId());
-                notification.setHeader(clan.getName());
-                notification.setFameIncome(building.getLevel());
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notification.setFameIncome(building.getLevel());
 
-                notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[] {});
-                notificationService.save(notification);
-            }
-
-            // GMO farm
-            if (clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM).getLevel() > 0) {
-                Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
-                clan.setFood(clan.getFood() + building.getLevel());
-
-                ClanNotification notification = new ClanNotification(turnId, clan.getId());
-                notification.setHeader(clan.getName());
-                notification.setFoodIncome(building.getLevel());
-                notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[] {});
-                notificationService.save(notification);
-            }
-
-            // Training grounds
-            if (clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS).getLevel() > 0) {
-                Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
-                for (Character character : clan.getCharacters()) {
-                    if (character.getState() == CharacterState.READY) {
-                        character.setExperience(character.getExperience() + building.getLevel());
-
-                        ClanNotification notification = new ClanNotification(turnId, clan.getId());
-                        notification.setHeader(character.getName());
-                        notification.setExperience(building.getLevel());
-                        notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[] {});
-                        notificationService.save(notification);
-                    }
-                }
-
-            }
+            notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[] {});
+            notificationService.save(notification);
         }
+
+        // GMO farm
+        if (clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM).getLevel() > 0) {
+            Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
+            clan.setFood(clan.getFood() + building.getLevel());
+
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notification.setFoodIncome(building.getLevel());
+            notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[] {});
+            notificationService.save(notification);
+        }
+
+        // Training grounds
+        if (clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS).getLevel() > 0) {
+            Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
+            for (Character character : clan.getCharacters()) {
+                if (character.getState() == CharacterState.READY) {
+                    character.setExperience(character.getExperience() + building.getLevel());
+
+                    ClanNotification notification = new ClanNotification(turnId, clan.getId());
+                    notification.setHeader(character.getName());
+                    notification.setExperience(building.getLevel());
+                    notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[] {});
+                    notificationService.save(notification);
+                }
+            }
+
+        }
+
     }
 
     @Override

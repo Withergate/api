@@ -459,7 +459,6 @@ public class ActionServiceTest {
 
         // then verify all processed triggered
         Mockito.verify(buildingService).processBuildingActions(turnId);
-        Mockito.verify(buildingService).processPassiveBuildingBonuses(turnId);
     }
 
 }

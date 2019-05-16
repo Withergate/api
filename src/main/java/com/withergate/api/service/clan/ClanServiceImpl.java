@@ -1,5 +1,10 @@
 package com.withergate.api.service.clan;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
@@ -14,18 +19,12 @@ import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Clan service. Handles all basic operations over the clan entity.
@@ -33,6 +32,7 @@ import java.util.List;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @Service
 public class ClanServiceImpl implements ClanService {
 
@@ -45,22 +45,6 @@ public class ClanServiceImpl implements ClanService {
     private final NotificationService notificationService;
     private final QuestService questService;
     private final BuildingService buildingService;
-
-    public ClanServiceImpl(
-            ClanRepository clanRepository,
-            CharacterService characterService,
-            GameProperties gameProperties,
-            NotificationService notificationService,
-            QuestService questService,
-            @Lazy BuildingService buildingService
-    ) {
-        this.clanRepository = clanRepository;
-        this.characterService = characterService;
-        this.gameProperties = gameProperties;
-        this.notificationService = notificationService;
-        this.questService = questService;
-        this.buildingService = buildingService;
-    }
 
     @Override
     public Clan getClan(int clanId) {
@@ -164,7 +148,7 @@ public class ClanServiceImpl implements ClanService {
         clan.setInformationLevel(informationLevel);
 
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.information.levelup", new String[]{});
+        notificationService.addLocalizedTexts(detail.getText(), "detail.information.levelup", new String[] {});
         notification.getDetails().add(detail);
 
         // assign quests
@@ -174,70 +158,75 @@ public class ClanServiceImpl implements ClanService {
     @Transactional
     @Override
     public void performClanTurnUpdates(int turnId) {
-        // food consumption
-        performFoodConsumption(turnId);
-    }
-
-    private void performFoodConsumption(int turnId) {
-        log.debug("Food consumption.");
-
         for (Clan clan : getAllClans()) {
-            if (clan.getCharacters().size() < 1) continue;
+            // food consumption
+            performFoodConsumption(turnId, clan);
 
-            ClanNotification notification = new ClanNotification(turnId, clan.getId());
-            notification.setHeader(clan.getName());
-            notification.setFoodIncome(0);
-            notification.setInjury(0);
-            notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[]{});
-
-            Iterator<Character> iterator = clan.getCharacters().iterator();
-            while (iterator.hasNext()) {
-                Character character = iterator.next();
-
-                // ascetic
-                if (character.getTraits().containsKey(TraitDetails.TraitName.ASCETIC)) {
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[]{character.getName()});
-                    notification.getDetails().add(detail);
-
-                    continue; // skip food consumption
-                }
-
-                if (clan.getFood() > 0) {
-                    clan.setFood(clan.getFood() - 1);
-
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
-                            new String[]{character.getName()});
-                    notification.getDetails().add(detail);
-                    notification.setFoodIncome(notification.getFoodIncome() - 1);
-                } else {
-                    log.debug("Character {} is starving,", character.getName());
-
-                    character.setHitpoints(character.getHitpoints() - 1);
-
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService
-                            .addLocalizedTexts(detail.getText(), "detail.character.starving",
-                                    new String[]{character.getName()});
-                    notification.getDetails().add(detail);
-                    notification.setInjury(notification.getInjury() + 1);
-
-                    if (character.getHitpoints() < 1) {
-                        log.debug("Character {} died of starvation.", character.getName());
-
-                        NotificationDetail detailDeath = new NotificationDetail();
-                        notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.starvationdeath",
-                                new String[]{character.getName()});
-                        notification.getDetails().add(detailDeath);
-
-                        // delete and remove from clan
-                        characterService.delete(character);
-                        iterator.remove();
-                    }
-                }
-            }
-            notificationService.save(notification);
+            // passive buildings
+            buildingService.processPassiveBuildingBonuses(turnId, clan);
         }
     }
+
+    private void performFoodConsumption(int turnId, Clan clan) {
+        log.debug("Food consumption for clan {}.", clan.getId());
+
+        if (clan.getCharacters().size() < 1) {
+            return;
+        }
+
+        ClanNotification notification = new ClanNotification(turnId, clan.getId());
+        notification.setHeader(clan.getName());
+        notification.setFoodIncome(0);
+        notification.setInjury(0);
+        notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[] {});
+
+        Iterator<Character> iterator = clan.getCharacters().iterator();
+        while (iterator.hasNext()) {
+            Character character = iterator.next();
+
+            // ascetic
+            if (character.getTraits().containsKey(TraitDetails.TraitName.ASCETIC)) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[] {character.getName()});
+                notification.getDetails().add(detail);
+
+                continue; // skip food consumption
+            }
+
+            if (clan.getFood() > 0) {
+                clan.setFood(clan.getFood() - 1);
+
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
+                        new String[] {character.getName()});
+                notification.getDetails().add(detail);
+                notification.setFoodIncome(notification.getFoodIncome() - 1);
+            } else {
+                log.debug("Character {} is starving,", character.getName());
+
+                character.setHitpoints(character.getHitpoints() - 1);
+
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
+                notification.getDetails().add(detail);
+                notification.setInjury(notification.getInjury() + 1);
+
+                if (character.getHitpoints() < 1) {
+                    log.debug("Character {} died of starvation.", character.getName());
+
+                    NotificationDetail detailDeath = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.starvationdeath",
+                            new String[] {character.getName()});
+                    notification.getDetails().add(detailDeath);
+
+                    // delete and remove from clan
+                    characterService.delete(character);
+                    iterator.remove();
+                }
+            }
+        }
+
+        notificationService.save(notification);
+    }
+
 }

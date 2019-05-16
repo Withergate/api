@@ -339,9 +339,6 @@ public class ActionServiceImpl implements ActionService {
     @Transactional
     @Override
     public void processBuildingActions(int turnId) {
-        // passive building bonuses
-        buildingService.processPassiveBuildingBonuses(turnId);
-
         // building actions
         buildingService.processBuildingActions(turnId);
     }

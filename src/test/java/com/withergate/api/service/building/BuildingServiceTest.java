@@ -24,7 +24,6 @@ import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
@@ -37,9 +36,6 @@ import org.mockito.MockitoAnnotations;
 public class BuildingServiceTest {
 
     private BuildingServiceImpl buildingService;
-
-    @Mock
-    private ClanService clanService;
 
     @Mock
     private BuildingActionRepository buildingActionRepository;
@@ -57,7 +53,7 @@ public class BuildingServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        buildingService = new BuildingServiceImpl(clanService, itemService, buildingActionRepository,
+        buildingService = new BuildingServiceImpl(itemService, buildingActionRepository,
                 buildingDetailsRepository, notificationService);
     }
 
@@ -438,12 +434,8 @@ public class BuildingServiceTest {
         grounds.setLevel(0);
         clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, grounds);
 
-        List<Clan> clans = new ArrayList<>();
-        clans.add(clan);
-        Mockito.when(clanService.getAllClans()).thenReturn(clans);
-
         // when processing passive acitons
-        buildingService.processPassiveBuildingBonuses(1);
+        buildingService.processPassiveBuildingBonuses(1, clan);
 
         // then verify fame and food awarded
         Assert.assertEquals(12, clan.getFame());

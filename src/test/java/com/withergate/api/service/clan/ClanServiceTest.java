@@ -8,6 +8,9 @@ import java.util.Optional;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.Trait;
+import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.repository.clan.ClanRepository;
@@ -15,6 +18,7 @@ import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -218,6 +222,92 @@ public class ClanServiceTest {
 
         // then verify quest service called
         Mockito.verify(questService).assignQuests(clan, notification, 1);
+    }
+
+    @Test
+    public void testGivenClanWhenPerformingTurnActionsThenVerifyFoodConsumedAndBuildingsTriggered() {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setCharacters(new HashSet<>());
+
+        Character character1 = new Character();
+        character1.setId(1);
+        clan.getCharacters().add(character1);
+        Character character2 = new Character();
+        character2.setId(2);
+        clan.getCharacters().add(character2);
+
+        // Ascetic
+        Character character3 = new Character();
+        character3.setId(3);
+        TraitDetails details = new TraitDetails();
+        details.setIdentifier(TraitName.ASCETIC);
+        Trait trait = new Trait();
+        trait.setDetails(details);
+        character3.getTraits().put(TraitName.ASCETIC, trait);
+        clan.getCharacters().add(character3);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when performing turn updates
+        clanService.performClanTurnUpdates(1);
+
+        // then verify food consumed and buildings triggered
+        Assert.assertEquals(8, clan.getFood());
+        Mockito.verify(buildingService).processPassiveBuildingBonuses(1, clan);
+    }
+
+    @Test
+    public void testGivenClanWithoutFoodWhenPerformingTurnActionsThenVerifyCharacterStarving() {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(0);
+        clan.setCharacters(new HashSet<>());
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(5);
+        clan.getCharacters().add(character);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when performing turn updates
+        clanService.performClanTurnUpdates(1);
+
+        // then verify character starving
+        Assert.assertEquals(4, character.getHitpoints());
+    }
+
+    @Test
+    public void testGivenClanWithoutFoodAndInjuredCharacterWhenPerformingTurnActionsThenVerifyCharacterDied() {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(0);
+        clan.setCharacters(new HashSet<>());
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(1);
+        clan.getCharacters().add(character);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when performing turn updates
+        clanService.performClanTurnUpdates(1);
+
+        // then verify character died of starvation
+        Assert.assertEquals(0, clan.getCharacters().size());
+        Mockito.verify(characterService).delete(character);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.withergate.api.service.building;
 
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.BuildingDetails;
 
@@ -27,11 +28,12 @@ public interface BuildingService {
     void processBuildingActions(int turnId);
 
     /**
-     * Activates all passive building bonuses.
+     * Activates all passive building bonuses for given clan.
      *
      * @param turnId turn ID
+     * @param clan   clan
      */
-    void processPassiveBuildingBonuses(int turnId);
+    void processPassiveBuildingBonuses(int turnId, Clan clan);
 
     /**
      * Retrieves building details from database.
