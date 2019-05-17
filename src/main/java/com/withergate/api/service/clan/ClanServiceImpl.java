@@ -103,6 +103,7 @@ public class ClanServiceImpl implements ClanService {
 
             // filter out used avatars
             filter.getAvatars().add(character.getImageUrl());
+            filter.getNames().add(character.getName());
         }
 
         // set buildings

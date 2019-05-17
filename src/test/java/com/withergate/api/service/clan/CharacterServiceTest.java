@@ -111,7 +111,7 @@ public class CharacterServiceTest {
 
         // when generating random character
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
-        Mockito.when(nameService.generateRandomName(Gender.MALE)).thenReturn("Rusty Nick");
+        Mockito.when(nameService.generateRandomName(Mockito.eq(Gender.MALE), Mockito.any())).thenReturn("Rusty Nick");
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K10)).thenReturn(8); // hp
         Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 4, 2, 3, 4);
 

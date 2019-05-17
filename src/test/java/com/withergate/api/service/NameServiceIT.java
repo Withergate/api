@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import java.util.HashSet;
+
 import com.withergate.api.model.character.Gender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ public class NameServiceIT {
         Gender gender = Gender.FEMALE;
 
         // when generating random name
-        String name = nameService.generateRandomName(gender);
+        String name = nameService.generateRandomName(gender, new HashSet<>());
 
         // then verify name contains space\
         assertTrue(name.contains(" "));

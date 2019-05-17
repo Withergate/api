@@ -98,7 +98,7 @@ public class CharacterServiceImpl implements CharacterService {
         /*
          * Generate random name.
          */
-        String name = nameService.generateRandomName(gender);
+        String name = nameService.generateRandomName(gender, filter.getNames());
         character.setName(name);
 
         /*

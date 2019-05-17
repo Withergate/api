@@ -14,9 +14,11 @@ import lombok.Setter;
 public class CharacterFilter {
 
     private Set<String> avatars;
+    private Set<String> names;
 
     public CharacterFilter() {
         avatars = new HashSet<>();
+        names = new HashSet<>();
     }
 
 }

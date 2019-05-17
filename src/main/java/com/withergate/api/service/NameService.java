@@ -15,9 +15,10 @@ public interface NameService {
      * Generates a random name for the specified gender.
      *
      * @param gender the specified gender
+     * @param nameFilter names to be filtered out to avoid duplicities
      * @return the generated name
      */
-    String generateRandomName(Gender gender);
+    String generateRandomName(Gender gender, Set<String> nameFilter);
 
     /**
      * Generates a random avatar for the specified gender.

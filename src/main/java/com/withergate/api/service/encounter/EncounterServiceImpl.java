@@ -162,6 +162,7 @@ public class EncounterServiceImpl implements EncounterService {
         CharacterFilter filter = new CharacterFilter();
         for (Character character : clan.getCharacters()) {
             filter.getAvatars().add(character.getImageUrl());
+            filter.getNames().add(character.getName());
         }
 
         return filter;
