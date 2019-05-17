@@ -10,6 +10,7 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -94,10 +95,14 @@ public class ClanServiceImpl implements ClanService {
         clan.setCharacters(new HashSet<>());
 
         // assign random initial characters to clan.
+        CharacterFilter filter = new CharacterFilter();
         for (int i = 0; i < gameProperties.getInitialClanSize(); i++) {
-            Character character = characterService.generateRandomCharacter();
+            Character character = characterService.generateRandomCharacter(filter);
             character.setClan(clan);
             clan.getCharacters().add(character);
+
+            // filter out used avatars
+            filter.getAvatars().add(character.getImageUrl());
         }
 
         // set buildings
@@ -120,7 +125,7 @@ public class ClanServiceImpl implements ClanService {
         log.debug("Hiring new character for clan {}", clan.getId());
 
         // create a random character
-        Character character = characterService.generateRandomCharacter();
+        Character character = characterService.generateRandomCharacter(new CharacterFilter());
         character.setClan(clan);
 
         // deduct price and add the character to the clan

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.character.Trait;
@@ -80,7 +81,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character generateRandomCharacter() {
+    public Character generateRandomCharacter(CharacterFilter filter) {
         Character character = new Character();
 
         /*
@@ -118,7 +119,7 @@ public class CharacterServiceImpl implements CharacterService {
         /*
          * Generate random avatar.
          */
-        character.setImageUrl(nameService.generateRandomAvatar(gender));
+        character.setImageUrl(nameService.generateRandomAvatar(gender, filter.getAvatars()));
 
         /*
          * Set level.

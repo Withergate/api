@@ -1,6 +1,8 @@
 package com.withergate.api.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.withergate.api.model.character.Avatar;
 import com.withergate.api.model.character.Gender;
@@ -45,10 +47,14 @@ public class NameServiceImpl implements NameService {
     }
 
     @Override
-    public String generateRandomAvatar(Gender gender) {
+    public String generateRandomAvatar(Gender gender, Set<String> avatarFilter) {
         log.debug("Generating {} avatar.", gender);
 
-        List<Avatar> avatars = avatarRepository.findAllByGender(gender);
+        // get all unused avatars
+        List<Avatar> avatars = avatarRepository.findAllByGender(gender)
+                .stream()
+                .filter(avatar -> !avatarFilter.contains(avatar.getImageUrl()))
+                .collect(Collectors.toList());
 
         int avatarIndex = randomService.getRandomInt(0, avatars.size() - 1);
 

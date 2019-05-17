@@ -2,6 +2,7 @@ package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.character.Trait;
@@ -114,7 +115,7 @@ public class CharacterServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K10)).thenReturn(8); // hp
         Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 4, 2, 3, 4);
 
-        Character result = characterService.generateRandomCharacter();
+        Character result = characterService.generateRandomCharacter(new CharacterFilter());
 
         // then verify correct values used
         assertEquals("Rusty Nick", result.getName());

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.combat.CombatResult;
@@ -82,7 +83,7 @@ public class CombatServiceImpl implements CombatService {
         // check if list is odd
         if (characters.size() % 2 != 0) {
             log.debug("There is odd number of arena competitors. Generating random opponent...");
-            characters.add(characterService.generateRandomCharacter());
+            characters.add(characterService.generateRandomCharacter(new CharacterFilter()));
         }
 
         // split characters into fighting pairs

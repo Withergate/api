@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import java.util.Set;
+
 import com.withergate.api.model.character.Gender;
 
 /**
@@ -21,7 +23,8 @@ public interface NameService {
      * Generates a random avatar for the specified gender.
      *
      * @param gender the specified gender
+     * @param avatarFilter avatars to be filtered out to avoid duplicities
      * @return the generated avatar URL
      */
-    String generateRandomAvatar(Gender gender);
+    String generateRandomAvatar(Gender gender, Set<String> avatarFilter);
 }

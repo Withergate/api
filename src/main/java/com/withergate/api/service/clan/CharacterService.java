@@ -1,6 +1,7 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -41,9 +42,10 @@ public interface CharacterService {
     /**
      * Generates random character.
      *
+     * @param filter filter
      * @return the generated character
      */
-    Character generateRandomCharacter();
+    Character generateRandomCharacter(CharacterFilter filter);
 
     /**
      * Marks character as resting.

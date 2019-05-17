@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
@@ -106,7 +107,7 @@ public class ClanServiceTest {
             characters[i] = character;
         }
 
-        Mockito.when(characterService.generateRandomCharacter())
+        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class)))
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
         // when creating new clan
@@ -181,7 +182,7 @@ public class ClanServiceTest {
 
         Character hired = new Character();
         hired.setName("Hired");
-        Mockito.when(characterService.generateRandomCharacter()).thenReturn(hired);
+        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class))).thenReturn(hired);
 
         // when hiring character
         clanService.hireCharacter(clan);
