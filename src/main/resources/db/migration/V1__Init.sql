@@ -366,3 +366,14 @@ CREATE TABLE names (
     value VARCHAR(16) UNIQUE NOT NULL,
     PRIMARY KEY (value)
 );
+
+-- Global notification
+DROP TABLE IF EXISTS global_notification;
+CREATE TABLE global_notification (
+  single_id VARCHAR(8) NOT NULL,
+  message VARCHAR(1024),
+  active BIT DEFAULT 0,
+  PRIMARY KEY (single_id)
+);
+
+INSERT INTO global_notification VALUES ('SINGLE', '', false);

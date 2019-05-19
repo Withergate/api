@@ -1,6 +1,7 @@
 package com.withergate.api.service;
 
 import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.scheduling.TurnScheduler;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
@@ -22,11 +23,14 @@ public class AdminServiceTest {
     @Mock
     private TurnScheduler turnScheduler;
 
+    @Mock
+    private GlobalNotificationRepository globalNotificationRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        adminService = new AdminServiceImpl(flyway, turnRepository, turnScheduler);
+        adminService = new AdminServiceImpl(flyway, turnRepository, turnScheduler, globalNotificationRepository);
     }
 
     @Test

@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import com.withergate.api.model.request.GlobalNotificationRequest;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
@@ -20,5 +22,13 @@ public interface AdminService {
      */
     @PreAuthorize("hasRole('ADMIN')")
     void endTurn();
+
+    /**
+     * Updates global notification.
+     *
+     * @param request notification payload
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    void updateGlobalNotification(GlobalNotificationRequest request);
 
 }

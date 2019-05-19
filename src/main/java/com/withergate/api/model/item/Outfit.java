@@ -36,7 +36,7 @@ public class Outfit extends Item {
     private OutfitDetails details;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "gear")
+    @OneToOne(mappedBy = "outfit")
     private Character character;
 
 }
