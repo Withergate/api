@@ -1,6 +1,7 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.GameProperties;
+import java.util.List;
+
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -20,8 +21,6 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,6 @@ import org.springframework.stereotype.Service;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationActionRepository locationActionRepository;
-    private final GameProperties gameProperties;
     private final ClanService clanService;
     private final RandomService randomService;
     private final EncounterService encounterService;
