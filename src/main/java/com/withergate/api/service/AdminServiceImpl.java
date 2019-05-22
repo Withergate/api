@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Admin service.
  *
- *
  * @author Martin Myslik
  */
 @Slf4j
