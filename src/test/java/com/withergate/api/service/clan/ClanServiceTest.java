@@ -1,12 +1,8 @@
 package com.withergate.api.service.clan;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.Trait;
@@ -19,6 +15,11 @@ import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -185,7 +186,7 @@ public class ClanServiceTest {
         Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class))).thenReturn(hired);
 
         // when hiring character
-        clanService.hireCharacter(clan);
+        clanService.hireCharacter(clan, TavernAction.Type.VETERAN);
 
         // then verify clan saved with character
         assertEquals(hired, clan.getCharacters().iterator().next());

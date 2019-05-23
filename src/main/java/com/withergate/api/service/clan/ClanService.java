@@ -1,6 +1,7 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
@@ -62,9 +63,10 @@ public interface ClanService {
      * Adds new random character to the provided clan.
      *
      * @param clan the clan
+     * @param characterType character type
      * @return the created character
      */
-    Character hireCharacter(Clan clan);
+    Character hireCharacter(Clan clan, TavernAction.Type characterType);
 
     /**
      * Un-assigns all arena characters from all clans.

@@ -3,6 +3,7 @@ package com.withergate.api.service.clan;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
@@ -84,54 +85,39 @@ public class CharacterServiceImpl implements CharacterService {
     public Character generateRandomCharacter(CharacterFilter filter) {
         Character character = new Character();
 
-        /*
-         * Set character's state to READY.
-         */
+        // set character's state to READY
         character.setState(CharacterState.READY);
 
-        /*
-         * Generate random gender.
-         */
+        // generate random gender
         Gender gender = randomService.getRandomGender();
         character.setGender(gender);
 
-        /*
-         * Generate random name.
-         */
+        // generate random name
         String name = nameService.generateRandomName(gender, filter.getNames());
         character.setName(name);
 
-        /*
-         * Generate random hitpoints.
-         */
+        // generate random hitpoints
         int hitpoints = RandomServiceImpl.K10 + randomService.getRandomInt(1, RandomServiceImpl.K10);
         character.setHitpoints(hitpoints);
         character.setMaxHitpoints(hitpoints);
 
-        /*
-         * Generate random stats.
-         */
-        character.setCombat(randomService.getRandomInt(1, 5));
-        character.setScavenge(randomService.getRandomInt(1, 5));
-        character.setCraftsmanship(randomService.getRandomInt(1, 5));
-        character.setIntellect(randomService.getRandomInt(1, 5));
+        // generate random stats
+        int max = filter.getCharacterType().equals(TavernAction.Type.VETERAN) ? 5 : 4;
+        character.setCombat(randomService.getRandomInt(1, max));
+        character.setScavenge(randomService.getRandomInt(1, max));
+        character.setCraftsmanship(randomService.getRandomInt(1, max));
+        character.setIntellect(randomService.getRandomInt(1, max));
 
-        /*
-         * Generate random avatar.
-         */
+        // generate random avatar
         character.setImageUrl(nameService.generateRandomAvatar(gender, filter.getAvatars()));
 
-        /*
-         * Set level.
-         */
+        // set level
         character.setLevel(1);
         character.setExperience(0);
 
-        /*
-         * Add random trait to weak characters.
-         */
-        if ((character.getCombat() + character.getScavenge() + character.getCraftsmanship()
-                + character.getIntellect()) <= FREE_TRAIT_THRESHOLD) {
+        // add random trait to weak veterans
+        if (filter.getCharacterType().equals(TavernAction.Type.VETERAN) && (character.getCombat() + character.getScavenge()
+                + character.getCraftsmanship() + character.getIntellect()) <= FREE_TRAIT_THRESHOLD) {
             Trait trait = getRandomTrait(character);
             character.getTraits().put(trait.getDetails().getIdentifier(), trait);
         }

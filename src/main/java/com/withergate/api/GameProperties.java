@@ -17,7 +17,9 @@ import org.springframework.context.annotation.Configuration;
 public class GameProperties {
 
     private int initialClanSize;
-    private int characterCost;
+
+    private int characterVeteranCost;
+    private int characterRookieCost;
 
     private int rareItemChance;
 

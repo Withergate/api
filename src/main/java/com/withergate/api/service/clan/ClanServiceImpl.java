@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
@@ -122,11 +123,13 @@ public class ClanServiceImpl implements ClanService {
     }
 
     @Override
-    public Character hireCharacter(Clan clan) {
+    public Character hireCharacter(Clan clan, TavernAction.Type characterType) {
         log.debug("Hiring new character for clan {}", clan.getId());
 
         // create a random character
-        Character character = characterService.generateRandomCharacter(new CharacterFilter());
+        CharacterFilter filter = new CharacterFilter();
+        filter.setCharacterType(characterType);
+        Character character = characterService.generateRandomCharacter(filter);
         character.setClan(clan);
 
         // deduct price and add the character to the clan

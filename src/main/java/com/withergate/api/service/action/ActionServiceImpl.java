@@ -118,7 +118,9 @@ public class ActionServiceImpl implements ActionService {
         Character character = getCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
 
-        if (clan.getCaps() < gameProperties.getCharacterCost()) {
+        int cost = request.getCharacterType().equals(TavernAction.Type.VETERAN) ?
+                gameProperties.getCharacterVeteranCost() : gameProperties.getCharacterRookieCost();
+        if (clan.getCaps() < cost) {
             throw new InvalidActionException("Not enough resources to perform this action!");
         }
 
@@ -126,11 +128,12 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Population limit exceeded.");
         }
 
-        clan.setCaps(clan.getCaps() - gameProperties.getCharacterCost());
+        clan.setCaps(clan.getCaps() - cost);
 
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
+        action.setType(request.getCharacterType());
 
         tavernService.saveTavernAction(action);
 

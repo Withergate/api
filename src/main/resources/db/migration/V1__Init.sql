@@ -312,6 +312,7 @@ CREATE TABLE tavern_actions (
     action_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
+    type VARCHAR(8) NOT NULL,
     PRIMARY KEY (action_id)
 );
 

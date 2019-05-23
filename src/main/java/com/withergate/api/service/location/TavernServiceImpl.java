@@ -44,7 +44,7 @@ public class TavernServiceImpl implements TavernService {
             notification.setHeader(character.getName());
 
             // hire character
-            Character hired = clanService.hireCharacter(character.getClan());
+            Character hired = clanService.hireCharacter(character.getClan(), action.getType());
 
             notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[] {hired.getName()});
             NotificationDetail detail = new NotificationDetail();
