@@ -68,6 +68,7 @@ public class TurnSchedulerTest {
         scheduler.processTurn();
 
         // then verify all actions triggered
+        Mockito.verify(actionService).assignDefaultActions();
         Mockito.verify(actionService).processBuildingActions(1);
         Mockito.verify(actionService).processLocationActions(1);
         Mockito.verify(actionService).processQuestActions(1);

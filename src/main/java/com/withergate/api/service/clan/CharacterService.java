@@ -4,6 +4,8 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.service.exception.InvalidActionException;
 
+import java.util.List;
+
 /**
  * CharacterService interface.
  *
@@ -18,6 +20,13 @@ public interface CharacterService {
      * @return the character
      */
     Character load(int characterId);
+
+    /**
+     * Loads all characters from database.
+     *
+     * @return the list of loaded characters
+     */
+    List<Character> loadAll();
 
     /**
      * Saves the provided character.

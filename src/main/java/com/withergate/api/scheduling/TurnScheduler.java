@@ -35,6 +35,9 @@ public class TurnScheduler {
         Turn currentTurn = turnRepository.findFirstByOrderByTurnIdDesc();
         log.info("Processing current turn: {}", currentTurn.getTurnId());
 
+        // assign default actions
+        actionService.assignDefaultActions();
+
         // process location actions
         actionService.processLocationActions(currentTurn.getTurnId());
 

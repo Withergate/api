@@ -23,6 +23,7 @@ CREATE TABLE clans (
     information INT NOT NULL,
     information_level INT NOT NULL,
     arena BIT NOT NULL DEFAULT FALSE,
+    default_action VARCHAR(32) NOT NULL,
     PRIMARY KEY (clan_id)
 );
 

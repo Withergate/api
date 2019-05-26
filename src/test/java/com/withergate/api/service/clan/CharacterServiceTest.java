@@ -76,6 +76,25 @@ public class CharacterServiceTest {
     }
 
     @Test
+    public void testGivenCharacterServiceWhenLoadingAllCharactersThenVerifyRepositoryCalled() {
+        // given service
+
+        // when loading character
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        List<Character> characters = new ArrayList<>();
+        characters.add(character);
+
+        Mockito.when(characterRepository.findAll()).thenReturn(characters);
+
+        List<Character> result = characterService.loadAll();
+
+        // then verify character from repository returned
+        assertEquals(character, result.get(0));
+    }
+
+    @Test
     public void testGivenCharacterServiceWhenSavingCharacterThenVerifyRepositoryCalled() {
         // given service
 

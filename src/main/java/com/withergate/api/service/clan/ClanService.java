@@ -5,6 +5,7 @@ import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
+import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 
 import java.util.List;
@@ -88,4 +89,13 @@ public interface ClanService {
      * @param turnId the turn ID
      */
     void performClanTurnUpdates(int turnId);
+
+    /**
+     * Changes clan's default action.
+     *
+     * @param request the request
+     * @param clanId  the clan ID
+     */
+    void changeDefaultAction(DefaultActionRequest request, int clanId);
+
 }

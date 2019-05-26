@@ -10,6 +10,7 @@ import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
+import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -310,6 +311,24 @@ public class ClanServiceTest {
         // then verify character died of starvation
         Assert.assertEquals(0, clan.getCharacters().size());
         Mockito.verify(characterService).delete(character);
+    }
+
+    @Test
+    public void testGivenDefaultActionRequestWhenChangingActionThenVerifyActionChanged() {
+        // given request
+        DefaultActionRequest request = new DefaultActionRequest();
+        request.setDefaultAction(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setDefaultAction(Clan.DefaultAction.REST);
+        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
+
+        // when changing action
+        clanService.changeDefaultAction(request, 1);
+
+        // then verify action changed
+        Assert.assertEquals(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD, clan.getDefaultAction());
     }
 
 }

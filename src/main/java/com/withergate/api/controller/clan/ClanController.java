@@ -1,13 +1,14 @@
 package com.withergate.api.controller.clan;
 
-import java.security.Principal;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.request.ClanRequest;
+import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
+
+import java.security.Principal;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -77,6 +79,19 @@ public class ClanController {
     @GetMapping("/clans")
     public ResponseEntity<Page<Clan>> getClans(Pageable pageable) {
         return new ResponseEntity<>(clanService.getClans(pageable), HttpStatus.OK);
+    }
+
+    /**
+     * Changes clan's default action.
+     *
+     * @param principal   the principal
+     * @param request the clan request containing necessary clan details
+     * @throws EntityConflictException entity conflict
+     */
+    @PutMapping("/clan/defaultAction")
+    public ResponseEntity<Void> changeDefaultAction(Principal principal, @RequestBody DefaultActionRequest request) {
+        clanService.changeDefaultAction(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

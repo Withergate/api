@@ -16,6 +16,7 @@ import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
+import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -94,6 +95,7 @@ public class ClanServiceImpl implements ClanService {
         clan.setInformation(0);
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
+        clan.setDefaultAction(Clan.DefaultAction.REST);
 
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
@@ -174,6 +176,13 @@ public class ClanServiceImpl implements ClanService {
             // passive buildings
             buildingService.processPassiveBuildingBonuses(turnId, clan);
         }
+    }
+
+    @Transactional
+    @Override
+    public void changeDefaultAction(DefaultActionRequest request, int clanId) {
+        Clan clan = clanRepository.getOne(clanId);
+        clan.setDefaultAction(request.getDefaultAction());
     }
 
     private void performFoodConsumption(int turnId, Clan clan) {

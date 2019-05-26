@@ -107,4 +107,9 @@ public interface ActionService {
      */
     void processTradeActions(int turnId);
 
+    /**
+     * Assing default actions to all characters.
+     */
+    void assignDefaultActions();
+
 }

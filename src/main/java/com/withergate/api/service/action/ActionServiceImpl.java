@@ -14,6 +14,7 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.WeaponType;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.request.ArenaRequest;
@@ -361,6 +362,36 @@ public class ActionServiceImpl implements ActionService {
 
         // market trade actions
         tradeService.processMarketTradeActions(turnId);
+    }
+
+    @Transactional
+    @Override
+    public void assignDefaultActions() {
+        log.debug("Assigning default actions");
+
+        for (Character character : characterService.loadAll()) {
+            // only applicable to ready characters
+            if (!character.getState().equals(CharacterState.READY)) {
+                continue;
+            }
+
+            // resting
+            if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.REST)) {
+                character.setState(CharacterState.RESTING);
+            }
+
+            // exploration
+            if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD)) {
+                character.setState(CharacterState.BUSY);
+
+                LocationAction action = new LocationAction();
+                action.setLocation(Location.NEIGHBORHOOD);
+                action.setCharacter(character);
+                action.setType(LocationAction.LocationActionType.VISIT);
+                action.setState(ActionState.PENDING);
+                locationService.saveLocationAction(action);
+            }
+        }
     }
 
     private Character getCharacter(int characterId, int clanId) throws InvalidActionException {

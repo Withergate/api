@@ -20,6 +20,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapKeyClass;
@@ -113,6 +114,11 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private Set<Quest> quests;
 
+    @Column(name = "default_action", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JsonView(Views.Internal.class)
+    private DefaultAction defaultAction;
+
     /**
      * Gets the maximum number of characters that could be part of the clan.
      *
@@ -150,6 +156,13 @@ public class Clan {
     @JsonView(Views.Internal.class)
     public int getNextLevelInformation() {
         return (informationLevel + 1) * ClanServiceImpl.INFORMATION_QUOTIENT;
+    }
+
+    /**
+     * Clan's default action.
+     */
+    public enum DefaultAction {
+        REST, EXPLORE_NEIGHBORHOOD
     }
 
 }

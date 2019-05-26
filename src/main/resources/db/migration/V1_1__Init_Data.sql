@@ -240,7 +240,7 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
 
 -- Location descriptions
 INSERT INTO location_descriptions(location, scouting, food_bonus, junk_bonus, information_bonus, encounter_chance, item_chance, description, info, image_url) VALUES
-    ('NEIGHBORHOOD', false, 1, 0, 0, 0, 0, 'locations.neighborhood.description', 'locations.neighborhood.info',
+    ('NEIGHBORHOOD', false, 0, 0, 0, 0, 0, 'locations.neighborhood.description', 'locations.neighborhood.info',
     'https://storage.googleapis.com/withergate-images/locations/neighborhood.jpg'),
     ('WASTELAND', true, 1, 2, 0, 25, 10, 'locations.wasteland.description', 'locations.wasteland.info',
     'https://storage.googleapis.com/withergate-images/locations/wasteland.jpg'),

@@ -51,6 +51,11 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
+    public List<Character> loadAll() {
+        return characterRepository.findAll();
+    }
+
+    @Override
     public Character save(Character character) {
         return characterRepository.save(character);
     }
