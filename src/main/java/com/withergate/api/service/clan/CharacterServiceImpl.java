@@ -1,9 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
@@ -16,11 +12,15 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.TraitDetailsRepository;
+import com.withergate.api.scheduling.TurnScheduler;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -107,7 +107,7 @@ public class CharacterServiceImpl implements CharacterService {
         character.setMaxHitpoints(hitpoints);
 
         // generate random stats
-        int max = filter.getCharacterType().equals(TavernAction.Type.VETERAN) ? 5 : 4;
+        int max = 5;
         character.setCombat(randomService.getRandomInt(1, max));
         character.setScavenge(randomService.getRandomInt(1, max));
         character.setCraftsmanship(randomService.getRandomInt(1, max));
@@ -121,7 +121,7 @@ public class CharacterServiceImpl implements CharacterService {
         character.setExperience(0);
 
         // add random trait to weak veterans
-        if (filter.getCharacterType().equals(TavernAction.Type.VETERAN) && (character.getCombat() + character.getScavenge()
+        if ((character.getCombat() + character.getScavenge()
                 + character.getCraftsmanship() + character.getIntellect()) <= FREE_TRAIT_THRESHOLD) {
             Trait trait = getRandomTrait(character);
             character.getTraits().put(trait.getDetails().getIdentifier(), trait);
@@ -170,6 +170,11 @@ public class CharacterServiceImpl implements CharacterService {
         List<Character> characters = characterRepository.findAllByState(CharacterState.READY);
 
         for (Character character : characters) {
+            // skip npc characters
+            if (character.getClan() == null) {
+                continue;
+            }
+
             // skip if there is no food
             if (character.getClan().getFood() < 1) {
                 continue;

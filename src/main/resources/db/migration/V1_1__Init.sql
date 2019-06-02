@@ -108,7 +108,7 @@ CREATE TABLE outfits (
 DROP TABLE IF EXISTS characters;
 CREATE TABLE characters (
     character_id INT AUTO_INCREMENT,
-    clan_id INT NOT NULL,
+    clan_id INT,
     character_name VARCHAR(32) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     gender VARCHAR(8) NOT NULL,
@@ -289,6 +289,19 @@ CREATE TABLE market_offers (
     PRIMARY KEY (offer_id)
 );
 
+-- Tavern offers
+DROP TABLE IF EXISTS tavern_offers;
+CREATE TABLE tavern_offers (
+    offer_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    clan_id INT NOT NULL,
+    character_id INT NOT NULL,
+    price INT NOT NULL,
+    CONSTRAINT tavern_offer_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
+    CONSTRAINT tavern_character_identifier_fk FOREIGN KEY (character_id) REFERENCES characters (character_id),
+    PRIMARY KEY (offer_id)
+);
+
 -- Actions
 DROP TABLE IF EXISTS location_actions;
 CREATE TABLE location_actions (
@@ -313,7 +326,7 @@ CREATE TABLE tavern_actions (
     action_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
-    type VARCHAR(8) NOT NULL,
+    offer_id INT NOT NULL,
     PRIMARY KEY (action_id)
 );
 
@@ -356,6 +369,7 @@ CREATE TABLE market_trade_actions (
     PRIMARY KEY (action_id)
 );
 
+-- Names
 DROP TABLE IF EXISTS name_prefixes;
 CREATE TABLE name_prefixes (
     value VARCHAR(16) UNIQUE NOT NULL,

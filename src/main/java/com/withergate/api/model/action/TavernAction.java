@@ -1,12 +1,10 @@
 package com.withergate.api.model.action;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.TavernOffer;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -28,15 +26,8 @@ public class TavernAction extends BaseAction {
     @JoinColumn(name = "character_id", nullable = false, updatable = false)
     private Character character;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false, updatable = false)
-    private Type type;
-
-    /**
-     * Tavern character type.
-     */
-    public enum Type {
-        ROOKIE, VETERAN
-    }
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "offer_id", nullable = false, updatable = false)
+    private TavernOffer offer;
 
 }

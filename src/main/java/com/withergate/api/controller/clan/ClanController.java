@@ -2,6 +2,7 @@ package com.withergate.api.controller.clan;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.model.view.Views;
@@ -9,6 +10,7 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 
 import java.security.Principal;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -79,6 +81,17 @@ public class ClanController {
     @GetMapping("/clans")
     public ResponseEntity<Page<Clan>> getClans(Pageable pageable) {
         return new ResponseEntity<>(clanService.getClans(pageable), HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves the list of available tavern offers.
+     *
+     * @return the list of offers
+     */
+    @JsonView(Views.Public.class)
+    @GetMapping("/clan/tavernOffers")
+    public ResponseEntity<List<TavernOffer>> getClanTavernOffers(Principal principal) {
+        return new ResponseEntity<>(clanService.loadTavernOffers(Integer.parseInt(principal.getName())), HttpStatus.OK);
     }
 
     /**

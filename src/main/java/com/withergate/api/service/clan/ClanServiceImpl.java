@@ -1,17 +1,12 @@
 package com.withergate.api.service.clan;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
+import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -20,8 +15,14 @@ import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -48,6 +49,7 @@ public class ClanServiceImpl implements ClanService {
     private final NotificationService notificationService;
     private final QuestService questService;
     private final BuildingService buildingService;
+    private final TavernService tavernService;
 
     @Override
     public Clan getClan(int clanId) {
@@ -125,12 +127,11 @@ public class ClanServiceImpl implements ClanService {
     }
 
     @Override
-    public Character hireCharacter(Clan clan, TavernAction.Type characterType) {
+    public Character hireCharacter(Clan clan) {
         log.debug("Hiring new character for clan {}", clan.getId());
 
         // create a random character
         CharacterFilter filter = new CharacterFilter();
-        filter.setCharacterType(characterType);
         Character character = characterService.generateRandomCharacter(filter);
         character.setClan(clan);
 
@@ -175,6 +176,9 @@ public class ClanServiceImpl implements ClanService {
 
             // passive buildings
             buildingService.processPassiveBuildingBonuses(turnId, clan);
+
+            // tavern offers
+            tavernService.prepareTavernOffers(clan);
         }
     }
 
@@ -183,6 +187,12 @@ public class ClanServiceImpl implements ClanService {
     public void changeDefaultAction(DefaultActionRequest request, int clanId) {
         Clan clan = clanRepository.getOne(clanId);
         clan.setDefaultAction(request.getDefaultAction());
+    }
+
+    @Override
+    public List<TavernOffer> loadTavernOffers(int clanId) {
+        Clan clan = clanRepository.getOne(clanId);
+        return tavernService.loadTavernOffers(TavernOffer.State.AVAILABLE, clan);
     }
 
     private void performFoodConsumption(int turnId, Clan clan) {

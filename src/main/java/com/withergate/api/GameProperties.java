@@ -18,9 +18,6 @@ public class GameProperties {
 
     private int initialClanSize;
 
-    private int characterVeteranCost;
-    private int characterRookieCost;
-
     private int rareItemChance;
 
     private int arenaCaps;

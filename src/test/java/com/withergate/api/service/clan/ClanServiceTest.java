@@ -14,6 +14,7 @@ import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
 
@@ -50,6 +51,9 @@ public class ClanServiceTest {
     @Mock
     private BuildingService buildingService;
 
+    @Mock
+    private TavernService tavernService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -58,7 +62,7 @@ public class ClanServiceTest {
         gameProperties.setInitialClanSize(5);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties, notificationService, questService,
-                buildingService);
+                buildingService, tavernService);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -187,7 +191,7 @@ public class ClanServiceTest {
         Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class))).thenReturn(hired);
 
         // when hiring character
-        clanService.hireCharacter(clan, TavernAction.Type.VETERAN);
+        clanService.hireCharacter(clan);
 
         // then verify clan saved with character
         assertEquals(hired, clan.getCharacters().iterator().next());

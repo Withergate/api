@@ -1,8 +1,8 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
@@ -64,10 +64,9 @@ public interface ClanService {
      * Adds new random character to the provided clan.
      *
      * @param clan the clan
-     * @param characterType character type
      * @return the created character
      */
-    Character hireCharacter(Clan clan, TavernAction.Type characterType);
+    Character hireCharacter(Clan clan);
 
     /**
      * Un-assigns all arena characters from all clans.
@@ -97,5 +96,13 @@ public interface ClanService {
      * @param clanId  the clan ID
      */
     void changeDefaultAction(DefaultActionRequest request, int clanId);
+
+    /**
+     * Loads all tavern offers for given clan.
+     *
+     * @param clanId the clan ID
+     * @return list of available clan offers
+     */
+    List<TavernOffer> loadTavernOffers(int clanId);
 
 }

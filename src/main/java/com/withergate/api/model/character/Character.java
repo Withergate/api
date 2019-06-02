@@ -49,7 +49,7 @@ public class Character {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "clan_id", nullable = false)
+    @JoinColumn(name = "clan_id")
     @JsonIgnore
     private Clan clan;
 

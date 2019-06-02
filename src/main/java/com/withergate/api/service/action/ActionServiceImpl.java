@@ -13,6 +13,7 @@ import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
@@ -119,8 +120,12 @@ public class ActionServiceImpl implements ActionService {
         Character character = getCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
 
-        int cost = request.getCharacterType().equals(TavernAction.Type.VETERAN) ?
-                gameProperties.getCharacterVeteranCost() : gameProperties.getCharacterRookieCost();
+        TavernOffer offer = tavernService.loadTavernOffer(request.getOfferId());
+        if (offer == null || offer.getClan().getId() != clanId) {
+            throw new InvalidActionException("This offer either doesn't exists or does not belong to your clan!");
+        }
+
+        int cost = offer.getPrice();
         if (clan.getCaps() < cost) {
             throw new InvalidActionException("Not enough resources to perform this action!");
         }
@@ -134,12 +139,15 @@ public class ActionServiceImpl implements ActionService {
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setType(request.getCharacterType());
+        action.setOffer(offer);
 
         tavernService.saveTavernAction(action);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
+
+        // mark offer as hired
+        offer.setState(TavernOffer.State.HIRED);
     }
 
     @Transactional
@@ -370,6 +378,11 @@ public class ActionServiceImpl implements ActionService {
         log.debug("Assigning default actions");
 
         for (Character character : characterService.loadAll()) {
+            // skip characters without clan
+            if (character.getClan() == null) {
+                continue;
+            }
+
             // only applicable to ready characters
             if (!character.getState().equals(CharacterState.READY)) {
                 continue;
