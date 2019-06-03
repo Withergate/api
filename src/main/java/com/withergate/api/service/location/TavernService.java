@@ -2,6 +2,7 @@ package com.withergate.api.service.location;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.TavernAction;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
 
 import java.util.List;
@@ -48,7 +49,8 @@ public interface TavernService {
      * Prepare new tavern offers for given clan.
      *
      * @param clan the clan
+     * @param filter character filter
      */
-    void prepareTavernOffers(Clan clan);
+    void prepareTavernOffers(Clan clan, CharacterFilter filter);
 
 }

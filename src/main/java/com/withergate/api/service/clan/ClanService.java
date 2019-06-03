@@ -2,6 +2,7 @@ package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;

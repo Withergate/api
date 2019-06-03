@@ -116,7 +116,6 @@ public class Character {
     @MapKeyColumn(name = "identifier")
     @MapKeyClass(TraitDetails.TraitName.class)
     @MapKeyEnumerated(EnumType.STRING)
-    @JsonView(Views.Internal.class)
     private Map<TraitDetails.TraitName, Trait> traits;
 
     // Constructor

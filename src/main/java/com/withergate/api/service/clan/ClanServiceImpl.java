@@ -123,7 +123,12 @@ public class ClanServiceImpl implements ClanService {
             clan.getBuildings().put(details.getIdentifier(), building);
         }
 
-        return clanRepository.save(clan);
+        clan = clanRepository.save(clan);
+
+        // prepare tavern offers
+        tavernService.prepareTavernOffers(clan, filter);
+
+        return clan;
     }
 
     @Override
@@ -131,8 +136,7 @@ public class ClanServiceImpl implements ClanService {
         log.debug("Hiring new character for clan {}", clan.getId());
 
         // create a random character
-        CharacterFilter filter = new CharacterFilter();
-        Character character = characterService.generateRandomCharacter(filter);
+        Character character = characterService.generateRandomCharacter(getCharacterFilter(clan));
         character.setClan(clan);
 
         // deduct price and add the character to the clan
@@ -178,7 +182,7 @@ public class ClanServiceImpl implements ClanService {
             buildingService.processPassiveBuildingBonuses(turnId, clan);
 
             // tavern offers
-            tavernService.prepareTavernOffers(clan);
+            tavernService.prepareTavernOffers(clan, getCharacterFilter(clan));
         }
     }
 
@@ -255,6 +259,17 @@ public class ClanServiceImpl implements ClanService {
         }
 
         notificationService.save(notification);
+    }
+
+    private CharacterFilter getCharacterFilter(Clan clan) {
+        CharacterFilter filter = new CharacterFilter();
+
+        for (Character character : clan.getCharacters()) {
+            filter.getNames().add(character.getName());
+            filter.getAvatars().add(character.getImageUrl());
+        }
+
+        return filter;
     }
 
 }

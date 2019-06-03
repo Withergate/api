@@ -85,7 +85,7 @@ public class TavernServiceImpl implements TavernService {
     }
 
     @Override
-    public void prepareTavernOffers(Clan clan) {
+    public void prepareTavernOffers(Clan clan, CharacterFilter filter) {
         log.debug("Preparing tavern offers for clan {}.", clan.getId());
 
         // delete all old offers
@@ -96,7 +96,7 @@ public class TavernServiceImpl implements TavernService {
 
         // create new offers
         for (int i = 0; i < TAVERN_OFFERS; i++) {
-            Character character = characterService.generateRandomCharacter(new CharacterFilter());
+            Character character = characterService.generateRandomCharacter(filter);
             characterService.save(character);
             int price = calculateOfferPrice(character);
 
