@@ -1,10 +1,16 @@
 package com.withergate.api.service.clan;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
+import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
@@ -17,11 +23,6 @@ import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -333,6 +334,32 @@ public class ClanServiceTest {
 
         // then verify action changed
         Assert.assertEquals(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD, clan.getDefaultAction());
+    }
+
+    @Test
+    public void testGivenClanOffersWhenGettingOffersThenVerifyTavernServiceCalled() {
+        // given offers
+        Clan clan = new Clan();
+        clan.setId(1);
+
+        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
+
+        List<TavernOffer> offers = new ArrayList<>();
+        TavernOffer offer = new TavernOffer();
+        offer.setId(1);
+        offer.setState(State.AVAILABLE);
+        offer.setPrice(50);
+        offer.setCharacter(new Character());
+        offer.setClan(clan);
+        offers.add(offer);
+
+        Mockito.when(tavernService.loadTavernOffers(State.AVAILABLE, clan)).thenReturn(offers);
+
+        // when getting offers
+        List<TavernOffer> result = clanService.loadTavernOffers(1);
+
+        // then verify offers returned
+        Assert.assertEquals(offers, result);
     }
 
 }

@@ -64,6 +64,7 @@ public class ItemServiceImpl implements ItemService {
             case OUTFIT: return outfitRepository.getOne(itemId);
             case GEAR: return gearRepository.getOne(itemId);
             case CONSUMABLE: return consumableRepository.getOne(itemId);
+            default: log.error("Unknown item type: {}", type);
         }
 
         return null;
@@ -76,6 +77,7 @@ public class ItemServiceImpl implements ItemService {
             case OUTFIT: return outfitRepository.getOne(itemId).getDetails();
             case GEAR: return gearRepository.getOne(itemId).getDetails();
             case CONSUMABLE: return consumableRepository.getOne(itemId).getDetails();
+            default: log.error("Unknown item type: {}", type);
         }
 
         return null;

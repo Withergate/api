@@ -7,6 +7,8 @@ import lombok.Setter;
 
 /**
  * Entity used for filtering character attributes.
+ *
+ * @author Martin Myslik
  */
 @Getter
 @Setter

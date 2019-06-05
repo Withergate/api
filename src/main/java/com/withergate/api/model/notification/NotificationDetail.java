@@ -36,10 +36,18 @@ public class NotificationDetail {
     @JoinColumn(name = "notification_detail_id")
     private Map<String, LocalizedText> text;
 
+    /**
+     * Default constructor.
+     */
     public NotificationDetail() {
         if (text == null) text = new HashMap<>();
     }
 
+    /**
+     * Constructor for duplicating details. Needed to save entity properly with Hibernate mappings.
+     *
+     * @param detail the detail to be duplicated
+     */
     public NotificationDetail(NotificationDetail detail) {
         text = new HashMap<>();
 
