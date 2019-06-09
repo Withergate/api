@@ -370,6 +370,9 @@ public class ActionServiceImpl implements ActionService {
 
         // market trade actions
         tradeService.processMarketTradeActions(turnId);
+
+        // perform computer trade actions
+        tradeService.performComputerTradeActions(turnId);
     }
 
     @Transactional

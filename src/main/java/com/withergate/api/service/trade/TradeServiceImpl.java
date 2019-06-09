@@ -143,6 +143,27 @@ public class TradeServiceImpl implements TradeService {
         return marketOfferRepository.findAllByState(state);
     }
 
+    @Override
+    public void performComputerTradeActions(int turnId) {
+        for (MarketOffer offer : marketOfferRepository.findAllByState(State.PUBLISHED)) {
+            // if item is offered for market price, sell it
+            if (offer.getPrice() == offer.getDetails().getPrice()) {
+                Clan clan = offer.getSeller();
+                clan.setCaps(clan.getCaps() + offer.getPrice());
+
+                ClanNotification notification = new ClanNotification(turnId, clan.getId());
+                notification.setHeader(clan.getName());
+                notificationService.addLocalizedTexts(notification.getText(), "clan.trade.item.computer",
+                        new String[]{}, offer.getDetails().getName());
+                notification.setCapsIncome(offer.getDetails().getPrice());
+                notificationService.save(notification);
+
+                // delete offer
+                marketOfferRepository.delete(offer);
+            }
+        }
+    }
+
     private void processResourceTradeAction(ResourceTradeAction action, ClanNotification notification) {
         Clan clan = action.getCharacter().getClan();
 

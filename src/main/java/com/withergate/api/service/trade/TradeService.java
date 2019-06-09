@@ -78,4 +78,12 @@ public interface TradeService {
      */
     List<MarketOffer> getMarketOffersByState(State state);
 
+    /**
+     * Performs computer trade actions. If an offer is eligible for passive trade action, it will be performed in
+     * scope of this method.
+     *
+     * @param turnId turn ID
+     */
+    void performComputerTradeActions(int turnId);
+
 }
