@@ -28,9 +28,9 @@ INSERT INTO consumables(consumable_id, item_identifier, clan_id) VALUES
     (4, 'TOXICAT', 1);
 
 INSERT INTO characters (character_id, clan_id, character_name, gender, state, level, experience, hitpoints, max_hitpoints, combat, scavenge, craftsmanship, intellect, weapon_id, gear_id, image_url) VALUES
-    (1, 1, 'Rusty Nick', 'MALE', 'BUSY', 1, 9, 7, 9, 3, 2, 1, 2, null, null, 'https://i.ibb.co/pnQ12b8/male01.jpg'),
-    (2, 1, 'Foxy Ann', 'FEMALE', 'READY', 1, 0, 8, 8, 1, 3, 2, 5, null, null, 'https://i.ibb.co/kJYvvWK/female01.jpg'),
-    (3, 1, 'Sticky Marry', 'FEMALE', 'READY', 2, 2, 1, 10, 2, 4, 2, 1, 1, null, 'https://i.ibb.co/kJYvvWK/female01.jpg');
+    (1, 1, 'Rusty Nick', 'MALE', 'BUSY', 1, 9, 7, 9, 3, 2, 1, 2, null, null, 'https://storage.googleapis.com/withergate-images/avatars/male01.png'),
+    (2, 1, 'Foxy Ann', 'FEMALE', 'READY', 1, 0, 8, 8, 1, 3, 2, 5, null, null, 'https://storage.googleapis.com/withergate-images/avatars/female01.png'),
+    (3, 1, 'Sticky Marry', 'FEMALE', 'READY', 2, 2, 1, 10, 2, 4, 2, 1, 1, null, 'https://storage.googleapis.com/withergate-images/avatars/female02.png');
 
 INSERT INTO traits(trait_id, identifier, character_id) VALUES
     (1, 'FIGHTER', 1),
