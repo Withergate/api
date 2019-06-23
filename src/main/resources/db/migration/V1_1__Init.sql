@@ -27,6 +27,7 @@ CREATE TABLE clans (
     PRIMARY KEY (clan_id)
 );
 
+-- Buildings
 DROP TABLE IF EXISTS building_details;
 CREATE TABLE building_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
@@ -49,6 +50,7 @@ CREATE TABLE buildings (
     CONSTRAINT building_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
+-- Items
 DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE item_details (
     identifier VARCHAR(16) NOT NULL,
@@ -105,6 +107,8 @@ CREATE TABLE outfits (
     CONSTRAINT outfit_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
+
+-- Characters
 DROP TABLE IF EXISTS characters;
 CREATE TABLE characters (
     character_id INT AUTO_INCREMENT,
@@ -131,6 +135,7 @@ CREATE TABLE characters (
     CONSTRAINT character_outfit_fk FOREIGN KEY (outfit_id) REFERENCES outfits (outfit_id)
 );
 
+-- Traits
 DROP TABLE IF EXISTS trait_details;
 CREATE TABLE trait_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
@@ -149,6 +154,7 @@ CREATE TABLE traits (
     CONSTRAINT trait_character_fk FOREIGN KEY (character_id) REFERENCES characters (character_id)
 );
 
+-- Locations
 DROP TABLE IF EXISTS location_descriptions;
 CREATE TABLE location_descriptions (
     location VARCHAR(16) NOT NULL,
@@ -173,6 +179,7 @@ CREATE TABLE placeholder_texts (
     PRIMARY KEY (text_id)
 );
 
+-- Notifications
 DROP TABLE IF EXISTS clan_notifications;
 CREATE TABLE clan_notifications (
     notification_id BIGINT AUTO_INCREMENT,
@@ -200,6 +207,7 @@ CREATE TABLE notification_details (
     CONSTRAINT detail_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id)
 );
 
+-- Encounters
 DROP TABLE IF EXISTS encounters;
 CREATE TABLE encounters (
     encounter_id INT AUTO_INCREMENT,
@@ -214,6 +222,7 @@ CREATE TABLE encounters (
     PRIMARY KEY (encounter_id)
 );
 
+-- Quests
 DROP TABLE IF EXISTS quest_details;
 CREATE TABLE quest_details (
     identifier VARCHAR(16),
@@ -239,6 +248,25 @@ CREATE TABLE quests (
     CONSTRAINT quest_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
+-- Disasters
+DROP TABLE IF EXISTS disaster_details;
+CREATE TABLE disaster_details (
+    identifier VARCHAR(32),
+    fame_reward INT NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
+    PRIMARY KEY (identifier)
+);
+
+DROP TABLE IF EXISTS disaster_penalties;
+CREATE TABLE disaster_penalties (
+    identifier VARCHAR(32),
+    penalty_type VARCHAR(16) NOT NULL,
+    disaster VARCHAR(32) NOT NULL,
+    PRIMARY KEY (identifier),
+    CONSTRAINT disaster_disaster_penalty_fk FOREIGN KEY (identifier) REFERENCES disaster_details (identifier)
+);
+
+-- Localized texts
 DROP TABLE IF EXISTS localized_texts;
 CREATE TABLE localized_texts (
     text_id BIGINT AUTO_INCREMENT,
@@ -258,6 +286,9 @@ CREATE TABLE localized_texts (
     item_description VARCHAR(16),
     quest_name VARCHAR(16),
     quest_description VARCHAR(16),
+    disaster_name VARCHAR(16),
+    disaster_description VARCHAR(16),
+    disaster_penalty_text VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -272,7 +303,10 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_item_name_fk FOREIGN KEY (item_name) REFERENCES item_details (identifier),
     CONSTRAINT localized_text_item_description_fk FOREIGN KEY (item_description) REFERENCES item_details (identifier),
     CONSTRAINT localized_text_quest_name_fk FOREIGN KEY (quest_name) REFERENCES quest_details (identifier),
-    CONSTRAINT localized_text_quest_description_fk FOREIGN KEY (quest_description) REFERENCES quest_details (identifier)
+    CONSTRAINT localized_text_quest_description_fk FOREIGN KEY (quest_description) REFERENCES quest_details (identifier),
+    CONSTRAINT localized_text_disaster_name_fk FOREIGN KEY (disaster_name) REFERENCES disaster_details (identifier),
+    CONSTRAINT localized_text_disaster_description_fk FOREIGN KEY (disaster_description) REFERENCES disaster_details (identifier),
+    CONSTRAINT localized_text_disaster_penalty_text_fk FOREIGN KEY (disaster_penalty_text) REFERENCES disaster_penalties (identifier)
 );
 
 -- Market offers
@@ -294,9 +328,10 @@ DROP TABLE IF EXISTS tavern_offers;
 CREATE TABLE tavern_offers (
     offer_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
-    clan_id INT NOT NULL,
+    fame_reward INT NOT NULL,
     character_id INT NOT NULL,
     price INT NOT NULL,
+    clan_id INT NOT NULL,
     CONSTRAINT tavern_offer_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
     CONSTRAINT tavern_character_identifier_fk FOREIGN KEY (character_id) REFERENCES characters (character_id),
     PRIMARY KEY (offer_id)
