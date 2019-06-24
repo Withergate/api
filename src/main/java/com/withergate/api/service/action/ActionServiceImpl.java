@@ -1,6 +1,5 @@
 package com.withergate.api.service.action;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
@@ -30,6 +29,7 @@ import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
@@ -37,7 +37,6 @@ import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,12 +54,12 @@ public class ActionServiceImpl implements ActionService {
 
     private final CharacterService characterService;
     private final LocationService locationService;
-    private final GameProperties gameProperties;
     private final BuildingService buildingService;
     private final QuestService questService;
     private final TradeService tradeService;
     private final ArenaService arenaService;
     private final TavernService tavernService;
+    private final DisasterService disasterService;
 
     @Transactional
     @Override
@@ -373,6 +372,15 @@ public class ActionServiceImpl implements ActionService {
 
         // perform computer trade actions
         tradeService.performComputerTradeActions(turnId);
+    }
+
+    @Transactional
+    @Override
+    public void processDisaster(int turnId) {
+        // TODO: disaster actions
+
+        // process disaster
+        disasterService.handleDisaster(turnId);
     }
 
     @Transactional

@@ -40,6 +40,21 @@ public class DisasterDetails {
     @JoinColumn(name = "disaster_description")
     private Map<String, LocalizedText> description;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "disaster_success_text")
+    private Map<String, LocalizedText> successText;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "disaster_partial_success_text")
+    private Map<String, LocalizedText> partialSuccessText;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "disaster_failure_text")
+    private Map<String, LocalizedText> failureText;
+
     @Column(name = "fame_reward", nullable = false)
     private int fameReward;
 

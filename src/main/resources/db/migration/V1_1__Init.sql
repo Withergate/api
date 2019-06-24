@@ -266,6 +266,16 @@ CREATE TABLE disaster_penalties (
     CONSTRAINT disaster_disaster_penalty_fk FOREIGN KEY (identifier) REFERENCES disaster_details (identifier)
 );
 
+DROP TABLE IF EXISTS disasters;
+CREATE TABLE disasters (
+    disaster_id INT AUTO_INCREMENT,
+    identifier VARCHAR(32),
+    completed BIT NOT NULL DEFAULT 0,
+    turn INT NOT NULL,
+    PRIMARY KEY (disaster_id),
+    CONSTRAINT disaster_disaster_details_fk FOREIGN KEY (identifier) REFERENCES disaster_details (identifier)
+);
+
 -- Localized texts
 DROP TABLE IF EXISTS localized_texts;
 CREATE TABLE localized_texts (
@@ -288,6 +298,9 @@ CREATE TABLE localized_texts (
     quest_description VARCHAR(16),
     disaster_name VARCHAR(16),
     disaster_description VARCHAR(16),
+    disaster_success_text VARCHAR(16),
+    disaster_partial_success_text VARCHAR(16),
+    disaster_failure_text VARCHAR(16),
     disaster_penalty_text VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
@@ -306,6 +319,9 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_quest_description_fk FOREIGN KEY (quest_description) REFERENCES quest_details (identifier),
     CONSTRAINT localized_text_disaster_name_fk FOREIGN KEY (disaster_name) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_description_fk FOREIGN KEY (disaster_description) REFERENCES disaster_details (identifier),
+    CONSTRAINT localized_text_disaster_success_text_fk FOREIGN KEY (disaster_success_text) REFERENCES disaster_details (identifier),
+    CONSTRAINT localized_text_disaster_partial_success_text_fk FOREIGN KEY (disaster_partial_success_text) REFERENCES disaster_details (identifier),
+    CONSTRAINT localized_text_disaster_failure_text_fk FOREIGN KEY (disaster_failure_text) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_penalty_text_fk FOREIGN KEY (disaster_penalty_text) REFERENCES disaster_penalties (identifier)
 );
 
@@ -328,7 +344,6 @@ DROP TABLE IF EXISTS tavern_offers;
 CREATE TABLE tavern_offers (
     offer_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
-    fame_reward INT NOT NULL,
     character_id INT NOT NULL,
     price INT NOT NULL,
     clan_id INT NOT NULL,

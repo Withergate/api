@@ -108,6 +108,13 @@ public interface ActionService {
     void processTradeActions(int turnId);
 
     /**
+     * Checks and handles current disaster.
+     *
+     * @param turnId turn ID
+     */
+    void processDisaster(int turnId);
+
+    /**
      * Assing default actions to all characters.
      */
     void assignDefaultActions();

@@ -50,6 +50,9 @@ public class TurnScheduler {
         // process trade actions
         actionService.processTradeActions(currentTurn.getTurnId());
 
+        // handle disaster
+        actionService.processDisaster(currentTurn.getTurnId());
+
         // update characters
         characterService.performCharacterTurnUpdates(currentTurn.getTurnId());
 
