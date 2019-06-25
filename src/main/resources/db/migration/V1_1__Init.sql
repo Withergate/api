@@ -260,10 +260,10 @@ CREATE TABLE disaster_details (
 DROP TABLE IF EXISTS disaster_penalties;
 CREATE TABLE disaster_penalties (
     identifier VARCHAR(32),
-    penalty_type VARCHAR(16) NOT NULL,
+    penalty_type VARCHAR(32) NOT NULL,
     disaster VARCHAR(32) NOT NULL,
     PRIMARY KEY (identifier),
-    CONSTRAINT disaster_disaster_penalty_fk FOREIGN KEY (identifier) REFERENCES disaster_details (identifier)
+    CONSTRAINT disaster_disaster_penalty_fk FOREIGN KEY (disaster) REFERENCES disaster_details (identifier)
 );
 
 DROP TABLE IF EXISTS disasters;
@@ -301,7 +301,6 @@ CREATE TABLE localized_texts (
     disaster_success_text VARCHAR(16),
     disaster_partial_success_text VARCHAR(16),
     disaster_failure_text VARCHAR(16),
-    disaster_penalty_text VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -321,8 +320,7 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_disaster_description_fk FOREIGN KEY (disaster_description) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_success_text_fk FOREIGN KEY (disaster_success_text) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_partial_success_text_fk FOREIGN KEY (disaster_partial_success_text) REFERENCES disaster_details (identifier),
-    CONSTRAINT localized_text_disaster_failure_text_fk FOREIGN KEY (disaster_failure_text) REFERENCES disaster_details (identifier),
-    CONSTRAINT localized_text_disaster_penalty_text_fk FOREIGN KEY (disaster_penalty_text) REFERENCES disaster_penalties (identifier)
+    CONSTRAINT localized_text_disaster_failure_text_fk FOREIGN KEY (disaster_failure_text) REFERENCES disaster_details (identifier)
 );
 
 -- Market offers

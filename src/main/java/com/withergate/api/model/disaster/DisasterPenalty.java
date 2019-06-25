@@ -33,14 +33,9 @@ public class DisasterPenalty {
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "lang")
-    @JoinColumn(name = "disaster_penalty_text")
-    private Map<String, LocalizedText> text;
-
     @Column(name = "penalty_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type penalty;
+    private Type penaltyType;
 
     @ManyToOne
     @JoinColumn(name = "disaster")
@@ -51,7 +46,7 @@ public class DisasterPenalty {
      * Penalty type.
      */
     public enum Type {
-        JUNK_LOSS, FOOD_LOSS
+        RESOURCES_LOSS, CHARACTER_INJURY, BUILDING_DESTRUCTION
     }
 
 }

@@ -57,7 +57,7 @@ public class DisasterServiceImpl implements DisasterService {
 
         // check if clan knows about this disaster
         boolean isVisible = false;
-        if ((disaster.getTurn() - DISASTER_VISIBILITY - clan.getInformationLevel()) >= turn.getTurnId()) {
+        if ((disaster.getTurn() - DISASTER_VISIBILITY - clan.getInformationLevel()) <= turn.getTurnId()) {
             isVisible = true;
         }
 
@@ -74,8 +74,8 @@ public class DisasterServiceImpl implements DisasterService {
         // check disaster
         if (disaster != null) {
             // check trigger
-            if (disaster.getTurn() < turnId) {
-                log.debug("Existing disaster not triggering this turn.");
+            if (disaster.getTurn() > turnId) {
+                log.debug("Existing disaster planned for turn {}. {} turns left.", disaster.getTurn(), disaster.getTurn() - turnId);
             } else {
                 triggerDisaster(turnId, disaster);
                 prepareNextDisaster(turnId);
