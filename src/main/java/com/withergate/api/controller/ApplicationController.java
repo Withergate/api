@@ -1,10 +1,11 @@
 package com.withergate.api.controller;
 
+import com.withergate.api.GameProperties;
+import com.withergate.api.model.dto.GamePropertiesDTO;
 import com.withergate.api.model.notification.GlobalNotification;
 import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.service.AdminService;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,14 @@ public class ApplicationController {
 
     private final AdminService adminService;
     private final GlobalNotificationRepository globalNotificationRepository;
+    private final GameProperties properties;
 
-    public ApplicationController(AdminService adminService,
-                                 GlobalNotificationRepository globalNotificationRepository) {
+    public ApplicationController(
+            AdminService adminService, GlobalNotificationRepository globalNotificationRepository, GameProperties properties
+    ) {
         this.adminService = adminService;
         this.globalNotificationRepository = globalNotificationRepository;
+        this.properties = properties;
     }
 
     /**
@@ -44,6 +48,19 @@ public class ApplicationController {
     @GetMapping("/version")
     public ResponseEntity<String> getVerison() {
         return new ResponseEntity<>(buildVersion, HttpStatus.OK);
+    }
+
+    /**
+     * Returns the current game properties.
+     *
+     * @return the game properties
+     */
+    @GetMapping("/game/properties")
+    public ResponseEntity<GamePropertiesDTO> getGameProperties() {
+        log.info("PROOOOOOOOOPS");
+        GamePropertiesDTO dto = new GamePropertiesDTO(properties.getMaxTurns());
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     /**

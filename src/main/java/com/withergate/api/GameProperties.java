@@ -16,11 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("game")
 public class GameProperties {
 
-    private int initialClanSize;
-
-    private int rareItemChance;
-
-    private int arenaCaps;
-    private int arenaFame;
+    private int maxTurns;
 
 }

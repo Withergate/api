@@ -1,5 +1,6 @@
 package com.withergate.api.scheduling;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
@@ -24,6 +25,7 @@ public class TurnScheduler {
     private final ActionService actionService;
     private final CharacterService characterService;
     private final ClanService clanService;
+    private final GameProperties gameProperties;
 
     /**
      * Processes all turn-related events at specified times.
@@ -34,6 +36,11 @@ public class TurnScheduler {
         // process current turn
         Turn currentTurn = turnRepository.findFirstByOrderByTurnIdDesc();
         log.info("Processing current turn: {}", currentTurn.getTurnId());
+
+        if (currentTurn.getTurnId() > gameProperties.getMaxTurns()) {
+            log.info("The game has already ended.");
+            return;
+        }
 
         // assign default actions
         actionService.assignDefaultActions();

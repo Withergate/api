@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
@@ -59,10 +58,7 @@ public class ClanServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        GameProperties gameProperties = new GameProperties();
-        gameProperties.setInitialClanSize(5);
-
-        clanService = new ClanServiceImpl(clanRepository, characterService, gameProperties, notificationService, questService,
+        clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
                 buildingService, tavernService);
     }
 

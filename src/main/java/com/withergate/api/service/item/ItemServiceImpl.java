@@ -2,7 +2,6 @@ package com.withergate.api.service.item;
 
 import java.util.List;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -46,6 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    private static final int RARE_ITEM_CHANCE = 20;
+
     private final CharacterRepository characterRepository;
     private final ClanRepository clanRepository;
     private final ItemDetailsRepository itemDetailsRepository;
@@ -54,7 +55,6 @@ public class ItemServiceImpl implements ItemService {
     private final GearRepository gearRepository;
     private final OutfitRepository outfitRepository;
     private final RandomService randomService;
-    private final GameProperties gameProperties;
     private final NotificationService notificationService;
 
     @Override
@@ -502,7 +502,7 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemDetails.Rarity getRandomRarity() {
         int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
-        if (diceRoll < gameProperties.getRareItemChance()) {
+        if (diceRoll < RARE_ITEM_CHANCE) {
             return ItemDetails.Rarity.RARE;
         } else {
             return ItemDetails.Rarity.COMMON;

@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -77,12 +76,9 @@ public class ItemServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        GameProperties gameProperties = new GameProperties();
-        gameProperties.setRareItemChance(10);
-
         itemService = new ItemServiceImpl(characterRepository, clanRepository, itemDetailsRepository,
                 weaponRepository, consumableRepository, gearRepository, outfitRepository,
-                randomService, gameProperties, notificationService);
+                randomService, notificationService);
     }
 
     @Test

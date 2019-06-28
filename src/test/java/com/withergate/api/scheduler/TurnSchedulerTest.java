@@ -1,5 +1,6 @@
 package com.withergate.api.scheduler;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.scheduling.TurnScheduler;
@@ -35,7 +36,10 @@ public class TurnSchedulerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        scheduler = new TurnScheduler(turnRepository, actionService, characterService, clanService);
+        GameProperties properties = new GameProperties();
+        properties.setMaxTurns(60);
+
+        scheduler = new TurnScheduler(turnRepository, actionService, characterService, clanService, properties);
     }
 
     @Test

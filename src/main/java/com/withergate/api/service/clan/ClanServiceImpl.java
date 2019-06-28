@@ -1,6 +1,10 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.GameProperties;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
@@ -18,11 +22,6 @@ import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,10 +41,10 @@ public class ClanServiceImpl implements ClanService {
 
     public static final int INFORMATION_QUOTIENT = 10;
     public static final int BASIC_POPULATION_LIMIT = 6;
+    public static final int INITIAL_CLAN_SIZE = 5;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
-    private final GameProperties gameProperties;
     private final NotificationService notificationService;
     private final QuestService questService;
     private final BuildingService buildingService;
@@ -101,7 +100,7 @@ public class ClanServiceImpl implements ClanService {
 
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
-        for (int i = 0; i < gameProperties.getInitialClanSize(); i++) {
+        for (int i = 0; i < INITIAL_CLAN_SIZE; i++) {
             Character character = characterService.generateRandomCharacter(filter);
             character.setClan(clan);
             clan.getCharacters().add(character);

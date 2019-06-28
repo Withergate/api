@@ -32,6 +32,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CombatServiceImpl implements CombatService {
 
+    private static final int ARENA_CAPS = 20;
+    private static final int ARENA_FAME = 10;
+
     private final RandomService randomService;
     private final CharacterService characterService;
     private final GameProperties gameProperties;
@@ -249,12 +252,12 @@ public class CombatServiceImpl implements CombatService {
                 .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
         character.getClan()
-                .setCaps(character.getClan().getCaps() + gameProperties.getArenaCaps()); // add caps to the winner
+                .setCaps(character.getClan().getCaps() + ARENA_CAPS); // add caps to the winner
         character.getClan()
-                .setFame(character.getClan().getFame() + gameProperties.getArenaFame()); // add fame to the winner
+                .setFame(character.getClan().getFame() + ARENA_FAME); // add fame to the winner
 
-        notification.setCapsIncome(gameProperties.getArenaCaps());
-        notification.setFameIncome(gameProperties.getArenaFame());
+        notification.setCapsIncome(ARENA_CAPS);
+        notification.setFameIncome(ARENA_FAME);
 
         // handle experience
         character.setExperience(character.getExperience() + 2);
