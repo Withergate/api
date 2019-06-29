@@ -5,11 +5,11 @@ INSERT INTO turns (turn_id) VALUES
 -- Location descriptions
 INSERT INTO location_descriptions(location, scouting, food_bonus, junk_bonus, information_bonus, encounter_chance, item_chance, description, info, image_url) VALUES
     ('NEIGHBORHOOD', false, 0, 0, 0, 0, 0, 'locations.neighborhood.description', 'locations.neighborhood.info',
-    'https://storage.googleapis.com/withergate-images/locations/neighborhood.jpg'),
+    'https://storage.googleapis.com/withergate-images/locations/neighborhood.png'),
     ('WASTELAND', true, 1, 2, 0, 25, 10, 'locations.wasteland.description', 'locations.wasteland.info',
-    'https://storage.googleapis.com/withergate-images/locations/wasteland.jpg'),
+    'https://storage.googleapis.com/withergate-images/locations/wasteland.png'),
     ('CITY_CENTER', true, 2, 2, 2, 50, 25, 'locations.citycenter.description', 'locations.citycenter.info',
-    'https://storage.googleapis.com/withergate-images/locations/city.jpg');
+    'https://storage.googleapis.com/withergate-images/locations/city.png');
 
 INSERT INTO localized_texts(location_name, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood'),
