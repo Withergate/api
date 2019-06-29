@@ -35,12 +35,13 @@ public class TurnScheduler {
 
         // process current turn
         Turn currentTurn = turnRepository.findFirstByOrderByTurnIdDesc();
-        log.info("Processing current turn: {}", currentTurn.getTurnId());
 
         if (currentTurn.getTurnId() > gameProperties.getMaxTurns()) {
             log.info("The game has already ended.");
             return;
         }
+
+        log.info(" === Processing turn: {} ===", currentTurn.getTurnId());
 
         // assign default actions
         actionService.assignDefaultActions();
@@ -67,7 +68,7 @@ public class TurnScheduler {
         clanService.performClanTurnUpdates(currentTurn.getTurnId());
 
         // prepare next turn
-        log.info("Turn finished - preparing next turn.");
+        log.info(" === Finished processing turn: {} ===", currentTurn.getTurnId());
 
         Turn nextTurn = new Turn();
         nextTurn.setTurnId(currentTurn.getTurnId() + 1);

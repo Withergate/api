@@ -25,7 +25,22 @@ INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.info3.1', 'en', 'There is a wolf den in the forest. Those bloody beasts are killing our sheep! Get rid of them for us and we will never forget your courage.'),
     ('quest.info3.1', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu.');
 
--- Placeholder texts encounters
+-- Random encounters
+INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, difficulty, description_text, success_text, failure_text) VALUES
+    ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 4, 'encounter.w.1.desc', 'encounter.w.1.succ', 'encounter.w.1.fail'),
+    ('WASTELAND', 'COMBAT', 'CAPS', 'NONE', 5, 'encounter.w.2.desc', 'encounter.w.2.succ', 'encounter.w.2.fail'),
+    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 6, 'encounter.w.3.desc', 'encounter.w.3.succ', 'encounter.w.3.fail'),
+    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 5, 'encounter.w.4.desc', 'encounter.w.4.succ', 'encounter.w.4.fail'),
+    ('WASTELAND', 'INTELLECT', 'JUNK', 'CAPS', 8, 'encounter.w.5.desc', 'encounter.w.5.succ', 'encounter.w.5.fail'),
+    ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 3, 'encounter.w.6.desc', 'encounter.w.6.succ', 'encounter.w.6.fail'),
+    ('WASTELAND', 'INTELLECT', 'CAPS', 'CAPS', 7, 'encounter.w.7.desc', 'encounter.w.7.succ', 'encounter.w.7.fail'),
+    ('WASTELAND', 'INTELLECT', 'JUNK', 'INJURY', 6, 'encounter.w.8.desc', 'encounter.w.8.succ', 'encounter.w.8.fail'),
+    ('WASTELAND', 'INTELLECT', 'ITEM', 'NONE', 8, 'encounter.w.9.desc', 'encounter.w.9.succ', 'encounter.w.9.fail'),
+    ('CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 5, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
+    ('CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 5, 'encounter.c.2.desc', 'encounter.c.2.succ', 'encounter.c.2.fail'),
+    ('CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 6, 'encounter.c.3.desc', 'encounter.c.3.succ', 'encounter.c.3.fail'),
+    ('CITY_CENTER', 'INTELLECT', 'JUNK', 'NONE', 7, 'encounter.c.4.desc', 'encounter.c.4.succ', 'encounter.c.4.fail');
+
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.w.1.desc', 'en', 'Character was attacked by mutants while scavenging in the ruins of a wasteland village.'),
     ('encounter.w.1.desc', 'cs', 'V průběhu prohledávání trosek opuštěné vesnice postavu napadli mutanti.'),
@@ -105,19 +120,3 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.c.4.succ', 'cs', 'Postava raději přikývla, protože fanatici mohou být nebezpeční. Spokojený kněz postavě požehnal. Vzápětí nalezla několik kusů cenného šrotu. Náhoda?'),
     ('encounter.c.4.fail', 'en', 'Character did not know anything about such cult so cursed and tried to leave the strange man behind. Maybe it was just a strange coincidence, but nothing was found that day.'),
     ('encounter.c.4.fail', 'cs', 'Postava nikoho takového neznala a tak raději cizince rychle opustila. Kněz zřejmě nebyl potěšen a postavu z dálky proklel. Možná je to jen náhoda, ale ten den postava nenalezla vůbec nic cenného ani zajímavého.');
-
--- Random encounters
-INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, difficulty, description_text, success_text, failure_text) VALUES
-    ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 4, 'encounter.w.1.desc', 'encounter.w.1.succ', 'encounter.w.1.fail'),
-    ('WASTELAND', 'COMBAT', 'CAPS', 'NONE', 5, 'encounter.w.2.desc', 'encounter.w.2.succ', 'encounter.w.2.fail'),
-    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 6, 'encounter.w.3.desc', 'encounter.w.3.succ', 'encounter.w.3.fail'),
-    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 5, 'encounter.w.4.desc', 'encounter.w.4.succ', 'encounter.w.4.fail'),
-    ('WASTELAND', 'INTELLECT', 'JUNK', 'CAPS', 8, 'encounter.w.5.desc', 'encounter.w.5.succ', 'encounter.w.5.fail'),
-    ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 3, 'encounter.w.6.desc', 'encounter.w.6.succ', 'encounter.w.6.fail'),
-    ('WASTELAND', 'INTELLECT', 'CAPS', 'CAPS', 7, 'encounter.w.7.desc', 'encounter.w.7.succ', 'encounter.w.7.fail'),
-    ('WASTELAND', 'INTELLECT', 'JUNK', 'INJURY', 6, 'encounter.w.8.desc', 'encounter.w.8.succ', 'encounter.w.8.fail'),
-    ('WASTELAND', 'INTELLECT', 'ITEM', 'NONE', 8, 'encounter.w.9.desc', 'encounter.w.9.succ', 'encounter.w.9.fail'),
-    ('CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 5, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
-    ('CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 5, 'encounter.c.2.desc', 'encounter.c.2.succ', 'encounter.c.2.fail'),
-    ('CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 6, 'encounter.c.3.desc', 'encounter.c.3.succ', 'encounter.c.3.fail'),
-    ('CITY_CENTER', 'INTELLECT', 'JUNK', 'NONE', 7, 'encounter.c.4.desc', 'encounter.c.4.succ', 'encounter.c.4.fail');

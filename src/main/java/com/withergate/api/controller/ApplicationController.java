@@ -6,6 +6,7 @@ import com.withergate.api.model.notification.GlobalNotification;
 import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.service.AdminService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,6 @@ public class ApplicationController {
      */
     @GetMapping("/game/properties")
     public ResponseEntity<GamePropertiesDTO> getGameProperties() {
-        log.info("PROOOOOOOOOPS");
         GamePropertiesDTO dto = new GamePropertiesDTO(properties.getMaxTurns());
 
         return new ResponseEntity<>(dto, HttpStatus.OK);

@@ -19,6 +19,7 @@ import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.BuildingRequest;
+import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.QuestRequest;
@@ -334,6 +335,12 @@ public class ActionServiceImpl implements ActionService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Override
+    public void createDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException {
+        // TODO: implement
+        throw new InvalidActionException("This action is not supported yet");
+    }
+
     @Transactional
     @Override
     public void processLocationActions(int turnId) {
@@ -377,7 +384,8 @@ public class ActionServiceImpl implements ActionService {
     @Transactional
     @Override
     public void processDisaster(int turnId) {
-        // TODO: disaster actions
+        // process disaster actions
+        disasterService.processDisasterActions(turnId);
 
         // process disaster
         disasterService.handleDisaster(turnId);

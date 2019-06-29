@@ -2,8 +2,8 @@ package com.withergate.api.model.disaster;
 
 import com.withergate.api.model.notification.LocalizedText;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,6 +62,9 @@ public class DisasterDetails {
     private String imageUrl;
 
     @OneToMany(mappedBy = "disaster", cascade = CascadeType.ALL)
-    private Set<DisasterPenalty> penalties;
+    private List<DisasterPenalty> penalties;
+
+    @OneToMany(mappedBy = "disaster", cascade = CascadeType.ALL)
+    private List<DisasterSolution> solutions;
 
 }

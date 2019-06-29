@@ -2,6 +2,7 @@ package com.withergate.api.service.action;
 
 import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.BuildingRequest;
+import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.QuestRequest;
@@ -78,6 +79,15 @@ public interface ActionService {
      * @throws InvalidActionException invalid action
      */
     void createMarketTradeAction(MarketTradeRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Creates and persists a disaster action based on the request. Throws an exception if this action
+     * cannot be performed.
+     *
+     * @param request the quest request
+     * @throws InvalidActionException invalid action
+     */
+    void createDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Executes all pending location actions.

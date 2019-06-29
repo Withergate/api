@@ -83,6 +83,10 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private boolean arena;
 
+    @Column(name = "disaster_progress", nullable = false)
+    @JsonView(Views.Internal.class)
+    private int disasterProgress;
+
     @OneToMany(mappedBy = "clan", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private Set<Character> characters;

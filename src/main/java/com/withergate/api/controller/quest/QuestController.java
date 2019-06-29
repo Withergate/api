@@ -29,7 +29,7 @@ public class QuestController {
      * Submits a new quest action and checks if this action is applicable. Throws an exception if not.
      *
      * @param principal the principal
-     * @param request   the trade action request
+     * @param request   the quest action request
      * @throws InvalidActionException invalid action
      */
     @PostMapping("/quests/action")

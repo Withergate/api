@@ -23,6 +23,7 @@ CREATE TABLE clans (
     information INT NOT NULL,
     information_level INT NOT NULL,
     arena BIT NOT NULL DEFAULT FALSE,
+    disaster_progress INT NOT NULL DEFAULT 0,
     default_action VARCHAR(32) NOT NULL,
     PRIMARY KEY (clan_id)
 );
@@ -266,6 +267,19 @@ CREATE TABLE disaster_penalties (
     CONSTRAINT disaster_disaster_penalty_fk FOREIGN KEY (disaster) REFERENCES disaster_details (identifier)
 );
 
+DROP TABLE IF EXISTS disaster_solutions;
+CREATE TABLE disaster_solutions (
+    identifier VARCHAR(32),
+    solution_type VARCHAR(32) NOT NULL,
+    difficulty INT NOT NULL DEFAULT 0,
+    bonus INT NOT NULL DEFAULT 0,
+    junk_cost INT NOT NULL DEFAULT 0,
+    caps_cost INT NOT NULL DEFAULT 0,
+    disaster VARCHAR(32) NOT NULL,
+    PRIMARY KEY (identifier),
+    CONSTRAINT disaster_disaster_solution_fk FOREIGN KEY (disaster) REFERENCES disaster_details (identifier)
+);
+
 DROP TABLE IF EXISTS disasters;
 CREATE TABLE disasters (
     disaster_id INT AUTO_INCREMENT,
@@ -301,6 +315,8 @@ CREATE TABLE localized_texts (
     disaster_success_text VARCHAR(16),
     disaster_partial_success_text VARCHAR(16),
     disaster_failure_text VARCHAR(16),
+    disaster_solution_name VARCHAR(16),
+    disaster_solution_description VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -320,7 +336,9 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_disaster_description_fk FOREIGN KEY (disaster_description) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_success_text_fk FOREIGN KEY (disaster_success_text) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_partial_success_text_fk FOREIGN KEY (disaster_partial_success_text) REFERENCES disaster_details (identifier),
-    CONSTRAINT localized_text_disaster_failure_text_fk FOREIGN KEY (disaster_failure_text) REFERENCES disaster_details (identifier)
+    CONSTRAINT localized_text_disaster_failure_text_fk FOREIGN KEY (disaster_failure_text) REFERENCES disaster_details (identifier),
+    CONSTRAINT localized_text_disaster_solution_name_fk FOREIGN KEY (disaster_solution_name) REFERENCES disaster_solutions (identifier),
+    CONSTRAINT localized_text_disaster_solution_description_fk FOREIGN KEY (disaster_solution_description) REFERENCES disaster_solutions (identifier)
 );
 
 -- Market offers
@@ -415,6 +433,17 @@ CREATE TABLE market_trade_actions (
     character_id INT NOT NULL,
     offer_id INT NOT NULL,
     PRIMARY KEY (action_id)
+);
+
+DROP TABLE IF EXISTS disaster_actions;
+CREATE TABLE disaster_actions (
+    action_id INT AUTO_INCREMENT,
+    state VARCHAR(16) NOT NULL,
+    character_id INT NOT NULL,
+    identifier VARCHAR(32) NOT NULL,
+    PRIMARY KEY (action_id),
+    CONSTRAINT disaster_action_character_fk FOREIGN KEY (character_id) REFERENCES characters (character_id),
+    CONSTRAINT disaster_action_solution_fk FOREIGN KEY (identifier) REFERENCES disaster_solutions (identifier)
 );
 
 -- Names

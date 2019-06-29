@@ -1,5 +1,6 @@
 package com.withergate.api.service.disaster;
 
+import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.disaster.Disaster;
 
 /**
@@ -23,5 +24,19 @@ public interface DisasterService {
      * @param turnId the current turn
      */
     void handleDisaster(int turnId);
+
+    /**
+     * Saves the provided action.
+     *
+     * @param action the action to be saved
+     */
+    void saveDisasterAction(DisasterAction action);
+
+    /**
+     * Processes all pending disaster actions.
+     *
+     * @param turnId turn ID
+     */
+    void processDisasterActions(int turnId);
 
 }

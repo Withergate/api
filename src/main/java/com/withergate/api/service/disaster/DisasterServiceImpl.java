@@ -6,10 +6,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionState;
+import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.repository.action.DisasterActionRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.repository.disaster.DisasterRepository;
 import com.withergate.api.service.RandomService;
@@ -36,6 +39,7 @@ public class DisasterServiceImpl implements DisasterService {
 
     private final DisasterRepository disasterRepository;
     private final DisasterDetailsRepository disasterDetailsRepository;
+    private final DisasterActionRepository disasterActionRepository;
     private final ClanService clanService;
     private final TurnRepository turnRepository;
     private final RandomService randomService;
@@ -85,10 +89,35 @@ public class DisasterServiceImpl implements DisasterService {
         }
     }
 
+    @Override
+    public void saveDisasterAction(DisasterAction action) {
+        disasterActionRepository.save(action);
+    }
+
+    @Override
+    public void processDisasterActions(int turnId) {
+        for (DisasterAction action : disasterActionRepository.findAllByState(ActionState.PENDING)) {
+            // TODO: handle action
+
+            // TODO: notification
+
+            // mark action as completed
+            action.setState(ActionState.COMPLETED);
+        }
+    }
+
     private void triggerDisaster(int turnId, Disaster disaster) {
         log.debug("Triggering disaster: {}", disaster.getDetails().getIdentifier());
 
         // not implemented yet
+
+        // mark disaster as completed
+        disaster.setCompleted(true);
+
+        // reset disaster progress for all clans
+        for (Clan clan : clanService.getAllClans()) {
+            clan.setDisasterProgress(0);
+        }
     }
 
 
@@ -129,6 +158,7 @@ public class DisasterServiceImpl implements DisasterService {
 
         log.debug("Disaster {} prepared for turn {}.", disaster.getDetails().getIdentifier(), disaster.getTurn());
 
+        // save disaster
         disasterRepository.save(disaster);
     }
 
