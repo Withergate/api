@@ -1,13 +1,13 @@
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image_url) VALUES
-    ('SICK_BAY', 15, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('GMO_FARM', 10, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('TRAINING_GROUNDS', 20, 0, false, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('MONUMENT', 20, false, 0, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('FORGE', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('WORKSHOP', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('RAGS_SHOP', 10, true, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('QUARTERS', 10, false, 10, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('SICK_BAY', 15, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
+    ('GMO_FARM', 10, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
+    ('TRAINING_GROUNDS', 20, 0, false, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
+    ('MONUMENT', 20, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
+    ('FORGE', 10, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
+    ('WORKSHOP', 10, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
+    ('RAGS_SHOP', 10, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
+    ('QUARTERS', 10, false, 10, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
