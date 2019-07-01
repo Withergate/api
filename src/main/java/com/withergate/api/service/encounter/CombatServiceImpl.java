@@ -3,7 +3,6 @@ package com.withergate.api.service.encounter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TraitDetails;
@@ -37,46 +36,25 @@ public class CombatServiceImpl implements CombatService {
 
     private final RandomService randomService;
     private final CharacterService characterService;
-    private final GameProperties gameProperties;
     private final NotificationService notificationService;
 
     @Override
-    public boolean handleSingleCombat(ClanNotification notification, Encounter encounter, Character character) {
+    public boolean handleSingleCombat(ClanNotification notification, int difficulty, Character character) {
         log.debug("Handling encounter combat for character {} and encounter difficulty {}.", character.getName(),
-                encounter.getDifficulty());
+                difficulty);
 
         // prepare enemy
         Character enemy = new Character();
         enemy.setId(-1);
         enemy.setName("Enemy");
-        enemy.setCombat(encounter.getDifficulty());
-        enemy.setHitpoints(encounter.getDifficulty() + randomService.getRandomInt(1, RandomServiceImpl.K6));
+        enemy.setCombat(difficulty);
+        enemy.setHitpoints(difficulty + randomService.getRandomInt(1, RandomServiceImpl.K10));
         enemy.setMaxHitpoints(enemy.getHitpoints());
 
         CombatResult result = handleCombat(character, notification, enemy, new ClanNotification());
 
         // compute combat result
-        if (result.getLoser().getId() == character.getId()) {
-            // handle experience
-            character.setExperience(character.getExperience() + 1);
-            notification.setExperience(1);
-
-            notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(),
-                    new String[]{character.getName()});
-
-        } else {
-            // combat won - update notification
-            notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(),
-                    new String[]{character.getName()});
-
-            // handle experience
-            character.setExperience(character.getExperience() + 2);
-            notification.setExperience(2);
-
-            return true;
-        }
-
-        return false;
+        return result.getWinner().getId() == character.getId();
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.quest.Quest;
@@ -86,56 +85,46 @@ public class QuestServiceImpl implements QuestService {
         Character character = action.getCharacter();
         Quest quest = action.getQuest();
 
+        boolean success = false;
         switch (action.getQuest().getDetails().getType()) {
             case COMBAT:
-                // create temporary encounter from quest
-                Encounter encounter = new Encounter();
-                encounter.setDifficulty(quest.getDetails().getDifficulty());
-                encounter.setSuccessText("character.quest.success");
-                encounter.setFailureText("character.quest.failure");
-
-                boolean result = combatService.handleSingleCombat(notification, encounter, character);
-                if (result) {
-                    handleQuestSuccess(quest, notification);
-                }
-
-                // experience is handled in the combat service
+                success = combatService.handleSingleCombat(notification, quest.getDetails().getDifficulty(), character);
                 break;
             case INTELLECT:
-                int experience = 1;
                 int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                int difficultyRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                if (character.getIntellect() + diceRoll >= quest.getDetails().getDifficulty() + difficultyRoll) {
-                    notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[]{});
-                    experience++;
-                    handleQuestSuccess(quest, notification);
-                } else {
-                    notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[]{});
+                int result = character.getIntellect() + diceRoll;
+                if (result >= quest.getDetails().getDifficulty()) {
+                    success = true;
                 }
-                notification.setExperience(experience);
-                character.setExperience(character.getExperience() + experience);
-
+                notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
                 break;
             case CRAFTSMANSHIP:
-                experience = 1;
                 diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                difficultyRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                if (character.getCraftsmanship() + diceRoll >= quest.getDetails().getDifficulty() + difficultyRoll) {
-                    notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[]{});
-                    experience++;
-                    handleQuestSuccess(quest, notification);
-                } else {
-                    notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[]{});
+                result = character.getCraftsmanship() + diceRoll;
+                if (result >= quest.getDetails().getDifficulty()) {
+                    success = true;
                 }
-                notification.setExperience(experience);
-                character.setExperience(character.getExperience() + experience);
+                notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
                 break;
             default:
                 log.warn("Unknown quest type: {}", action.getQuest().getDetails().getType());
         }
+
+        if (success) {
+            handleQuestSuccess(quest, character, notification);
+        } else {
+            handleQuestFailure(quest, character, notification);
+        }
     }
 
-    private void handleQuestSuccess(Quest quest, ClanNotification notification) {
+    private void handleQuestSuccess(Quest quest, Character character, ClanNotification notification) {
+        // update notification
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[]{}, quest.getDetails().getName());
+
+        // award experience
+        character.setExperience(character.getExperience() + 2);
+        notification.setExperience(2);
+
         quest.setProgress(quest.getProgress() + 1);
 
         Clan clan = quest.getClan();
@@ -158,6 +147,23 @@ public class QuestServiceImpl implements QuestService {
 
             notificationService.save(completionNotification);
         }
+    }
+
+    private void handleQuestFailure(Quest quest, Character character, ClanNotification notification) {
+        // update notification
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[]{},
+                quest.getDetails().getName());
+
+        // award experience
+        character.setExperience(character.getExperience() + 1);
+        notification.setExperience(1);
+    }
+
+    private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
+                new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
+        return detail;
     }
 
 }

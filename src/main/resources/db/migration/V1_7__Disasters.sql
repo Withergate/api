@@ -129,7 +129,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.refugees.s1', 'd.refugees', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.refugees.s2', 'd.refugees', 'INTELLECT', 5, 10, 0, 0, 0),
+    ('d.refugees.s2', 'd.refugees', 'INTELLECT', 7, 10, 0, 0, 0),
     ('d.refugees.s3', 'd.refugees', 'AUTOMATIC', 0, 20, 0, 0, 30),
     ('d.refugees.s4', 'd.refugees', 'COMBAT', 4, 20, 0, 0, 0);
 
@@ -180,8 +180,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.storm.s1', 'd.storm', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.storm.s2', 'd.storm', 'CRAFTSMANSHIP', 5, 10, 0, 0, 0),
-    ('d.storm.s3', 'd.storm', 'CRAFTSMANSHIP', 4, 15, 10, 0, 0),
+    ('d.storm.s2', 'd.storm', 'CRAFTSMANSHIP', 7, 10, 0, 0, 0),
+    ('d.storm.s3', 'd.storm', 'CRAFTSMANSHIP', 5, 15, 10, 0, 0),
     ('d.storm.s4', 'd.storm', 'AUTOMATIC', 4, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES

@@ -21,6 +21,7 @@ import com.withergate.api.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.repository.disaster.DisasterRepository;
 import com.withergate.api.repository.disaster.DisasterSolutionRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.notification.NotificationService;
@@ -195,13 +196,40 @@ public class DisasterServiceImpl implements DisasterService {
                 action.getSolution().getName());
 
         Character character = action.getCharacter();
+        boolean success = false;
         switch (action.getSolution().getSolutionType()) {
             case AUTOMATIC: {
-                handleActionSuccess(action, notification);
+                success = true;
                 break;
             }
-            // TODO: not implemented yet
+            case CRAFTSMANSHIP: {
+                int roll = randomService.getRandomInt(1, RandomServiceImpl.K6);
+                int result = character.getCraftsmanship() + roll;
+                notification.getDetails().add(getActionRollDetail(action.getSolution().getDifficulty(), roll, result));
+                if (result >= action.getSolution().getDifficulty()) {
+                    success = true;
+                }
+                break;
+            }
+            case INTELLECT: {
+                int roll = randomService.getRandomInt(1, RandomServiceImpl.K6);
+                int result = character.getIntellect() + roll;
+                notification.getDetails().add(getActionRollDetail(action.getSolution().getDifficulty(), roll, result));
+                if (result >= action.getSolution().getDifficulty()) {
+                    success = true;
+                }
+                break;
+            }
+            case COMBAT: {
+                success = combatService.handleSingleCombat(notification, action.getSolution().getDifficulty(), action.getCharacter());
+            }
             default: log.error("Unknown solution type: {}", action.getSolution().getSolutionType());
+        }
+
+        if (success) {
+            handleActionSuccess(action, notification);
+        } else {
+            handleActionFailure(action, notification);
         }
     }
 
@@ -220,6 +248,22 @@ public class DisasterServiceImpl implements DisasterService {
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.action.success",
                 new String[]{String.valueOf(action.getSolution().getBonus())});
         notification.getDetails().add(detail);
+    }
+
+    private void handleActionFailure(DisasterAction action, ClanNotification notification) {
+        // reward experience
+        action.getCharacter().setExperience(action.getCharacter().getExperience() + 1);
+        notification.setExperience(1);
+
+        // set notification text
+        notificationService.addLocalizedTexts(notification.getText(), "disaster.action.failure", new String[]{});
+    }
+
+    private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
+                new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
+        return detail;
     }
 
 }

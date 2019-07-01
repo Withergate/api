@@ -52,20 +52,20 @@ public class EncounterServiceImpl implements EncounterService {
         switch (encounter.getType()) {
             case COMBAT:
                 // handle combat and check if character won, if yes, handle reward
-                if (combatService.handleSingleCombat(notification, encounter, character)) {
-                    handleReward(encounter, character, notification);
+                if (combatService.handleSingleCombat(notification, encounter.getDifficulty(), character)) {
+                    handleSuccess(encounter, character, notification);
                 } else {
-                    handlePenalty(encounter, character, notification);
+                    handleFailure(encounter, character, notification);
                 }
                 break;
             case INTELLECT:
                 int totalIntellect = character.getIntellect() + randomService.getRandomInt(1, RandomServiceImpl.K6);
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
-                    handlePenalty(encounter, character, notification);
+                    handleFailure(encounter, character, notification);
                     notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
                 } else {
-                    handleReward(encounter, character, notification);
+                    handleSuccess(encounter, character, notification);
                     notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{});
                 }
                 break;
@@ -75,8 +75,15 @@ public class EncounterServiceImpl implements EncounterService {
         }
     }
 
-    private void handleReward(Encounter encounter, Character character, ClanNotification notification) {
+    private void handleSuccess(Encounter encounter, Character character, ClanNotification notification) {
         log.debug("Computing reward for character {}", character.getId());
+
+        // update notification
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{});
+
+        // handle experience
+        character.setExperience(character.getExperience() + 2);
+        notification.setExperience(2);
 
         Clan clan = character.getClan();
 
@@ -121,8 +128,15 @@ public class EncounterServiceImpl implements EncounterService {
         }
     }
 
-    private void handlePenalty(Encounter encounter, Character character, ClanNotification notification) {
+    private void handleFailure(Encounter encounter, Character character, ClanNotification notification) {
         log.debug("Computing penalty for character {}", character.getId());
+
+        // update notification
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
+
+        // handle experience
+        character.setExperience(character.getExperience() + 1);
+        notification.setExperience(1);
 
         Clan clan = character.getClan();
 

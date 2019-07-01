@@ -1,11 +1,14 @@
 package com.withergate.api.service.quest;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.quest.QuestDetails;
@@ -16,10 +19,6 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.encounter.CombatService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -224,7 +223,7 @@ public class QuestServiceTest {
         questService.processQuestActions(1);
 
         // then verify combat service called
-        Mockito.verify(combatService).handleSingleCombat(Mockito.any(ClanNotification.class), Mockito.any(Encounter.class),
+        Mockito.verify(combatService).handleSingleCombat(Mockito.any(ClanNotification.class), Mockito.anyInt(),
                 Mockito.eq(character));
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
     }

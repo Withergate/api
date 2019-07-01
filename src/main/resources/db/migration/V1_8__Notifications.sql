@@ -26,10 +26,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('character.healing', 'cs', 'Postavě se zvedlo zdraví zdraví při odpočinku.'),
     ('character.levelup', 'en', 'Character has advanced to a higher level.'),
     ('character.levelup', 'cs', 'Postava postoupila na další úroveň.'),
-    ('character.quest.success', 'en', 'Character successfully completed part of the quest.'),
-    ('character.quest.success', 'cs', 'Postava úspěšně splnila část úkolu.'),
-    ('character.quest.failure', 'en', 'Character did not manage to complete part of the quest.'),
-    ('character.quest.failure', 'cs', 'Postavě se nepodařilo splnit část úkolu.'),
+    ('character.quest.success', 'en', 'Character successfully completed part of a quest: []'),
+    ('character.quest.success', 'cs', 'Postava úspěšně splnila část úkolu: []'),
+    ('character.quest.failure', 'en', 'Character did not manage to complete part of the quest: []'),
+    ('character.quest.failure', 'cs', 'Postavě se nepodařilo splnit část úkolu: []'),
     ('character.trade.resourcesBuy', 'en', 'Character went to the markeplace and bought some resources.'),
     ('character.trade.resourcesBuy', 'cs', 'Postava na tržišti koupila nějaké zásoby.'),
     ('character.trade.resourcesSell', 'en', 'Character went to the markeplace and sold some resources.'),
@@ -55,7 +55,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('disaster.action', 'en', 'Character worked on preventing the disaster. The chosen action was: [].'),
     ('disaster.action', 'cs', 'Postava pracovala na odvrácení pohromy. Zvolila řešení: [].'),
     ('disaster.action.success', 'en', 'The action was successful.'),
-    ('disaster.action.success', 'cs', 'Akce dopadla úspěšně'),
+    ('disaster.action.success', 'cs', 'Akce dopadla úspěšně.'),
     ('disaster.action.failure', 'en', 'Unfortunately, the action failed.'),
     ('disaster.action.failure', 'cs', 'Bohužel se akci nepodařilo úspěšně dokončit.');
 
@@ -109,5 +109,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('gear.bonus.food', 'cs', 'Postava našla více jídla díky předmětu: [].'),
     ('gear.bonus.work', 'en', 'Character worked more efficiently thanks to the quipped gear: [].'),
     ('gear.bonus.work', 'cs', 'Postava pracovala efektivněji díky svému vybavení: [].'),
+    ('detail.action.roll', 'en', 'Action difficulty was {}. Character rolled {} and the total action result was {}.'),
+    ('detail.action.roll', 'cs', 'Náročnost akce byla {}. Postava hodila {} a celkový výsledek byl {}.'),
     ('detail.disaster.action.success', 'en', 'Character successfully completed the task and added {}% to the disaster resolution.'),
     ('detail.disaster.action.success', 'cs', 'Postava úspěšně dokončila úkol a přidala {}% do vyřešení pohromy.');

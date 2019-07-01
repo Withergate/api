@@ -89,7 +89,7 @@ public class EncounterServiceTest {
         encounterService.handleEncounter(notification, character, Location.CITY_CENTER);
 
         // then verify combat service called
-        Mockito.verify(combatService).handleSingleCombat(notification, encounter, character);
+        Mockito.verify(combatService).handleSingleCombat(notification, 5, character);
     }
 
     @Test
