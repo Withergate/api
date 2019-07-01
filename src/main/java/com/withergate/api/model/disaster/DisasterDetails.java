@@ -1,9 +1,8 @@
 package com.withergate.api.model.disaster;
 
-import com.withergate.api.model.notification.LocalizedText;
-
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,20 +42,19 @@ public class DisasterDetails {
     @JoinColumn(name = "disaster_description")
     private Map<String, LocalizedText> description;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "lang")
-    @JoinColumn(name = "disaster_success_text")
-    private Map<String, LocalizedText> successText;
+    // Notification text codes
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "lang")
-    @JoinColumn(name = "disaster_partial_success_text")
-    private Map<String, LocalizedText> partialSuccessText;
+    @JsonIgnore
+    @Column(name = "success_text", updatable = false, nullable = false)
+    private String successText;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @MapKeyColumn(name = "lang")
-    @JoinColumn(name = "disaster_failure_text")
-    private Map<String, LocalizedText> failureText;
+    @JsonIgnore
+    @Column(name = "partial_success_text", updatable = false, nullable = false)
+    private String partialSuccessText;
+
+    @JsonIgnore
+    @Column(name = "failure_text", updatable = false, nullable = false)
+    private String failureText;
 
     @Column(name = "fame_reward", nullable = false)
     private int fameReward;

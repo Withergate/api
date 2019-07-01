@@ -2,6 +2,7 @@ package com.withergate.api.service.disaster;
 
 import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.disaster.Disaster;
+import com.withergate.api.model.disaster.DisasterSolution;
 
 /**
  * Disaster service.
@@ -9,6 +10,21 @@ import com.withergate.api.model.disaster.Disaster;
  * @author Martin Myslik
  */
 public interface DisasterService {
+
+    /**
+     * Loads the current disaster.
+     *
+     * @return the loaded disaster
+     */
+    Disaster getCurrentDisaster();
+
+    /**
+     * Loads the disaster solution based on its identifier.
+     *
+     * @param  identifier solution identifier
+     * @return the loaded disaster solution
+     */
+    DisasterSolution getDisasterSolution(String identifier);
 
     /**
      * Loads the current disaster. Checks whether the disaster is visible for the provided clan.

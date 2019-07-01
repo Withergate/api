@@ -8,15 +8,22 @@ import java.util.stream.Collectors;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.DisasterAction;
+import com.withergate.api.model.character.Character;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
+import com.withergate.api.model.disaster.DisasterSolution;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.action.DisasterActionRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.repository.disaster.DisasterRepository;
+import com.withergate.api.repository.disaster.DisasterSolutionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.encounter.CombatService;
+import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,10 +46,23 @@ public class DisasterServiceImpl implements DisasterService {
 
     private final DisasterRepository disasterRepository;
     private final DisasterDetailsRepository disasterDetailsRepository;
+    private final DisasterSolutionRepository disasterSolutionRepository;
     private final DisasterActionRepository disasterActionRepository;
     private final ClanService clanService;
     private final TurnRepository turnRepository;
     private final RandomService randomService;
+    private final NotificationService notificationService;
+    private final CombatService combatService;
+
+    @Override
+    public Disaster getCurrentDisaster() {
+        return disasterRepository.findFirstByCompleted(false);
+    }
+
+    @Override
+    public DisasterSolution getDisasterSolution(String identifier) {
+        return disasterSolutionRepository.getOne(identifier);
+    }
 
     @Override
     public Disaster getDisasterForClan(int clanId) {
@@ -97,12 +117,18 @@ public class DisasterServiceImpl implements DisasterService {
     @Override
     public void processDisasterActions(int turnId) {
         for (DisasterAction action : disasterActionRepository.findAllByState(ActionState.PENDING)) {
-            // TODO: handle action
+            // prepare notification
+            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            notification.setHeader(action.getCharacter().getName());
 
-            // TODO: notification
+            // handle action
+            handleAction(action, notification);
 
             // mark action as completed
             action.setState(ActionState.COMPLETED);
+
+            // save notification
+            notificationService.save(notification);
         }
     }
 
@@ -160,6 +186,40 @@ public class DisasterServiceImpl implements DisasterService {
 
         // save disaster
         disasterRepository.save(disaster);
+    }
+
+    private void handleAction(DisasterAction action, ClanNotification notification) {
+        log.debug("Handling disaster action {} with character {}.", action.getSolution().getIdentifier(), action.getCharacter().getId());
+
+        notificationService.addLocalizedTexts(notification.getText(), "disaster.action", new String[]{},
+                action.getSolution().getName());
+
+        Character character = action.getCharacter();
+        switch (action.getSolution().getSolutionType()) {
+            case AUTOMATIC: {
+                handleActionSuccess(action, notification);
+                break;
+            }
+            // TODO: not implemented yet
+            default: log.error("Unknown solution type: {}", action.getSolution().getSolutionType());
+        }
+    }
+
+    private void handleActionSuccess(DisasterAction action, ClanNotification notification) {
+        // reward experience
+        action.getCharacter().setExperience(action.getCharacter().getExperience() + 2);
+        notification.setExperience(2);
+
+        // increase clan progress
+        Clan clan = action.getCharacter().getClan();
+        clan.setDisasterProgress(clan.getDisasterProgress() + action.getSolution().getBonus());
+
+        // set notification text
+        notificationService.addLocalizedTexts(notification.getText(), "disaster.action.success", new String[]{});
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.action.success",
+                new String[]{String.valueOf(action.getSolution().getBonus())});
+        notification.getDetails().add(detail);
     }
 
 }

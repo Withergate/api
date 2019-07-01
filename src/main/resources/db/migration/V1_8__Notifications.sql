@@ -51,7 +51,13 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('combat.arena.lose', 'en', '{} lost the fight.'),
     ('combat.arena.lose', 'cs', '{} prohrál/a souboj.'),
     ('combat.death', 'en', 'Unfortunately, {} died during the combat.'),
-    ('combat.death', 'cs', 'Bohužel, {} zemřel/a během souboje.');
+    ('combat.death', 'cs', 'Bohužel, {} zemřel/a během souboje.'),
+    ('disaster.action', 'en', 'Character worked on preventing the disaster. The chosen action was: [].'),
+    ('disaster.action', 'cs', 'Postava pracovala na odvrácení pohromy. Zvolila řešení: [].'),
+    ('disaster.action.success', 'en', 'The action was successful.'),
+    ('disaster.action.success', 'cs', 'Akce dopadla úspěšně'),
+    ('disaster.action.failure', 'en', 'Unfortunately, the action failed.'),
+    ('disaster.action.failure', 'cs', 'Bohužel se akci nepodařilo úspěšně dokončit.');
 
 -- Placeholder texts detail
 INSERT INTO placeholder_texts(code, lang, text) VALUES
@@ -102,4 +108,6 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('gear.bonus.food', 'en', 'Character found more food thanks to the quipped gear: [].'),
     ('gear.bonus.food', 'cs', 'Postava našla více jídla díky předmětu: [].'),
     ('gear.bonus.work', 'en', 'Character worked more efficiently thanks to the quipped gear: [].'),
-    ('gear.bonus.work', 'cs', 'Postava pracovala efektivněji díky svému vybavení: [].');
+    ('gear.bonus.work', 'cs', 'Postava pracovala efektivněji díky svému vybavení: [].'),
+    ('detail.disaster.action.success', 'en', 'Character successfully completed the task and added {}% to the disaster resolution.'),
+    ('detail.disaster.action.success', 'cs', 'Postava úspěšně dokončila úkol a přidala {}% do vyřešení pohromy.');

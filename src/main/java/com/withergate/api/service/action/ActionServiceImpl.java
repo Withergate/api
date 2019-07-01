@@ -4,6 +4,7 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.action.BuildingAction;
+import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.QuestAction;
@@ -13,6 +14,8 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.disaster.Disaster;
+import com.withergate.api.model.disaster.DisasterSolution;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
@@ -335,10 +338,40 @@ public class ActionServiceImpl implements ActionService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional
     @Override
     public void createDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException {
-        // TODO: implement
-        throw new InvalidActionException("This action is not supported yet");
+        log.debug("Submitting disaster action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if disaster solution belongs to the current disaster
+        Disaster disaster = disasterService.getCurrentDisaster();
+        DisasterSolution solution = disasterService.getDisasterSolution(request.getSolution());
+        if (solution == null || !solution.getDisaster().equals(disaster.getDetails())) {
+            throw new InvalidActionException("This solution either doesn't exist or doesn't belong to the current disaster.");
+        }
+
+        // check resources
+        if (solution.getCapsCost() > clan.getCaps() || solution.getJunkCost() > clan.getJunk()
+                || solution.getFoodCost() > clan.getFood()) {
+            throw new InvalidActionException("Not enough resources to perform this action.");
+        }
+
+        // create action
+        DisasterAction action = new DisasterAction();
+        action.setCharacter(character);
+        action.setSolution(solution);
+        action.setState(ActionState.PENDING);
+        disasterService.saveDisasterAction(action);
+
+        // pay resources
+        clan.setCaps(clan.getCaps() - solution.getCapsCost());
+        clan.setJunk(clan.getJunk() - solution.getJunkCost());
+        clan.setFood(clan.getFood() - solution.getFoodCost());
+
+        // mark character as busy and save the clan
+        character.setState(CharacterState.BUSY);
     }
 
     @Transactional

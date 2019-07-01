@@ -49,6 +49,9 @@ public class DisasterSolution {
     @Column(name = "caps_cost", updatable = false, nullable = false)
     private int capsCost;
 
+    @Column(name = "food_cost", updatable = false, nullable = false)
+    private int foodCost;
+
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
     @JoinColumn(name = "disaster_solution_name")

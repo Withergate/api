@@ -255,6 +255,9 @@ CREATE TABLE disaster_details (
     identifier VARCHAR(32),
     fame_reward INT NOT NULL,
     image_url VARCHAR(256) NOT NULL,
+    success_text VARCHAR(32),
+    partial_success_text VARCHAR(32),
+    failure_text VARCHAR(32),
     PRIMARY KEY (identifier)
 );
 
@@ -275,6 +278,7 @@ CREATE TABLE disaster_solutions (
     bonus INT NOT NULL DEFAULT 0,
     junk_cost INT NOT NULL DEFAULT 0,
     caps_cost INT NOT NULL DEFAULT 0,
+    food_cost INT NOT NULL DEFAULT 0,
     disaster VARCHAR(32) NOT NULL,
     PRIMARY KEY (identifier),
     CONSTRAINT disaster_disaster_solution_fk FOREIGN KEY (disaster) REFERENCES disaster_details (identifier)
@@ -312,9 +316,6 @@ CREATE TABLE localized_texts (
     quest_description VARCHAR(16),
     disaster_name VARCHAR(16),
     disaster_description VARCHAR(16),
-    disaster_success_text VARCHAR(16),
-    disaster_partial_success_text VARCHAR(16),
-    disaster_failure_text VARCHAR(16),
     disaster_solution_name VARCHAR(16),
     disaster_solution_description VARCHAR(16),
     PRIMARY KEY (text_id),
@@ -334,9 +335,6 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_quest_description_fk FOREIGN KEY (quest_description) REFERENCES quest_details (identifier),
     CONSTRAINT localized_text_disaster_name_fk FOREIGN KEY (disaster_name) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_description_fk FOREIGN KEY (disaster_description) REFERENCES disaster_details (identifier),
-    CONSTRAINT localized_text_disaster_success_text_fk FOREIGN KEY (disaster_success_text) REFERENCES disaster_details (identifier),
-    CONSTRAINT localized_text_disaster_partial_success_text_fk FOREIGN KEY (disaster_partial_success_text) REFERENCES disaster_details (identifier),
-    CONSTRAINT localized_text_disaster_failure_text_fk FOREIGN KEY (disaster_failure_text) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_solution_name_fk FOREIGN KEY (disaster_solution_name) REFERENCES disaster_solutions (identifier),
     CONSTRAINT localized_text_disaster_solution_description_fk FOREIGN KEY (disaster_solution_description) REFERENCES disaster_solutions (identifier)
 );
