@@ -30,7 +30,7 @@ public class TurnScheduler {
     /**
      * Processes all turn-related events at specified times.
      */
-    @Scheduled(cron = "0 0 6,18 * * *", zone = "CET") // every day at 6am and 6pm CET
+    @Scheduled(cron = "0 0 6,18 * * *", zone = "UTC") // every day at 6am and 6pm UTC
     public void processTurn() {
 
         // process current turn

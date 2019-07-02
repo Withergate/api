@@ -17,5 +17,7 @@ import org.springframework.context.annotation.Configuration;
 public class GameProperties {
 
     private int maxTurns;
+    private int disasterFailureThreshold;
+    private int disasterPartialSuccessThreshold;
 
 }

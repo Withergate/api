@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.DisasterAction;
@@ -49,6 +50,7 @@ public class DisasterServiceImpl implements DisasterService {
     private final DisasterDetailsRepository disasterDetailsRepository;
     private final DisasterSolutionRepository disasterSolutionRepository;
     private final DisasterActionRepository disasterActionRepository;
+    private final DisasterPenaltyService disasterPenaltyService;
     private final ClanService clanService;
     private final TurnRepository turnRepository;
     private final RandomService randomService;
@@ -136,15 +138,17 @@ public class DisasterServiceImpl implements DisasterService {
     private void triggerDisaster(int turnId, Disaster disaster) {
         log.debug("Triggering disaster: {}", disaster.getDetails().getIdentifier());
 
-        // not implemented yet
+        // handle disaster
+        for (Clan clan : clanService.getAllClans()) {
+            // handle disaster
+            handleClanDisaster(turnId, clan, disaster);
+
+            // reset disaster progress
+            clan.setDisasterProgress(0);
+        }
 
         // mark disaster as completed
         disaster.setCompleted(true);
-
-        // reset disaster progress for all clans
-        for (Clan clan : clanService.getAllClans()) {
-            clan.setDisasterProgress(0);
-        }
     }
 
 
@@ -257,6 +261,15 @@ public class DisasterServiceImpl implements DisasterService {
 
         // set notification text
         notificationService.addLocalizedTexts(notification.getText(), "disaster.action.failure", new String[]{});
+    }
+
+    private void handleClanDisaster(int turnId, Clan clan, Disaster disaster) {
+        log.debug("Handling disaster for clan {}", clan.getId());
+
+        ClanNotification notification = new ClanNotification(turnId, clan.getId());
+        notification.setHeader(clan.getName());
+
+        disasterPenaltyService.handleDisasterPenalties(clan, notification, disaster);
     }
 
     private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
