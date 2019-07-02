@@ -2,7 +2,7 @@
 
 -- Mutants
 INSERT INTO disaster_details(identifier, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.mutants', 100, 'd.mutants.success', 'd.mutants.partialSuccess', 'd.mutants.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.mutants', 20, 'd.mutants.success', 'd.mutants.partialSuccess', 'd.mutants.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.mutants.p1', 'd.mutants', 'CHARACTER_INJURY'),
@@ -53,7 +53,7 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
 
 -- Inquisition
 INSERT INTO disaster_details(identifier, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.inquisition', 100, 'd.inquisition.success', 'd.inquisition.partialSuccess', 'd.inquisition.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.inquisition', 20, 'd.inquisition.success', 'd.inquisition.partialSuccess', 'd.inquisition.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.inquisition.p1', 'd.inquisition', 'ITEM_LOSS'),
@@ -104,7 +104,7 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
 
 -- Refugees
 INSERT INTO disaster_details(identifier, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.refugees', 100, 'd.refugees.success', 'd.refugees.partialSuccess', 'd.refugees.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.refugees', 20, 'd.refugees.success', 'd.refugees.partialSuccess', 'd.refugees.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.refugees.p1', 'd.refugees', 'ITEM_LOSS'),
@@ -155,7 +155,7 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
 
 -- Storm
 INSERT INTO disaster_details(identifier, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.storm', 100, 'd.storm.success', 'd.storm.partialSuccess', 'd.storm.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.storm', 20, 'd.storm.success', 'd.storm.partialSuccess', 'd.storm.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.storm.p1', 'd.storm', 'BUILDING_DESTRUCTION'),

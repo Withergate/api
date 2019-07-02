@@ -77,6 +77,9 @@ public class ClanNotification {
     @Column(name = "information")
     private int information;
 
+    @Column(name = "image_url", updatable = false)
+    private String imageUrl;
+
     /**
      * Constructor.
      */

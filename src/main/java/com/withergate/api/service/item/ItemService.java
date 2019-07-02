@@ -82,4 +82,11 @@ public interface ItemService {
      */
     void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException;
 
+    /**
+     * Deletes the provided item.
+     *
+     * @param item the item to be deleted
+     */
+    void deleteItem(Item item);
+
 }

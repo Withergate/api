@@ -124,7 +124,7 @@ public class LocationServiceImpl implements LocationService {
         /*
          * LOOT
          */
-        int lootProbability = description.getItemChance() + character.getScavenge() * 2;
+        int lootProbability = description.getItemChance() + character.getScavenge();
         int lootRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (lootRoll <= lootProbability) {
             notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[] {});

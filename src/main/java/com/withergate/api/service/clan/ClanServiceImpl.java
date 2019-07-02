@@ -146,16 +146,6 @@ public class ClanServiceImpl implements ClanService {
     }
 
     @Override
-    public void clearArenaCharacters() {
-        log.debug("Clearing arena characters...");
-        List<Clan> clans = clanRepository.findAll();
-
-        for (Clan clan : clans) {
-            clan.setArena(false);
-        }
-    }
-
-    @Override
     public void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel) {
         log.debug("Increasing clan's information level for clan: {}", clan.getName());
 
@@ -182,6 +172,9 @@ public class ClanServiceImpl implements ClanService {
 
             // tavern offers
             tavernService.prepareTavernOffers(clan, getCharacterFilter(clan));
+
+            // reset arena
+            clan.setArena(false);
         }
     }
 

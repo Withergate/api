@@ -1,15 +1,14 @@
 package com.withergate.api.service.clan;
 
+import java.util.List;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.service.exception.EntityConflictException;
-
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -68,11 +67,6 @@ public interface ClanService {
      * @return the created character
      */
     Character hireCharacter(Clan clan);
-
-    /**
-     * Un-assigns all arena characters from all clans.
-     */
-    void clearArenaCharacters();
 
     /**
      * Increase clan's information level.

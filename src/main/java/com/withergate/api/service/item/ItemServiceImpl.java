@@ -405,6 +405,22 @@ public class ItemServiceImpl implements ItemService {
         consumableRepository.delete(consumable);
     }
 
+    @Override
+    public void deleteItem(Item item) {
+        if (item instanceof Weapon) {
+            weaponRepository.delete((Weapon) item);
+        }
+        if (item instanceof Outfit) {
+            outfitRepository.delete((Outfit) item);
+        }
+        if (item instanceof Gear) {
+            gearRepository.delete((Gear) item);
+        }
+        if (item instanceof Consumable) {
+            consumableRepository.delete((Consumable) item);
+        }
+    }
+
     private void generateWeapon(Character character, ClanNotification notification, ItemDetails.Rarity rarity) {
         // load details
         List<WeaponDetails> weaponDetailsList = itemDetailsRepository.findWeaponDetailsByRarity(rarity);

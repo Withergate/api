@@ -195,6 +195,7 @@ CREATE TABLE clan_notifications (
     healing INT,
     experience INT,
     information INT,
+    image_url VARCHAR(256) DEFAULT NULL,
     PRIMARY KEY (notification_id),
     CONSTRAINT p_notification_turn_fk FOREIGN KEY (turn_id) REFERENCES turns (turn_id),
     CONSTRAINT p_notification_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)

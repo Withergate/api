@@ -132,7 +132,7 @@ public class LocationServiceTest {
         // when performing pending actions
 
         // high encounter roll followed by low loot roll
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50, 10);
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50, 5);
 
         locationService.processLocationActions(1);
 

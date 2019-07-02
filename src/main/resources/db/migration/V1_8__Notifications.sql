@@ -112,4 +112,12 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.action.roll', 'en', 'Action difficulty was {}. Character rolled {} and the total action result was {}.'),
     ('detail.action.roll', 'cs', 'Náročnost akce byla {}. Postava hodila {} a celkový výsledek byl {}.'),
     ('detail.disaster.action.success', 'en', 'Character successfully completed the task and added {}% to the disaster resolution.'),
-    ('detail.disaster.action.success', 'cs', 'Postava úspěšně dokončila úkol a přidala {}% do vyřešení pohromy.');
+    ('detail.disaster.action.success', 'cs', 'Postava úspěšně dokončila úkol a přidala {}% do vyřešení pohromy.'),
+    ('detail.disaster.character.injury', 'en', '{} lost {} health as a result of the disaster.'),
+    ('detail.disaster.character.injury', 'cs', '{} utrpěl/a {} zranění v důsledku pohromy.'),
+    ('detail.disaster.resource.loss', 'en', 'Your clan lost some resources as a result of the disaster.'),
+    ('detail.disaster.resource.loss', 'cs', 'Tvůj klan přišel v důsledku pohromy o suroviny.'),
+    ('detail.disaster.item.loss', 'en', 'You lost an item as a result of the disaster.'),
+    ('detail.disaster.item.loss', 'cs', 'V důsledku pohromy tvůj klan přišel o předmět.'),
+    ('detail.disaster.building.destruction', 'en', 'Your building [] lost a level as a result of the disaster.'),
+    ('detail.disaster.building.destruction', 'cs', 'V důsledku pohromy se snížila úroveň tvé budovy [].');

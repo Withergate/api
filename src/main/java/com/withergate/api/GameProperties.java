@@ -19,5 +19,6 @@ public class GameProperties {
     private int maxTurns;
     private int disasterFailureThreshold;
     private int disasterPartialSuccessThreshold;
+    private int disasterResourceLoss;
 
 }

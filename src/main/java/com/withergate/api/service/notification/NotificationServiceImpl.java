@@ -42,6 +42,11 @@ public class NotificationServiceImpl implements NotificationService {
         if (placeholders.isEmpty()) log.error("Error loading placeholder texts for {}.", code);
 
         for (PlaceholderText text : placeholderTextRepository.findAllByCode(code)) {
+            if (text == null || text.getText().length() == 0) {
+                log.warn("No text found for code {}.", code);
+                continue;
+            }
+
             String enhancedText = enhanceText(text.getText(), values);
             enhancedText = enhanceText(enhancedText, text.getLang(), injects);
 
