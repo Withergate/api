@@ -226,6 +226,7 @@ public class DisasterServiceImpl implements DisasterService {
             }
             case COMBAT: {
                 success = combatService.handleSingleCombat(notification, action.getSolution().getDifficulty(), action.getCharacter());
+                break;
             }
             default: log.error("Unknown solution type: {}", action.getSolution().getSolutionType());
         }

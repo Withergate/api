@@ -119,7 +119,8 @@ public class QuestServiceImpl implements QuestService {
 
     private void handleQuestSuccess(Quest quest, Character character, ClanNotification notification) {
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[]{}, quest.getDetails().getName());
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success",
+                new String[]{}, quest.getDetails().getName());
 
         // award experience
         character.setExperience(character.getExperience() + 2);

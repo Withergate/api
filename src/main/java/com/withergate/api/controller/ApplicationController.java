@@ -33,6 +33,13 @@ public class ApplicationController {
     private final GlobalNotificationRepository globalNotificationRepository;
     private final GameProperties properties;
 
+    /**
+     * Constructor.
+     *
+     * @param adminService admin service
+     * @param globalNotificationRepository global notification repository
+     * @param properties game properties
+     */
     public ApplicationController(
             AdminService adminService, GlobalNotificationRepository globalNotificationRepository, GameProperties properties
     ) {

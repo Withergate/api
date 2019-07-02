@@ -63,10 +63,8 @@ public class EncounterServiceImpl implements EncounterService {
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
                 if (totalIntellect < encounter.getDifficulty()) {
                     handleFailure(encounter, character, notification);
-                    notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
                 } else {
                     handleSuccess(encounter, character, notification);
-                    notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{});
                 }
                 break;
             default:

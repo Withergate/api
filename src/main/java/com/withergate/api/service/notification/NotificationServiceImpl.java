@@ -66,7 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         // capitalize first letter
-        return text.substring(0, 1).toUpperCase() + text.substring(1);
+        return text.substring(0, 1).toUpperCase() + (text.length() > 1 ? text.substring(1) : "");
     }
 
     private String enhanceText(String text, String lang, Map<String, LocalizedText> injects) {
