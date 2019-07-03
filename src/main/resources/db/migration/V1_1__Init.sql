@@ -254,6 +254,7 @@ CREATE TABLE quests (
 DROP TABLE IF EXISTS disaster_details;
 CREATE TABLE disaster_details (
     identifier VARCHAR(32),
+    final_disaster BIT DEFAULT 0,
     fame_reward INT NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     success_text VARCHAR(32),

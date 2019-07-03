@@ -42,6 +42,10 @@ public class DisasterDetails {
     @JoinColumn(name = "disaster_description")
     private Map<String, LocalizedText> description;
 
+    @JsonIgnore
+    @Column(name = "final_disaster", updatable = false, nullable = false)
+    private boolean finalDisaster;
+
     // Notification text codes
 
     @JsonIgnore

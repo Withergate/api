@@ -84,6 +84,10 @@ public class DisasterPenaltyServiceImpl implements DisasterPenaltyService {
                 hanleBuildingDestruction(clan, notification);
                 break;
             }
+            case FAME_LOSS: {
+                handleFameLoss(clan, notification);
+                break;
+            }
             default: log.error("Unknown penalty type: {}", penalty.getPenaltyType());
         }
     }
@@ -125,6 +129,15 @@ public class DisasterPenaltyServiceImpl implements DisasterPenaltyService {
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.resource.loss", new String[]{});
+        notification.getDetails().add(detail);
+    }
+
+    private void handleFameLoss(Clan clan, ClanNotification notification) {
+        clan.setFame(clan.getFame() - gameProperties.getDisasterFameLoss());
+        notification.setFameIncome(notification.getFameIncome() - gameProperties.getDisasterFameLoss());
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.fame.loss", new String[]{});
         notification.getDetails().add(detail);
     }
 

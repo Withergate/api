@@ -40,12 +40,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DisasterServiceImpl implements DisasterService {
 
-    // turns when disasters will be triggered
-    private static final int[] DISASTER_TURNS = new int[]{15, 30, 45, 60};
-
-    // how many turns in advance will the disaster be known
-    private static final int DISASTER_VISIBILITY = 10;
-
     private final DisasterRepository disasterRepository;
     private final DisasterDetailsRepository disasterDetailsRepository;
     private final DisasterSolutionRepository disasterSolutionRepository;
@@ -56,6 +50,7 @@ public class DisasterServiceImpl implements DisasterService {
     private final RandomService randomService;
     private final NotificationService notificationService;
     private final CombatService combatService;
+    private final GameProperties gameProperties;
 
     @Override
     public Disaster getCurrentDisaster() {
@@ -84,7 +79,7 @@ public class DisasterServiceImpl implements DisasterService {
 
         // check if clan knows about this disaster
         boolean isVisible = false;
-        if ((disaster.getTurn() - DISASTER_VISIBILITY - clan.getInformationLevel()) <= turn.getTurnId()) {
+        if ((disaster.getTurn() - gameProperties.getDisasterVisibility() - clan.getInformationLevel()) <= turn.getTurnId()) {
             isVisible = true;
         }
 
@@ -155,13 +150,33 @@ public class DisasterServiceImpl implements DisasterService {
     private void prepareNextDisaster(int turnId) {
         log.debug("Preparing next disaster.");
 
-        List<Disaster> previousDisasters = disasterRepository.findAll();
-        Set<String> identifiers = new HashSet<>();
-        for (Disaster disaster : previousDisasters) {
-            identifiers.add(disaster.getDetails().getIdentifier());
+
+        Disaster disaster = new Disaster();
+        disaster.setCompleted(false);
+
+        // get the lowest possible turn for the next disaster
+        List<Integer> disasterTurns = gameProperties.getDisasterTurns();
+        boolean finalDisaster = false; // are we preparing final disaster?
+        for (int i = 0; i < disasterTurns.size(); i++) {
+            int turn = disasterTurns.get(i);
+            if (turnId < turn) {
+                disaster.setTurn(turn);
+
+                // check final turn
+                if (i == disasterTurns.size() - 1) finalDisaster = true;
+                break;
+            }
         }
 
-        List<DisasterDetails> detailsList = disasterDetailsRepository.findAll()
+        // filter out all previous disasters
+        List<Disaster> previousDisasters = disasterRepository.findAll();
+        Set<String> identifiers = new HashSet<>();
+        for (Disaster previous : previousDisasters) {
+            identifiers.add(previous.getDetails().getIdentifier());
+        }
+
+        // find disaster details
+        List<DisasterDetails> detailsList = disasterDetailsRepository.findAllByFinalDisaster(finalDisaster)
                 // filter out all previous disasters
                 .stream().filter(d -> !identifiers.contains(d.getIdentifier()))
                 .collect(Collectors.toList());
@@ -174,18 +189,7 @@ public class DisasterServiceImpl implements DisasterService {
 
         // prepare disaster
         DisasterDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
-
-        Disaster disaster = new Disaster();
         disaster.setDetails(details);
-        disaster.setCompleted(false);
-
-        // get the lowest possible turn for the next disaster
-        for (int turn : DISASTER_TURNS) {
-            if (turnId < turn) {
-                disaster.setTurn(turn);
-                break;
-            }
-        }
 
         log.debug("Disaster {} prepared for turn {}.", disaster.getDetails().getIdentifier(), disaster.getTurn());
 
