@@ -1,5 +1,6 @@
 package com.withergate.api.service.clan;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -89,6 +90,7 @@ public class ClanServiceImpl implements ClanService {
         Clan clan = new Clan();
         clan.setId(clanId);
         clan.setName(clanRequest.getName());
+        clan.setLastActivity(LocalDateTime.now());
         clan.setFame(0);
         clan.setCaps(50);
         clan.setJunk(20);

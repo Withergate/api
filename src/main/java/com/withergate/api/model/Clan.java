@@ -13,6 +13,7 @@ import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -54,6 +55,10 @@ public class Clan {
     @Column(name = "clan_name", nullable = false)
     @JsonView(Views.Public.class)
     private String name;
+
+    @Column(name = "last_activity", nullable = false)
+    @JsonView(Views.Public.class)
+    private LocalDateTime lastActivity;
 
     @Column(name = "fame", nullable = false)
     @JsonView(Views.Public.class)
@@ -160,6 +165,17 @@ public class Clan {
     @JsonView(Views.Internal.class)
     public int getNextLevelInformation() {
         return (informationLevel + 1) * ClanServiceImpl.INFORMATION_QUOTIENT;
+    }
+
+    /**
+     * Gets the total number of characters in clan. Used for public information.
+     *
+     * @return the total number of characters
+     */
+    @JsonProperty("numCharacters")
+    @JsonView(Views.Public.class)
+    public int getNumberOfCharacters() {
+        return characters.size();
     }
 
     /**

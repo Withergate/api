@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS clans;
 CREATE TABLE clans (
     clan_id INT,
     clan_name VARCHAR(16) UNIQUE NOT NULL,
+    last_activity TIMESTAMP DEFAULT NULL,
     fame INT NOT NULL,
     caps INT NOT NULL,
     junk INT NOT NULL,
