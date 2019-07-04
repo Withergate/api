@@ -239,6 +239,7 @@ public class CharacterServiceImpl implements CharacterService {
                 // notification
                 ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
                 notification.setHeader(character.getName());
+                notification.setImageUrl(character.getImageUrl());
                 notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[]{character.getName()});
 
                 // add random trait to character

@@ -1,5 +1,7 @@
 package com.withergate.api.model.item;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,4 +35,8 @@ public class Consumable extends Item {
     @JoinColumn(name = "item_identifier")
     private ConsumableDetails details;
 
+    @Override
+    public Map<String, LocalizedText> getName() {
+        return details.getName();
+    }
 }

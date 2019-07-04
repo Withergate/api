@@ -224,6 +224,8 @@ public class CombatServiceImpl implements CombatService {
         }
 
         notification.setClanId(character.getClan().getId());
+        notification.setHeader(character.getName());
+        notification.setImageUrl(character.getImageUrl());
         notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description",
                 new String[]{character.getName(), opponent.getName()});
         notificationService
@@ -258,6 +260,8 @@ public class CombatServiceImpl implements CombatService {
         }
 
         notification.setClanId(character.getClan().getId());
+        notification.setHeader(character.getName());
+        notification.setImageUrl(character.getImageUrl());
         notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description",
                 new String[]{character.getName(), opponent.getName()});
         notificationService

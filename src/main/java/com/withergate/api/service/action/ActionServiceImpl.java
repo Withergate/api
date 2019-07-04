@@ -358,6 +358,11 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Not enough resources to perform this action.");
         }
 
+        // check completion
+        if (clan.getDisasterProgress() >= 100) {
+            throw new InvalidActionException("Your already averted this disaster!");
+        }
+
         // create action
         DisasterAction action = new DisasterAction();
         action.setCharacter(character);

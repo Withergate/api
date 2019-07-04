@@ -66,6 +66,7 @@ public class LocationServiceImpl implements LocationService {
             // prepare notification
             ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
+            notification.setImageUrl(character.getImageUrl());
 
             // process action
             processLocationAction(notification, action);

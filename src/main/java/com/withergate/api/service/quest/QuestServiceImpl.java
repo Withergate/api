@@ -70,6 +70,7 @@ public class QuestServiceImpl implements QuestService {
         for (QuestAction action : questActionRepository.findAllByState(ActionState.PENDING)) {
             ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
+            notification.setImageUrl(action.getCharacter().getImageUrl());
 
             // process single action
             processQuestAction(action, notification);

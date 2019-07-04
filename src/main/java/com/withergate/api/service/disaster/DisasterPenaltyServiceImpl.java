@@ -114,7 +114,7 @@ public class DisasterPenaltyServiceImpl implements DisasterPenaltyService {
         itemService.deleteItem(item);
 
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.item.loss", new String[]{});
+        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.item.loss", new String[]{}, item.getName());
         notification.getDetails().add(detail);
     }
 

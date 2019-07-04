@@ -118,6 +118,7 @@ public class DisasterServiceImpl implements DisasterService {
             // prepare notification
             ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
+            notification.setImageUrl(action.getCharacter().getImageUrl());
 
             // handle action
             handleAction(action, notification);

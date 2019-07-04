@@ -62,6 +62,7 @@ public class TradeServiceImpl implements TradeService {
         for (ResourceTradeAction action : resourceTradeActionRepository.findAllByState(ActionState.PENDING)) {
             ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
+            notification.setImageUrl(action.getCharacter().getImageUrl());
 
             // process action
             processResourceTradeAction(action, notification);
@@ -79,6 +80,7 @@ public class TradeServiceImpl implements TradeService {
         for (MarketTradeAction action : marketTradeActionRepository.findAllByState(ActionState.PENDING)) {
             ClanNotification buyerNotification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             buyerNotification.setHeader(action.getCharacter().getName());
+            buyerNotification.setImageUrl(action.getCharacter().getImageUrl());
 
             ClanNotification sellerNotification = new ClanNotification(turnId, action.getOffer().getSeller().getId());
             sellerNotification.setHeader(action.getOffer().getSeller().getName());

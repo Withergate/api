@@ -53,6 +53,7 @@ public class BuildingServiceImpl implements BuildingService {
         for (BuildingAction action : buildingActionRepository.findAllByState(ActionState.PENDING)) {
             ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
+            notification.setImageUrl(action.getCharacter().getImageUrl());
 
             Character character = action.getCharacter();
             Clan clan = character.getClan();

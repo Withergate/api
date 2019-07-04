@@ -62,6 +62,7 @@ public class TavernServiceImpl implements TavernService {
             // prepare notification
             ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
+            notification.setImageUrl(character.getImageUrl());
 
             // hire character
             TavernOffer offer = action.getOffer();
