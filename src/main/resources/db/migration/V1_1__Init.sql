@@ -442,9 +442,7 @@ CREATE TABLE disaster_actions (
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
     identifier VARCHAR(32) NOT NULL,
-    PRIMARY KEY (action_id),
-    CONSTRAINT disaster_action_character_fk FOREIGN KEY (character_id) REFERENCES characters (character_id),
-    CONSTRAINT disaster_action_solution_fk FOREIGN KEY (identifier) REFERENCES disaster_solutions (identifier)
+    PRIMARY KEY (action_id)
 );
 
 -- Names
