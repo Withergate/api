@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class DisasterPenaltyServiceImpl implements DisasterPenaltyService {
+public class DisasterResolutionServiceImpl implements DisasterResolutionService {
 
     private final ItemService itemService;
     private final NotificationService notificationService;
@@ -36,21 +36,31 @@ public class DisasterPenaltyServiceImpl implements DisasterPenaltyService {
     private final GameProperties gameProperties;
 
     @Override
-    public void handleDisasterPenalties(Clan clan, ClanNotification notification, Disaster disaster) {
+    public void handleDisasterResolution(Clan clan, ClanNotification notification, Disaster disaster) {
         log.debug("Computing penalties for clan {}.", clan.getId());
 
         int numPenalties; // number of penalties to be applied
         if (clan.getDisasterProgress() < gameProperties.getDisasterFailureThreshold()) {
             numPenalties = 3;
-            notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getFailureText(), new String[]{});
+            notificationService.addLocalizedTexts(notification.getText(), "disaster.failure", new String[]{},
+                    disaster.getDetails().getName());
+            notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getFailureText(),
+                    new String[]{});
         } else if (clan.getDisasterProgress() < gameProperties.getDisasterPartialSuccessThreshold()) {
             numPenalties = 2;
-            notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getPartialSuccessText(), new String[]{});
+            notificationService.addLocalizedTexts(notification.getText(), "disaster.partialSuccess",
+                    new String[]{}, disaster.getDetails().getName());
+            notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getPartialSuccessText(),
+                    new String[]{});
         } else if (clan.getDisasterProgress() < 100) {
             numPenalties = 1;
+            notificationService.addLocalizedTexts(notification.getText(), "disaster.partialSuccess",
+                    new String[]{}, disaster.getDetails().getName());
             notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getPartialSuccessText(), new String[]{});
         } else {
             numPenalties = 0;
+            notificationService.addLocalizedTexts(notification.getText(), "disaster.success", new String[]{},
+                    disaster.getDetails().getName());
             notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getSuccessText(), new String[]{});
 
             // reward fame

@@ -65,7 +65,7 @@ public class ApplicationController {
      */
     @GetMapping("/game/properties")
     public ResponseEntity<GamePropertiesDTO> getGameProperties() {
-        GamePropertiesDTO dto = new GamePropertiesDTO(properties.getMaxTurns());
+        GamePropertiesDTO dto = new GamePropertiesDTO(properties);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

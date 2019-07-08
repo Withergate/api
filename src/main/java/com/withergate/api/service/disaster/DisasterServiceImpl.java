@@ -44,7 +44,7 @@ public class DisasterServiceImpl implements DisasterService {
     private final DisasterDetailsRepository disasterDetailsRepository;
     private final DisasterSolutionRepository disasterSolutionRepository;
     private final DisasterActionRepository disasterActionRepository;
-    private final DisasterPenaltyService disasterPenaltyService;
+    private final DisasterResolutionService disasterPenaltyService;
     private final ClanService clanService;
     private final TurnRepository turnRepository;
     private final RandomService randomService;
@@ -251,6 +251,10 @@ public class DisasterServiceImpl implements DisasterService {
         // increase clan progress
         Clan clan = action.getCharacter().getClan();
         clan.setDisasterProgress(clan.getDisasterProgress() + action.getSolution().getBonus());
+        if (clan.getDisasterProgress() > 100) {
+            // 100% is maximumG
+            clan.setDisasterProgress(100);
+        }
 
         // set notification text
         notificationService.addLocalizedTexts(notification.getText(), "disaster.action.success", new String[]{});
@@ -276,7 +280,7 @@ public class DisasterServiceImpl implements DisasterService {
         notification.setHeader(clan.getName());
         notification.setImageUrl(disaster.getDetails().getImageUrl());
 
-        disasterPenaltyService.handleDisasterPenalties(clan, notification, disaster);
+        disasterPenaltyService.handleDisasterResolution(clan, notification, disaster);
 
         // save notification
         notificationService.save(notification);

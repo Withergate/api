@@ -9,8 +9,8 @@ import com.withergate.api.model.notification.ClanNotification;
  *
  * @author Martin Myslik
  */
-public interface DisasterPenaltyService {
+public interface DisasterResolutionService {
 
-    void handleDisasterPenalties(Clan clan, ClanNotification notification, Disaster disaster);
+    void handleDisasterResolution(Clan clan, ClanNotification notification, Disaster disaster);
 
 }

@@ -2,7 +2,7 @@
 
 -- Mutants
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.mutants', false, 20, 'd.mutants.success', 'd.mutants.partialSuccess', 'd.mutants.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.mutants', false, 20, 'd.mutants.success', 'd.mutants.partialSuccess', 'd.mutants.failure', 'https://storage.googleapis.com/withergate-images/disasters/mutants.png');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.mutants.p1', 'd.mutants', 'CHARACTER_INJURY'),
@@ -53,7 +53,7 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
 
 -- Inquisition
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.inquisition', false, 20, 'd.inquisition.success', 'd.inquisition.partialSuccess', 'd.inquisition.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.inquisition', false, 20, 'd.inquisition.success', 'd.inquisition.partialSuccess', 'd.inquisition.failure', 'https://storage.googleapis.com/withergate-images/disasters/inquisition.png');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.inquisition.p1', 'd.inquisition', 'ITEM_LOSS'),
@@ -65,15 +65,15 @@ INSERT INTO localized_texts(disaster_name, lang, text) VALUES
     ('d.inquisition', 'cs', 'Ozbrojení fanatici vzývající Atoma');
 
 INSERT INTO localized_texts(disaster_description, lang, text) VALUES
-    ('d.inquisition', 'en', ''),
+    ('d.inquisition', 'en', 'There is some kind of new deity in Withergate. Recently, its priests are spreading their faith in the vicinity. Probably it’s a bad idea to make them angry, because these fanatics has a large influence in the city. We’ve heard that in some other clans they confiscated property, also they launched a few inquisitional trials and it is said that also stakes has burned. We can’t just send them out, because they will come back with even a larger force. In a few days they are by us.'),
     ('d.inquisition', 'cs', 'Ve Withergate je populární nějaké nové božstvo. Jeho kněží poslední dobou často vyráží do okolí a šíří svou víru po dobrém i po zlém. Zřejmě není dobrý nápad si je pohněvat, protože tito fanatici mají velký vliv na dění ve městě. V některých klanech konfiskovali majetek, dokonce došlo i na inkviziční procesy a prý už i hořely hranice. Nemůžeme je poslat pryč, protože by se vrátili s mnohem větší silou. Za několik dní jsou i u nás.');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
-    ('d.inquisition.success', 'en', ''),
+    ('d.inquisition.success', 'en', 'It is better to be on friendly terms with Atom. With a High Priest Boblig we really understood each other. It’s obvious that the Devil avoids our clan. Or maybe it’s even more obvious that Boblig can confiscate property in other clans with more success and less effort?'),
     ('d.inquisition.success', 'cs', 'S Atomem je lepší být zadobře, a s jeho veleknězem Bobligem jsme si dokonale rozuměli. Pochopil, že nám se Ďábel raději vyhýbá. Nebo pochopil, že v cizích klanech se mu bude lépe konfiskovat majetek?'),
-    ('d.inquisition.partialSuccess', 'en', ''),
+    ('d.inquisition.partialSuccess', 'en', 'Atom is satisfied with us, but some of us straied from the right path. The priests launched inquisition and a painful interrogation. Nobody confessed - so they confiscated some property and left our clan in order to spread their faith somewhere else.'),
     ('d.inquisition.partialSuccess', 'cs', 'Prý je Atom s námi spokojen, někteří z nás ale prý sešli z cesty. Kněží zahájili vyšetřování a bolestivé výslechy. Nikdo se nepřiznal, tak zkonfiskovali trochu majetku a jeli šířit své bohulibé myšlenky jinam...'),
-    ('d.inquisition.failure', 'en', ''),
+    ('d.inquisition.failure', 'en', 'Well, that was just bad. The priests did not find a sufficient zeal in out clan. Instead, they did find out that some of us are lying with the Devil. The priests launched inquisition and a painful interrogation. Nobody confessed, but they were satisfied that we are believing in Atom now. The priests confiscated some property and left our clan in order to spread their faith somewhere else.'),
     ('d.inquisition.failure', 'cs', 'To bylo horší, než jsme čekali. Nenašli u nás dostatečný zápal pro víru, zato zjistili, že někteří z nás obcují s Ďáblem. Zahájili vyšetřování a bolestivé výslechy. Nikdo se nepřiznal, ale stačilo jim, že někteří z nás raději přijali víru. Kněží pak zkonfiskovali trochu majetku a jeli šířit své bohulibé myšlenky jinam...');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
@@ -83,28 +83,28 @@ INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, 
     ('d.inquisition.s4', 'd.inquisition', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
-    ('d.inquisition.s1', 'en', ''),
+    ('d.inquisition.s1', 'en', 'Pray and labor'),
     ('d.inquisition.s1', 'cs', 'Modlit se a pracovat'),
-    ('d.inquisition.s2', 'en', ''),
+    ('d.inquisition.s2', 'en', 'Talk your way out of this'),
     ('d.inquisition.s2', 'cs', 'Vymluvit se z toho'),
-    ('d.inquisition.s3', 'en', ''),
+    ('d.inquisition.s3', 'en', 'Craft a `genuine` relic'),
     ('d.inquisition.s3', 'cs', 'Vyrobit zaručeně pravou relikvii'),
-    ('d.inquisition.s4', 'en', ''),
+    ('d.inquisition.s4', 'en', 'Bribe... ah yes, it’s called an indulgence'),
     ('d.inquisition.s4', 'cs', 'Uplatit... aha, oni tomu říkají odpustek');
 
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
-    ('d.inquisition.s1', 'en', ''),
+    ('d.inquisition.s1', 'en', 'Out true faith should be manifested. Let’s rehearse some prayers and rituals which everyone can handle.'),
     ('d.inquisition.s1', 'cs', 'Možná bude stačit dát najevo svou pravou víru. Pojďme si nacvičit nějaké modlitby a rituály, které zvládne každý. Až přijdou, sehrajeme jim malé divadlo - ať mír dál zůstává s touto pustinou... Tato akce nestojí žádné zdroje ani nemá žádné prerekvizity.'),
-    ('d.inquisition.s2', 'en', ''),
+    ('d.inquisition.s2', 'en', 'There is everything in order in our clan, but they should inspect our neighbours. We will spread a perfect lie about a devils living nearby. About a rich devils, whose property can be easily confiscated. This action depends on an intellect of a character.'),
     ('d.inquisition.s2', 'cs', 'U nás je všechno v pořádku, ať jdou radši k sousedům. Než přijdou, rozšíříme v našem klanu dokonalou lež o ďáblech žijících poblíž. O bohatých ďáblech, jejichž majetek lze snadno zkonfiskovat a nikdo proti tomu neřekne ani “popel z hranice”. Výsledek této akce je ovlivněn intelektem postavy.'),
-    ('d.inquisition.s3', 'en', ''),
+    ('d.inquisition.s3', 'en', 'Bones of Atom is a gift which sais that no devil can live among us. Let’s find a pile of old bones and a proper tools. This action depends on a craftsmanship of a character.'),
     ('d.inquisition.s3', 'cs', 'Podstrčíme jim padělek svatých ostatků, kostí samotného Atoma. Po takovém daru je jasné, že mezi námi Ďábel žít nemůže. Výsledek této ake je ovlivněn zručností postavy.'),
-    ('d.inquisition.s4', 'en', ''),
+    ('d.inquisition.s4', 'en', 'Even the faith can be bought.'),
     ('d.inquisition.s4', 'cs', 'I víra se dá koupit.');
 
 -- Refugees
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.refugees', false, 20, 'd.refugees.success', 'd.refugees.partialSuccess', 'd.refugees.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.refugees', false, 20, 'd.refugees.success', 'd.refugees.partialSuccess', 'd.refugees.failure', 'https://storage.googleapis.com/withergate-images/disasters/refugees.png');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.refugees.p1', 'd.refugees', 'ITEM_LOSS'),
@@ -116,15 +116,15 @@ INSERT INTO localized_texts(disaster_name, lang, text) VALUES
     ('d.refugees', 'cs', 'Utečenci');
 
 INSERT INTO localized_texts(disaster_description, lang, text) VALUES
-    ('d.refugees', 'en', ''),
+    ('d.refugees', 'en', 'A part of Withergate has changed in a last few days and became uninhabitable. Bands of useless hungry men, women and children are travelling through the region and asking for help. We should help them - because even though they are weak, there are lots of them; and even though they are not aggressive, they are desperate and we can’t keep an eye on every single piece of property of our clan. They made a camp nearby our gates. Let’s hope they are not going to eat out every food in neigbourhood before they will go somewhere else '),
     ('d.refugees', 'cs', 'Část Withergate se v posledních dnech změnila a stala se neobyvatelnou. Krajem putují skupiny neužitečných hladových mužů, žen i dětí a žádají o pomoc. Měli bychom jim pomoci v nouzi, protože i když jsou slabí, je jich mnohem více než nás, a i když zatím nejsou agresivní, jsou zoufalí a my nezvládneme uhlídat celý náš klan. Už se utábořili kousek od našich bran - snad nám nevyžerou všechny zásoby ze sousedství, než půjdou zase dál.');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
-    ('d.refugees.success', 'en', ''),
+    ('d.refugees.success', 'en', 'Thanks to our splendidly organized reaction they left after a few days. No serious harms has been reported. '),
     ('d.refugees.success', 'cs', 'Díky naší skvěle zorganizované reakci po pár dnech odešli, aniž by způsobili jakékoliv nečekané škody.'),
-    ('d.refugees.partialSuccess', 'en', ''),
+    ('d.refugees.partialSuccess', 'en', 'There were a few fights between the refugees and our clan and some provisions and maybe even items were stolen from our storage area.'),
     ('d.refugees.partialSuccess', 'cs', 'Došlo k několika potyčkám a v noci nám zmizely ze skladů nějaké zásoby či předměty.'),
-    ('d.refugees.failure', 'en', ''),
+    ('d.refugees.failure', 'en', 'Our solution was not successful. The refugess went totally out of control and took everything they wanted. Despair because of their hunger, they fought with us and took everything they were able to carry - not even from our storage area, but from the whole neighbourhood.'),
     ('d.refugees.failure', 'cs', 'Naše řešení nezapůsobilo. Zcela se vymkli naší kontrole a brali si, co chtěli. Měli hlad, prali se s námi a pak vzali vše, na co přišli. Nejen z našich zásob, ale i z celého sousedství...');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
@@ -134,28 +134,28 @@ INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, 
     ('d.refugees.s4', 'd.refugees', 'COMBAT', 4, 20, 0, 0, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
-    ('d.refugees.s1', 'en', ''),
+    ('d.refugees.s1', 'en', 'Let them in... but keep an eye on them!'),
     ('d.refugees.s1', 'cs', 'Vpustit je mezi nás a hlídat je'),
-    ('d.refugees.s2', 'en', ''),
+    ('d.refugees.s2', 'en', 'Heal the wounded and make them some medicine'),
     ('d.refugees.s2', 'cs', 'Léčit zraněné a vyrobit jim léky'),
-    ('d.refugees.s3', 'en', ''),
+    ('d.refugees.s3', 'en', 'Feed them'),
     ('d.refugees.s3', 'cs', 'Nakrmit je dosyta'),
-    ('d.refugees.s4', 'en', ''),
+    ('d.refugees.s4', 'en', 'Chase them away!'),
     ('d.refugees.s4', 'cs', 'Zahnat je');
 
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
-    ('d.refugees.s1', 'en', ''),
+    ('d.refugees.s1', 'en', 'We will find some more food for them. They can stay for a few days, which means we can probably easily watch them.'),
     ('d.refugees.s1', 'cs', 'Seženeme jim trochu jídla a vody a necháme je u nás přenocovat, ale hlavně je budeme mít alespoň trochu pod dohledem. Akce nestojí žádné zdroje ani nemá žádné prerekvizity.'),
-    ('d.refugees.s2', 'en', ''),
+    ('d.refugees.s2', 'en', 'They can’t continue in their journey because of injuries and diseases. If we will treat them, they will move away faster.'),
     ('d.refugees.s2', 'cs', 'Nemohou jít dál, protože někteří z nich jsou po cestě zranění či nemocní. Základní zdravotní péči bychom jim zvládli poskytnout - o to dříve odejdou. Výsledek akce je ovlivněn intelektem postavy.'),
-    ('d.refugees.s3', 'en', ''),
+    ('d.refugees.s3', 'en', 'When we fully feed them, they will not try to steal more food. Hopefully. '),
     ('d.refugees.s3', 'cs', 'Pokud je zcela nasytím, nebudou se nám ho snažit ukrást. Tedy... říká se, že s jídlem roste chuť.'),
-    ('d.refugees.s4', 'en', ''),
+    ('d.refugees.s4', 'en', 'And let them tremble in fear!'),
     ('d.refugees.s4', 'cs', 'Ať si nás nenávidí, jen když se nás bojí. Akce vyvolá boj s rizikem zranění či smrti a rovněž neúspěchu.');
 
 -- Storm
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.storm', false, 20, 'd.storm.success', 'd.storm.partialSuccess', 'd.storm.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.storm', false, 20, 'd.storm.success', 'd.storm.partialSuccess', 'd.storm.failure', 'https://storage.googleapis.com/withergate-images/disasters/storm.png');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.storm.p1', 'd.storm', 'BUILDING_DESTRUCTION'),
@@ -167,15 +167,15 @@ INSERT INTO localized_texts(disaster_name, lang, text) VALUES
     ('d.storm', 'cs', 'Bouře');
 
 INSERT INTO localized_texts(disaster_description, lang, text) VALUES
-    ('d.storm', 'en', ''),
+    ('d.storm', 'en', 'The weather still changes. According to some really clever guys from Withergate is going to start storm season in a few days. And this one should be one of the strongest storm seasons ever. Let’s focus on preventing the floods, windstorm and falling trees in time.'),
     ('d.storm', 'cs', 'Počasí se neustále mění. Dle výpočtů nějakých chytrých lidí z Withergate má v nejbližších dnech nastat období bouří, a dle jiných lidí z hospody - možná už ne tolik chytrých, ale stále důvěryhodných - budou ty nastávající bouře jedny z nejsilnějších vůbec. Po zevrubné inspekci okolí našeho klanu bychom si měli dát pozor na povodně, padající stromy a vůbec raději přibít vše, co není přidělané.');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
-    ('d.storm.success', 'en', ''),
+    ('d.storm.success', 'en', 'Once again the mankind triumphed over the raging elements! The windstorm struck our shelters and torrential waters swept through the vicinity. But we were ready for this and no harm has been reported. '),
     ('d.storm.success', 'cs', 'Člověk opět jednou triumfoval nad běsnícími živly. Ačkoliv vichřice udeřila na naše domy a přílivová voda se prohnala okolím, byli jsme připraveni a vše jsme přečkali v bezpečí, ve zdraví a bez ztrát na majetku.'),
-    ('d.storm.partialSuccess', 'en', ''),
+    ('d.storm.partialSuccess', 'en', 'The windstorm struck our shelters. Falling trees and torrential waters made a terribly mess in our clan. The fight with raging elements was difficult for our health and property.'),
     ('d.storm.partialSuccess', 'cs', 'Vichřice udeřila na naše domy. Padající stromy v našem klanu způsobily pořádnou spoušť, kterou poté zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta. Boj s živlem a jeho následky byl náročný na naše zdraví i náš majetek.'),
-    ('d.storm.failure', 'en', ''),
+    ('d.storm.failure', 'en', 'Several stormdays struck in a full force. The windstorm teared off the roofs from our houses. Falling trees and torrential waters made a terribly mess in our clan. The fight with raging elements was difficult for our health and property.'),
     ('d.storm.failure', 'cs', 'Několik bouřkových dní udeřilo v plné síle. Vichřice rvala střechy z našich domů a lámala stromy, které v našem klanu způsobily pořádnou spoušť. Trosky zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta a naše nyní již bývalé zásoby, plesnivé a zrezivělé… V panice při útěku před živly také došlo k několika zraněním.');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
@@ -185,23 +185,23 @@ INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, 
     ('d.storm.s4', 'd.storm', 'AUTOMATIC', 4, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
-    ('d.storm.s1', 'en', ''),
+    ('d.storm.s1', 'en', 'Hide everything we have'),
     ('d.storm.s1', 'cs', 'Všechno schovat'),
-    ('d.storm.s2', 'en', ''),
+    ('d.storm.s2', 'en', 'Anti-flood barriers'),
     ('d.storm.s2', 'cs', 'Protipovodňové zábrany'),
-    ('d.storm.s3', 'en', ''),
+    ('d.storm.s3', 'en', 'Use some junk and fortify everything'),
     ('d.storm.s3', 'cs', 'Použít šrot a vše zpevnit'),
-    ('d.storm.s4', 'en', ''),
+    ('d.storm.s4', 'en', 'Hire external workforce'),
     ('d.storm.s4', 'cs', 'Najmout námezdníky');
 
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
-    ('d.storm.s1', 'en', ''),
+    ('d.storm.s1', 'en', 'Our belongings and provisions are scattered all around, in fragile shelters, where they can be hit by a raging element. Let’s hide it below the ground, and hammer it down.'),
     ('d.storm.s1', 'cs', 'Naše vybavení a zásoby se válí všude okolo, v křehkých přístřešcích, kde je může zasypat běsnící živel... Pojďme vše uschovat pod zem a daleko od vody, a ideálně ještě přibít. Jakkoliv. Akce nestojí žádné zdroje ani nemá žádné prerekvizity.'),
-    ('d.storm.s2', 'en', ''),
+    ('d.storm.s2', 'en', 'Even such a lovely stream which is right near us can flood everything. With a small practice with a shovel we can make it flood everything somewhere else. '),
     ('d.storm.s2', 'cs', 'I takový potůček, jaký teče hned u nás, se může vylít z břehů a všechno spláchnout. Po troše zápolení s lopatou a hlínou zajistíme, aby se z břehu vylil někde jinde. Úspěch akce závisí na zručnosti postavy.'),
-    ('d.storm.s3', 'en', ''),
+    ('d.storm.s3', 'en', 'Some of our shelters are somewhat fragile. They can be damaged in a storm and hurt us inside. Provided that we know, we can fix them with a proper material. '),
     ('d.storm.s3', 'cs', 'Některá naše stavení jsou spíše chatrná. Hrozí jejich zřícení či poškození a ztráty na majetku i na zdraví. Pokud víme, jak na to, můžeme je s použitím vhodného materiálu trochu vyspravit. Úspěch akce závisí na zručnosti postavy.'),
-    ('d.storm.s4', 'en', ''),
+    ('d.storm.s4', 'en', 'Some enterprising persons from the vicinity are claiming they exactly know what do, and for a few caps they can help us. Afterwards, they will go with their stormcraft elsewhere.'),
     ('d.storm.s4', 'cs', 'Někteří podnikavci z okolí tvrdí, že přesně ví, co máme udělat, a za pár zátek to pro nás i provedou. Mohli by pro nás být užiteční, než půjdou se svým bouřným uměním zase o dům dál…');
 
 -- Clans assembly
