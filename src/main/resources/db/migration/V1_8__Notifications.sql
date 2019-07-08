@@ -85,8 +85,6 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.information.levelup', 'cs', 'Tvůj klan postoupil na další úroveň informací.'),
     ('detail.quest.assigned', 'en', 'New quest assigned: [].'),
     ('detail.quest.assigned', 'cs', 'Nový úkol: [].'),
-    ('detail.healing.roll', 'en', 'Rolled {} when computing healing.'),
-    ('detail.healing.roll', 'cs', 'Na kostce padlo {} při hodu na léčení.'),
     ('detail.healing.building', 'en', 'Sick bay increased healing by {}.'),
     ('detail.healing.building', 'cs', 'Marodka zlepšila léčbu o {}.'),
     ('detail.combat.rolls', 'en', '{} rolled {} on combat dice. {} rolled {}.'),

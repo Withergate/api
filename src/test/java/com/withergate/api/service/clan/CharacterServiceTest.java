@@ -174,7 +174,7 @@ public class CharacterServiceTest {
         characterService.performCharacterTurnUpdates(1);
 
         // then verify character updated
-        assertEquals(6, character.getHitpoints());
+        assertEquals(7, character.getHitpoints());
     }
 
     @Test

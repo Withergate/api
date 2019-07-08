@@ -38,6 +38,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     public static final int LEVEL_QUOTIENT = 10;
     public static final int FREE_TRAIT_THRESHOLD = 10;
+    public static final int HEALING = 2;
 
     private final CharacterRepository characterRepository;
     private final RandomService randomService;
@@ -191,19 +192,16 @@ public class CharacterServiceImpl implements CharacterService {
             notification.setHeader(character.getName());
 
             // each character that is ready heals
-            int points = randomService.getRandomInt(1, 2);
-            NotificationDetail healingRollDetail = new NotificationDetail();
-            notificationService.addLocalizedTexts(healingRollDetail.getText(), "detail.healing.roll",
-                    new String[]{String.valueOf(points)});
-            notification.getDetails().add(healingRollDetail);
+            int points = HEALING;
             if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
                 Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
-                points += building.getLevel();
+                int bonus = building.getLevel() * HEALING;
+                points += bonus;
 
                 if (building.getLevel() > 0) {
                     NotificationDetail healingBuildingDetail = new NotificationDetail();
                     notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
-                            new String[]{String.valueOf(building.getLevel())});
+                            new String[]{String.valueOf(bonus)});
                     notification.getDetails().add(healingBuildingDetail);
                 }
             }
