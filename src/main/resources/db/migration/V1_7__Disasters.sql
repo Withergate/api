@@ -145,7 +145,7 @@ INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
 
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.refugees.s1', 'en', 'We will find some more food for them. They can stay for a few days, which means we can probably easily watch them.'),
-    ('d.refugees.s1', 'cs', 'Seženeme jim trochu jídla a vody a necháme je u nás přenocovat, ale hlavně je budeme mít alespoň trochu pod dohledem. Akce nestojí žádné zdroje ani nemá žádné prerekvizity.'),
+    ('d.refugees.s1', 'cs', 'Seženeme jim trochu jídla a vody a necháme je u nás přenocovat, ale hlavně je budeme mít alespoň trochu pod dohledem.'),
     ('d.refugees.s2', 'en', 'They can’t continue in their journey because of injuries and diseases. If we will treat them, they will move away faster.'),
     ('d.refugees.s2', 'cs', 'Nemohou jít dál, protože někteří z nich jsou po cestě zranění či nemocní. Základní zdravotní péči bychom jim zvládli poskytnout - o to dříve odejdou. Výsledek akce je ovlivněn intelektem postavy.'),
     ('d.refugees.s3', 'en', 'When we fully feed them, they will not try to steal more food. Hopefully. '),
@@ -171,7 +171,7 @@ INSERT INTO localized_texts(disaster_description, lang, text) VALUES
     ('d.storm', 'cs', 'Počasí se neustále mění. Dle výpočtů nějakých chytrých lidí z Withergate má v nejbližších dnech nastat období bouří, a dle jiných lidí z hospody - možná už ne tolik chytrých, ale stále důvěryhodných - budou ty nastávající bouře jedny z nejsilnějších vůbec. Po zevrubné inspekci okolí našeho klanu bychom si měli dát pozor na povodně, padající stromy a vůbec raději přibít vše, co není přidělané.');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
-    ('d.storm.success', 'en', 'Once again the mankind triumphed over the raging elements! The windstorm struck our shelters and torrential waters swept through the vicinity. But we were ready for this and no harm has been reported. '),
+    ('d.storm.success', 'en', 'Once again the mankind triumphed over the raging elements! The windstorm struck our shelters and torrential waters swept through the vicinity. But we were ready for this and no harm has been reported.'),
     ('d.storm.success', 'cs', 'Člověk opět jednou triumfoval nad běsnícími živly. Ačkoliv vichřice udeřila na naše domy a přílivová voda se prohnala okolím, byli jsme připraveni a vše jsme přečkali v bezpečí, ve zdraví a bez ztrát na majetku.'),
     ('d.storm.partialSuccess', 'en', 'The windstorm struck our shelters. Falling trees and torrential waters made a terribly mess in our clan. The fight with raging elements was difficult for our health and property.'),
     ('d.storm.partialSuccess', 'cs', 'Vichřice udeřila na naše domy. Padající stromy v našem klanu způsobily pořádnou spoušť, kterou poté zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta. Boj s živlem a jeho následky byl náročný na naše zdraví i náš majetek.'),
@@ -196,17 +196,17 @@ INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
 
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.storm.s1', 'en', 'Our belongings and provisions are scattered all around, in fragile shelters, where they can be hit by a raging element. Let’s hide it below the ground, and hammer it down.'),
-    ('d.storm.s1', 'cs', 'Naše vybavení a zásoby se válí všude okolo, v křehkých přístřešcích, kde je může zasypat běsnící živel... Pojďme vše uschovat pod zem a daleko od vody, a ideálně ještě přibít. Jakkoliv. Akce nestojí žádné zdroje ani nemá žádné prerekvizity.'),
-    ('d.storm.s2', 'en', 'Even such a lovely stream which is right near us can flood everything. With a small practice with a shovel we can make it flood everything somewhere else. '),
+    ('d.storm.s1', 'cs', 'Naše vybavení a zásoby se válí všude okolo, v křehkých přístřešcích, kde je může zasypat běsnící živel... Pojďme vše uschovat pod zem a daleko od vody, a ideálně ještě přibít. Jakkoliv.'),
+    ('d.storm.s2', 'en', 'Even such a lovely stream which is right near us can flood everything. With a small practice with a shovel we can make it flood everything somewhere else.'),
     ('d.storm.s2', 'cs', 'I takový potůček, jaký teče hned u nás, se může vylít z břehů a všechno spláchnout. Po troše zápolení s lopatou a hlínou zajistíme, aby se z břehu vylil někde jinde. Úspěch akce závisí na zručnosti postavy.'),
-    ('d.storm.s3', 'en', 'Some of our shelters are somewhat fragile. They can be damaged in a storm and hurt us inside. Provided that we know, we can fix them with a proper material. '),
+    ('d.storm.s3', 'en', 'Some of our shelters are somewhat fragile. They can be damaged in a storm and hurt us inside. Provided that we know, we can fix them with a proper material. The success of this action depends on the character`s craftsmanship.'),
     ('d.storm.s3', 'cs', 'Některá naše stavení jsou spíše chatrná. Hrozí jejich zřícení či poškození a ztráty na majetku i na zdraví. Pokud víme, jak na to, můžeme je s použitím vhodného materiálu trochu vyspravit. Úspěch akce závisí na zručnosti postavy.'),
     ('d.storm.s4', 'en', 'Some enterprising persons from the vicinity are claiming they exactly know what do, and for a few caps they can help us. Afterwards, they will go with their stormcraft elsewhere.'),
-    ('d.storm.s4', 'cs', 'Někteří podnikavci z okolí tvrdí, že přesně ví, co máme udělat, a za pár zátek to pro nás i provedou. Mohli by pro nás být užiteční, než půjdou se svým bouřným uměním zase o dům dál…');
+    ('d.storm.s4', 'cs', 'Někteří podnikavci z okolí tvrdí, že přesně ví, co máme udělat, a za pár zátek to pro nás i provedou. Mohli by pro nás být užiteční, než půjdou se svým bouřným uměním zase o dům dál...');
 
 -- Clans assembly
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
-    ('d.clans', true, 20, 'd.clans.success', 'd.clans.partialSuccess', 'd.clans.failure', 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('d.clans', true, 20, 'd.clans.success', 'd.clans.partialSuccess', 'd.clans.failure', 'https://storage.googleapis.com/withergate-images/disasters/clans.png');
 
 INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
     ('d.clans.p1', 'd.clans', 'FAME_LOSS'),
@@ -218,14 +218,45 @@ INSERT INTO localized_texts(disaster_name, lang, text) VALUES
     ('d.clans', 'cs', 'Sněm klanů');
 
 INSERT INTO localized_texts(disaster_description, lang, text) VALUES
-    ('d.clans', 'en', ''),
-    ('d.clans', 'cs', '');
+    ('d.clans', 'en', 'It is time for our clan to enter high wasteland politics. All the mightly clans from the Withergate surroundings will gather to elect a new leader. We need strong hand to lead us and protect us from the Withergate bandits and raiding mutants from the Wasteland. We worked hard and fought bravely, so who else but us deserves this post? Others should support us, praise us and bring us food and junk to develop our glorious clan base! Everybody will benefit from us leading all the clans forward. Unfortunately, others do not share our vision so we will need to remind them of our achievements. Let`s make Wasteland great again!'),
+    ('d.clans', 'cs', 'Nastal čas, aby náš klan konečně promluvil do velké politiky. Všechny mocné klany z okolí Withergate se za několik dní sejdou, aby domluvily budoucí uspořádání sil v Pustině. Pokud silná ruka nebude bránit Pustinu, všechny si nás zotročí obyvatelé Withergate nebo nás pobijí mutanti. Náš klan těžce bojoval ve městě i v okolí. Proslavili jsme se boji v aréně, inovativním přístupem při odvracení pohrom a při plnění úkolů. Naše sláva nás předchází. Kdo jiný než my tak má právo na největší území v Pustině? Komu jinému než nám by ostatní klany měly sloužit, vozit nám materiál a zásoby, abychom se mohli věnovat stavbě našeho monumentálního sídla? To přeci prospěje celému lidstvu. Bohužel ostatní klany tento názor zcela nesdílí, takže bude dobré jim naše zásluhy trochu připomenout.
+');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
-    ('d.clans.success', 'en', ''),
-    ('d.clans.success', 'cs', '.'),
-    ('d.clans.partialSuccess', 'en', ''),
-    ('d.clans.partialSuccess', 'cs', ''),
-    ('d.clans.failure', 'en', ''),
-    ('d.clans.failure', 'cs', '');
+    ('d.clans.success', 'en', 'Our breathtaking delegation is sure to receive an audition with the Assembly. We already secured several votes for the Lord of the Wasteland election. Not sure if it is enough but we could not prepare better.'),
+    ('d.clans.success', 'cs', 'Naše dechberoucí delegace má jistotu, že ji sněm vyslechne. Už teď snad máme i zajištěných několik hlasů ve volbě pána Pustiny. Určitě ale nejsme jediní - uvidíme, jestli je to dost, ale lépe jsme se připravit nemohli.'),
+    ('d.clans.partialSuccess', 'en', 'Other clans are still talking more about others than about us. That is not good for our reputation. Anyway, we made sure there are some that will listen to us, although we could have done a better job.'),
+    ('d.clans.partialSuccess', 'cs', 'O ostatních klanech se v Pustině pořád mluví více než o nás, což poškozuje naši pověst. Každopádně jsme zajistili, že na sněmu budou tací, kteří nám budou naslouchat. Ale určitě jsme se mohli připravit lépe.'),
+    ('d.clans.failure', 'en', 'Unfortunately, we have not managed to spread the fame of our clan at all. We are leaving for the assembly without any preparation. Will anybody support us or are we gonna leave as beggers?'),
+    ('d.clans.failure', 'cs', 'Bohužel se nám vůbec nepodařilo rozšířit pověst našeho klanu. Na sněm odjíždíme bez jakékoliv přípravy, téměř s holým zadkem. Jsme tak dobří, že nám spadne vítězství samo do klína? Bude se s námi vůbec někdo bavit, když vypadáme jako žebráci?');
 
+INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
+    ('d.clans.s1', 'd.clans', 'AUTOMATIC', 0, 4, 0, 0, 0),
+    ('d.clans.s2', 'd.clans', 'INTELLECT', 7, 10, 0, 0, 0),
+    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 5, 10, 10, 0, 0),
+    ('d.clans.s4', 'd.clans', 'COMBAT', 4, 15, 0, 0, 0),
+    ('d.clans.s5', 'd.clans', 'AUTOMATIC', 0, 20, 0, 150, 0);
+
+INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
+    ('d.clans.s1', 'en', 'Praise us'),
+    ('d.clans.s1', 'cs', 'Vynachválit nás'),
+    ('d.clans.s2', 'en', 'Prepare a speech'),
+    ('d.clans.s2', 'cs', 'Připravit si oslavnou řeč'),
+    ('d.clans.s3', 'en', 'Support us with glitters'),
+    ('d.clans.s3', 'cs', 'Podpořit nás pozlátky'),
+    ('d.clans.s4', 'en', 'Use the force'),
+    ('d.clans.s4', 'cs', 'Podpořit nás silou'),
+    ('d.clans.s5', 'en', 'Bribe them'),
+    ('d.clans.s5', 'cs', 'Uplatit pár vlivných');
+
+INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
+    ('d.clans.s1', 'en', 'Everyone is talking about the Assembly. It should be enough to spread a word about our clan and soon everyone will know about us.'),
+    ('d.clans.s1', 'cs', 'O sněmu se teď mluví ve městě i v pustině. Stačí, když o nás bude ve světě slyšet. Povyprávějme ostatním jakoukoliv historku o naší úžasnosti, naše pověst se pomalu, ale jistě rozšíří.'),
+    ('d.clans.s2', 'en', 'We will have a chance to speak to the others at the Assembly. Let`s prepare a glorifying speech about our clan. It could start with `I have a dream` and end with `I am a Wastelander!`. That should work... The success of this action is affected by the character`s intellect.'),
+    ('d.clans.s2', 'cs', 'Na sněmu budeme mít možnost promluvit přede všemi. Připravme si brilantní oslavnou řeč na nás klan. Mohlo by to třeba začínat “Mám sen” a končit “Já jsem Pustiňan!”, to zabere. Úspěch záleží na hodnotě inteligence postavy.'),
+    ('d.clans.s3', 'en', 'Some of us can enhance our clothing so we look like other noblemen from the wasteland. The result of this action is affected by the character`s craftsmanship.'),
+    ('d.clans.s3', 'cs', 'Ti zručnější z nás mohou naše oděvy upravit tak, abychom vypadali jako opravdoví pánové Pustiny. Úspěch záleží na hodnotě zručnosti postavy.'),
+    ('d.clans.s4', 'en', 'V Pustině se šíří řeči, že náš klan je neschopný. Malý ptáček nám naštěstí pověděl, kdo je zdrojem těchto lží a pomluv. Pojďme mu ukázat, kdo je tu pánem. Akce vyvolá boj s rizikem zranění či smrti a rovněž neúspěchu.'),
+    ('d.clans.s4', 'cs', 'There are rumors in the wasteland that our clan is incapable and weak. A little bird told us about the source of these lies. We should find them and teach them some manners! This action will trigger a combat and may lead to an injury, death and failure of the character.'),
+    ('d.clans.s5', 'en', 'Zátky řeší vše... bude jich ale potřeba opravdu hodně, protože nejsme jediní, kdo platí.'),
+    ('d.clans.s5', 'cs', 'Everything can be bought with caps. But we will need a lot of them since we are not the only ones paying.');

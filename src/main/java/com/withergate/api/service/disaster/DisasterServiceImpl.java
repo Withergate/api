@@ -151,6 +151,10 @@ public class DisasterServiceImpl implements DisasterService {
     private void prepareNextDisaster(int turnId) {
         log.debug("Preparing next disaster.");
 
+        // check end game
+        if (turnId >= gameProperties.getDisasterTurns().get(gameProperties.getDisasterTurns().size() - 1)) {
+            return;
+        }
 
         Disaster disaster = new Disaster();
         disaster.setCompleted(false);
