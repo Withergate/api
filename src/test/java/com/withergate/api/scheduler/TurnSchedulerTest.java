@@ -77,7 +77,6 @@ public class TurnSchedulerTest {
         Mockito.verify(actionService).processLocationActions(1);
         Mockito.verify(actionService).processQuestActions(1);
         Mockito.verify(actionService).processTradeActions(1);
-        Mockito.verify(characterService).performCharacterTurnUpdates(1);
         Mockito.verify(clanService).performClanTurnUpdates(1);
     }
 }

@@ -1,13 +1,16 @@
 package com.withergate.api.service.clan;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.character.Trait;
@@ -17,6 +20,7 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.location.TavernService;
@@ -54,12 +58,18 @@ public class ClanServiceTest {
     @Mock
     private TavernService tavernService;
 
+    @Mock
+    private RandomService randomService;
+
+    @Mock
+    private TraitService traitService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService);
+                buildingService, tavernService, randomService, traitService);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -235,18 +245,27 @@ public class ClanServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setCharacters(new HashSet<>());
 
         Character character1 = new Character();
         character1.setId(1);
+        character1.setName("John");
+        character1.setClan(clan);
+        character1.setHitpoints(1);
         clan.getCharacters().add(character1);
+
         Character character2 = new Character();
         character2.setId(2);
+        character2.setName("Jane");
+        character2.setHitpoints(1);
+        character2.setClan(clan);
         clan.getCharacters().add(character2);
 
         // Ascetic
         Character character3 = new Character();
         character3.setId(3);
+        character3.setName("Josh");
+        character3.setClan(clan);
+        character3.setHitpoints(1);
         TraitDetails details = new TraitDetails();
         details.setIdentifier(TraitName.ASCETIC);
         Trait trait = new Trait();
@@ -262,7 +281,7 @@ public class ClanServiceTest {
         clanService.performClanTurnUpdates(1);
 
         // then verify food consumed and buildings triggered
-        Assert.assertEquals(8, clan.getFood());
+        Assert.assertEquals(6, clan.getFood());
         Mockito.verify(buildingService).processPassiveBuildingBonuses(1, clan);
     }
 
@@ -357,6 +376,138 @@ public class ClanServiceTest {
 
         // then verify offers returned
         Assert.assertEquals(offers, result);
+    }
+
+    @Test
+    public void testGivenReadyCharacterWhenPerformingEndTurnUpdatesThenVerifyCharacterHealed() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setBuildings(new HashMap<>());
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(5);
+        character.setMaxHitpoints(7);
+        character.setName("Rusty Nick");
+        character.setState(CharacterState.READY);
+        character.setClan(clan);
+        clan.getCharacters().add(character);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when performing healing
+        clanService.performClanTurnUpdates(1);
+
+        // then verify character updated
+        assertEquals(7, character.getHitpoints());
+    }
+
+    @Test
+    public void testGivenReadyCharacterWithFullHitpointsWhenPerformingEndTurnUpdatesThenVerifyCharacterNotHealed() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(1);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(7);
+        character.setMaxHitpoints(7);
+        character.setName("Rusty Nick");
+        character.setState(CharacterState.READY);
+        character.setClan(clan);
+
+        List<Character> characters = new ArrayList<>();
+        characters.add(character);
+
+        // when performing healing
+        clanService.performClanTurnUpdates(1);
+
+        // then verify character not updated
+        assertEquals(7, character.getHitpoints());
+    }
+
+    @Test
+    public void testGivenCharactersWhenDeletingDeadThenVerifyCorrectCharactersDeleted() {
+        // given characters
+        List<Character> characters = new ArrayList<>();
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setCharacters(new HashSet<>());
+
+        Character character1 = new Character();
+        character1.setId(1);
+        character1.setName("John");
+        character1.setLevel(1);
+        character1.setExperience(0);
+        character1.setHitpoints(10);
+        characters.add(character1);
+        character1.setClan(clan);
+        clan.getCharacters().add(character1);
+
+        Character character2 = new Character();
+        character2.setId(2);
+        character2.setName("Jane");
+        character2.setLevel(1);
+        character2.setExperience(0);
+        character2.setHitpoints(0);
+        characters.add(character2);
+        character2.setClan(clan);
+        clan.getCharacters().add(character2);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when deleting dead
+        clanService.performClanTurnUpdates(1);
+
+        // then verify correct characters deleted
+        Mockito.verify(characterService, Mockito.never()).delete(character1);
+        Mockito.verify(characterService).delete(character2);
+    }
+
+    @Test
+    public void givenCharacterWhenLevellingUpThenVerifyTraitAssigned() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(1);
+
+        Character character = new Character();
+        character.setName("John");
+        character.setHitpoints(10);
+        character.setId(1);
+        character.setLevel(1);
+        character.setExperience(11);
+        character.setTraits(new HashMap<>());
+        character.setClan(clan);
+
+        Set<Character> characters = new HashSet<>();
+        characters.add(character);
+        clan.setCharacters(characters);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
+
+        // when levelling up
+        TraitDetails details = new TraitDetails();
+        details.setIdentifier(TraitName.BUILDER);
+        Trait trait = new Trait();
+        trait.setDetails(details);
+        Mockito.when(traitService.getRandomTrait(character)).thenReturn(trait);
+
+        clanService.performClanTurnUpdates(1);
+
+        // then verify trait assigned
+        Assert.assertEquals(details, character.getTraits().values().iterator().next().getDetails());
+        Assert.assertEquals(2, character.getLevel());
+        Assert.assertEquals(1, character.getExperience());
     }
 
 }

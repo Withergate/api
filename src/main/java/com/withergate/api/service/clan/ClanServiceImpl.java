@@ -11,13 +11,17 @@ import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.location.TavernService;
@@ -43,6 +47,8 @@ public class ClanServiceImpl implements ClanService {
     public static final int INFORMATION_QUOTIENT = 10;
     public static final int BASIC_POPULATION_LIMIT = 6;
     public static final int INITIAL_CLAN_SIZE = 5;
+    public static final int HEALING = 2;
+    public static final int FOOD_CONSUMPTION = 2;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -50,6 +56,8 @@ public class ClanServiceImpl implements ClanService {
     private final QuestService questService;
     private final BuildingService buildingService;
     private final TavernService tavernService;
+    private final RandomService randomService;
+    private final TraitService traitService;
 
     @Override
     public Clan getClan(int clanId) {
@@ -166,14 +174,26 @@ public class ClanServiceImpl implements ClanService {
     @Override
     public void performClanTurnUpdates(int turnId) {
         for (Clan clan : getAllClans()) {
-            // food consumption
-            performFoodConsumption(turnId, clan);
+            // delete dead characters
+            deleteDeadCharacters(clan);
 
             // passive buildings
             buildingService.processPassiveBuildingBonuses(turnId, clan);
 
             // tavern offers
             tavernService.prepareTavernOffers(clan, getCharacterFilter(clan));
+
+            // food consumption
+            performFoodConsumption(turnId, clan);
+
+            // perform character healing
+            performCharacterHealing(turnId, clan);
+
+            // perform character leveling
+            performCharacterLeveling(turnId, clan);
+
+            // mark characters as ready
+            markCharactersReady(clan);
 
             // reset arena
             clan.setArena(false);
@@ -193,10 +213,24 @@ public class ClanServiceImpl implements ClanService {
         return tavernService.loadTavernOffers(TavernOffer.State.AVAILABLE, clan);
     }
 
+    private void deleteDeadCharacters(Clan clan) {
+        Iterator<Character> iterator = clan.getCharacters().iterator();
+        while (iterator.hasNext()) {
+            Character character = iterator.next();
+            if (character.getHitpoints() < 1) {
+                log.debug("Deleting character {}.", character.getName());
+                iterator.remove();
+                character.getClan().getCharacters().remove(character);
+
+                characterService.delete(character);
+            }
+        }
+    }
+
     private void performFoodConsumption(int turnId, Clan clan) {
         log.debug("Food consumption for clan {}.", clan.getId());
 
-        if (clan.getCharacters().size() < 1) {
+        if (clan.getCharacters().isEmpty()) {
             return;
         }
 
@@ -219,18 +253,19 @@ public class ClanServiceImpl implements ClanService {
                 continue; // skip food consumption
             }
 
-            if (clan.getFood() > 0) {
-                clan.setFood(clan.getFood() - 1);
+            if (clan.getFood() >= FOOD_CONSUMPTION) {
+                clan.setFood(clan.getFood() - FOOD_CONSUMPTION);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
                         new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFoodIncome(notification.getFoodIncome() - 1);
+                notification.setFoodIncome(notification.getFoodIncome() - FOOD_CONSUMPTION);
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
                 character.setHitpoints(character.getHitpoints() - 1);
+                character.setState(CharacterState.STARVING);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
@@ -253,6 +288,94 @@ public class ClanServiceImpl implements ClanService {
         }
 
         notificationService.save(notification);
+    }
+
+    private void performCharacterHealing(int turnId, Clan clan) {
+        for (Character character : clan.getCharacters()) {
+            // heal only resting characters
+            if (!(character.getState().equals(CharacterState.READY) || character.getState().equals(CharacterState.RESTING))) {
+                continue;
+            }
+
+            // skip npc characters
+            if (character.getClan() == null) {
+                continue;
+            }
+
+            int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
+
+            if (hitpointsMissing == 0) {
+                continue;
+            }
+
+            // prepare notification
+            ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
+            notification.setHeader(character.getName());
+
+            // each character that is ready heals
+            int points = HEALING;
+            if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
+                Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
+                int bonus = building.getLevel() * HEALING;
+                points += bonus;
+
+                if (building.getLevel() > 0) {
+                    NotificationDetail healingBuildingDetail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
+                            new String[]{String.valueOf(bonus)});
+                    notification.getDetails().add(healingBuildingDetail);
+                }
+            }
+
+            int healing = Math.min(points, hitpointsMissing);
+            character.setHitpoints(character.getHitpoints() + healing);
+
+            notificationService
+                    .addLocalizedTexts(notification.getText(), "character.healing", new String[]{});
+            notification.setHealing(points);
+
+            notificationService.save(notification);
+        }
+    }
+
+    private void performCharacterLeveling(int turnId, Clan clan) {
+        for (Character character : clan.getCharacters()) {
+            if (character.getExperience() >= character.getNextLevelExperience()) {
+                // level up
+                log.debug("Character {} leveled up.", character.getName());
+
+                character.setExperience(character.getExperience() - character.getNextLevelExperience());
+                int hpIncrease = randomService.getRandomInt(1, RandomServiceImpl.K6);
+                character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
+                character.setHitpoints(character.getHitpoints() + hpIncrease);
+                character.setLevel(character.getLevel() + 1);
+
+                // notification
+                ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
+                notification.setHeader(character.getName());
+                notification.setImageUrl(character.getImageUrl());
+                notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[]{character.getName()});
+
+                // add random trait to character
+                Trait trait = traitService.getRandomTrait(character);
+                character.getTraits().put(trait.getDetails().getIdentifier(), trait);
+                log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
+
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
+                        new String[]{character.getName()});
+                notification.getDetails().add(detail);
+
+                // save
+                notificationService.save(notification);
+            }
+        }
+    }
+
+    private void markCharactersReady(Clan clan) {
+        for (Character character : clan.getCharacters()) {
+            character.setState(CharacterState.READY);
+        }
     }
 
     private CharacterFilter getCharacterFilter(Clan clan) {

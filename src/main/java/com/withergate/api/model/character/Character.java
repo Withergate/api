@@ -121,7 +121,9 @@ public class Character {
     // Constructor
 
     public Character() {
-        if (traits == null) traits = new HashMap<>();
+        traits = new HashMap<>();
+        state = CharacterState.READY;
+        level = 1;
     }
 
     // Helper functions

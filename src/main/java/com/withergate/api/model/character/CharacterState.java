@@ -6,5 +6,5 @@ package com.withergate.api.model.character;
  * @author Martin Myslik
  */
 public enum CharacterState {
-    READY, BUSY, RESTING
+    READY, BUSY, RESTING, STARVING
 }

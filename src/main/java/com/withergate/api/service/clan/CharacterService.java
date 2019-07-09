@@ -1,10 +1,10 @@
 package com.withergate.api.service.clan;
 
+import java.util.List;
+
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.service.exception.InvalidActionException;
-
-import java.util.List;
 
 /**
  * CharacterService interface.
@@ -42,11 +42,6 @@ public interface CharacterService {
      * @param character the character to be deleted
      */
     void delete(Character character);
-
-    /**
-     * Updates all characters. Meant to be called at the end of each turn.
-     */
-    void performCharacterTurnUpdates(int turnId);
 
     /**
      * Generates random character.

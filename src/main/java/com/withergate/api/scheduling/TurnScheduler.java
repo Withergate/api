@@ -61,9 +61,6 @@ public class TurnScheduler {
         // handle disaster
         actionService.processDisaster(currentTurn.getTurnId());
 
-        // update characters
-        characterService.performCharacterTurnUpdates(currentTurn.getTurnId());
-
         // perform clan turn updates
         clanService.performClanTurnUpdates(currentTurn.getTurnId());
 

@@ -439,7 +439,7 @@ public class BuildingServiceTest {
 
         // then verify fame and food awarded
         Assert.assertEquals(12, clan.getFame());
-        Assert.assertEquals(6, clan.getFood());
+        Assert.assertEquals(7, clan.getFood());
     }
 
 }

@@ -15,6 +15,8 @@ import com.withergate.api.service.clan.ClanServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -127,6 +129,15 @@ public class Clan {
     @Enumerated(EnumType.STRING)
     @JsonView(Views.Internal.class)
     private DefaultAction defaultAction;
+
+    public Clan() {
+        characters = new HashSet<>();
+        buildings = new HashMap<>();
+        weapons = new HashSet<>();
+        outfits = new HashSet<>();
+        gear = new HashSet<>();
+        consumables = new HashSet<>();
+    }
 
     /**
      * Gets the maximum number of characters that could be part of the clan.

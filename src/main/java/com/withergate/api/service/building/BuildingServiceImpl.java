@@ -100,11 +100,11 @@ public class BuildingServiceImpl implements BuildingService {
         // GMO farm
         if (clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
-            clan.setFood(clan.getFood() + building.getLevel());
+            clan.setFood(clan.getFood() + building.getLevel() * 2);
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
-            notification.setFoodIncome(building.getLevel());
+            notification.setFoodIncome(building.getLevel() * 2);
             notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[] {});
             notificationService.save(notification);
         }
