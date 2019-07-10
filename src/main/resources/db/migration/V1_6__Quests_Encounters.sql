@@ -1,29 +1,29 @@
 -- Quests
-INSERT INTO quest_details (identifier, quest_type, difficulty, information_level, completion, caps_reward, fame_reward, image_url) VALUES
-    ('quest.info1.1', 'COMBAT', 3, 1, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.info1.2', 'INTELLECT', 7, 1, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.info2.1', 'CRAFTSMANSHIP', 6, 2, 4, 60, 50, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.info3.1', 'COMBAT', 6, 3, 2, 100, 3, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+INSERT INTO quest_details (identifier, quest_type, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
+    ('quest.1', 'COMBAT', 3, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.2', 'INTELLECT', 7, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.3', 'CRAFTSMANSHIP', 6, 4, 50, 30, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
+    ('quest.4', 'COMBAT', 5, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
-    ('quest.info1.1', 'en', 'Deratization'),
-    ('quest.info1.1', 'cs', 'Deratizace'),
-    ('quest.info1.2', 'en', 'Encrypted message'),
-    ('quest.info1.2', 'cs', 'Zašifrovaná zpráva'),
-    ('quest.info2.1', 'en', 'Water purifier renovation'),
-    ('quest.info2.1', 'cs', 'Oprava čističky vody'),
-    ('quest.info3.1', 'en', 'Wolf den'),
-    ('quest.info3.1', 'cs', 'Vlčí doupě');
+    ('quest.1', 'en', 'Deratization'),
+    ('quest.1', 'cs', 'Deratizace'),
+    ('quest.2', 'en', 'Encrypted message'),
+    ('quest.2', 'cs', 'Zašifrovaná zpráva'),
+    ('quest.3', 'en', 'Water purifier renovation'),
+    ('quest.3', 'cs', 'Oprava čističky vody'),
+    ('quest.4', 'en', 'Wolf den'),
+    ('quest.4', 'cs', 'Vlčí doupě');
 
 INSERT INTO localized_texts(quest_description, lang, text) VALUES
-    ('quest.info1.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours!'),
-    ('quest.info1.1', 'cs', 'Ve sklepení pod hospodou se usídlily zmutované krysy. Zbav se jich a odměna tě nemine.'),
-    ('quest.info1.2', 'en', 'Hey, pst! I found this encrypted message from one of my colleages, who passed away long time ago. Help me with the decryption and I will pay you.'),
-    ('quest.info1.2', 'cs', 'Hej, ty! Můžeš mi pomoct? Našel jsem zápisky od svého zesnulého kolegy. Text je ale zašifrovaný. Když mi ho pomůžeš rozluštit, tak ti zaplatím.'),
-    ('quest.info2.1', 'en', 'Our water purifier broke down and we are running out of clean water. Help us with the renovation and we will spread the fame of your clan!'),
-    ('quest.info2.1', 'cs', 'Naše čistička vod se rozbila a nám dochází voda. Když nám ji pomůžeš opravit, tak budeme šířit slávu tvého klanu!'),
-    ('quest.info3.1', 'en', 'There is a wolf den in the forest. Those bloody beasts are killing our sheep! Get rid of them for us and we will never forget your courage.'),
-    ('quest.info3.1', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu.');
+    ('quest.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours! This action will trigger a combat.'),
+    ('quest.1', 'cs', 'Ve sklepení pod hospodou se usídlily zmutované krysy. Zbav se jich a odměna tě nemine. Tato akce vyústí v souboj.'),
+    ('quest.2', 'en', 'Hey, pst! I found this encrypted message from one of my colleages, who passed away long time ago. Help me with the decryption and I will pay you. The success of this action is affected by the character`s intellect.'),
+    ('quest.2', 'cs', 'Hej, ty! Můžeš mi pomoct? Našel jsem zápisky od svého zesnulého kolegy. Text je ale zašifrovaný. Když mi ho pomůžeš rozluštit, tak ti zaplatím. Úspěch této akce závisí na intelektu postavy.'),
+    ('quest.3', 'en', 'Our water purifier broke down and we are running out of clean water. Help us with the renovation and we will spread the fame of your clan! The success of this action is affected by the character`s craftsmanship.'),
+    ('quest.3', 'cs', 'Naše čistička vod se rozbila a nám dochází voda. Když nám ji pomůžeš opravit, tak budeme šířit slávu tvého klanu! Úspěch této akce závisí na zručnosti postavy.'),
+    ('quest.4', 'en', 'There is a wolf den in the forest. Those bloody beasts are killing our sheep! Get rid of them for us and we will never forget your courage. This action will trigger a combat'),
+    ('quest.4', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu. Tato akce vyústí v souboj.');
 
 -- Random encounters
 INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, difficulty, description_text, success_text, failure_text) VALUES

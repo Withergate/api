@@ -65,11 +65,11 @@ public class QuestServiceTest {
         details.setIdentifier("Quest");
         details.setType(Type.COMBAT);
         detailsList.add(details);
-        Mockito.when(questDetailsRepository.findAllByInformationLevel(1)).thenReturn(detailsList);
+        Mockito.when(questDetailsRepository.findAll()).thenReturn(detailsList);
 
         // when assigning quests
         ClanNotification notification = new ClanNotification();
-        questService.assignQuests(clan, notification, 1);
+        questService.assignQuests(clan, notification);
 
         // then verify quests added
         Assert.assertEquals(1, clan.getQuests().toArray().length);

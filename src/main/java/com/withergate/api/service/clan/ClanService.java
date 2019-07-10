@@ -71,15 +71,6 @@ public interface ClanService {
     Character hireCharacter(Clan clan);
 
     /**
-     * Increase clan's information level.
-     *
-     * @param clan             the clan
-     * @param notification     the clan's notification to be updated
-     * @param informationLevel the new information level
-     */
-    void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel);
-
-    /**
      * Performs all clan turn updates.
      *
      * @param turnId the turn ID

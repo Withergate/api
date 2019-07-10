@@ -163,21 +163,6 @@ public class ClanServiceImpl implements ClanService {
         return character;
     }
 
-    @Override
-    public void increaseInformationLevel(Clan clan, ClanNotification notification, int informationLevel) {
-        log.debug("Increasing clan's information level for clan: {}", clan.getName());
-
-        // handle level up
-        clan.setInformationLevel(informationLevel);
-
-        NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.information.levelup", new String[] {});
-        notification.getDetails().add(detail);
-
-        // assign quests
-        questService.assignQuests(clan, notification, informationLevel);
-    }
-
     @Transactional
     @Override
     public void performClanTurnUpdates(int turnId) {
@@ -199,6 +184,9 @@ public class ClanServiceImpl implements ClanService {
 
             // perform character leveling
             performCharacterLeveling(turnId, clan);
+
+            // check information level
+            checkInformationLevel(turnId, clan);
 
             // mark characters as ready
             markCharactersReady(clan);
@@ -330,7 +318,7 @@ public class ClanServiceImpl implements ClanService {
                 if (building.getLevel() > 0) {
                     NotificationDetail healingBuildingDetail = new NotificationDetail();
                     notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
-                            new String[]{String.valueOf(bonus)});
+                            new String[] {String.valueOf(bonus)});
                     notification.getDetails().add(healingBuildingDetail);
                 }
             }
@@ -338,8 +326,7 @@ public class ClanServiceImpl implements ClanService {
             int healing = Math.min(points, hitpointsMissing);
             character.setHitpoints(character.getHitpoints() + healing);
 
-            notificationService
-                    .addLocalizedTexts(notification.getText(), "character.healing", new String[]{});
+            notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
             notification.setHealing(points);
 
             notificationService.save(notification);
@@ -362,7 +349,7 @@ public class ClanServiceImpl implements ClanService {
                 ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
                 notification.setHeader(character.getName());
                 notification.setImageUrl(character.getImageUrl());
-                notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[]{character.getName()});
+                notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[] {character.getName()});
 
                 // add random trait to character
                 Trait trait = traitService.getRandomTrait(character);
@@ -371,12 +358,32 @@ public class ClanServiceImpl implements ClanService {
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
-                        new String[]{character.getName()});
+                        new String[] {character.getName()});
                 notification.getDetails().add(detail);
 
                 // save
                 notificationService.save(notification);
             }
+        }
+    }
+
+    private void checkInformationLevel(int turnId, Clan clan) {
+        log.debug("Increasing clan's information level for clan: {}", clan.getName());
+
+        // handle next level
+        if (clan.getInformation() >= clan.getNextLevelInformation()) {
+            clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
+            clan.setInformationLevel(clan.getInformationLevel() + 1);
+
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notificationService.addLocalizedTexts(notification.getText(), "clan.information.levelup", new String[] {});
+
+            // assign quests
+            questService.assignQuests(clan, notification);
+
+            // save notification
+            notificationService.save(notification);
         }
     }
 

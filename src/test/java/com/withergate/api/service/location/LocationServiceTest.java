@@ -22,7 +22,6 @@ import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
@@ -39,9 +38,6 @@ public class LocationServiceTest {
 
     @Mock
     private LocationActionRepository locationActionRepository;
-
-    @Mock
-    private ClanService clanService;
 
     @Mock
     private RandomService randomService;
@@ -62,7 +58,7 @@ public class LocationServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        locationService = new LocationServiceImpl(locationActionRepository, clanService, randomService,
+        locationService = new LocationServiceImpl(locationActionRepository, randomService,
                 encounterService, itemService, notificationService, locationDescriptionRepository);
     }
 
@@ -330,44 +326,6 @@ public class LocationServiceTest {
 
         // then verify information increased
         Assert.assertEquals(8, clan.getInformation());
-    }
-
-    @Test
-    public void testGivenCharacterAndClanWithHighInfoWhenScoutingThenVerifyInformationLevelUpTriggered() {
-        // given character
-        Character character = new Character();
-        character.setId(1);
-        character.setIntellect(4);
-        character.setName("Loud Garry");
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setInformation(8);
-        clan.setInformationLevel(0);
-        character.setClan(clan);
-
-        LocationAction action = new LocationAction();
-        action.setType(LocationActionType.SCOUT);
-        action.setCharacter(character);
-        action.setState(ActionState.PENDING);
-        action.setLocation(Location.WASTELAND);
-        List<LocationAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-
-        LocationDescription description = new LocationDescription();
-        description.setLocation(Location.WASTELAND);
-        description.setEncounterChance(0);
-        description.setInformationBonus(1);
-        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
-
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50); // encounter roll
-
-        // when exploring
-        locationService.processLocationActions(1);
-
-        // then verify information level triggered
-        Mockito.verify(clanService).increaseInformationLevel(Mockito.eq(clan), Mockito.any(ClanNotification.class), Mockito.eq(1));
     }
 
     @Test

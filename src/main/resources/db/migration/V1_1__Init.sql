@@ -231,7 +231,6 @@ CREATE TABLE quest_details (
     identifier VARCHAR(16),
     quest_type VARCHAR(16) NOT NULL,
     difficulty INT NOT NULL,
-    information_level INT NOT NULL,
     completion INT NOT NULL,
     caps_reward INT NOT NULL,
     fame_reward INT NOT NULL,

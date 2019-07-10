@@ -1,6 +1,9 @@
 package com.withergate.api.service.quest;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -37,25 +40,39 @@ public class QuestServiceImpl implements QuestService {
     private final RandomService randomService;
 
     @Override
-    public void assignQuests(Clan clan, ClanNotification notification, int informationLevel) {
-        List<QuestDetails> questDetails = questDetailsRepository.findAllByInformationLevel(informationLevel);
-        log.debug("Assigning {} new quests to the clan.", questDetails.size());
+    public void assignQuests(Clan clan, ClanNotification notification) {
+        log.debug("Assigning new quests to the clan.");
 
-        for (QuestDetails details : questDetails) {
-            Quest quest = new Quest();
-            quest.setClan(clan);
-            quest.setCompleted(false);
-            quest.setProgress(0);
-            quest.setDetails(details);
+        Set<String> identifiers = new HashSet<>();
+        clan.getQuests().forEach(quest -> identifiers.add(quest.getDetails().getIdentifier()));
 
-            clan.getQuests().add(quest);
+        // load details and filter existing/completed quests
+        List<QuestDetails> questDetails = questDetailsRepository.findAll()
+                .stream()
+                .filter(details -> !identifiers.contains(details.getIdentifier()))
+                .collect(Collectors.toList());
 
-            // add notification
-            NotificationDetail notificationDetail = new NotificationDetail();
-            notificationService.addLocalizedTexts(notificationDetail.getText(), "detail.quest.assigned", new String[] {},
-                    details.getName());
-            notification.getDetails().add(notificationDetail);
+        if (questDetails.size() < 1) {
+            log.error("No quests found for clan {}.", clan.getId());
+            return;
         }
+
+        // get random quest
+        QuestDetails details = questDetails.get(randomService.getRandomInt(0, questDetails.size() - 1));
+
+        Quest quest = new Quest();
+        quest.setClan(clan);
+        quest.setCompleted(false);
+        quest.setProgress(0);
+        quest.setDetails(details);
+
+        clan.getQuests().add(quest);
+
+        // add notification
+        NotificationDetail notificationDetail = new NotificationDetail();
+        notificationService.addLocalizedTexts(notificationDetail.getText(), "detail.quest.assigned", new String[] {}, details.getName());
+        notification.getDetails().add(notificationDetail);
+
     }
 
     @Override
@@ -120,8 +137,8 @@ public class QuestServiceImpl implements QuestService {
 
     private void handleQuestSuccess(Quest quest, Character character, ClanNotification notification) {
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success",
-                new String[]{}, quest.getDetails().getName());
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[] {},
+                quest.getDetails().getName());
 
         // award experience
         character.setExperience(character.getExperience() + 2);
@@ -136,7 +153,7 @@ public class QuestServiceImpl implements QuestService {
 
             ClanNotification completionNotification = new ClanNotification(notification.getTurnId(), notification.getClanId());
             completionNotification.setHeader(quest.getClan().getName());
-            notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[]{},
+            notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[] {},
                     quest.getDetails().getName());
 
             quest.setCompleted(true);
@@ -153,7 +170,7 @@ public class QuestServiceImpl implements QuestService {
 
     private void handleQuestFailure(Quest quest, Character character, ClanNotification notification) {
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[]{},
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[] {},
                 quest.getDetails().getName());
 
         // award experience
@@ -164,7 +181,7 @@ public class QuestServiceImpl implements QuestService {
     private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
-                new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
+                new String[] {String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
         return detail;
     }
 

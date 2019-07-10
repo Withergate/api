@@ -36,7 +36,6 @@ import org.springframework.stereotype.Service;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationActionRepository locationActionRepository;
-    private final ClanService clanService;
     private final RandomService randomService;
     private final EncounterService encounterService;
     private final ItemService itemService;
@@ -112,12 +111,6 @@ public class LocationServiceImpl implements LocationService {
 
             notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
             notification.setInformation(information);
-
-            // handle next level
-            if (clan.getInformation() >= clan.getNextLevelInformation()) {
-                clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
-                clanService.increaseInformationLevel(clan, notification, clan.getInformationLevel() + 1);
-            }
 
             return;
         }

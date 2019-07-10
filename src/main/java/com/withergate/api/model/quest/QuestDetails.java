@@ -47,9 +47,6 @@ public class QuestDetails {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(name = "information_level", nullable = false)
-    private int informationLevel;
-
     @Column(name = "completion", nullable = false)
     private int completion;
 

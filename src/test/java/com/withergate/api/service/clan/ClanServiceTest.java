@@ -253,13 +253,20 @@ public class ClanServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setName("Stalkers");
+        clan.setInformationLevel(0);
+        clan.setInformation(12);
+
+        List<Clan> clans = new ArrayList<>();
+        clans.add(clan);
+        Mockito.when(clanRepository.findAll()).thenReturn(clans);
 
         // when increasing information level
-        ClanNotification notification = new ClanNotification();
-        clanService.increaseInformationLevel(clan, notification, 1);
+        clanService.performClanTurnUpdates(1);
 
         // then verify quest service called
-        Mockito.verify(questService).assignQuests(clan, notification, 1);
+        Mockito.verify(questService).assignQuests(Mockito.eq(clan), Mockito.any(ClanNotification.class));
+        Assert.assertEquals(1, clan.getInformationLevel());
+        Assert.assertEquals(2, clan.getInformation());
     }
 
     @Test
