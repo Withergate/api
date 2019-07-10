@@ -11,6 +11,8 @@ import com.withergate.api.service.exception.EntityConflictException;
 
 import java.security.Principal;
 import java.util.List;
+
+import com.withergate.api.service.exception.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -63,7 +65,7 @@ public class ClanController {
      */
     @PostMapping("/clan")
     public ResponseEntity<Clan> createClan(Principal principal, @RequestBody ClanRequest clanRequest)
-            throws EntityConflictException {
+            throws EntityConflictException, ValidationException {
         log.debug("Creating a new clan for player {}", principal.getName());
 
         Clan clan = clanService.createClan(Integer.parseInt(principal.getName()), clanRequest);

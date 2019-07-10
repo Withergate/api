@@ -23,6 +23,7 @@ import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
@@ -73,7 +74,7 @@ public class ClanServiceTest {
     }
 
     @Test(expected = EntityConflictException.class)
-    public void testGivenExistingClanNameWhenCreatingClanThenExpectException() throws EntityConflictException {
+    public void testGivenExistingClanNameWhenCreatingClanThenExpectException() throws Exception {
         // given existing clan name
         Clan clan = new Clan();
         clan.setId(1);
@@ -89,7 +90,7 @@ public class ClanServiceTest {
     }
 
     @Test(expected = EntityConflictException.class)
-    public void testGivenExistingClanIdWhenCreatingClanThenExpectException() throws EntityConflictException {
+    public void testGivenExistingClanIdWhenCreatingClanThenExpectException() throws Exception {
         // given existing clan name
         Clan clan = new Clan();
         clan.setId(1);
@@ -104,8 +105,30 @@ public class ClanServiceTest {
         // then expect exception
     }
 
+    @Test(expected = ValidationException.class)
+    public void testGivenClanRequestWhenNameTooShortThenExpectException() throws Exception {
+        // given request
+        ClanRequest clanRequest = new ClanRequest("aaa");
+
+        // when clan name too short
+        clanService.createClan(1, clanRequest);
+
+        // then expect exception
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testGivenClanRequestWhenInvalidCharactersThenExpectException() throws Exception {
+        // given request
+        ClanRequest clanRequest = new ClanRequest("666 Stalkers");
+
+        // when clan name contains invalid characters
+        clanService.createClan(1, clanRequest);
+
+        // then expect exception
+    }
+
     @Test
-    public void testGivenUniqueClanWhenCreatingClanThenVerifyClanSaved() throws EntityConflictException {
+    public void testGivenUniqueClanWhenCreatingClanThenVerifyClanSaved() throws Exception {
         // given existing clan name
         Clan clan = new Clan();
         clan.setId(1);

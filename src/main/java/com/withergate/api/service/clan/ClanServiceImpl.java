@@ -24,6 +24,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
@@ -49,6 +50,8 @@ public class ClanServiceImpl implements ClanService {
     public static final int INITIAL_CLAN_SIZE = 5;
     public static final int HEALING = 2;
     public static final int FOOD_CONSUMPTION = 2;
+
+    private static final int CLAN_NAME_LENGTH = 6;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -81,7 +84,12 @@ public class ClanServiceImpl implements ClanService {
 
     @Transactional
     @Override
-    public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException {
+    public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException {
+        // validate clan name
+        if (!clanRequest.getName().matches("[a-zA-Z]+") || clanRequest.getName().length() < CLAN_NAME_LENGTH) {
+            throw new ValidationException("Clan name must be at least 6 characters long and consist only of English letters.");
+        }
+
         // check if clan already exists.
         if (getClan(clanId) != null) {
             log.warn("Cannot create a clan with ID {}", clanId);

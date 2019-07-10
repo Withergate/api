@@ -9,6 +9,7 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -57,8 +58,9 @@ public interface ClanService {
      * @param clanRequest the clan request date
      * @return the created clan
      * @throws EntityConflictException entity conflict
+     * @throws ValidationException     validation error
      */
-    Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException;
+    Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException;
 
     /**
      * Adds new random character to the provided clan.
