@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
@@ -69,8 +70,13 @@ public class ClanServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        GameProperties properties = new GameProperties();
+        properties.setHealing(2);
+        properties.setStarvation(2);
+        properties.setStarvationFame(1);
+
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService, randomService, traitService);
+                buildingService, tavernService, randomService, traitService, properties);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -321,6 +327,7 @@ public class ClanServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(0);
+        clan.setFame(2);
         clan.setCharacters(new HashSet<>());
 
         Character character = new Character();
@@ -335,8 +342,9 @@ public class ClanServiceTest {
         // when performing turn updates
         clanService.performClanTurnUpdates(1);
 
-        // then verify character starving
-        Assert.assertEquals(4, character.getHitpoints());
+        // then verify character starving and fame lost
+        Assert.assertEquals(3, character.getHitpoints());
+        Assert.assertEquals(1, clan.getFame());
     }
 
     @Test

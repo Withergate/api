@@ -1,14 +1,10 @@
 package com.withergate.api.service.encounter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.notification.ClanNotification;
@@ -21,6 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Combat service.
  *
@@ -31,8 +30,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CombatServiceImpl implements CombatService {
 
-    private static final int ARENA_CAPS = 20;
-    private static final int ARENA_FAME = 10;
+    private static final int ARENA_CAPS = 15;
+    private static final int ARENA_FAME = 5;
 
     private final RandomService randomService;
     private final CharacterService characterService;

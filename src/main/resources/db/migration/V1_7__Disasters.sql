@@ -231,11 +231,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.clans.failure', 'cs', 'Bohužel se nám vůbec nepodařilo rozšířit pověst našeho klanu. Na sněm odjíždíme bez jakékoliv přípravy, téměř s holým zadkem. Jsme tak dobří, že nám spadne vítězství samo do klína? Bude se s námi vůbec někdo bavit, když vypadáme jako žebráci?');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.clans.s1', 'd.clans', 'AUTOMATIC', 0, 4, 0, 0, 0),
-    ('d.clans.s2', 'd.clans', 'INTELLECT', 7, 10, 0, 0, 0),
-    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 5, 10, 10, 0, 0),
-    ('d.clans.s4', 'd.clans', 'COMBAT', 4, 15, 0, 0, 0),
-    ('d.clans.s5', 'd.clans', 'AUTOMATIC', 0, 20, 0, 150, 0);
+    ('d.clans.s1', 'd.clans', 'AUTOMATIC', 0, 3, 0, 0, 0),
+    ('d.clans.s2', 'd.clans', 'INTELLECT', 7, 6, 0, 0, 0),
+    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 5, 6, 10, 0, 0),
+    ('d.clans.s4', 'd.clans', 'COMBAT', 6, 10, 0, 0, 0),
+    ('d.clans.s5', 'd.clans', 'AUTOMATIC', 0, 15, 0, 150, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.clans.s1', 'en', 'Praise us'),

@@ -21,6 +21,11 @@ public class GameProperties {
     // main config
     private int maxTurns;
 
+    // general
+    private int healing;
+    private int starvation;
+    private int starvationFame;
+
     // disasters
     private List<Integer> disasterTurns;
     private int disasterVisibility;

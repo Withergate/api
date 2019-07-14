@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
@@ -48,7 +49,6 @@ public class ClanServiceImpl implements ClanService {
     public static final int INFORMATION_QUOTIENT = 10;
     public static final int BASIC_POPULATION_LIMIT = 6;
     public static final int INITIAL_CLAN_SIZE = 5;
-    public static final int HEALING = 2;
     public static final int FOOD_CONSUMPTION = 2;
 
     private static final int CLAN_NAME_LENGTH = 6;
@@ -61,6 +61,7 @@ public class ClanServiceImpl implements ClanService {
     private final TavernService tavernService;
     private final RandomService randomService;
     private final TraitService traitService;
+    private final GameProperties gameProperties;
 
     @Override
     public Clan getClan(int clanId) {
@@ -260,13 +261,17 @@ public class ClanServiceImpl implements ClanService {
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
-                character.setHitpoints(character.getHitpoints() - 1);
+                character.setHitpoints(character.getHitpoints() - gameProperties.getStarvation());
                 character.setState(CharacterState.STARVING);
+
+                // lose fame
+                clan.setFame(clan.getFame() - gameProperties.getStarvationFame());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setInjury(notification.getInjury() + 1);
+                notification.setFameIncome(-gameProperties.getStarvationFame());
+                notification.setInjury(notification.getInjury() + gameProperties.getStarvation());
 
                 if (character.getHitpoints() < 1) {
                     log.debug("Character {} died of starvation.", character.getName());
@@ -309,10 +314,10 @@ public class ClanServiceImpl implements ClanService {
             notification.setHeader(character.getName());
 
             // each character that is ready heals
-            int points = HEALING;
+            int points = gameProperties.getHealing();
             if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
                 Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
-                int bonus = building.getLevel() * HEALING;
+                int bonus = building.getLevel() * gameProperties.getHealing();
                 points += bonus;
 
                 if (building.getLevel() > 0) {
