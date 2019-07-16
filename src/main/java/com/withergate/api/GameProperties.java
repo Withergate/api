@@ -23,7 +23,8 @@ public class GameProperties {
 
     // general
     private int healing;
-    private int starvation;
+    private int foodConsumption;
+    private int starvationInjury;
     private int starvationFame;
 
     // disasters

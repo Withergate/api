@@ -49,9 +49,9 @@ public class ClanServiceImpl implements ClanService {
     public static final int INFORMATION_QUOTIENT = 10;
     public static final int BASIC_POPULATION_LIMIT = 6;
     public static final int INITIAL_CLAN_SIZE = 5;
-    public static final int FOOD_CONSUMPTION = 2;
 
-    private static final int CLAN_NAME_LENGTH = 6;
+    private static final int CLAN_NAME_MIN_LENGTH = 6;
+    private static final int CLAN_NAME_MAX_LENGTH = 24;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -87,8 +87,10 @@ public class ClanServiceImpl implements ClanService {
     @Override
     public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException {
         // validate clan name
-        if (!clanRequest.getName().matches("[a-zA-Z]+") || clanRequest.getName().length() < CLAN_NAME_LENGTH) {
-            throw new ValidationException("Clan name must be at least 6 characters long and consist only of English letters.");
+        if (!clanRequest.getName().matches("[a-zA-Z]+") || clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH
+            || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
+            throw new ValidationException("Clan name must be between 6 and 24 characters long and consist only of "
+                    + "English letters.");
         }
 
         // check if clan already exists.
@@ -250,18 +252,18 @@ public class ClanServiceImpl implements ClanService {
                 continue; // skip food consumption
             }
 
-            if (clan.getFood() >= FOOD_CONSUMPTION) {
-                clan.setFood(clan.getFood() - FOOD_CONSUMPTION);
+            if (clan.getFood() >= gameProperties.getFoodConsumption()) {
+                clan.setFood(clan.getFood() - gameProperties.getFoodConsumption());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
                         new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFoodIncome(notification.getFoodIncome() - FOOD_CONSUMPTION);
+                notification.setFoodIncome(notification.getFoodIncome() - gameProperties.getFoodConsumption());
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
-                character.setHitpoints(character.getHitpoints() - gameProperties.getStarvation());
+                character.setHitpoints(character.getHitpoints() - gameProperties.getStarvationInjury());
                 character.setState(CharacterState.STARVING);
 
                 // lose fame
@@ -271,7 +273,7 @@ public class ClanServiceImpl implements ClanService {
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
                 notification.setFameIncome(-gameProperties.getStarvationFame());
-                notification.setInjury(notification.getInjury() + gameProperties.getStarvation());
+                notification.setInjury(notification.getInjury() + gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
                     log.debug("Character {} died of starvation.", character.getName());

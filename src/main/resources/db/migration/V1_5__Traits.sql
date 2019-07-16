@@ -1,14 +1,17 @@
 --- Trait details
 INSERT INTO trait_details(identifier, bonus, image_url) VALUES
     ('FIGHTER', 1, 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
+    ('SHARPSHOOTER', 1, 'https://storage.googleapis.com/withergate-images/traits/sharpshooter-trait.png'),
     ('ASCETIC', 0, 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
-    ('HUNTER', 2, 'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
-    ('HOARDER', 2, 'https://storage.googleapis.com/withergate-images/traits/strong-trait.png'),
+    ('HUNTER', 2, 'https://storage.googleapis.com/withergate-images/traits/hunter-trait.png'),
+    ('HOARDER', 2, 'https://storage.googleapis.com/withergate-images/traits/hoarder-trait.png'),
     ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
     ('FIGHTER', 'cs', 'Rváč'),
+    ('SHARPSHOOTER', 'en', 'Sharpshooter'),
+    ('SHARPSHOOTER', 'cs', 'Trefa do černého'),
     ('ASCETIC', 'en', 'Ascetic'),
     ('ASCETIC', 'cs', 'Asketa'),
     ('HUNTER', 'en', 'Hunter'),
@@ -21,6 +24,8 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
     ('FIGHTER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji se zbraní nablízko.'),
+    ('SHARPSHOOTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a ranged weapon.'),
+    ('SHARPSHOOTER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji se střelnou zbraní.'),
     ('ASCETIC', 'en', 'Character with this trait does not need to consume any food at the end of each turn.'),
     ('ASCETIC', 'cs', 'Postava s touto schopností nepotřebuje žádné jídlo na konci kola.'),
     ('HUNTER', 'en', 'Character with this trait will get bonus food when scavenging.'),

@@ -279,7 +279,7 @@ public class CombatServiceImpl implements CombatService {
 
     // add combat bonus to a character with certain traits if conditions are met
     private int getCombatBonus(Character character, ClanNotification notification) {
-        if (character.getTraits().containsKey(TraitDetails.TraitName.FIGHTER) && character.getWeapon() != null
+        if (character.getTraits().containsKey(TraitName.FIGHTER) && character.getWeapon() != null
                 && character.getWeapon().getDetails().getType() == WeaponType.MELEE) {
             if (randomService.getRandomInt(1, 100) < 50) {
                 NotificationDetail detail = new NotificationDetail();
@@ -290,6 +290,19 @@ public class CombatServiceImpl implements CombatService {
                 return character.getTraits().get(TraitName.FIGHTER).getDetails().getBonus();
             }
         }
+
+        if (character.getTraits().containsKey(TraitName.SHARPSHOOTER) && character.getWeapon() != null
+                && character.getWeapon().getDetails().getType() == WeaponType.RANGED) {
+            if (randomService.getRandomInt(1, 100) < 50) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService
+                        .addLocalizedTexts(detail.getText(), "detail.trait.sharpshooter", new String[]{character.getName()});
+                notification.getDetails().add(detail);
+
+                return character.getTraits().get(TraitName.SHARPSHOOTER).getDetails().getBonus();
+            }
+        }
+
         return 0;
     }
 

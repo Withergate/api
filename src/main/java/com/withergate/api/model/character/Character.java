@@ -118,8 +118,9 @@ public class Character {
     @MapKeyEnumerated(EnumType.STRING)
     private Map<TraitDetails.TraitName, Trait> traits;
 
-    // Constructor
-
+    /**
+     * Constructor.
+     */
     public Character() {
         traits = new HashMap<>();
         state = CharacterState.READY;

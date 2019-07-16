@@ -103,6 +103,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.trait.builder', 'cs', '{} použil svou schopnost Stavitel a rychlost stavby se zvýšila.'),
     ('detail.trait.fighter', 'en', '{} got a combat bonus for having a trait Fighter and fighting with a melee weapon.'),
     ('detail.trait.fighter', 'cs', '{} získal/a bonus k bojové síly za schopnost Rváč při boji se zbraní nablízko.'),
+    ('detail.trait.sharpshooter', 'en', '{} got a combat bonus for having a trait Sharpshooter and fighting with a ranged weapon.'),
+    ('detail.trait.sharpshooter', 'cs', '{} získal/a bonus k bojové síly za schopnost Trefa do černého při boji se střelnou zbraní.'),
     ('detail.trait.ascetic', 'en', '{} does not need to consume any food because of his Ascetic trait.'),
     ('detail.trait.ascetic', 'cs', '{} nemusí konzumovat žádné jídlo díky své schopnosti Asketa.'),
     ('detail.trait.scavenge', 'en', 'Additional resources were found because of character`s trait [].'),

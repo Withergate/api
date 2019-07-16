@@ -130,6 +130,9 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private DefaultAction defaultAction;
 
+    /**
+     * Constructor.
+     */
     public Clan() {
         characters = new HashSet<>();
         buildings = new HashMap<>();

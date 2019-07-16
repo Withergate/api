@@ -72,7 +72,8 @@ public class ClanServiceTest {
 
         GameProperties properties = new GameProperties();
         properties.setHealing(2);
-        properties.setStarvation(2);
+        properties.setFoodConsumption(2);
+        properties.setStarvationInjury(2);
         properties.setStarvationFame(1);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
