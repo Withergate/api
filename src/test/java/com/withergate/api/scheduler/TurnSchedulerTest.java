@@ -37,7 +37,7 @@ public class TurnSchedulerTest {
         MockitoAnnotations.initMocks(this);
 
         GameProperties properties = new GameProperties();
-        properties.setMaxTurns(60);
+        properties.setMaxTurns(45);
 
         scheduler = new TurnScheduler(turnRepository, actionService, characterService, clanService, properties);
     }
@@ -77,6 +77,30 @@ public class TurnSchedulerTest {
         Mockito.verify(actionService).processLocationActions(1);
         Mockito.verify(actionService).processQuestActions(1);
         Mockito.verify(actionService).processTradeActions(1);
+        Mockito.verify(actionService).processDisaster(1);
         Mockito.verify(clanService).performClanTurnUpdates(1);
     }
+
+    @Test
+    public void testGivenTurnWhenMaxTurnsExceededThenVerifyNoActionsPerformed() {
+        // given turn
+        Turn turn = new Turn();
+        turn.setTurnId(46);
+
+        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+
+        // when processing current turn
+        scheduler.processTurn();
+
+        // then verify all actions triggered
+        Mockito.verify(actionService, Mockito.never()).assignDefaultActions();
+        Mockito.verify(actionService, Mockito.never()).processBuildingActions(1);
+        Mockito.verify(actionService, Mockito.never()).processLocationActions(1);
+        Mockito.verify(actionService, Mockito.never()).processQuestActions(1);
+        Mockito.verify(actionService, Mockito.never()).processTradeActions(1);
+        Mockito.verify(actionService, Mockito.never()).processDisaster(1);
+        Mockito.verify(clanService, Mockito.never()).performClanTurnUpdates(1);
+        Mockito.verify(turnRepository, Mockito.never()).save(Mockito.any());
+    }
+
 }

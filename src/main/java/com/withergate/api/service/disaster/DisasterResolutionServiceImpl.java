@@ -87,11 +87,11 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
                 break;
             }
             case CHARACTER_INJURY: {
-                hanleCharacterInjury(clan, notification);
+                handleCharacterInjury(clan, notification);
                 break;
             }
             case BUILDING_DESTRUCTION: {
-                hanleBuildingDestruction(clan, notification);
+                handleBuildingDestruction(clan, notification);
                 break;
             }
             case FAME_LOSS: {
@@ -151,7 +151,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         notification.getDetails().add(detail);
     }
 
-    private void hanleCharacterInjury(Clan clan, ClanNotification notification) {
+    private void handleCharacterInjury(Clan clan, ClanNotification notification) {
         for (Character character : clan.getCharacters()) {
             int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
 
@@ -172,7 +172,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         }
     }
 
-    private void hanleBuildingDestruction(Clan clan, ClanNotification notification) {
+    private void handleBuildingDestruction(Clan clan, ClanNotification notification) {
         for (Building building : clan.getBuildings().values()) {
             // lose progress
             building.setProgress(0);

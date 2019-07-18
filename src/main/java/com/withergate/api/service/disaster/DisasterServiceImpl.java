@@ -44,7 +44,7 @@ public class DisasterServiceImpl implements DisasterService {
     private final DisasterDetailsRepository disasterDetailsRepository;
     private final DisasterSolutionRepository disasterSolutionRepository;
     private final DisasterActionRepository disasterActionRepository;
-    private final DisasterResolutionService disasterPenaltyService;
+    private final DisasterResolutionService disasterResolutionService;
     private final ClanService clanService;
     private final TurnRepository turnRepository;
     private final RandomService randomService;
@@ -284,7 +284,7 @@ public class DisasterServiceImpl implements DisasterService {
         notification.setHeader(clan.getName());
         notification.setImageUrl(disaster.getDetails().getImageUrl());
 
-        disasterPenaltyService.handleDisasterResolution(clan, notification, disaster);
+        disasterResolutionService.handleDisasterResolution(clan, notification, disaster);
 
         // save notification
         notificationService.save(notification);

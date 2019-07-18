@@ -308,9 +308,7 @@ public class TradeServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setOffer(offer);
-        List<MarketTradeAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing trade actions
         tradeService.processMarketTradeActions(1);
@@ -341,9 +339,7 @@ public class TradeServiceTest {
         action.setJunk(10);
         action.setCharacter(character);
         action.setState(ActionState.PENDING);
-        List<ResourceTradeAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(resourceTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+        Mockito.when(resourceTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
         tradeService.processResourceTradeActions(1);
@@ -373,9 +369,7 @@ public class TradeServiceTest {
         action.setJunk(5);
         action.setCharacter(character);
         action.setState(ActionState.PENDING);
-        List<ResourceTradeAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(resourceTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+        Mockito.when(resourceTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
         tradeService.processResourceTradeActions(1);
@@ -383,6 +377,40 @@ public class TradeServiceTest {
         // then verify action handled
         Assert.assertEquals(60, clan.getCaps());
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
+    }
+
+    @Test
+    public void givenMarketOfferWhenPriceIsMarketPriceThenVerifyItemPurchasedByComputer() {
+        // given market offer
+        Weapon weapon = new Weapon();
+        weapon.setId(1);
+        weapon.setClan(null);
+        WeaponDetails details = new WeaponDetails();
+        details.setItemType(ItemType.WEAPON);
+        details.setPrice(20);
+        weapon.setDetails(details);
+        Mockito.when(itemService.loadItemByType(1, ItemType.WEAPON)).thenReturn(weapon);
+
+        Clan seller = new Clan();
+        seller.setId(3);
+        seller.setCaps(10);
+
+        MarketOffer offer = new MarketOffer();
+        offer.setId(2);
+        offer.setItemId(1);
+        offer.setDetails(details);
+        offer.setState(State.PUBLISHED);
+        offer.setPrice(20);
+        offer.setSeller(seller);
+
+        Mockito.when(marketOfferRepository.findAllByState(State.PUBLISHED)).thenReturn(List.of(offer));
+
+        // when processing computer trade actions
+        tradeService.performComputerTradeActions(1);
+
+        // then verify offer handled
+        Assert.assertEquals(30, seller.getCaps());
+        Mockito.verify(marketOfferRepository).delete(offer);
     }
 
 }
