@@ -38,9 +38,6 @@ public abstract class ItemDetails {
     @Column(name = "price", nullable = false)
     private int price;
 
-    @Column(name = "craftable", updatable = false, nullable = false)
-    private boolean craftable;
-
     @Column(name = "rarity", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
@@ -62,12 +59,11 @@ public abstract class ItemDetails {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-
     /**
      * Item rarity.
      */
     public enum Rarity {
-        COMMON, RARE
+        COMMON, RARE, EPIC
     }
 
 }

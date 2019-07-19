@@ -60,7 +60,6 @@ CREATE TABLE item_details (
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,
     price INT NOT NULL,
-    craftable BIT NOT NULL DEFAULT FALSE,
     prereq INT,
     bonus INT,
     bonus_type VARCHAR(16),

@@ -12,6 +12,7 @@ import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
+import com.withergate.api.model.item.ItemDetails.Rarity;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.item.Outfit;
 import com.withergate.api.model.item.OutfitDetails;
@@ -45,6 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    private static final int EPIC_ITEM_CHANCE = 5;
     private static final int RARE_ITEM_CHANCE = 20;
 
     private final CharacterRepository characterRepository;
@@ -303,7 +305,7 @@ public class ItemServiceImpl implements ItemService {
 
         switch (type) {
             case WEAPON:
-                List<WeaponDetails> weaponList = itemDetailsRepository.findWeaponDetailsByRarityAndCraftable(rarity, true);
+                List<WeaponDetails> weaponList = itemDetailsRepository.findWeaponDetailsByRarity(rarity);
                 details = weaponList.get(randomService.getRandomInt(0, weaponList.size() - 1));
                 Weapon weapon = new Weapon();
                 weapon.setDetails((WeaponDetails) details);
@@ -311,7 +313,7 @@ public class ItemServiceImpl implements ItemService {
                 weaponRepository.save(weapon);
                 break;
             case OUTFIT:
-                List<OutfitDetails> outfitList = itemDetailsRepository.findOutfitDetailsByRarityAndCraftable(rarity, true);
+                List<OutfitDetails> outfitList = itemDetailsRepository.findOutfitDetailsByRarity(rarity);
                 details = outfitList.get(randomService.getRandomInt(0, outfitList.size() - 1));
                 Outfit outfit = new Outfit();
                 outfit.setDetails((OutfitDetails) details);
@@ -319,7 +321,7 @@ public class ItemServiceImpl implements ItemService {
                 outfitRepository.save(outfit);
                 break;
             case GEAR:
-                List<GearDetails> gearList = itemDetailsRepository.findGearDetailsByRarityAndCraftable(rarity, true);
+                List<GearDetails> gearList = itemDetailsRepository.findGearDetailsByRarity(rarity);
                 details = gearList.get(randomService.getRandomInt(0, gearList.size() - 1));
                 Gear gear = new Gear();
                 gear.setDetails((GearDetails) details);
@@ -518,15 +520,19 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemDetails.Rarity getRandomRarity() {
         int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
-        if (diceRoll < RARE_ITEM_CHANCE) {
-            return ItemDetails.Rarity.RARE;
+        if (diceRoll < EPIC_ITEM_CHANCE) {
+            return Rarity.EPIC;
+        } if(diceRoll < RARE_ITEM_CHANCE) {
+            return Rarity.RARE;
         } else {
-            return ItemDetails.Rarity.COMMON;
+            return Rarity.COMMON;
         }
     }
 
     private ItemDetails.Rarity getRandomRarity(int craftsmanship, int buildingLevel) {
         int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
+
+        // epic items cannot be crafted, only found
         if (diceRoll < (craftsmanship * 5 + buildingLevel * 5)) {
             return ItemDetails.Rarity.RARE;
         } else {

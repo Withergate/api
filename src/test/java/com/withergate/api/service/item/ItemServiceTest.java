@@ -359,10 +359,9 @@ public class ItemServiceTest {
 
         List<WeaponDetails> detailsList = new ArrayList<>(0);
         WeaponDetails details = new WeaponDetails();
-        details.setCraftable(true);
         details.setIdentifier("Knife");
         detailsList.add(details);
-        Mockito.when(itemDetailsRepository.findWeaponDetailsByRarityAndCraftable(Rarity.COMMON, true))
+        Mockito.when(itemDetailsRepository.findWeaponDetailsByRarity(Rarity.COMMON))
                 .thenReturn(detailsList);
 
         // when crafting weapon
@@ -388,11 +387,10 @@ public class ItemServiceTest {
 
         List<OutfitDetails> detailsList = new ArrayList<>(0);
         OutfitDetails details = new OutfitDetails();
-        details.setCraftable(true);
         details.setIdentifier("Rare rags");
         details.setRarity(Rarity.RARE);
         detailsList.add(details);
-        Mockito.when(itemDetailsRepository.findOutfitDetailsByRarityAndCraftable(Rarity.RARE, true))
+        Mockito.when(itemDetailsRepository.findOutfitDetailsByRarity(Rarity.RARE))
                 .thenReturn(detailsList);
 
         // when crafting outfit
@@ -418,10 +416,9 @@ public class ItemServiceTest {
 
         List<GearDetails> detailsList = new ArrayList<>(0);
         GearDetails details = new GearDetails();
-        details.setCraftable(true);
         details.setIdentifier("Gear");
         detailsList.add(details);
-        Mockito.when(itemDetailsRepository.findGearDetailsByRarityAndCraftable(Rarity.COMMON, true))
+        Mockito.when(itemDetailsRepository.findGearDetailsByRarity(Rarity.COMMON))
                 .thenReturn(detailsList);
 
         // when crafting gear
