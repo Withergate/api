@@ -86,9 +86,11 @@ public class LocationServiceImpl implements LocationService {
          *
          * If the character encounters a random event, process it and finish exploration. The chance for an encounter
          * differs based on location type.
+         *
+         * Character's intellect can decrease encounter chance.
          */
         int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
-        if (encounterRoll <= description.getEncounterChance()) {
+        if (encounterRoll <= description.getEncounterChance() - character.getIntellect()) {
             log.debug("Random encounter triggered!");
 
             encounterService.handleEncounter(notification, character, action.getLocation());

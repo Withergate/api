@@ -270,7 +270,7 @@ public class ClanServiceImpl implements ClanService {
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFameIncome(-gameProperties.getStarvationFame());
+                notification.setFameIncome(notification.getFameIncome() - gameProperties.getStarvationFame());
                 notification.setInjury(notification.getInjury() + gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
