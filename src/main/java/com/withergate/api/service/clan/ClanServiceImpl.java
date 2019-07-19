@@ -87,10 +87,8 @@ public class ClanServiceImpl implements ClanService {
     @Override
     public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException {
         // validate clan name
-        if (!clanRequest.getName().matches("[a-zA-Z]+") || clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH
-            || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
-            throw new ValidationException("Clan name must be between 6 and 24 characters long and consist only of "
-                    + "English letters.");
+        if (clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
+            throw new ValidationException("Clan name must be between 6 and 24 characters long.");
         }
 
         // check if clan already exists.
