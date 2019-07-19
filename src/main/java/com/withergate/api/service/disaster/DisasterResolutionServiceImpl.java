@@ -164,6 +164,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
             if (character.getHitpoints() < 1) {
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath",
                         new String[]{character.getName()});
+                notification.setDeath(true);
             }
 
             notification.getDetails().add(detail);

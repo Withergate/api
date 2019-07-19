@@ -189,6 +189,8 @@ public class CombatServiceImpl implements CombatService {
             notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.injurydeath",
                     new String[]{loser.getName()});
             details.add(detailDeath);
+            notification1.setDeath(true);
+            notification2.setDeath(true);
         }
 
         // compute the chance to flee the combat

@@ -280,6 +280,7 @@ public class ClanServiceImpl implements ClanService {
                     notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.starvationdeath",
                             new String[] {character.getName()});
                     notification.getDetails().add(detailDeath);
+                    notification.setDeath(true);
 
                     // delete and remove from clan
                     characterService.delete(character);

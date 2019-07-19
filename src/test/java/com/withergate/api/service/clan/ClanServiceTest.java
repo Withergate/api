@@ -123,17 +123,6 @@ public class ClanServiceTest {
         // then expect exception
     }
 
-    @Test(expected = ValidationException.class)
-    public void testGivenClanRequestWhenInvalidCharactersThenExpectException() throws Exception {
-        // given request
-        ClanRequest clanRequest = new ClanRequest("666 Stalkers");
-
-        // when clan name contains invalid characters
-        clanService.createClan(1, clanRequest);
-
-        // then expect exception
-    }
-
     @Test
     public void testGivenUniqueClanWhenCreatingClanThenVerifyClanSaved() throws Exception {
         // given existing clan name

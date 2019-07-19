@@ -162,6 +162,7 @@ public class EncounterServiceImpl implements EncounterService {
                     notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath",
                             new String[]{character.getName()});
                     notification.getDetails().add(detail);
+                    notification.setDeath(true);
                 }
                 break;
             default:
