@@ -7,8 +7,10 @@ import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.service.AdminService;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,30 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Martin Myslik
  */
 @Slf4j
+@AllArgsConstructor
 @RestController
 public class ApplicationController {
-
-    @Value("${info.build.version}")
-    private String buildVersion;
 
     private final AdminService adminService;
     private final GlobalNotificationRepository globalNotificationRepository;
     private final GameProperties properties;
-
-    /**
-     * Constructor.
-     *
-     * @param adminService admin service
-     * @param globalNotificationRepository global notification repository
-     * @param properties game properties
-     */
-    public ApplicationController(
-            AdminService adminService, GlobalNotificationRepository globalNotificationRepository, GameProperties properties
-    ) {
-        this.adminService = adminService;
-        this.globalNotificationRepository = globalNotificationRepository;
-        this.properties = properties;
-    }
+    private final BuildProperties buildProperties;
 
     /**
      * Returns the current application version.
@@ -55,7 +41,7 @@ public class ApplicationController {
      */
     @GetMapping("/version")
     public ResponseEntity<String> getVerison() {
-        return new ResponseEntity<>(buildVersion, HttpStatus.OK);
+        return new ResponseEntity<>(buildProperties.getVersion(), HttpStatus.OK);
     }
 
     /**
