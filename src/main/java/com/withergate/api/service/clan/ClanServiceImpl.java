@@ -16,6 +16,7 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
@@ -329,11 +330,20 @@ public class ClanServiceImpl implements ClanService {
                 }
             }
 
+            // lizard trait
+            if (character.getTraits().containsKey(TraitName.LIZARD)) {
+                points += character.getTraits().get(TraitName.LIZARD).getDetails().getBonus();
+                NotificationDetail lizardDetail = new NotificationDetail();
+                notificationService.addLocalizedTexts(lizardDetail.getText(), "detail.trait.lizard",
+                        new String[]{character.getName()}, character.getTraits().get(TraitName.LIZARD).getDetails().getName());
+                notification.getDetails().add(lizardDetail);
+            }
+
             int healing = Math.min(points, hitpointsMissing);
             character.setHitpoints(character.getHitpoints() + healing);
 
             notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
-            notification.setHealing(points);
+            notification.setHealing(healing);
 
             notificationService.save(notification);
         }

@@ -55,6 +55,6 @@ public class TraitDetails {
      * Trait name. Declared as enum for restricting database values and easier code referencing.
      */
     public enum TraitName {
-        FIGHTER, SHARPSHOOTER, BUILDER, ASCETIC, HUNTER, HOARDER
+        FIGHTER, SHARPSHOOTER, BUILDER, ASCETIC, HUNTER, HOARDER, LIZARD
     }
 }
