@@ -108,6 +108,15 @@ public class LocationServiceImpl implements LocationService {
             log.debug("Information increased.");
             int information = action.getCharacter().getIntellect() + description.getInformationBonus();
 
+            // contacts trait
+            if (character.getTraits().containsKey(TraitName.CONTACTS)) {
+                information += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
+                NotificationDetail contactsDetail = new NotificationDetail();
+                notificationService.addLocalizedTexts(contactsDetail.getText(), "detail.trait.contacts", new String[]{},
+                        character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
+                notification.getDetails().add(contactsDetail);
+            }
+
             Clan clan = character.getClan();
             clan.setInformation(clan.getInformation() + information);
 

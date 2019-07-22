@@ -6,7 +6,8 @@ INSERT INTO trait_details(identifier, bonus, image_url) VALUES
     ('HUNTER', 2, 'https://storage.googleapis.com/withergate-images/traits/hunter-trait.png'),
     ('HOARDER', 2, 'https://storage.googleapis.com/withergate-images/traits/hoarder-trait.png'),
     ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png'),
-    ('LIZARD', 2, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png');
+    ('LIZARD', 2, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
+    ('CONTACTS', 2, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -22,7 +23,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('BUILDER', 'en', 'Builder'),
     ('BUILDER', 'cs', 'Stavitel'),
     ('LIZARD', 'en', 'Lizard skin'),
-    ('LIZARD', 'cs', 'Ještěří kůže');
+    ('LIZARD', 'cs', 'Ještěří kůže'),
+    ('CONTACTS', 'en', 'Contacts'),
+    ('CONTACTS', 'cs', 'Kontakty');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -38,4 +41,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('BUILDER', 'en', 'Character with this trait constructs building faster without paying extra junk for the construction.'),
     ('BUILDER', 'cs', 'Postava s touto schopností staví budovy rychleji, aniž musela platit šrot navíc.'),
     ('LIZARD', 'en', 'Character with this trait heals faster when resting.'),
-    ('LIZARD', 'cs', 'Postava s touto schopností se při odpočinku rychleji uzdravuje.');
+    ('LIZARD', 'cs', 'Postava s touto schopností se při odpočinku rychleji uzdravuje.'),
+    ('CONTACTS', 'en', 'Character with this trait will receive bonus information when scouring.'),
+    ('CONTACTS', 'cs', 'Postava s touto schopností získá více informací při pátrání.');
