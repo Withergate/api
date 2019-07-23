@@ -113,6 +113,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.trait.lizard', 'cs', '{} použil/a svou schopnost [] a rychlost léčby se zvýšila.'),
     ('detail.trait.contacts', 'en', 'Bonus information received thanks to the trait [].'),
     ('detail.trait.contacts', 'cs', 'Bylo zjištěno více informací díky schopnosti [].'),
+    ('detail.trait.merchant', 'en', 'Some caps were earned when trading at the marketplace thanks to trait [].'),
+    ('detail.trait.merchant', 'cs', 'Postava vydělala několik zátek během obchodů na tržišti díky schopnosti [].'),
     ('gear.bonus.junk', 'en', 'Character found more junk thanks to the quipped gear: [].'),
     ('gear.bonus.junk', 'cs', 'Postava našla více šrotu díky předmětu: [].'),
     ('gear.bonus.food', 'en', 'Character found more food thanks to the quipped gear: [].'),

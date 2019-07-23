@@ -8,6 +8,9 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.Trait;
+import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.item.ItemType;
@@ -110,7 +113,7 @@ public class TradeServiceTest {
     }
 
     @Test
-    public void testGivenStateWhenLoadingMarketOffersThenVerifyOffesrLoaded() {
+    public void testGivenStateWhenLoadingMarketOffersThenVerifyOffersLoaded() {
         MarketOffer offer = new MarketOffer();
         offer.setId(1);
         offer.setPrice(20);
@@ -316,6 +319,58 @@ public class TradeServiceTest {
         // then verify offer handled
         Assert.assertEquals(buyer, weapon.getClan());
         Assert.assertEquals(30, seller.getCaps());
+        Assert.assertEquals(ActionState.COMPLETED, action.getState());
+        Mockito.verify(marketOfferRepository).delete(offer);
+    }
+
+    @Test
+    public void givenCharacterMerchantWhenProcessingMarketOfferActionThenVerifyCapsReceived() {
+        // given market offer and character merchant
+        Weapon weapon = new Weapon();
+        weapon.setId(1);
+        weapon.setClan(null);
+        WeaponDetails details = new WeaponDetails();
+        details.setItemType(ItemType.WEAPON);
+        weapon.setDetails(details);
+        Mockito.when(itemService.loadItemByType(1, ItemType.WEAPON)).thenReturn(weapon);
+
+        Clan seller = new Clan();
+        seller.setId(3);
+        seller.setCaps(10);
+
+        Clan buyer = new Clan();
+        buyer.setId(4);
+        buyer.setCaps(10);
+
+        MarketOffer offer = new MarketOffer();
+        offer.setId(2);
+        offer.setItemId(1);
+        offer.setDetails(details);
+        offer.setState(State.SOLD);
+        offer.setPrice(20);
+        offer.setSeller(seller);
+
+        Character character = new Character();
+        character.setClan(buyer);
+        TraitDetails traitDetails = new TraitDetails();
+        traitDetails.setIdentifier(TraitName.MERCHANT);
+        traitDetails.setBonus(5);
+        Trait trait = new Trait();
+        trait.setDetails(traitDetails);
+        character.getTraits().put(TraitName.MERCHANT, trait);
+
+        MarketTradeAction action = new MarketTradeAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setOffer(offer);
+        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
+
+        // when processing trade actions
+        tradeService.processMarketTradeActions(1);
+
+        // then verify caps added to buyer
+        Assert.assertEquals(buyer, weapon.getClan());
+        Assert.assertEquals(15, buyer.getCaps());
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
         Mockito.verify(marketOfferRepository).delete(offer);
     }

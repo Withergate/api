@@ -6,6 +6,8 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.ResourceTradeAction;
+import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.notification.ClanNotification;
@@ -188,6 +190,7 @@ public class TradeServiceImpl implements TradeService {
     private void processMarketTradeAction(MarketTradeAction action, ClanNotification buyerNotification,
                                           ClanNotification sellerNotification) {
         MarketOffer offer = action.getOffer();
+        Character buyer = action.getCharacter();
 
         // add money to seller
         int price = offer.getPrice();
@@ -199,13 +202,23 @@ public class TradeServiceImpl implements TradeService {
 
         // transfer item
         Item item = itemService.loadItemByType(offer.getItemId(), offer.getDetails().getItemType());
-        item.setClan(action.getCharacter().getClan());
+        item.setClan(buyer.getClan());
 
         // update notification
         notificationService.addLocalizedTexts(buyerNotification.getText(), "character.trade.item", new String[]{seller.getName()});
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.item.bought", new String[]{}, offer.getDetails().getName());
         buyerNotification.getDetails().add(detail);
+
+        // check merchant trait
+        if (buyer.getTraits().containsKey(TraitName.MERCHANT)) {
+            int bonus = buyer.getTraits().get(TraitName.MERCHANT).getDetails().getBonus();
+            buyer.getClan().setCaps(buyer.getClan().getCaps() + bonus);
+            NotificationDetail merchantDetail = new NotificationDetail();
+            notificationService.addLocalizedTexts(merchantDetail.getText(), "detail.trait.merchant", new String[]{},
+                    buyer.getTraits().get(TraitName.MERCHANT).getDetails().getName());
+            buyerNotification.getDetails().add(merchantDetail);
+        }
 
         // delete offer
         marketOfferRepository.delete(offer);

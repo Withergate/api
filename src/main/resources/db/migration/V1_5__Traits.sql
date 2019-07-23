@@ -7,7 +7,8 @@ INSERT INTO trait_details(identifier, bonus, image_url) VALUES
     ('HOARDER', 2, 'https://storage.googleapis.com/withergate-images/traits/hoarder-trait.png'),
     ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png'),
     ('LIZARD', 2, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
-    ('CONTACTS', 2, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png');
+    ('CONTACTS', 2, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
+    ('MERCHANT', 5, 'https://storage.googleapis.com/withergate-images/traits/merchant-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -25,7 +26,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('LIZARD', 'en', 'Lizard skin'),
     ('LIZARD', 'cs', 'Ještěří kůže'),
     ('CONTACTS', 'en', 'Contacts'),
-    ('CONTACTS', 'cs', 'Kontakty');
+    ('CONTACTS', 'cs', 'Kontakty'),
+    ('MERCHANT', 'en', 'Merchant'),
+    ('MERCHANT', 'cs', 'Obchodník');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -43,4 +46,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('LIZARD', 'en', 'Character with this trait heals faster when resting.'),
     ('LIZARD', 'cs', 'Postava s touto schopností se při odpočinku rychleji uzdravuje.'),
     ('CONTACTS', 'en', 'Character with this trait will receive bonus information when scouring.'),
-    ('CONTACTS', 'cs', 'Postava s touto schopností získá více informací při pátrání.');
+    ('CONTACTS', 'cs', 'Postava s touto schopností získá více informací při pátrání.'),
+    ('MERCHANT', 'en', 'Character with this trait will receive some caps when buying an item on the marketplace. This trait is applied after performing the trade and will not affect the seller.'),
+    ('MERCHANT', 'cs', 'Postava s touto schopností získá několik zátek zpátky při koupi předmětu na tržišti. Tento bonus se aktivuje až po uzavření obchodu a neovlivní prodávajícího hráče..');
