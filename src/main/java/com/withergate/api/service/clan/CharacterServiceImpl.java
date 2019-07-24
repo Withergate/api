@@ -75,11 +75,10 @@ public class CharacterServiceImpl implements CharacterService {
         character.setMaxHitpoints(hitpoints);
 
         // generate random stats
-        int max = 5;
-        character.setCombat(randomService.getRandomInt(1, max));
-        character.setScavenge(randomService.getRandomInt(1, max));
-        character.setCraftsmanship(randomService.getRandomInt(1, max));
-        character.setIntellect(randomService.getRandomInt(1, max));
+        character.setCombat(getRandomAbilityValue());
+        character.setScavenge(getRandomAbilityValue());
+        character.setCraftsmanship(getRandomAbilityValue());
+        character.setIntellect(getRandomAbilityValue());
 
         // generate random avatar
         character.setImageUrl(nameService.generateRandomAvatar(gender, filter.getAvatars()));
@@ -112,6 +111,14 @@ public class CharacterServiceImpl implements CharacterService {
 
         character.setState(CharacterState.RESTING);
         save(character);
+    }
+
+    private int getRandomAbilityValue() {
+        // random ability value is the average between two k6 dice rolls rounded down to ensure fair distribution
+        int value1 = randomService.getRandomInt(1, RandomServiceImpl.K6);
+        int value2 = randomService.getRandomInt(1, RandomServiceImpl.K6);
+
+        return (int) Math.floor((value1 + value2) / 2);
     }
 
 }

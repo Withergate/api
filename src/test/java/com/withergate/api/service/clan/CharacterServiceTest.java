@@ -119,7 +119,8 @@ public class CharacterServiceTest {
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
         Mockito.when(nameService.generateRandomName(Mockito.eq(Gender.MALE), Mockito.any())).thenReturn("Rusty Nick");
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K10)).thenReturn(8); // hp
-        Mockito.when(randomService.getRandomInt(1, 5)).thenReturn(3,3, 4, 2, 3, 4);
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6))
+                .thenReturn(3,5, 1, 2, 5, 6, 1, 5);
 
         Character result = characterService.generateRandomCharacter(new CharacterFilter());
 
@@ -128,10 +129,10 @@ public class CharacterServiceTest {
         assertEquals(Gender.MALE, result.getGender());
         assertEquals(18, result.getHitpoints());
         assertEquals(18, result.getMaxHitpoints());
-        assertEquals(3, result.getCombat());
-        assertEquals(3, result.getScavenge());
-        assertEquals(4, result.getCraftsmanship());
-        assertEquals(2, result.getIntellect());
+        assertEquals(4, result.getCombat());
+        assertEquals(1, result.getScavenge());
+        assertEquals(5, result.getCraftsmanship());
+        assertEquals(3, result.getIntellect());
     }
 
     @Test
