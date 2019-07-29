@@ -66,7 +66,7 @@ public class QuestDetails {
      * Quest type.
      */
     public enum Type {
-        COMBAT, INTELLECT, CRAFTSMANSHIP
+        COMBAT, INTELLECT, CRAFTSMANSHIP, SCAVENGE
     }
 
 }

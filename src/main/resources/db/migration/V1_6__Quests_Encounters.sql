@@ -1,9 +1,19 @@
 -- Quests
 INSERT INTO quest_details (identifier, quest_type, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
-    ('quest.1', 'COMBAT', 3, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.2', 'INTELLECT', 7, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.3', 'CRAFTSMANSHIP', 6, 4, 50, 30, 'https://storage.googleapis.com/withergate-images/no-image.jpg'),
-    ('quest.4', 'COMBAT', 5, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/no-image.jpg');
+    ('quest.1', 'COMBAT', 3, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
+    ('quest.2', 'INTELLECT', 7, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
+    ('quest.3', 'CRAFTSMANSHIP', 6, 4, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),
+    ('quest.4', 'COMBAT', 5, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest04.png'),
+    ('quest.5', 'COMBAT', 5, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest05.png'),
+    ('quest.6', 'COMBAT', 4, 3, 45, 20, 'https://storage.googleapis.com/withergate-images/quests/quest06.png'),
+    ('quest.7', 'INTELLECT', 6, 4, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest07.png'),
+    ('quest.8', 'SCAVENGE', 6, 4, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest08.png'),
+    ('quest.9', 'CRAFTSMANSHIP', 7, 4, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest09.png'),
+    ('quest.10', 'CRAFTSMANSHIP', 6, 4, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest10.png'),
+    ('quest.11', 'INTELLECT', 5, 3, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest11.png'),
+    ('quest.12', 'SCAVENGE', 6, 4, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest12.png'),
+    ('quest.13', 'COMBAT', 4, 4, 45, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
+    ('quest.14', 'INTELLECT', 4, 4, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.1', 'en', 'Deratization'),
@@ -13,7 +23,27 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.3', 'en', 'Water purifier renovation'),
     ('quest.3', 'cs', 'Oprava čističky vody'),
     ('quest.4', 'en', 'Wolf den'),
-    ('quest.4', 'cs', 'Vlčí doupě');
+    ('quest.4', 'cs', 'Vlčí doupě'),
+    ('quest.5', 'en', 'Scoundrels'),
+    ('quest.5', 'cs', 'Grázlové'),
+    ('quest.6', 'en', 'Debt collector'),
+    ('quest.6', 'cs', 'Vymahač'),
+    ('quest.7', 'en', 'Initiates'),
+    ('quest.7', 'cs', 'Zasvěcenci'),
+    ('quest.8', 'en', 'Deposit'),
+    ('quest.8', 'cs', 'Naleziště'),
+    ('quest.9', 'en', 'Oppenheimer'),
+    ('quest.9', 'cs', 'Oppenheimer'),
+    ('quest.10', 'en', 'Ich brauch’ Benzin!'),
+    ('quest.10', 'cs', 'Ich brauch’ Benzin!'),
+    ('quest.11', 'en', 'Return of the prodigal son'),
+    ('quest.11', 'cs', 'Návrat ztraceného syna'),
+    ('quest.12', 'en', 'They said I’m crazy...'),
+    ('quest.12', 'cs', 'Říkali, že jsem šílený...'),
+    ('quest.13', 'en', 'No need to killing...'),
+    ('quest.13', 'cs', 'Netřeba zabíjet...'),
+    ('quest.14', 'en', 'What nobody knows?'),
+    ('quest.14', 'cs', 'Co nikdo nezná?');
 
 INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours! This action will trigger a combat.'),
@@ -23,7 +53,27 @@ INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.3', 'en', 'Our water purifier broke down and we are running out of clean water. Help us with the renovation and we will spread the fame of your clan! The success of this action is affected by the character`s craftsmanship.'),
     ('quest.3', 'cs', 'Naše čistička vod se rozbila a nám dochází voda. Když nám ji pomůžeš opravit, tak budeme šířit slávu tvého klanu! Úspěch této akce závisí na zručnosti postavy.'),
     ('quest.4', 'en', 'There is a wolf den in the forest. Those bloody beasts are killing our sheep! Get rid of them for us and we will never forget your courage. This action will trigger a combat'),
-    ('quest.4', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu. Tato akce vyústí v souboj.');
+    ('quest.4', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu. Tato akce vyústí v souboj.'),
+    ('quest.5', 'en', 'Withergate announced a reward for killing a few brigands nearby. This action will trigger a combat.'),
+    ('quest.5', 'cs', 'Na několika místech poblíž Withergate opruzuje několik hrdlořezů. Město na ně vypsalo odměnu. Tato akce vyústí v souboj.'),
+    ('quest.6', 'en', 'I hate it when somebody owns me money and does not pay. Bring me my money back from these people and you can keep your share. This action will trigger a combat.'),
+    ('quest.6', 'cs', 'Znám bohužel pár lidí, kterým jsem poskytl své služby a dodnes nezaplatili. Jaké služby, to se tě netýká, a doufej, že je nebudeš potřebovat. Každopádně mi přines moje peníze zpět a část si z toho můžeš nechat. To je fér, ne? Tato akce vyústí v souboj.'),
+    ('quest.7', 'en', 'One does not simply leave Atom’s cult! The initiates which left our community a few days back probably did not have this in their mind. Find them and bring them back. Violence permitted. This action will trigger a combat.'),
+    ('quest.7', 'cs', 'Služba Atomovi je na celý život. Ti mladíci si to zřejmě neuvědomili, když nás před několika dny opustili. Už vědí příliš - najdi je a přiveď je zpět, klidně násilím. Tato akce vyústí v souboj.'),
+    ('quest.8', 'en', 'I’ve heard about huge deposits of quality junk somewhere around the city. Locate these and bring me a specimen from every deposit.'),
+    ('quest.8', 'cs', 'Slyšel jsem zvěsti o obřích nalezištích kvalitního šrotu nedaleko od města, ale ta místa znám jen přibližně. Když ti popíšu cestu, s tvými znalostmi Pustiny to jistě najdeš. Přines mi z každého naleziště pár vzorků a zakresli přesnou pozici do mapy. Bohatě tě odměním.'),
+    ('quest.9', 'en', 'Do you see this component? I need you to produce a hundred of exactly the same. I will create a strong weapon with this little help in a few months. Right now, I can pay only in caps.'),
+    ('quest.9', 'cs', 'Neumíte vyrobit sto těchto součástek? Je to docela jednoduché a jedné zručné osobě to zabere jen pár dní. Já jsem teď zrovna zaneprázdněn výrobou nové zbraně hromadného ničení a na přízemnosti nemám čas, raději vám za součástky zaplatím.'),
+    ('quest.10', 'en', 'Look at this old-aged masterpiece! Somebody tore off a lot of junk from this, but after all, I figured out how I can repair this vehicle! I will gladly pay for a little help with its reparation.'),
+    ('quest.10', 'cs', 'Pohleď na zachovalý pozůstatek starých časů! Někdo z toho oloupal hromadu šrotu, ale nakonec jsem přišel na to, jak to opravit, aby to zase jezdilo. Rád zaplatím za asistenci při opravě. '),
+    ('quest.11', 'en', 'Can you help me with a search for my lost relative? These people on this list may know something about him. You can look for them and ask about my relative.'),
+    ('quest.11', 'cs', 'Ty se ve světě docela vyznáš, že jo? Hledám svého ztraceného příbuzného, prý jsme z jedné rodiny ještě z doby před tím, než to bouchlo. Nevím, kde bydlí, ale vím, kdo by věděl… Dokážeš je najít podle informací na tomto seznamu a zeptat se jich, kde bych našel svého příbuzného?'),
+    ('quest.12', 'en', 'Please help me to find exactly the same device like this one. If I had a lot of these, I can finally create my own race of atomic monsters… radioactive supermen... that feast on the flesh of the living... heh!'),
+    ('quest.12', 'cs', 'Potřebuju trochu píchnout. V Pustině lze najít přesně takovéhle zařízení, nejspíš někde poblíž zbytků starých elektráren. Samo o sobě to nic nedělá, takže si klidně to moje vezmi. Když jich budu mít dostatek, konečně si splním svůj sen o vlastní rase atomových monster... (začíná mumlat) Budou mít osmihranné tělo, sát krev, a… (podivný stařec, stále mumlaje, odchází opodál, ale vypadá, že ti skutečně výměnou za ty věcičky dá dostatek zátek)'),
+    ('quest.13', 'en', 'Are you looking for a job in style “strong muscles, no questions”? I need you to persuade my former co-workers… No, of course you don’t need to kill them! But you can, if you wish. This action will trigger a combat.'),
+    ('quest.13', 'cs', 'Hledáš práci pro tvé velké svaly a nabízíš málo otázek? Mám tady pár lidí, které je třeba přivést k rozumu… Ne, nemusíš je vůbec zabíjet. Ale vadit to nebude. Tato akce vyústí v souboj.'),
+    ('quest.14', 'en', 'I’m going to write a book about living in The Wasteland. Can you teach me how to survive out there? I want to comprehend its every aspect.'),
+    ('quest.14', 'cs', 'Ty se ve světě dost vyznáš, že jo? Chtěl bych napsat knihu o životě v Pustině, mezi klany a tak. Nauč mě něco o přežití tam venku. Chci tomu zcela porozumět... ');
 
 -- Random encounters
 INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, difficulty, description_text, success_text, failure_text) VALUES

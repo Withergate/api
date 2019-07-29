@@ -104,12 +104,12 @@ public class QuestServiceImpl implements QuestService {
         Quest quest = action.getQuest();
 
         boolean success = false;
+        int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
         switch (action.getQuest().getDetails().getType()) {
             case COMBAT:
                 success = combatService.handleSingleCombat(notification, quest.getDetails().getDifficulty(), character);
                 break;
             case INTELLECT:
-                int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
                 int result = character.getIntellect() + diceRoll;
                 if (result >= quest.getDetails().getDifficulty()) {
                     success = true;
@@ -117,8 +117,14 @@ public class QuestServiceImpl implements QuestService {
                 notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
                 break;
             case CRAFTSMANSHIP:
-                diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
                 result = character.getCraftsmanship() + diceRoll;
+                if (result >= quest.getDetails().getDifficulty()) {
+                    success = true;
+                }
+                notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
+                break;
+            case SCAVENGE:
+                result = character.getScavenge() + diceRoll;
                 if (result >= quest.getDetails().getDifficulty()) {
                     success = true;
                 }
