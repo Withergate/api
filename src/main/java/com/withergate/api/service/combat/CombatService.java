@@ -1,4 +1,4 @@
-package com.withergate.api.service.encounter;
+package com.withergate.api.service.combat;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.notification.ClanNotification;
 
 /**
- * ICombatService interface.
+ * CombatService interface.
  *
  * @author Martin Myslik
  */

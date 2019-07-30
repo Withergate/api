@@ -7,7 +7,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.repository.action.ArenaActionRepository;
-import com.withergate.api.service.encounter.CombatService;
+import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;

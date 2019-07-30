@@ -13,6 +13,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 

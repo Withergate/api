@@ -17,7 +17,7 @@ import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.encounter.CombatService;
+import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
