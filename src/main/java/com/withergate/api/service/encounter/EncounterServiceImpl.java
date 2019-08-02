@@ -68,6 +68,33 @@ public class EncounterServiceImpl implements EncounterService {
                     handleSuccess(encounter, character, notification);
                 }
                 break;
+            case SCAVENGE:
+                int totalScavenge = character.getScavenge() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                log.debug("{} rolled dice and the total scavenge value is {}", character.getName(), totalScavenge);
+                if (totalScavenge < encounter.getDifficulty()) {
+                    handleFailure(encounter, character, notification);
+                } else {
+                    handleSuccess(encounter, character, notification);
+                }
+                break;
+            case CRAFTSMANSHIP:
+                int totalCraftsmanship = character.getCraftsmanship() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                log.debug("{} rolled dice and the total craftsmanship value is {}", character.getName(), totalCraftsmanship);
+                if (totalCraftsmanship < encounter.getDifficulty()) {
+                    handleFailure(encounter, character, notification);
+                } else {
+                    handleSuccess(encounter, character, notification);
+                }
+                break;
+            case COMBAT_ROLL:
+                int totalCombat = character.getCombat() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                log.debug("{} rolled dice and the total combat value is {}", character.getName(), totalCombat);
+                if (totalCombat < encounter.getDifficulty()) {
+                    handleFailure(encounter, character, notification);
+                } else {
+                    handleSuccess(encounter, character, notification);
+                }
+                break;
             default:
                 log.error("Unknown encounter type triggered: {}!", encounter.getType());
                 break;
@@ -94,7 +121,6 @@ public class EncounterServiceImpl implements EncounterService {
                 clan.setCaps(clan.getCaps() + caps);
                 clanService.saveClan(clan);
 
-                // update notification
                 notification.setCapsIncome(caps);
                 break;
             case JUNK:
@@ -103,8 +129,15 @@ public class EncounterServiceImpl implements EncounterService {
                 clan.setJunk(clan.getJunk() + junk);
                 clanService.saveClan(clan);
 
-                // update notification
                 notification.setJunkIncome(junk);
+                break;
+            case INFORMATION:
+                // add information
+                int information = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of information
+                clan.setInformation(clan.getInformation() + information);
+                clanService.saveClan(clan);
+
+                notification.setInformation(information);
                 break;
             case ITEM:
                 // generate item
@@ -116,7 +149,6 @@ public class EncounterServiceImpl implements EncounterService {
                 generated.setClan(clan);
                 clan.getCharacters().add(generated);
 
-                // update notification
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{character.getName()});
                 notification.getDetails().add(detail);

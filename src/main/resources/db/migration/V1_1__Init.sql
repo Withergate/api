@@ -176,7 +176,7 @@ CREATE TABLE placeholder_texts (
     text_id INT AUTO_INCREMENT,
     code VARCHAR(64) NOT NULL,
     lang VARCHAR(4) NOT NULL,
-    text VARCHAR(512) NOT NULL,
+    text VARCHAR(1024) NOT NULL,
     PRIMARY KEY (text_id)
 );
 
@@ -219,9 +219,9 @@ CREATE TABLE encounters (
     reward_type VARCHAR(16) NOT NULL,
     penalty_type VARCHAR(16) NOT NULL,
     difficulty INT NOT NULL,
-    description_text VARCHAR(512) NOT NULL,
-    success_text VARCHAR(512) NOT NULL,
-    failure_text VARCHAR(512) NOT NULL,
+    description_text VARCHAR(64) NOT NULL,
+    success_text VARCHAR(64) NOT NULL,
+    failure_text VARCHAR(64) NOT NULL,
     PRIMARY KEY (encounter_id)
 );
 
