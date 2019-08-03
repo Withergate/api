@@ -5,7 +5,7 @@ INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, bonu
     ('BAT', 'WEAPON', 'COMMON', 'MELEE', 10, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
     ('CHAINSAW', 'WEAPON', 'EPIC', 'MELEE', 45, 3, 'https://storage.googleapis.com/withergate-images/items/chainsaw.png'),
     ('BOOMERANG', 'WEAPON', 'COMMON', 'RANGED', 10, 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.png'),
-    ('THROWING_KNIFES', 'WEAPON', 'COMMON', 'RANGED', 25, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knifes.png'),
+    ('THROWING_KNIVES', 'WEAPON', 'COMMON', 'RANGED', 25, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png'),
     ('CROSSBOW', 'WEAPON', 'RARE', 'RANGED', 40, 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.png'),
     ('HAND_GUN', 'WEAPON', 'EPIC', 'RANGED', 50, 4, 'https://storage.googleapis.com/withergate-images/items/handgun.png');
 
@@ -20,8 +20,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('CHAINSAW', 'cs', 'Motorová pila'),
     ('BOOMERANG', 'en', 'Boomerang'),
     ('BOOMERANG', 'cs', 'Boomerang'),
-    ('THROWING_KNIFES', 'en', 'Throwing knifes'),
-    ('THROWING_KNIFES', 'cs', 'Vrhací nože'),
+    ('THROWING_KNIVES', 'en', 'Throwing knives'),
+    ('THROWING_KNIVES', 'cs', 'Vrhací nože'),
     ('CROSSBOW', 'en', 'Crossbow'),
     ('CROSSBOW', 'cs', 'Kuše'),
     ('HAND_GUN', 'en', 'Hand gun'),
@@ -38,8 +38,8 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('CHAINSAW', 'cs', 'Benzinová motorová pila s palivem v nádrži.'),
     ('BOOMERANG', 'en', 'Wooden boomerang. With some razors attached to it.'),
     ('BOOMERANG', 'cs', 'Dřevěný boomerang s přidělanými žiletkami.'),
-    ('THROWING_KNIFES', 'en', 'A set of well balanced throwing knives.'),
-    ('THROWING_KNIFES', 'cs', 'Několik dobře vybalancovaných vrhacích nožů.'),
+    ('THROWING_KNIVES', 'en', 'A set of well balanced throwing knives.'),
+    ('THROWING_KNIVES', 'cs', 'Několik dobře vybalancovaných vrhacích nožů.'),
     ('CROSSBOW', 'en', 'Modern crossbows can be precise and silent at the same time.'),
     ('CROSSBOW', 'cs', 'Moderní kuše. Přesná a tichá.'),
     ('HAND_GUN', 'en', 'Hand gun. Light, practical, deadly.'),
@@ -83,19 +83,19 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('MANUSCRIPT', 'cs', 'Z těchto starodávných textů se můžeš naučit mnoho, pokud tedy umíš číst.'),
     ('OLD_BOOK', 'en', 'Not everyone can understand an ancient source of knowledge - but if you are the one, a powerful knowledge is waiting for you as a reward.'),
     ('OLD_BOOK', 'cs', 'Ne každý pochopí tento starodávný zdroj vědění - ale pokud to zvládneš, odměnou ti budou mocné znalosti.'),
-    ('STEROIDS', 'en', 'This will make your muscles grow... and put hair on your lips, maybe even hair on your hairs. Permanently improves combat by 1.'),
-    ('STEROIDS', 'cs', 'Po tomhle ti rychle narostou svaly... a chlupy i na rtech, možná chlupy i na chlupech. Trvale zvýší bojovou sílu o 1.'),
-    ('TOXICAT', 'en', 'There is a lot of aromatic and slightly psychadelic herb called khat (or mad cat) so many people love chewing its leafs. Qaat macerated in a suspicious toxic solution reportedly temporaly improves your scavenge by 1.'),
-    ('TOXICAT', 'cs', 'V pustině lze snadno nalézt aromatickou a mírně halucinogenní bylinu jménem qaat a kdekdo tak žvýká její listy. Qaat namočený v pochybném toxickém roztoku údajně trvale zvýší hledání o 1.'),
-    ('TRIFFID_HAND', 'en', 'Some wastelanders are wrapping their hands into a sting of a very aggressive genetically modified plant. This painful procedure makes their hand hardy and, oddly enough, agile - which permanently improves craftsmanship by 1.'),
-    ('TRIFFID_HAND', 'cs', 'Po chvíli bolestivého nošení tohoto módního doplňku vyrobeného z žahadla vysoce agresivní geneticky modifikované rostliny se ruce stávají odolnějšími a z nějakého důvodu i hbitějšími, což trvale zvýší zručnost o 1.'),
-    ('MIND_PATCH', 'en', 'Give your head an injection of ideas of smarter people and improve permanently your intellect by 1. And who is smarter now, huh?'),
-    ('MIND_PATCH', 'cs', 'Injekcí do hlavy lze vpravit myšlenky chytřejších lidí a zvýšit tak intelekt trvale o 1. A kdo je chytřejší teď, co?');
+    ('STEROIDS', 'en', 'This will make your muscles grow... and put hair on your lips, maybe even hair on your hairs. Permanently improves combat.'),
+    ('STEROIDS', 'cs', 'Po tomhle ti rychle narostou svaly... a chlupy i na rtech, možná chlupy i na chlupech. Trvale zvýší bojovou sílu postavy.'),
+    ('TOXICAT', 'en', 'There is a lot of aromatic and slightly psychadelic herb called khat (or mad cat) so many people love chewing its leafs. Qaat macerated in a suspicious toxic solution reportedly improves your scavenge skills.'),
+    ('TOXICAT', 'cs', 'V pustině lze snadno nalézt aromatickou a mírně halucinogenní bylinu jménem qaat a kdekdo tak žvýká její listy. Qaat namočený v pochybném toxickém roztoku údajně trvale zvýší schopnost hledání.'),
+    ('TRIFFID_HAND', 'en', 'Some wastelanders wrap their hands into a sting of a very aggressive genetically modified plant. This painful procedure makes their hand hardy and, oddly enough, agile - which permanently improves craftsmanship.'),
+    ('TRIFFID_HAND', 'cs', 'Po chvíli bolestivého nošení tohoto módního doplňku vyrobeného z žahadla vysoce agresivní geneticky modifikované rostliny se ruce stávají odolnějšími a z nějakého důvodu i hbitějšími, což trvale zvýší zručnost.'),
+    ('MIND_PATCH', 'en', 'Give your head an injection of ideas of smarter people and improve permanently your intellect. And who is smarter now, huh?'),
+    ('MIND_PATCH', 'cs', 'Injekcí do hlavy lze vpravit myšlenky chytřejších lidí a zvýšit tak intelekt postavy. A kdo je chytřejší teď, co?');
 
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
-    ('SAW', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'COMMON', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/trap.png'),
+    ('SAW', 'GEAR', 'COMMON', 20, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
+    ('TRAP', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/trap.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 40, 3, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
