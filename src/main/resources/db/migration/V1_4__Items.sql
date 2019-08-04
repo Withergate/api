@@ -49,12 +49,12 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, image_url) VALUES
     ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 10, 4, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
     ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg'),
-    ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 15, 5, 3, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/manuscript.png'),
-    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 35, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/old-book.png'),
-    ('STEROIDS', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 'https://storage.googleapis.com/withergate-images/steroids.png'),
-    ('TOXICAT', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_SCAVENGE', 'https://storage.googleapis.com/withergate-images/toxicat.png'),
-    ('TRIFFID_HAND', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_CRAFTSMANSHIP', 'https://storage.googleapis.com/withergate-images/triffid-hand.png'),
-    ('MIND_PATCH', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 'https://storage.googleapis.com/withergate-images/mind-patch.png');
+    ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 15, 5, 3, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
+    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 35, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
+    ('STEROIDS', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 'https://storage.googleapis.com/withergate-images/items/steroids.png'),
+    ('TOXICAT', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_SCAVENGE', 'https://storage.googleapis.com/withergate-images/items/toxicat.png'),
+    ('TRIFFID_HAND', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_CRAFTSMANSHIP', 'https://storage.googleapis.com/withergate-images/items/triffid-hand.png'),
+    ('MIND_PATCH', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 'https://storage.googleapis.com/withergate-images/items/mind-patch.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SMALL_MEDKIT', 'en', 'Small medkit'),
@@ -95,8 +95,8 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
     ('SAW', 'GEAR', 'COMMON', 20, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/trap.png'),
-    ('DETECTOR', 'GEAR', 'EPIC', 40, 3, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/detector.png');
+    ('TRAP', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('DETECTOR', 'GEAR', 'EPIC', 40, 3, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SAW', 'en', 'Saw'),
@@ -116,9 +116,9 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Outfit details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, image_url) VALUES
-    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 20, 1, 'https://storage.googleapis.com/withergate-images/leather-clothes.png'),
-    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 30, 2, 'https://storage.googleapis.com/withergate-images/leather-covered.png'),
-    ('KEVLAR', 'OUTFIT', 'EPIC', 50, 3, 'https://storage.googleapis.com/withergate-images/kevlar.png');
+    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 20, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
+    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 30, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
+    ('KEVLAR', 'OUTFIT', 'EPIC', 50, 3, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('LEATHER_CLOTHES', 'en', 'Leather clothes'),
