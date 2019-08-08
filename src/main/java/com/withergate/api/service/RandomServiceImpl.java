@@ -1,11 +1,11 @@
 package com.withergate.api.service;
 
+import java.util.Random;
+
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.item.ItemType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 /**
  * Random service.
@@ -21,9 +21,10 @@ public class RandomServiceImpl implements RandomService {
     public static final int K10 = 10;
     public static final int K100 = 100;
 
+    private Random rand = new Random();
+
     @Override
     public Gender getRandomGender() {
-        Random rand = new Random();
         double random = rand.nextDouble();
 
         if (random < 0.5) {
@@ -35,7 +36,6 @@ public class RandomServiceImpl implements RandomService {
 
     @Override
     public int getRandomInt(int min, int max) {
-        Random rand = new Random();
         return min + rand.nextInt((max - min) + 1);
     }
 

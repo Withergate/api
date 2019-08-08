@@ -64,21 +64,18 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         int combatWinner;
         int combatLoser;
         int injury;
-        ClanNotification winnerNotification;
         ClanNotification loserNotification;
         if (combat1 > combat2) {
             winner = character1;
             loser = character2;
             combatWinner = combat1;
             combatLoser = combat2;
-            winnerNotification = notification1;
             loserNotification = notification2;
         } else {
             winner = character2;
             loser = character1;
             combatWinner = combat2;
             combatLoser = combat1;
-            winnerNotification = notification2;
             loserNotification = notification1;
         }
 

@@ -1,9 +1,5 @@
 package com.withergate.api.model.encounter;
 
-import com.withergate.api.model.location.Location;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.Gender;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.withergate.api.model.location.Location;
 import lombok.Getter;
 import lombok.Setter;
 

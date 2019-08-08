@@ -2,6 +2,7 @@ package com.withergate.api.service.trade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -240,7 +241,7 @@ public class TradeServiceTest {
         offer.setItemId(2);
         offer.setDetails(details);
 
-        Mockito.when(marketOfferRepository.getOne(1)).thenReturn(offer);
+        Mockito.when(marketOfferRepository.findById(1)).thenReturn(Optional.of(offer));
 
         // when deleting offer
         tradeService.deleteMarketOffer(1, 3);

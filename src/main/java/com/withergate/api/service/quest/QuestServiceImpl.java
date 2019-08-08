@@ -52,7 +52,7 @@ public class QuestServiceImpl implements QuestService {
                 .filter(details -> !identifiers.contains(details.getIdentifier()))
                 .collect(Collectors.toList());
 
-        if (questDetails.size() < 1) {
+        if (questDetails.isEmpty()) {
             log.error("No quests found for clan {}.", clan.getId());
             return;
         }

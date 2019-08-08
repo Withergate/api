@@ -186,7 +186,7 @@ public class DisasterServiceImpl implements DisasterService {
                 .stream().filter(d -> !identifiers.contains(d.getIdentifier()))
                 .collect(Collectors.toList());
 
-        if (detailsList.size() == 0) {
+        if (detailsList.isEmpty()) {
             log.error("No new disasters found.");
 
             return;

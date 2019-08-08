@@ -1,8 +1,6 @@
 package com.withergate.api.model.dto;
 
 import com.withergate.api.GameProperties;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -6,10 +6,8 @@ import com.withergate.api.model.notification.GlobalNotification;
 import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.service.AdminService;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

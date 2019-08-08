@@ -17,7 +17,6 @@ import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;

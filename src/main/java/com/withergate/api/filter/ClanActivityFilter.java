@@ -31,9 +31,6 @@ public class ClanActivityFilter implements Filter {
     private final ClanService clanService;
 
     @Override
-    public void destroy() {}
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterchain) throws IOException, ServletException {
         // get the authenticated user from the context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,5 +54,13 @@ public class ClanActivityFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterconfig) {}
+    public void init(FilterConfig filterconfig) {
+        // no action needed
+    }
+
+    @Override
+    public void destroy() {
+        // no action needed
+    }
+
 }

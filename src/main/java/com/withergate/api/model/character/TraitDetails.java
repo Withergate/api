@@ -1,5 +1,7 @@
 package com.withergate.api.model.character;
 
+import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,12 +13,9 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.withergate.api.model.BonusType;
 import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
 
 /**
  * TraitDetails entity.

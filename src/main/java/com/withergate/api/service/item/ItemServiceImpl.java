@@ -1,6 +1,7 @@
 package com.withergate.api.service.item;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -91,12 +92,13 @@ public class ItemServiceImpl implements ItemService {
         Item item = null;
         boolean equipped = false; // item already equipped
 
-        Character character = characterRepository.getOne(characterId);
+        Optional<Character> loaded = characterRepository.findById(characterId);
 
-        if (character == null) {
+        if (loaded.isEmpty()) {
             log.error("Character with ID {} not found!", characterId);
             throw new InvalidActionException("The provided character not found!");
         }
+        Character character = loaded.get();
 
         // load item
         if (type.equals(ItemType.WEAPON)) {
@@ -345,35 +347,36 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Using consumable {} with character {}", consumableId, characterId);
 
         // load character
-        Character character = characterRepository.getOne(characterId);
-        if (character == null || character.getClan().getId() != clanId) {
+        Optional<Character> loaded = characterRepository.findById(characterId);
+        if (loaded.isEmpty() || loaded.get().getClan().getId() != clanId) {
             throw new InvalidActionException("Character not found or doesn't belong to your clan!");
         }
+        Character character = loaded.get();
 
         // load consumable
-        Consumable consumable = consumableRepository.getOne(consumableId);
-        if (consumable == null || consumable.getClan().getId() != clanId) {
+        Optional<Consumable> consumable = consumableRepository.findById(consumableId);
+        if (consumable.isEmpty() || consumable.get().getClan().getId() != clanId) {
             throw new InvalidActionException("Consumable not found or doesn't belong to your clan!");
         }
 
         // check prerequizities
-        if (consumable.getDetails().getEffectType().equals(EffectType.EXPERIENCE) && character.getIntellect() < consumable.getDetails()
-                .getPrereq()) {
+        if (consumable.get().getDetails().getEffectType().equals(EffectType.EXPERIENCE)
+                && character.getIntellect() < consumable.get().getDetails().getPrereq()) {
             throw new InvalidActionException("Character's intellect is too low to perform this action.");
         }
 
         // process the effect
-        switch (consumable.getDetails().getEffectType()) {
+        switch (consumable.get().getDetails().getEffectType()) {
             case HEALING:
                 int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
                 if (hitpointsMissing == 0) {
                     throw new InvalidActionException("This character already has full health!");
                 }
-                int healing = Math.min(hitpointsMissing, consumable.getDetails().getEffect());
+                int healing = Math.min(hitpointsMissing, consumable.get().getDetails().getEffect());
                 character.setHitpoints(character.getHitpoints() + healing);
                 break;
             case EXPERIENCE:
-                character.setExperience(character.getExperience() + consumable.getDetails().getEffect());
+                character.setExperience(character.getExperience() + consumable.get().getDetails().getEffect());
                 break;
             case BUFF_COMBAT:
                 if (character.getCombat() > 5) {
@@ -400,11 +403,11 @@ public class ItemServiceImpl implements ItemService {
                 character.setIntellect(character.getIntellect() + 1);
                 break;
             default:
-                log.error("Unknown consumable type: {}!", consumable.getDetails().getEffectType());
+                log.error("Unknown consumable type: {}!", consumable.get().getDetails().getEffectType());
         }
 
         // delete consumable
-        consumableRepository.delete(consumable);
+        consumableRepository.delete(consumable.get());
     }
 
     @Override

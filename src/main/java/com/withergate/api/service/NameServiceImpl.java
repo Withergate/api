@@ -42,7 +42,7 @@ public class NameServiceImpl implements NameService {
         List<Name> names = nameRepository.findAllByGender(gender)
                 .stream()
                 .filter(name -> !containsNamePart(name.getValue(), nameFilter))
-                .collect(Collectors.toList());;
+                .collect(Collectors.toList());
 
         int prefixIndex = randomService.getRandomInt(0, prefixes.size() - 1);
         int nameIndex = randomService.getRandomInt(0, names.size() - 1);

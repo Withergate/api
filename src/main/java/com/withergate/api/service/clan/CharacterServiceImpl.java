@@ -118,7 +118,7 @@ public class CharacterServiceImpl implements CharacterService {
         int value1 = randomService.getRandomInt(1, RandomServiceImpl.K6);
         int value2 = randomService.getRandomInt(1, RandomServiceImpl.K6);
 
-        return (int) Math.floor((value1 + value2) / 2);
+        return (int) ((value1 + value2) / 2.0);
     }
 
 }

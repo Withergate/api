@@ -3,6 +3,7 @@ package com.withergate.api.service.item;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import com.withergate.api.model.Clan;
@@ -108,7 +109,7 @@ public class ItemServiceTest {
 
         // when equipping weapon
         Mockito.when(weaponRepository.getOne(3)).thenReturn(weapon);
-        Mockito.when(characterRepository.getOne(2)).thenReturn(character);
+        Mockito.when(characterRepository.findById(2)).thenReturn(Optional.of(character));
         Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.equipItem(3, ItemType.WEAPON, 2, 1);
@@ -219,7 +220,7 @@ public class ItemServiceTest {
 
         // when equipping outfit
         Mockito.when(outfitRepository.getOne(3)).thenReturn(outfit);
-        Mockito.when(characterRepository.getOne(2)).thenReturn(character);
+        Mockito.when(characterRepository.findById(2)).thenReturn(Optional.of(character));
         Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.equipItem(3, ItemType.OUTFIT, 2, 1);
@@ -296,7 +297,7 @@ public class ItemServiceTest {
 
         // when equipping gear
         Mockito.when(gearRepository.getOne(3)).thenReturn(gear);
-        Mockito.when(characterRepository.getOne(2)).thenReturn(character);
+        Mockito.when(characterRepository.findById(2)).thenReturn(Optional.of(character));
         Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.equipItem(3, ItemType.GEAR, 2, 1);
@@ -669,7 +670,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+        Mockito.when(characterRepository.findById(1)).thenReturn(Optional.of(character));
 
         ConsumableDetails details = new ConsumableDetails();
         details.setEffectType(EffectType.HEALING);
@@ -680,7 +681,7 @@ public class ItemServiceTest {
         consumable.setId(1);
         consumable.setDetails(details);
         consumable.setClan(clan);
-        Mockito.when(consumableRepository.getOne(1)).thenReturn(consumable);
+        Mockito.when(consumableRepository.findById(1)).thenReturn(Optional.of(consumable));
 
         // when using consumable
         itemService.useConsumable(1, 1, 1);
@@ -702,7 +703,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+        Mockito.when(characterRepository.findById(1)).thenReturn(Optional.of(character));
 
         ConsumableDetails details = new ConsumableDetails();
         details.setEffectType(EffectType.EXPERIENCE);
@@ -713,7 +714,7 @@ public class ItemServiceTest {
         consumable.setId(1);
         consumable.setDetails(details);
         consumable.setClan(clan);
-        Mockito.when(consumableRepository.getOne(1)).thenReturn(consumable);
+        Mockito.when(consumableRepository.findById(1)).thenReturn(Optional.of(consumable));
 
         // when using consumable
         itemService.useConsumable(1, 1, 1);
@@ -734,7 +735,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+        Mockito.when(characterRepository.findById(1)).thenReturn(Optional.of(character));
 
         ConsumableDetails details = new ConsumableDetails();
         details.setEffectType(EffectType.BUFF_COMBAT);
@@ -745,7 +746,7 @@ public class ItemServiceTest {
         consumable.setId(1);
         consumable.setDetails(details);
         consumable.setClan(clan);
-        Mockito.when(consumableRepository.getOne(1)).thenReturn(consumable);
+        Mockito.when(consumableRepository.findById(1)).thenReturn(Optional.of(consumable));
 
         // when using consumable
         itemService.useConsumable(1, 1, 1);
@@ -766,7 +767,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+        Mockito.when(characterRepository.findById(1)).thenReturn(Optional.of(character));
 
         ConsumableDetails details = new ConsumableDetails();
         details.setEffectType(EffectType.BUFF_SCAVENGE);
@@ -777,7 +778,7 @@ public class ItemServiceTest {
         consumable.setId(1);
         consumable.setDetails(details);
         consumable.setClan(clan);
-        Mockito.when(consumableRepository.getOne(1)).thenReturn(consumable);
+        Mockito.when(consumableRepository.findById(1)).thenReturn(Optional.of(consumable));
 
         // when using consumable
         itemService.useConsumable(1, 1, 1);
@@ -798,7 +799,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+        Mockito.when(characterRepository.findById(1)).thenReturn(Optional.of(character));
 
         ConsumableDetails details = new ConsumableDetails();
         details.setEffectType(EffectType.BUFF_CRAFTSMANSHIP);
@@ -809,7 +810,7 @@ public class ItemServiceTest {
         consumable.setId(1);
         consumable.setDetails(details);
         consumable.setClan(clan);
-        Mockito.when(consumableRepository.getOne(1)).thenReturn(consumable);
+        Mockito.when(consumableRepository.findById(1)).thenReturn(Optional.of(consumable));
 
         // when using consumable
         itemService.useConsumable(1, 1, 1);
@@ -830,7 +831,7 @@ public class ItemServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+        Mockito.when(characterRepository.findById(1)).thenReturn(Optional.of(character));
 
         ConsumableDetails details = new ConsumableDetails();
         details.setEffectType(EffectType.BUFF_INTELLECT);
@@ -841,7 +842,7 @@ public class ItemServiceTest {
         consumable.setId(1);
         consumable.setDetails(details);
         consumable.setClan(clan);
-        Mockito.when(consumableRepository.getOne(1)).thenReturn(consumable);
+        Mockito.when(consumableRepository.findById(1)).thenReturn(Optional.of(consumable));
 
         // when using consumable
         itemService.useConsumable(1, 1, 1);

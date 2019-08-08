@@ -1,6 +1,7 @@
 package com.withergate.api.service.trade;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -19,7 +20,6 @@ import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.repository.action.MarketTradeActionRepository;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.repository.trade.MarketOfferRepository;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
@@ -128,18 +128,18 @@ public class TradeServiceImpl implements TradeService {
     @Transactional
     @Override
     public void deleteMarketOffer(int offerId, int clanId) throws InvalidActionException {
-        MarketOffer offer = marketOfferRepository.getOne(offerId);
+        Optional<MarketOffer> offer = marketOfferRepository.findById(offerId);
 
-        if (offer == null || offer.getSeller().getId() != clanId) {
+        if (offer.isEmpty() || offer.get().getSeller().getId() != clanId) {
             throw new InvalidActionException("This offer either does not exist or does not belong to your clan.");
         }
 
         // return item to the seller
-        Item item = itemService.loadItemByType(offer.getItemId(), offer.getDetails().getItemType());
-        item.setClan(offer.getSeller());
+        Item item = itemService.loadItemByType(offer.get().getItemId(), offer.get().getDetails().getItemType());
+        item.setClan(offer.get().getSeller());
 
         // delete the offer
-        marketOfferRepository.delete(offer);
+        marketOfferRepository.delete(offer.get());
     }
 
     @Override
