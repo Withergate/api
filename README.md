@@ -14,8 +14,12 @@ Similarly, building the application can be run using `./gradlew clean build`.
 
 The application can be run in two profiles:
 
-- default (no profile filled): containes in-memory database for testing and local startup
+- local - contains in-memory database for testing and local startup
 - live - used for cloud deployment to GCP, needs to have GOOGLE_APPLICATION_CREDENTIALS and database password injected in order to work
+
+When testing the full stack, it is highly recommended to run all the game components on the local machine. This can be easily done using the bundled `docker-compose` by running `docker-compose up`.
+
+The game will be then accessible at `http://localhost:3000`.
 
 ### 🤝 Authentication
 
