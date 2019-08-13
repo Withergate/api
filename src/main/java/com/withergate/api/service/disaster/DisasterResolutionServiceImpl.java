@@ -78,26 +78,21 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
 
     private void handlePenalty(Clan clan, ClanNotification notification, DisasterPenalty penalty) {
         switch (penalty.getPenaltyType()) {
-            case ITEM_LOSS: {
+            case ITEM_LOSS:
                 handleItemLoss(clan, notification);
                 break;
-            }
-            case RESOURCES_LOSS: {
+            case RESOURCES_LOSS:
                 handleResourceLoss(clan, notification);
                 break;
-            }
-            case CHARACTER_INJURY: {
+            case CHARACTER_INJURY:
                 handleCharacterInjury(clan, notification);
                 break;
-            }
-            case BUILDING_DESTRUCTION: {
+            case BUILDING_DESTRUCTION:
                 handleBuildingDestruction(clan, notification);
                 break;
-            }
-            case FAME_LOSS: {
+            case FAME_LOSS:
                 handleFameLoss(clan, notification);
                 break;
-            }
             default: log.error("Unknown penalty type: {}", penalty.getPenaltyType());
         }
     }

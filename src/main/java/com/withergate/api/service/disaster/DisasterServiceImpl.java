@@ -209,34 +209,29 @@ public class DisasterServiceImpl implements DisasterService {
                 action.getSolution().getName());
 
         Character character = action.getCharacter();
+        int roll = randomService.getRandomInt(1, RandomServiceImpl.K6);
         boolean success = false;
         switch (action.getSolution().getSolutionType()) {
-            case AUTOMATIC: {
+            case AUTOMATIC:
                 success = true;
                 break;
-            }
-            case CRAFTSMANSHIP: {
-                int roll = randomService.getRandomInt(1, RandomServiceImpl.K6);
+            case CRAFTSMANSHIP:
                 int result = character.getCraftsmanship() + roll;
                 notification.getDetails().add(getActionRollDetail(action.getSolution().getDifficulty(), roll, result));
                 if (result >= action.getSolution().getDifficulty()) {
                     success = true;
                 }
                 break;
-            }
-            case INTELLECT: {
-                int roll = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                int result = character.getIntellect() + roll;
+            case INTELLECT:
+                result = character.getIntellect() + roll;
                 notification.getDetails().add(getActionRollDetail(action.getSolution().getDifficulty(), roll, result));
                 if (result >= action.getSolution().getDifficulty()) {
                     success = true;
                 }
                 break;
-            }
-            case COMBAT: {
+            case COMBAT:
                 success = combatService.handleSingleCombat(notification, action.getSolution().getDifficulty(), action.getCharacter());
                 break;
-            }
             default: log.error("Unknown solution type: {}", action.getSolution().getSolutionType());
         }
 

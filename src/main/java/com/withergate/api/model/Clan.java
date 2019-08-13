@@ -2,7 +2,7 @@ package com.withergate.api.model;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Consumable;
 import com.withergate.api.model.item.Gear;
@@ -135,7 +136,7 @@ public class Clan {
      */
     public Clan() {
         characters = new HashSet<>();
-        buildings = new HashMap<>();
+        buildings = new EnumMap<>(BuildingName.class);
         weapons = new HashSet<>();
         outfits = new HashSet<>();
         gear = new HashSet<>();

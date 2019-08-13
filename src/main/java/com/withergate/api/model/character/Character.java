@@ -1,7 +1,7 @@
 package com.withergate.api.model.character;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.Outfit;
 import com.withergate.api.model.item.Weapon;
@@ -121,7 +122,7 @@ public class Character {
      * Constructor.
      */
     public Character() {
-        traits = new HashMap<>();
+        traits = new EnumMap<>(TraitName.class);
         state = CharacterState.READY;
         level = 1;
     }
