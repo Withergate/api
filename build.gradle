@@ -72,6 +72,9 @@ dependencies {
 	// Flyway
 	compile('org.flywaydb:flyway-core')
 
+	// Cloud SQL
+	compile('org.springframework.cloud:spring-cloud-gcp-starter-sql-mysql:1.1.2.RELEASE')
+
 	// Lombok
 	compileOnly('org.projectlombok:lombok')
 	testCompileOnly('org.projectlombok:lombok')

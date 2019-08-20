@@ -1,4 +1,4 @@
---- Trait details
+-- Trait details
 INSERT INTO trait_details(identifier, bonus, image_url) VALUES
     ('FIGHTER', 1, 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
     ('SHARPSHOOTER', 1, 'https://storage.googleapis.com/withergate-images/traits/sharpshooter-trait.png'),
