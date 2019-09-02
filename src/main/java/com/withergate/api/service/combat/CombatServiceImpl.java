@@ -29,6 +29,7 @@ public class CombatServiceImpl implements CombatService {
 
     private static final int ARENA_CAPS = 15;
     private static final int ARENA_FAME = 5;
+    private static final String NPC = "NPC";
 
     private final CombatRoundService combatRoundService;
     private final RandomService randomService;
@@ -126,7 +127,8 @@ public class CombatServiceImpl implements CombatService {
         notification.setHeader(character.getName());
         notification.setImageUrl(character.getImageUrl());
         notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description",
-                new String[]{character.getName(), opponent.getName()});
+                new String[]{character.getName(), character.getClan().getName(),
+                        opponent.getName(), opponent.getClan() != null ? opponent.getClan().getName() : NPC});
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
@@ -159,7 +161,8 @@ public class CombatServiceImpl implements CombatService {
         notification.setHeader(character.getName());
         notification.setImageUrl(character.getImageUrl());
         notificationService.addLocalizedTexts(notification.getText(), "combat.arena.description",
-                new String[]{character.getName(), opponent.getName()});
+                new String[]{character.getName(), character.getClan().getName(),
+                        opponent.getName(), opponent.getClan() != null ? opponent.getClan().getName() : NPC});
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
 

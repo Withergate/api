@@ -26,10 +26,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.mutants.failure', 'cs', 'Útočníci snadno pronikli do našeho úkrytu. Bez odporu loupili a škodili postavám i budovám. Ačkoliv odtáhli, z jejich nájezdu se budeme dlouho vzpamatovávat.');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.mutants.s1', 'd.mutants', 'AUTOMATIC', 0, 4, 0, 0, 0),
-    ('d.mutants.s2', 'd.mutants', 'CRAFTSMANSHIP', 5, 8, 5, 0, 0),
-    ('d.mutants.s3', 'd.mutants', 'COMBAT', 5, 10, 0, 0, 0),
-    ('d.mutants.s4', 'd.mutants', 'AUTOMATIC', 0, 15, 0, 50, 0);
+    ('d.mutants.s1', 'd.mutants', 'AUTOMATIC', 0, 5, 0, 0, 0),
+    ('d.mutants.s2', 'd.mutants', 'CRAFTSMANSHIP', 5, 10, 5, 0, 0),
+    ('d.mutants.s3', 'd.mutants', 'COMBAT', 5, 12, 0, 0, 0),
+    ('d.mutants.s4', 'd.mutants', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.mutants.s1', 'en', 'Building palisades'),
@@ -77,10 +77,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.inquisition.failure', 'cs', 'To bylo horší, než jsme čekali. Nenašli u nás dostatečný zápal pro víru, zato zjistili, že někteří z nás obcují s Ďáblem. Zahájili vyšetřování a bolestivé výslechy. Nikdo se nepřiznal, ale stačilo jim, že někteří z nás raději přijali víru. Kněží pak zkonfiskovali trochu majetku a jeli šířit své bohulibé myšlenky jinam...');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.inquisition.s1', 'd.inquisition', 'AUTOMATIC', 0, 4, 0, 0, 0),
-    ('d.inquisition.s2', 'd.inquisition', 'INTELLECT', 5, 8, 0, 0, 0),
-    ('d.inquisition.s3', 'd.inquisition', 'CRAFTSMANSHIP', 6, 10, 10, 0, 0),
-    ('d.inquisition.s4', 'd.inquisition', 'AUTOMATIC', 0, 15, 0, 50, 0);
+    ('d.inquisition.s1', 'd.inquisition', 'AUTOMATIC', 0, 5, 0, 0, 0),
+    ('d.inquisition.s2', 'd.inquisition', 'INTELLECT', 5, 10, 0, 0, 0),
+    ('d.inquisition.s3', 'd.inquisition', 'CRAFTSMANSHIP', 6, 12, 10, 0, 0),
+    ('d.inquisition.s4', 'd.inquisition', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.inquisition.s1', 'en', 'Pray and labor'),
@@ -128,10 +128,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.refugees.failure', 'cs', 'Naše řešení nezapůsobilo. Zcela se vymkli naší kontrole a brali si, co chtěli. Měli hlad, prali se s námi a pak vzali vše, na co přišli. Nejen z našich zásob, ale i z celého sousedství...');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.refugees.s1', 'd.refugees', 'AUTOMATIC', 0, 4, 0, 0, 0),
-    ('d.refugees.s2', 'd.refugees', 'INTELLECT', 7, 8, 0, 0, 0),
+    ('d.refugees.s1', 'd.refugees', 'AUTOMATIC', 0, 5, 0, 0, 0),
+    ('d.refugees.s2', 'd.refugees', 'INTELLECT', 7, 10, 0, 0, 0),
     ('d.refugees.s3', 'd.refugees', 'AUTOMATIC', 0, 12, 0, 0, 30),
-    ('d.refugees.s4', 'd.refugees', 'COMBAT', 4, 8, 0, 0, 0);
+    ('d.refugees.s4', 'd.refugees', 'COMBAT', 4, 12, 0, 0, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.refugees.s1', 'en', 'Let them in... but keep an eye on them!'),
@@ -179,10 +179,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.storm.failure', 'cs', 'Několik bouřkových dní udeřilo v plné síle. Vichřice rvala střechy z našich domů a lámala stromy, které v našem klanu způsobily pořádnou spoušť. Trosky zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta a naše nyní již bývalé zásoby, plesnivé a zrezivělé… V panice při útěku před živly také došlo k několika zraněním.');
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.storm.s1', 'd.storm', 'AUTOMATIC', 0, 4, 0, 0, 0),
-    ('d.storm.s2', 'd.storm', 'CRAFTSMANSHIP', 7, 8, 0, 0, 0),
-    ('d.storm.s3', 'd.storm', 'CRAFTSMANSHIP', 5, 10, 10, 0, 0),
-    ('d.storm.s4', 'd.storm', 'AUTOMATIC', 4, 15, 0, 50, 0);
+    ('d.storm.s1', 'd.storm', 'AUTOMATIC', 0, 5, 0, 0, 0),
+    ('d.storm.s2', 'd.storm', 'CRAFTSMANSHIP', 7, 10, 0, 0, 0),
+    ('d.storm.s3', 'd.storm', 'CRAFTSMANSHIP', 5, 12, 10, 0, 0),
+    ('d.storm.s4', 'd.storm', 'AUTOMATIC', 4, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.storm.s1', 'en', 'Hide everything we have'),

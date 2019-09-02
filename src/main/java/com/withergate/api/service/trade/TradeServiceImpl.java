@@ -190,7 +190,6 @@ public class TradeServiceImpl implements TradeService {
     private void processMarketTradeAction(MarketTradeAction action, ClanNotification buyerNotification,
                                           ClanNotification sellerNotification) {
         MarketOffer offer = action.getOffer();
-        Character buyer = action.getCharacter();
 
         // add money to seller
         int price = offer.getPrice();
@@ -201,6 +200,7 @@ public class TradeServiceImpl implements TradeService {
                 new String[]{action.getCharacter().getName(), action.getCharacter().getClan().getName()});
 
         // transfer item
+        Character buyer = action.getCharacter();
         Item item = itemService.loadItemByType(offer.getItemId(), offer.getDetails().getItemType());
         item.setClan(buyer.getClan());
 

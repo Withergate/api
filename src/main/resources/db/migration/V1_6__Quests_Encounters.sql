@@ -1,19 +1,19 @@
 -- Quests
 INSERT INTO quest_details (identifier, quest_type, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
-    ('quest.1', 'COMBAT', 3, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
-    ('quest.2', 'INTELLECT', 7, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
-    ('quest.3', 'CRAFTSMANSHIP', 6, 4, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),
-    ('quest.4', 'COMBAT', 5, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest04.png'),
-    ('quest.5', 'COMBAT', 5, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest05.png'),
-    ('quest.6', 'COMBAT', 4, 3, 45, 20, 'https://storage.googleapis.com/withergate-images/quests/quest06.png'),
-    ('quest.7', 'INTELLECT', 6, 4, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest07.png'),
-    ('quest.8', 'SCAVENGE', 6, 4, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest08.png'),
-    ('quest.9', 'CRAFTSMANSHIP', 7, 4, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest09.png'),
-    ('quest.10', 'CRAFTSMANSHIP', 6, 4, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest10.png'),
+    ('quest.1', 'COMBAT', 2, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
+    ('quest.2', 'INTELLECT', 7, 2, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
+    ('quest.3', 'CRAFTSMANSHIP', 6, 3, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),
+    ('quest.4', 'COMBAT', 4, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest04.png'),
+    ('quest.5', 'COMBAT', 4, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest05.png'),
+    ('quest.6', 'COMBAT', 3, 3, 45, 20, 'https://storage.googleapis.com/withergate-images/quests/quest06.png'),
+    ('quest.7', 'INTELLECT', 6, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest07.png'),
+    ('quest.8', 'SCAVENGE', 6, 3, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest08.png'),
+    ('quest.9', 'CRAFTSMANSHIP', 7, 3, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest09.png'),
+    ('quest.10', 'CRAFTSMANSHIP', 6, 3, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest10.png'),
     ('quest.11', 'INTELLECT', 5, 3, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest11.png'),
-    ('quest.12', 'SCAVENGE', 6, 4, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest12.png'),
-    ('quest.13', 'COMBAT', 4, 4, 45, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
-    ('quest.14', 'INTELLECT', 4, 4, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png');
+    ('quest.12', 'SCAVENGE', 6, 3, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest12.png'),
+    ('quest.13', 'COMBAT', 4, 3, 45, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
+    ('quest.14', 'INTELLECT', 4, 3, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.1', 'en', 'Deratization'),
@@ -78,12 +78,12 @@ INSERT INTO localized_texts(quest_description, lang, text) VALUES
 -- Random encounters
 INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, difficulty, description_text, success_text, failure_text) VALUES
     ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 4, 'encounter.w.1.desc', 'encounter.w.1.succ', 'encounter.w.1.fail'),
-    ('WASTELAND', 'COMBAT', 'CAPS', 'NONE', 5, 'encounter.w.2.desc', 'encounter.w.2.succ', 'encounter.w.2.fail'),
-    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 6, 'encounter.w.3.desc', 'encounter.w.3.succ', 'encounter.w.3.fail'),
-    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 5, 'encounter.w.4.desc', 'encounter.w.4.succ', 'encounter.w.4.fail'),
-    ('WASTELAND', 'INTELLECT', 'JUNK', 'CAPS', 8, 'encounter.w.5.desc', 'encounter.w.5.succ', 'encounter.w.5.fail'),
+    ('WASTELAND', 'COMBAT', 'CAPS', 'NONE', 4, 'encounter.w.2.desc', 'encounter.w.2.succ', 'encounter.w.2.fail'),
+    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 5, 'encounter.w.3.desc', 'encounter.w.3.succ', 'encounter.w.3.fail'),
+    ('WASTELAND', 'COMBAT', 'JUNK', 'NONE', 4, 'encounter.w.4.desc', 'encounter.w.4.succ', 'encounter.w.4.fail'),
+    ('WASTELAND', 'INTELLECT', 'JUNK', 'CAPS', 7, 'encounter.w.5.desc', 'encounter.w.5.succ', 'encounter.w.5.fail'),
     ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 3, 'encounter.w.6.desc', 'encounter.w.6.succ', 'encounter.w.6.fail'),
-    ('WASTELAND', 'INTELLECT', 'CAPS', 'CAPS', 7, 'encounter.w.7.desc', 'encounter.w.7.succ', 'encounter.w.7.fail'),
+    ('WASTELAND', 'INTELLECT', 'CAPS', 'CAPS', 6, 'encounter.w.7.desc', 'encounter.w.7.succ', 'encounter.w.7.fail'),
     ('WASTELAND', 'INTELLECT', 'JUNK', 'INJURY', 6, 'encounter.w.8.desc', 'encounter.w.8.succ', 'encounter.w.8.fail'),
     ('WASTELAND', 'INTELLECT', 'ITEM', 'NONE', 8, 'encounter.w.9.desc', 'encounter.w.9.succ', 'encounter.w.9.fail'),
     ('WASTELAND', 'INTELLECT', 'CAPS', 'NONE', 7, 'encounter.w.10.desc', 'encounter.w.10.succ', 'encounter.w.10.fail'),
@@ -91,16 +91,16 @@ INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, diff
     ('WASTELAND', 'INTELLECT', 'INFORMATION', 'INJURY', 7, 'encounter.w.12.desc', 'encounter.w.12.succ', 'encounter.w.12.fail'),
     ('WASTELAND', 'INTELLECT', 'INFORMATION', 'INJURY', 5, 'encounter.w.13.desc', 'encounter.w.13.succ', 'encounter.w.13.fail'),
     ('WASTELAND', 'CRAFTSMANSHIP', 'INFORMATION', 'INJURY', 6, 'encounter.w.14.desc', 'encounter.w.14.succ', 'encounter.w.14.fail'),
-    ('CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 5, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
-    ('CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 5, 'encounter.c.2.desc', 'encounter.c.2.succ', 'encounter.c.2.fail'),
-    ('CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 6, 'encounter.c.3.desc', 'encounter.c.3.succ', 'encounter.c.3.fail'),
+    ('CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 3, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
+    ('CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 4, 'encounter.c.2.desc', 'encounter.c.2.succ', 'encounter.c.2.fail'),
+    ('CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 5, 'encounter.c.3.desc', 'encounter.c.3.succ', 'encounter.c.3.fail'),
     ('CITY_CENTER', 'INTELLECT', 'JUNK', 'NONE', 7, 'encounter.c.4.desc', 'encounter.c.4.succ', 'encounter.c.4.fail'),
-    ('CITY_CENTER', 'INTELLECT', 'ITEM', 'INJURY', 9, 'encounter.c.5.desc', 'encounter.c.5.succ', 'encounter.c.5.fail'),
-    ('CITY_CENTER', 'COMBAT_ROLL', 'INFORMATION', 'INJURY', 9, 'encounter.c.6.desc', 'encounter.c.6.succ', 'encounter.c.6.fail'),
-    ('CITY_CENTER', 'INTELLECT', 'INFORMATION', 'INJURY', 8, 'encounter.c.7.desc', 'encounter.c.7.succ', 'encounter.c.7.fail'),
-    ('CITY_CENTER', 'SCAVENGE', 'CAPS', 'CAPS', 8, 'encounter.c.8.desc', 'encounter.c.8.succ', 'encounter.c.8.fail'),
-    ('CITY_CENTER', 'CRAFTSMANSHIP', 'CAPS', 'CAPS', 7, 'encounter.c.9.desc', 'encounter.c.9.succ', 'encounter.c.9.fail'),
-    ('CITY_CENTER', 'INTELLECT', 'CAPS', 'CAPS', 7, 'encounter.c.10.desc', 'encounter.c.10.succ', 'encounter.c.10.fail');
+    ('CITY_CENTER', 'INTELLECT', 'ITEM', 'INJURY', 8, 'encounter.c.5.desc', 'encounter.c.5.succ', 'encounter.c.5.fail'),
+    ('CITY_CENTER', 'COMBAT_ROLL', 'INFORMATION', 'INJURY', 8, 'encounter.c.6.desc', 'encounter.c.6.succ', 'encounter.c.6.fail'),
+    ('CITY_CENTER', 'INTELLECT', 'INFORMATION', 'INJURY', 7, 'encounter.c.7.desc', 'encounter.c.7.succ', 'encounter.c.7.fail'),
+    ('CITY_CENTER', 'SCAVENGE', 'CAPS', 'CAPS', 7, 'encounter.c.8.desc', 'encounter.c.8.succ', 'encounter.c.8.fail'),
+    ('CITY_CENTER', 'CRAFTSMANSHIP', 'CAPS', 'CAPS', 6, 'encounter.c.9.desc', 'encounter.c.9.succ', 'encounter.c.9.fail'),
+    ('CITY_CENTER', 'INTELLECT', 'CAPS', 'CAPS', 6, 'encounter.c.10.desc', 'encounter.c.10.succ', 'encounter.c.10.fail');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.w.1.desc', 'en', 'Character was attacked by mutants while scavenging in the ruins of a wasteland village.'),

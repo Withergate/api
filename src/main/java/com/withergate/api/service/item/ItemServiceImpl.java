@@ -525,7 +525,7 @@ public class ItemServiceImpl implements ItemService {
         int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (diceRoll < EPIC_ITEM_CHANCE) {
             return Rarity.EPIC;
-        } if(diceRoll < RARE_ITEM_CHANCE) {
+        } else if (diceRoll < RARE_ITEM_CHANCE) {
             return Rarity.RARE;
         } else {
             return Rarity.COMMON;
