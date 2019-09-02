@@ -52,7 +52,7 @@ public class ClanServiceImpl implements ClanService {
     public static final int INITIAL_CLAN_SIZE = 5;
 
     private static final int CLAN_NAME_MIN_LENGTH = 6;
-    private static final int CLAN_NAME_MAX_LENGTH = 24;
+    private static final int CLAN_NAME_MAX_LENGTH = 30;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -89,7 +89,7 @@ public class ClanServiceImpl implements ClanService {
     public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException {
         // validate clan name
         if (clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
-            throw new ValidationException("Clan name must be between 6 and 24 characters long.");
+            throw new ValidationException("Clan name must be between 6 and 30 characters long.");
         }
 
         // check if clan already exists.
