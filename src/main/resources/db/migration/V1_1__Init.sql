@@ -369,78 +369,21 @@ CREATE TABLE tavern_offers (
 );
 
 -- Actions
-DROP TABLE IF EXISTS location_actions;
-CREATE TABLE location_actions (
+DROP TABLE IF EXISTS actions;
+CREATE TABLE actions (
+    dtype VARCHAR(256),
     action_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
     character_id INT NOT NULL,
-    location VARCHAR(16) NOT NULL,
-    action_type VARCHAR(8) NOT NULL,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS arena_actions;
-CREATE TABLE arena_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS tavern_actions;
-CREATE TABLE tavern_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    offer_id INT NOT NULL,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS building_actions;
-CREATE TABLE building_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    building VARCHAR(16) NOT NULL,
-    action_type VARCHAR(16) NOT NULL,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS quest_actions;
-CREATE TABLE quest_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    quest_id INT NOT NULL,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS resource_trade_actions;
-CREATE TABLE resource_trade_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    trade_type VARCHAR(8) NOT NULL,
+    location VARCHAR(16),
+    action_type VARCHAR(16),
+    offer_id INT,
+    building VARCHAR(16),
+    quest_id INT,
+    trade_type VARCHAR(16),
     food INT DEFAULT 0,
     junk INT DEFAULT 0,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS market_trade_actions;
-CREATE TABLE market_trade_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    offer_id INT NOT NULL,
-    PRIMARY KEY (action_id)
-);
-
-DROP TABLE IF EXISTS disaster_actions;
-CREATE TABLE disaster_actions (
-    action_id INT AUTO_INCREMENT,
-    state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
-    identifier VARCHAR(32) NOT NULL,
+    identifier VARCHAR(32),
     PRIMARY KEY (action_id)
 );
 

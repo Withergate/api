@@ -1,13 +1,12 @@
 package com.withergate.api.model.action;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.disaster.DisasterSolution;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.withergate.api.model.disaster.DisasterSolution;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,17 +16,18 @@ import lombok.Setter;
  * @author Martin Myslik
  */
 @Entity
-@Table(name = "disaster_actions")
+@Table(name = "actions")
 @Getter
 @Setter
 public class DisasterAction extends BaseAction {
 
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "character_id", nullable = false, updatable = false)
-    private Character character;
-
-    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "identifier", nullable = false, updatable = false)
     private DisasterSolution solution;
+
+    @Override
+    public String getDescriptor() {
+        return ActionDescriptor.DISASTER.name();
+    }
 
 }

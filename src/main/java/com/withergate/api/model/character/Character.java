@@ -2,6 +2,7 @@ package com.withergate.api.model.character;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -24,6 +25,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.BaseAction;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.Outfit;
@@ -117,6 +119,11 @@ public class Character {
     @MapKeyClass(TraitDetails.TraitName.class)
     @MapKeyEnumerated(EnumType.STRING)
     private Map<TraitDetails.TraitName, Trait> traits;
+
+    // Actions
+
+    @OneToMany(mappedBy = "character", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<BaseAction> actions;
 
     /**
      * Constructor.
