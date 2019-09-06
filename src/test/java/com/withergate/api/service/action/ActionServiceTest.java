@@ -1,6 +1,8 @@
 package com.withergate.api.service.action;
 
-import com.withergate.api.GameProperties;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
@@ -13,9 +15,6 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.item.WeaponDetails;
-import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
@@ -32,9 +31,6 @@ import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.trade.TradeService;
-
-import java.util.HashMap;
-import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -170,38 +166,6 @@ public class ActionServiceTest {
         character.setName("Rusty Nick");
         character.setClan(clan);
         character.setState(CharacterState.READY);
-        Mockito.when(characterService.load(1)).thenReturn(character);
-
-        // when creating location action
-        actionService.createArenaAction(request, 1);
-
-        // then expect exception
-    }
-
-    @Test(expected = InvalidActionException.class)
-    public void testGivenArenaRequestWhenCharacterEquipsRangedWeaponThenVerifyExceptionThrown() throws InvalidActionException {
-        // given arena request
-        ArenaRequest request = new ArenaRequest();
-        request.setCharacterId(1);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setFood(10);
-        clan.setArena(false);
-        clan.setName("Dragons");
-
-        Character character = new Character();
-        character.setId(1);
-        character.setName("Rusty Nick");
-        character.setClan(clan);
-        character.setState(CharacterState.READY);
-
-        WeaponDetails weaponDetails = new WeaponDetails();
-        weaponDetails.setType(WeaponType.RANGED);
-        Weapon weapon = new Weapon();
-        weapon.setDetails(weaponDetails);
-        character.setWeapon(weapon);
-
         Mockito.when(characterService.load(1)).thenReturn(character);
 
         // when creating location action

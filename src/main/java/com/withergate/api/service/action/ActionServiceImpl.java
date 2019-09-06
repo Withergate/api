@@ -16,7 +16,6 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterSolution;
-import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
@@ -100,9 +99,6 @@ public class ActionServiceImpl implements ActionService {
         // check arena requirements
         if (clan.isArena()) {
             throw new InvalidActionException("You already have selected a character to enter arena this turn!");
-        }
-        if (character.getWeapon() != null && character.getWeapon().getDetails().getType() != WeaponType.MELEE) {
-            throw new InvalidActionException("Only melee weapons are allowed to the arena!");
         }
         clan.setArena(true);
 

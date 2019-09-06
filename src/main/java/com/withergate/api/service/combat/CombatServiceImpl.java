@@ -6,12 +6,16 @@ import java.util.List;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.combat.CombatResult;
+import com.withergate.api.model.item.ItemType;
+import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +39,7 @@ public class CombatServiceImpl implements CombatService {
     private final RandomService randomService;
     private final CharacterService characterService;
     private final NotificationService notificationService;
+    private final ItemService itemService;
 
     @Override
     public boolean handleSingleCombat(ClanNotification notification, int difficulty, Character character) {
@@ -73,6 +78,10 @@ public class CombatServiceImpl implements CombatService {
             // process fight
             ClanNotification notification1 = new ClanNotification();
             ClanNotification notification2 = new ClanNotification();
+            unequipRangedWeapon(character1, notification1);
+            unequipRangedWeapon(character2, notification2);
+
+            // compute fight results
             CombatResult result = handleCombat(character1, notification1, character2, notification2);
 
             ClanNotification winnerNotification;
@@ -175,6 +184,21 @@ public class CombatServiceImpl implements CombatService {
         result.setNotification(notification);
 
         return result;
+    }
+
+    private void unequipRangedWeapon(Character character, ClanNotification notification) {
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getType().equals(WeaponType.RANGED)) {
+            try {
+                itemService.unequipItem(character.getWeapon().getId(), ItemType.WEAPON, character.getId(), character.getClan().getId());
+
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.arena.unequip", new String[]{character.getName()});
+                notification.getDetails().add(detail);
+            } catch (InvalidActionException e) {
+                log.error("Error un-equipping ranged weapon before arena fight.");
+            }
+
+        }
     }
 
 }

@@ -28,7 +28,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.mutants.s1', 'd.mutants', 'AUTOMATIC', 0, 5, 0, 0, 0),
     ('d.mutants.s2', 'd.mutants', 'CRAFTSMANSHIP', 5, 10, 5, 0, 0),
-    ('d.mutants.s3', 'd.mutants', 'COMBAT', 5, 12, 0, 0, 0),
+    ('d.mutants.s3', 'd.mutants', 'COMBAT', 4, 12, 0, 0, 0),
     ('d.mutants.s4', 'd.mutants', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES

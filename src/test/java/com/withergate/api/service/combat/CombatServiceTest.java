@@ -10,6 +10,7 @@ import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,11 +35,14 @@ public class CombatServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private ItemService itemService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        combatService = new CombatServiceImpl(combatRoundService, randomService, characterService, notificationService);
+        combatService = new CombatServiceImpl(combatRoundService, randomService, characterService, notificationService, itemService);
     }
 
     @Test

@@ -93,6 +93,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.combat.roundresult', 'cs', '{} vyhrál/a kolo souboje s bojovým číslem {}. {} měl bojové číslo {}. {} ztrácí {} životy.'),
     ('detail.combat.flee', 'en', '{} fleed the combat with {} dice roll and {}% flee chance.'),
     ('detail.combat.flee', 'cs', '{} uprchl/a ze souboje s hodem {} při šanci {}% na útěk.'),
+    ('detail.arena.unequip', 'en', '{} left his/her ranged weapon in the clan storage since it is not allowed in the arena.'),
+    ('detail.arena.unequip', 'cs', '{} nechal/a svou střelnou zbraň v kempu, jelikož tyto zbraně nejsou v aréně povoleny.'),
     ('detail.item.found.storage', 'en', '{} found [] and took it to your clan storage.'),
     ('detail.item.found.storage', 'cs', '{} nalezl/a [] a vzal/a tento úlovek do klanového skladu.'),
     ('detail.item.bought', 'en', '[] was added to your clan storage.'),

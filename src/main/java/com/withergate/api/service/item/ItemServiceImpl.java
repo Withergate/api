@@ -194,14 +194,10 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidActionException("Cannot equip item to the provided character!");
         }
 
-        if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to un-equip item.");
-        }
-
         // check if item quipped
         if (equippedId != itemId) {
             log.error("Character {} is not carrying the specified item!", characterId);
-            throw new InvalidActionException("item with this ID is not equipped by the provided character!");
+            throw new InvalidActionException("Item with this ID is not equipped by the provided character!");
         }
 
         // process unequip action
