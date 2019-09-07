@@ -2,6 +2,7 @@ package com.withergate.api.service.building;
 
 import java.util.List;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -40,6 +41,7 @@ public class BuildingServiceImpl implements BuildingService {
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final NotificationService notificationService;
+    private final GameProperties gameProperties;
 
     @Override
     public void saveBuildingAction(BuildingAction action) {
@@ -158,6 +160,11 @@ public class BuildingServiceImpl implements BuildingService {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[] {}, details.getName());
             notification.getDetails().add(detail);
+
+            // award fame
+            int fame = gameProperties.getBuildingFame() * building.getLevel();
+            notification.setFameIncome(notification.getFameIncome() + fame);
+            clan.setFame(clan.getFame() + fame);
         }
     }
 

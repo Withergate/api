@@ -20,6 +20,7 @@ public class GamePropertiesDTO {
     private final int starvationFame;
     private final int disasterFailureThreshold;
     private final int disasterPartialSuccessThreshold;
+    private final int buildingFame;
 
     /**
      * Constructor.
@@ -32,6 +33,7 @@ public class GamePropertiesDTO {
         this.starvationFame = properties.getStarvationFame();
         this.disasterFailureThreshold = properties.getDisasterFailureThreshold();
         this.disasterPartialSuccessThreshold = properties.getDisasterPartialSuccessThreshold();
+        this.buildingFame = properties.getBuildingFame();
     }
 
 }

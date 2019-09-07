@@ -1,10 +1,6 @@
 package com.withergate.api.service.building;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -26,6 +22,11 @@ import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +54,11 @@ public class BuildingServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        GameProperties properties = new GameProperties();
+        properties.setBuildingFame(1);
+
         buildingService = new BuildingServiceImpl(itemService, buildingActionRepository,
-                buildingDetailsRepository, notificationService);
+                buildingDetailsRepository, notificationService, properties);
     }
 
     @Test
