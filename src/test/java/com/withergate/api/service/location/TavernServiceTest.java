@@ -145,12 +145,11 @@ public class TavernServiceTest {
         // then verify character hired and action completed
         Assert.assertEquals(clan, hired.getClan());
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
-
-        Mockito.verify(tavernOfferRepository).delete(offer);
+        Assert.assertEquals(State.PROCESSED, offer.getState());
     }
 
     @Test
-    public void testGivenClanWhenPreparingTavernOffersThenVerifyOffersCreatedAndOldDeleted() {
+    public void testGivenClanWhenPreparingTavernOffersThenVerifyOffersCreatedAndOldMarkedAsProcessed() {
         // given clan
         Clan clan = new Clan();
         clan.setId(1);
@@ -172,8 +171,8 @@ public class TavernServiceTest {
         // when preparing offers
         tavernService.prepareTavernOffers(clan, new CharacterFilter());
 
-        // then verify old offers deleted and new created
-        Mockito.verify(tavernOfferRepository).delete(offer);
+        // then verify old offers marked as processed and new created
+        Assert.assertEquals(State.PROCESSED, offer.getState());
         Mockito.verify(characterService).save(character1);
         Mockito.verify(characterService).save(character2);
         Mockito.verify(characterService).save(character3);

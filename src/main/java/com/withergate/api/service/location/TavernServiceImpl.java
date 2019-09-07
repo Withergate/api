@@ -80,8 +80,8 @@ public class TavernServiceImpl implements TavernService {
             // mark action as completed
             action.setState(ActionState.COMPLETED);
 
-            // delete processed offer
-            tavernOfferRepository.delete(offer);
+            // mark offer as processed
+            offer.setState(TavernOffer.State.PROCESSED);
         }
     }
 
@@ -92,7 +92,7 @@ public class TavernServiceImpl implements TavernService {
         // delete all old offers
         List<TavernOffer> offers = tavernOfferRepository.findAllByClan(clan);
         for (TavernOffer offer : offers) {
-            tavernOfferRepository.delete(offer);
+            offer.setState(TavernOffer.State.PROCESSED);
         }
 
         // create new offers

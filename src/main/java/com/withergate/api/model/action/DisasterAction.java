@@ -1,12 +1,13 @@
 package com.withergate.api.model.action;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.model.disaster.DisasterSolution;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.withergate.api.model.disaster.DisasterSolution;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 public class DisasterAction extends BaseAction {
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "identifier", nullable = false, updatable = false)
     private DisasterSolution solution;

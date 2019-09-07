@@ -52,6 +52,6 @@ public class TavernOffer {
      * Tavern offer state.
      */
     public enum State {
-        AVAILABLE, HIRED
+        AVAILABLE, HIRED, PROCESSED
     }
 }

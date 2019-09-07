@@ -120,7 +120,8 @@ public class ActionServiceImpl implements ActionService {
         Clan clan = character.getClan();
 
         TavernOffer offer = tavernService.loadTavernOffer(request.getOfferId());
-        if (offer == null || offer.getClan().getId() != clanId) {
+        if (offer == null || offer.getClan().getId() != clanId
+                || !offer.getState().equals(TavernOffer.State.AVAILABLE)) {
             throw new InvalidActionException("This offer either doesn't exists or does not belong to your clan!");
         }
 
