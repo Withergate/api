@@ -27,9 +27,6 @@ public class TurnSchedulerTest {
     private ActionService actionService;
 
     @Mock
-    private CharacterService characterService;
-
-    @Mock
     private ClanService clanService;
 
     @Before
@@ -39,7 +36,7 @@ public class TurnSchedulerTest {
         GameProperties properties = new GameProperties();
         properties.setMaxTurns(45);
 
-        scheduler = new TurnScheduler(turnRepository, actionService, characterService, clanService, properties);
+        scheduler = new TurnScheduler(turnRepository, actionService, clanService, properties);
     }
 
     @Test

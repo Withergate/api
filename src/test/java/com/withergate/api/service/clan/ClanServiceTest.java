@@ -20,6 +20,8 @@ import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.model.turn.Turn;
+import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
@@ -66,6 +68,9 @@ public class ClanServiceTest {
     @Mock
     private TraitService traitService;
 
+    @Mock
+    private TurnRepository turnRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -77,7 +82,7 @@ public class ClanServiceTest {
         properties.setStarvationFame(1);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService, randomService, traitService, properties);
+                buildingService, tavernService, randomService, traitService, properties, turnRepository);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -142,6 +147,10 @@ public class ClanServiceTest {
         Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class)))
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
+        Turn turn = new Turn();
+        turn.setTurnId(1);
+        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+
         // when creating new clan
         ClanRequest clanRequest = new ClanRequest("Dragons");
         clanService.createClan(2, clanRequest);
@@ -152,6 +161,39 @@ public class ClanServiceTest {
 
         assertEquals("Dragons", captor.getValue().getName());
         assertEquals(5, captor.getValue().getCharacters().size());
+        assertEquals(0, captor.getValue().getFame());
+    }
+
+    @Test
+    public void testGivenClanRequestWhenCreatingClanLateThenVerifyBonusResourcesGiven() throws Exception {
+        // given clan request
+        ClanRequest clanRequest = new ClanRequest("Dragons");
+
+        Turn turn = new Turn();
+        turn.setTurnId(3);
+        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+
+        Character[] characters = new Character[5];
+        for (int i = 0; i < 5; i++) {
+            Character character = new Character();
+            character.setId(i);
+            characters[i] = character;
+        }
+
+        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class)))
+                .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
+
+        // when creating new clan in late turn
+        clanService.createClan(2, clanRequest);
+
+        // then verify clan saved
+        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
+        Mockito.verify(clanRepository).save(captor.capture());
+
+        assertEquals("Dragons", captor.getValue().getName());
+        assertEquals(26, captor.getValue().getFood());
+        assertEquals(26, captor.getValue().getJunk());
+        assertEquals(56, captor.getValue().getCaps());
         assertEquals(0, captor.getValue().getFame());
     }
 

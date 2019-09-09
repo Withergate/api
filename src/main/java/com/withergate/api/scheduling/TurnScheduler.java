@@ -23,7 +23,6 @@ public class TurnScheduler {
 
     private final TurnRepository turnRepository;
     private final ActionService actionService;
-    private final CharacterService characterService;
     private final ClanService clanService;
     private final GameProperties gameProperties;
 

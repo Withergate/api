@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.Clan.DefaultAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
@@ -21,6 +22,8 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.model.turn.Turn;
+import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -51,6 +54,11 @@ public class ClanServiceImpl implements ClanService {
     public static final int BASIC_POPULATION_LIMIT = 6;
     public static final int INITIAL_CLAN_SIZE = 5;
 
+    private static final int INITIAL_FOOD = 20;
+    private static final int INITIAL_JUNK = 20;
+    private static final int INITIAL_CAPS = 50;
+    private static final int TURN_INCREMENT = 3;
+
     private static final int CLAN_NAME_MIN_LENGTH = 6;
     private static final int CLAN_NAME_MAX_LENGTH = 30;
 
@@ -63,6 +71,7 @@ public class ClanServiceImpl implements ClanService {
     private final RandomService randomService;
     private final TraitService traitService;
     private final GameProperties gameProperties;
+    private final TurnRepository turnRepository;
 
     @Override
     public Clan getClan(int clanId) {
@@ -104,19 +113,22 @@ public class ClanServiceImpl implements ClanService {
             throw new EntityConflictException("Clan with the provided name already exists.");
         }
 
+        // get current turn
+        Turn turn = turnRepository.findFirstByOrderByTurnIdDesc();
+
         // Create clan with initial resources.
         Clan clan = new Clan();
         clan.setId(clanId);
         clan.setName(clanRequest.getName());
         clan.setLastActivity(LocalDateTime.now());
         clan.setFame(0);
-        clan.setCaps(50);
-        clan.setJunk(20);
-        clan.setFood(20);
+        clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn.getTurnId()));
+        clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn.getTurnId()));
+        clan.setFood(INITIAL_FOOD + getStartingResourceBonus(turn.getTurnId()));
         clan.setInformation(0);
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
-        clan.setDefaultAction(Clan.DefaultAction.REST);
+        clan.setDefaultAction(DefaultAction.EXPLORE_NEIGHBORHOOD);
 
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
@@ -418,6 +430,13 @@ public class ClanServiceImpl implements ClanService {
         }
 
         return filter;
+    }
+
+    /*
+     * When starting game later, players should receive bonus resources to mitigate the balance issues.
+     */
+    private int getStartingResourceBonus(int turn) {
+        return (turn - 1) * TURN_INCREMENT;
     }
 
 }
