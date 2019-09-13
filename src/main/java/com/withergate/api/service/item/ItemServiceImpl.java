@@ -290,14 +290,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateCraftableItem(Character character, int buildingLevel, ClanNotification notification, ItemType type) {
+    public void generateCraftableItem(Character character, int buildingLevel, int bonus, ClanNotification notification, ItemType type) {
         log.debug("Crafting weapon with {}", character.getName());
 
         if (buildingLevel < 1) {
             return;
         }
 
-        ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel);
+        ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel + bonus);
 
         ItemDetails details;
 
@@ -528,11 +528,11 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    private ItemDetails.Rarity getRandomRarity(int craftsmanship, int buildingLevel) {
+    private ItemDetails.Rarity getRandomRarity(int craftsmanship, int bonus) {
         int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
 
         // epic items cannot be crafted, only found
-        if (diceRoll < (craftsmanship * 5 + buildingLevel * 5)) {
+        if (diceRoll < (craftsmanship * 5 + bonus * 5)) {
             return ItemDetails.Rarity.RARE;
         } else {
             return ItemDetails.Rarity.COMMON;

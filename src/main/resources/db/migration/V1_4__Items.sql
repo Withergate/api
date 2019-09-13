@@ -94,8 +94,11 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
-    ('SAW', 'GEAR', 'COMMON', 20, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('SAW', 'GEAR', 'COMMON', 10, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
+    ('TRAP', 'GEAR', 'COMMON', 10, 1, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('HAMMER', 'GEAR', 'COMMON', 10, 1, 'CRAFTING', 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
+    ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
+    ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 40, 3, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
@@ -103,6 +106,12 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SAW', 'cs', 'Pila'),
     ('TRAP', 'en', 'Trap'),
     ('TRAP', 'cs', 'Past'),
+    ('HAMMER', 'en', 'Hammer'),
+    ('HAMMER', 'cs', 'Kladivo'),
+    ('SHOVEL', 'en', 'Shovel'),
+    ('SHOVEL', 'cs', 'Lopata'),
+    ('BINOCULARS', 'en', 'Binoculars'),
+    ('BINOCULARS', 'cs', 'Dalekohled'),
     ('DETECTOR', 'en', 'Detector'),
     ('DETECTOR', 'cs', 'Detektor');
 
@@ -111,6 +120,12 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('SAW', 'cs', 'Poněkud bezzubá, ale svůj účel splní. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
     ('TRAP', 'en', 'All you need is to place it and tomorrow you can collect it. Improves the chance of finding food.'),
     ('TRAP', 'cs', 'Stačí rozmístit a zítra sesbírat. Zvýší šanci na nalezení jídla.'),
+    ('HAMMER', 'en', 'When you have a hammer, everything`s a nail. Improves the chance of crafting rare items.'),
+    ('HAMMER', 'cs', 'Všechny je hřebík, když máš velké kladivo. Zvýší šanci na výrobu vzácného předmětu.'),
+    ('SHOVEL', 'en', 'Finally something I can lean on when working. Improves craftsmanship when building without the necessity to pay any extra junk.'),
+    ('SHOVEL', 'cs', 'Konečně něco, o co se mohu při práci opřít. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
+    ('BINOCULARS', 'en', 'If I see it, I can hit it. Improves the chance of finding food.'),
+    ('BINOCULARS', 'cs', 'Když to uvidím, tak to zabiju. Zvýší šanci na nalezení jídla.'),
     ('DETECTOR', 'en', 'A few decades old, so it doesn’t work really well. Improves the chance of finding junk.'),
     ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
 

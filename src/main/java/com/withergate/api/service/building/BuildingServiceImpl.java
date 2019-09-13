@@ -125,9 +125,7 @@ public class BuildingServiceImpl implements BuildingService {
                     notificationService.save(notification);
                 }
             }
-
         }
-
     }
 
     @Override
@@ -170,26 +168,25 @@ public class BuildingServiceImpl implements BuildingService {
 
     private void processVisitAction(BuildingAction action, Character character, Clan clan, ClanNotification notification) {
         if (action.getBuilding().equals(BuildingName.FORGE)) {
-
             log.debug("{} is crafting weapon.", character.getName());
             notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon", new String[] {character.getName()});
             itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(),
-                    notification, ItemType.WEAPON);
+                    getBonus(character, notification, BonusType.CRAFTING), notification, ItemType.WEAPON);
 
         }
 
         if (action.getBuilding().equals(BuildingName.RAGS_SHOP)) {
             log.debug("{} is crafting outfit.", character.getName());
             notificationService.addLocalizedTexts(notification.getText(), "building.crafting.outfit", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.RAGS_SHOP).getLevel(), notification,
-                    ItemType.OUTFIT);
+            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.RAGS_SHOP).getLevel(),
+                    getBonus(character, notification, BonusType.CRAFTING),notification, ItemType.OUTFIT);
         }
 
         if (action.getBuilding().equals(BuildingName.WORKSHOP)) {
             log.debug("{} is crafting gear.", character.getName());
             notificationService.addLocalizedTexts(notification.getText(), "building.crafting.gear", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.WORKSHOP).getLevel(), notification,
-                    ItemType.GEAR);
+            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.WORKSHOP).getLevel(),
+                    getBonus(character, notification, BonusType.CRAFTING), notification, ItemType.GEAR);
         }
     }
 
@@ -212,7 +209,7 @@ public class BuildingServiceImpl implements BuildingService {
             bonus += character.getGear().getDetails().getBonus();
         }
 
-        if (bonusType.equals(BonusType.FORGE) && gear != null && gear.getDetails().getBonusType().equals(BonusType.FORGE)) {
+        if (bonusType.equals(BonusType.CRAFTING) && gear != null && gear.getDetails().getBonusType().equals(BonusType.CRAFTING)) {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.work", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);

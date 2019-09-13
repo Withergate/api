@@ -53,7 +53,7 @@ public class Building {
      */
     @JsonProperty("nextLevel")
     public int getNextLevelWork() {
-        return (level + 1) * details.getCost();
+        return details.getCost() + level * (details.getCost() / 2);
     }
 
 }

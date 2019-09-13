@@ -367,7 +367,7 @@ public class ItemServiceTest {
 
         // when crafting weapon
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableItem(character, 1, notification, ItemType.WEAPON);
+        itemService.generateCraftableItem(character, 1, 0, notification, ItemType.WEAPON);
 
         // then verify weapon saved
         ArgumentCaptor<Weapon> captor = ArgumentCaptor.forClass(Weapon.class);
@@ -396,7 +396,7 @@ public class ItemServiceTest {
 
         // when crafting outfit
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableItem(character, 1, notification, ItemType.OUTFIT);
+        itemService.generateCraftableItem(character, 1, 0, notification, ItemType.OUTFIT);
 
         // then verify outfit saved
         ArgumentCaptor<Outfit> captor = ArgumentCaptor.forClass(Outfit.class);
@@ -424,7 +424,7 @@ public class ItemServiceTest {
 
         // when crafting gear
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableItem(character, 1, notification, ItemType.GEAR);
+        itemService.generateCraftableItem(character, 1, 0, notification, ItemType.GEAR);
 
         // then verify gear saved
         ArgumentCaptor<Gear> captor = ArgumentCaptor.forClass(Gear.class);

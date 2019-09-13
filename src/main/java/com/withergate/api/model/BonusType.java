@@ -7,6 +7,6 @@ package com.withergate.api.model;
  */
 public enum BonusType {
 
-    FORGE, CONSTRUCT, SCAVENGE_FOOD, SCAVENGE_JUNK
+    CRAFTING, CONSTRUCT, SCAVENGE_FOOD, SCAVENGE_JUNK
 
 }

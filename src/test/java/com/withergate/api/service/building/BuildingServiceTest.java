@@ -301,7 +301,7 @@ public class BuildingServiceTest {
     }
 
     @Test
-    public void testGivenForgeActionWhenForgingThenVerifyItemServiceCalled() {
+    public void testGivenCraftingActionWhenForgingThenVerifyItemServiceCalled() {
         // given action
         Character character = new Character();
         character.setCraftsmanship(3);
@@ -332,12 +332,12 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.any(ClanNotification.class),
-                Mockito.eq(ItemType.WEAPON));
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(0),
+                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.WEAPON));
     }
 
     @Test
-    public void testGivenForgeActionWhenCraftingOutfitThenVerifyItemServiceCalled() {
+    public void testGivenCraftingActionWhenCraftingOutfitThenVerifyItemServiceCalled() {
         // given action
         Character character = new Character();
         character.setCraftsmanship(3);
@@ -368,12 +368,12 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.any(ClanNotification.class),
-                Mockito.eq(ItemType.OUTFIT));
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(0),
+                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.OUTFIT));
     }
 
     @Test
-    public void testGivenForgeActionWhenCraftingGearThenVerifyItemServiceCalled() {
+    public void testGivenCraftingActionWhenCraftingGearThenVerifyItemServiceCalled() {
         // given action
         Character character = new Character();
         character.setCraftsmanship(3);
@@ -404,8 +404,51 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.any(ClanNotification.class),
-                Mockito.eq(ItemType.GEAR));
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(0),
+                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.GEAR));
+    }
+
+    @Test
+    public void testGivenCraftingActionWhenCraftingGearWithHammerThenVerifyItemServiceCalled() {
+        // given action
+        Character character = new Character();
+        character.setCraftsmanship(3);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setBuildings(new HashMap<>());
+        character.setClan(clan);
+
+        GearDetails gearDetails = new GearDetails();
+        gearDetails.setBonus(1);
+        gearDetails.setBonusType(BonusType.CRAFTING);
+        Gear gear = new Gear();
+        gear.setDetails(gearDetails);
+        character.setGear(gear);
+
+        BuildingDetails details = new BuildingDetails();
+        details.setIdentifier(BuildingName.WORKSHOP);
+        Building building = new Building();
+        building.setLevel(1);
+        building.setDetails(details);
+        clan.getBuildings().put(BuildingName.WORKSHOP, building);
+
+        BuildingAction action = new BuildingAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setBuilding(BuildingName.WORKSHOP);
+        action.setType(Type.VISIT);
+
+        List<BuildingAction> actions = new ArrayList<>();
+        actions.add(action);
+        Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+
+        // when processing actions with forge
+        buildingService.processBuildingActions(1);
+
+        // then verify item service called
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(1),
+                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.GEAR));
     }
 
     @Test
