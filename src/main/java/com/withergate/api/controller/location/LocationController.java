@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import com.withergate.api.model.location.LocationDescription;
-import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
@@ -44,21 +43,6 @@ public class LocationController {
         log.debug("Executing location action for player {}", principal.getName());
 
         actionService.createLocationAction(request, Integer.parseInt(principal.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    /**
-     * Submits a new arena action and checks if this action is applicable. Throws an exception if not.
-     *
-     * @param principal the principal
-     * @param request   the arena action request
-     * @throws InvalidActionException invalid action
-     */
-    @PostMapping("/arena/action")
-    public ResponseEntity<Void> visitArena(Principal principal, @RequestBody ArenaRequest request) throws InvalidActionException {
-        log.debug("Executing arena action for player {}", principal.getName());
-
-        actionService.createArenaAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

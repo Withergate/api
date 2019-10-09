@@ -16,5 +16,6 @@ import lombok.Setter;
 public class ArenaResult {
 
     private Character character;
+    private boolean winner;
     private ClanNotification notification;
 }

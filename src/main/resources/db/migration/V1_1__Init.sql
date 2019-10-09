@@ -15,7 +15,7 @@ CREATE TABLE avatars (
 DROP TABLE IF EXISTS clans;
 CREATE TABLE clans (
     clan_id INT,
-    clan_name VARCHAR(16) UNIQUE NOT NULL,
+    clan_name VARCHAR(32) UNIQUE NOT NULL,
     last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fame INT NOT NULL,
     caps INT NOT NULL,
@@ -399,6 +399,16 @@ CREATE TABLE names (
     gender VARCHAR(8) NOT NULL,
     value VARCHAR(16) UNIQUE NOT NULL,
     PRIMARY KEY (value)
+);
+
+-- Arena stats
+DROP TABLE IF EXISTS arena_stats;
+CREATE TABLE arena_stats (
+    stats_id INT NOT NULL,
+    stats INT NOT NULL,
+    character_name VARCHAR(32) NOT NULL,
+    clan_name VARCHAR(32) NOT NULL,
+    PRIMARY KEY (stats_id)
 );
 
 -- Global notification

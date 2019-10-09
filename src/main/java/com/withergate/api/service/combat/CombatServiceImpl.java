@@ -155,6 +155,7 @@ public class CombatServiceImpl implements CombatService {
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
+        result.setWinner(true);
         result.setNotification(notification);
 
         return result;
@@ -181,6 +182,7 @@ public class CombatServiceImpl implements CombatService {
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
+        result.setWinner(false);
         result.setNotification(notification);
 
         return result;

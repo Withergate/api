@@ -7,6 +7,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.repository.action.ArenaActionRepository;
+import com.withergate.api.repository.arena.ArenaStatsRepository;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
@@ -30,11 +31,14 @@ public class ArenaServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private ArenaStatsRepository arenaStatsRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        arenaService = new ArenaServiceImpl(arenaActionRepository, combatService, notificationService);
+        arenaService = new ArenaServiceImpl(arenaActionRepository, combatService, notificationService, arenaStatsRepository);
     }
 
     @Test
