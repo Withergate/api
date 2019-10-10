@@ -8,6 +8,8 @@ import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.service.exception.InvalidActionException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Trade service interface.
@@ -71,12 +73,13 @@ public interface TradeService {
     void deleteMarketOffer(int offerId, int clanId) throws InvalidActionException;
 
     /**
-     * Gets all market offers by state.
+     * Gets all market offers by state. Supports pagination.
      *
      * @param state the state
-     * @return list of market offers
+     * @param pageable pagination
+     * @return page with market offers
      */
-    List<MarketOffer> getMarketOffersByState(State state);
+    Page<MarketOffer> getMarketOffersByState(State state, Pageable pageable);
 
     /**
      * Performs computer trade actions. If an offer is eligible for passive trade action, it will be performed in

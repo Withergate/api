@@ -1,7 +1,6 @@
 package com.withergate.api.controller.trade;
 
 import java.security.Principal;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.request.MarketTradeRequest;
@@ -15,6 +14,8 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.trade.TradeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -94,14 +95,15 @@ public class TradeController {
     }
 
     /**
-     * Gets all published market offers.
+     * Gets all published market offers. Supports pagination
      *
+     * @param pageable pagination
      * @return list of published market offers
      */
     @JsonView(Views.Public.class)
     @GetMapping("/trade/market")
-    public List<MarketOffer> getPublishedMarketOffers() {
-        return tradeService.getMarketOffersByState(State.PUBLISHED);
+    public Page<MarketOffer> getPublishedMarketOffers(Pageable pageable) {
+        return tradeService.getMarketOffersByState(State.PUBLISHED, pageable);
     }
 
 }

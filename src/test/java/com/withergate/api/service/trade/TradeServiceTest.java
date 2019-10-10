@@ -36,6 +36,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 public class TradeServiceTest {
 
@@ -122,13 +125,13 @@ public class TradeServiceTest {
 
         List<MarketOffer> offers = new ArrayList<>();
         offers.add(offer);
-        Mockito.when(marketOfferRepository.findAllByState(State.PUBLISHED)).thenReturn(offers);
+        Mockito.when(marketOfferRepository.findAllByState(Mockito.eq(State.PUBLISHED), Mockito.any())).thenReturn(new PageImpl<>(offers));
 
         // given state when loading offers
-        List<MarketOffer> result = tradeService.getMarketOffersByState(State.PUBLISHED);
+        Page<MarketOffer> result = tradeService.getMarketOffersByState(State.PUBLISHED, PageRequest.of(0, 20));
 
         // then verify offers loaded
-        Assert.assertEquals(offers, result);
+        Assert.assertEquals(offers, result.getContent());
     }
 
     @Test

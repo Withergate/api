@@ -48,7 +48,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 -- Consumable details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, image_url) VALUES
     ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 10, 4, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
-    ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.jpg'),
+    ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
     ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 15, 5, 3, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
     ('OLD_BOOK', 'CONSUMABLE', 'RARE', 35, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
     ('STEROIDS', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 'https://storage.googleapis.com/withergate-images/items/steroids.png'),

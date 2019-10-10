@@ -24,6 +24,8 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,8 +145,8 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public List<MarketOffer> getMarketOffersByState(State state) {
-        return marketOfferRepository.findAllByState(state);
+    public Page<MarketOffer> getMarketOffersByState(State state, Pageable pageable) {
+        return marketOfferRepository.findAllByState(state, pageable);
     }
 
     @Override

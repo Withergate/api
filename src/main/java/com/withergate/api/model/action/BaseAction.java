@@ -29,7 +29,7 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 @Entity(name = "actions")
-@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class BaseAction {
 
     @Id
