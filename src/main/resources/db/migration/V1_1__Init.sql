@@ -301,7 +301,7 @@ DROP TABLE IF EXISTS localized_texts;
 CREATE TABLE localized_texts (
     text_id BIGINT AUTO_INCREMENT,
     lang VARCHAR(4) NOT NULL,
-    text VARCHAR(1024) NOT NULL,
+    text VARCHAR(2048) NOT NULL,
     notification_id BIGINT,
     notification_detail_id BIGINT,
     location_name VARCHAR(16),

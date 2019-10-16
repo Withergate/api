@@ -39,7 +39,7 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('FORGE', 'en', 'Got some junk? Let`s forge some weapons for the arena!'),
     ('FORGE', 'cs', 'Roztavíme všechno. A slijeme z toho něco do arény!'),
     ('WORKSHOP', 'en', 'Great way how to turn junk into different type of junk.'),
-    ('WORKSHOP', 'cs', 'Skvělý způsob jak ze šrotu vyrobit jiný typ šrotu.'),
+    ('WORKSHOP', 'cs', 'Skvělý způsob, jak ze šrotu vyrobit jiný typ šrotu.'),
     ('RAGS_SHOP', 'en', 'We will make you a great outfit out of everything you found in the wasteland.'),
     ('RAGS_SHOP', 'cs', 'Uděláme ti skvělý vohoz ze všeho, cos našel v pustině.'),
     ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),

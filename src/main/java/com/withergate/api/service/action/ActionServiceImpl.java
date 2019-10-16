@@ -381,6 +381,8 @@ public class ActionServiceImpl implements ActionService {
     @Retryable(maxAttempts = 2)
     @Override
     public void processLocationActions(int turnId) {
+        log.debug("-> Processing location actions...");
+
         // arena actions
         arenaService.processArenaActions(turnId);
 
@@ -395,6 +397,8 @@ public class ActionServiceImpl implements ActionService {
     @Retryable(maxAttempts = 2)
     @Override
     public void processBuildingActions(int turnId) {
+        log.debug("-> Processing building actions...");
+
         // building actions
         buildingService.processBuildingActions(turnId);
     }
@@ -403,6 +407,8 @@ public class ActionServiceImpl implements ActionService {
     @Retryable(maxAttempts = 2)
     @Override
     public void processQuestActions(int turnId) {
+        log.debug("-> Processing quest actions...");
+
         // quest actions
         questService.processQuestActions(turnId);
     }
@@ -411,6 +417,8 @@ public class ActionServiceImpl implements ActionService {
     @Retryable(maxAttempts = 2)
     @Override
     public void processTradeActions(int turnId) {
+        log.debug("-> Processing trade actions...");
+
         // resource trade actions
         tradeService.processResourceTradeActions(turnId);
 
@@ -425,6 +433,8 @@ public class ActionServiceImpl implements ActionService {
     @Retryable(maxAttempts = 2)
     @Override
     public void processDisaster(int turnId) {
+        log.debug("-> Processing disaster actions...");
+
         // process disaster actions
         disasterService.processDisasterActions(turnId);
 
