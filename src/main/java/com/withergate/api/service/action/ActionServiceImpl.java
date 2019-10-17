@@ -42,6 +42,7 @@ import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -377,6 +378,7 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Transactional
+    @Retryable(maxAttempts = 2)
     @Override
     public void processLocationActions(int turnId) {
         // arena actions
@@ -390,6 +392,7 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Transactional
+    @Retryable(maxAttempts = 2)
     @Override
     public void processBuildingActions(int turnId) {
         // building actions
@@ -397,6 +400,7 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Transactional
+    @Retryable(maxAttempts = 2)
     @Override
     public void processQuestActions(int turnId) {
         // quest actions
@@ -404,6 +408,7 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Transactional
+    @Retryable(maxAttempts = 2)
     @Override
     public void processTradeActions(int turnId) {
         // resource trade actions
@@ -417,6 +422,7 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Transactional
+    @Retryable(maxAttempts = 2)
     @Override
     public void processDisaster(int turnId) {
         // process disaster actions
@@ -427,6 +433,7 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Transactional
+    @Retryable(maxAttempts = 2)
     @Override
     public void assignDefaultActions() {
         log.debug("Assigning default actions");
