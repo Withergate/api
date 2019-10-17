@@ -44,6 +44,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -377,7 +379,7 @@ public class ActionServiceImpl implements ActionService {
         character.setState(CharacterState.BUSY);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Retryable(maxAttempts = 2)
     @Override
     public void processLocationActions(int turnId) {
@@ -393,8 +395,8 @@ public class ActionServiceImpl implements ActionService {
         tavernService.processTavernActions(turnId);
     }
 
-    @Transactional
-    @Retryable(maxAttempts = 2)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
     public void processBuildingActions(int turnId) {
         log.debug("-> Processing building actions...");
@@ -403,8 +405,8 @@ public class ActionServiceImpl implements ActionService {
         buildingService.processBuildingActions(turnId);
     }
 
-    @Transactional
-    @Retryable(maxAttempts = 2)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
     public void processQuestActions(int turnId) {
         log.debug("-> Processing quest actions...");
@@ -413,8 +415,8 @@ public class ActionServiceImpl implements ActionService {
         questService.processQuestActions(turnId);
     }
 
-    @Transactional
-    @Retryable(maxAttempts = 2)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
     public void processTradeActions(int turnId) {
         log.debug("-> Processing trade actions...");
@@ -429,8 +431,8 @@ public class ActionServiceImpl implements ActionService {
         tradeService.performComputerTradeActions(turnId);
     }
 
-    @Transactional
-    @Retryable(maxAttempts = 2)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+    @Retryable
     @Override
     public void processDisaster(int turnId) {
         log.debug("-> Processing disaster actions...");
@@ -442,8 +444,8 @@ public class ActionServiceImpl implements ActionService {
         disasterService.handleDisaster(turnId);
     }
 
-    @Transactional
-    @Retryable(maxAttempts = 2)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
     public void assignDefaultActions() {
         log.debug("Assigning default actions");
