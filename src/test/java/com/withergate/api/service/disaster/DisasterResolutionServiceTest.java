@@ -51,6 +51,7 @@ public class DisasterResolutionServiceTest {
         properties.setDisasterPartialSuccessThreshold(75);
         properties.setDisasterResourceLoss(20);
         properties.setDisasterFameLoss(20);
+        properties.setDisasterBuildingProgressLoss(8);
 
         disasterResolutionService = new DisasterResolutionServiceImpl(itemService, notificationService, randomService, properties);
     }
@@ -219,13 +220,23 @@ public class DisasterResolutionServiceTest {
         clan.setDisasterProgress(80);
         clan.setBuildings(new HashMap<>());
 
-        BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.MONUMENT);
-        Building building = new Building();
-        building.setLevel(2);
-        building.setProgress(5);
-        building.setDetails(buildingDetails);
-        clan.getBuildings().put(BuildingName.MONUMENT, building);
+        BuildingDetails buildingDetails1 = new BuildingDetails();
+        buildingDetails1.setIdentifier(BuildingName.MONUMENT);
+        buildingDetails1.setCost(15);
+        Building building1 = new Building();
+        building1.setLevel(2);
+        building1.setProgress(5);
+        building1.setDetails(buildingDetails1);
+        clan.getBuildings().put(BuildingName.MONUMENT, building1);
+
+        BuildingDetails buildingDetails2 = new BuildingDetails();
+        buildingDetails2.setIdentifier(BuildingName.FORGE);
+        buildingDetails2.setCost(10);
+        Building building2 = new Building();
+        building2.setLevel(0);
+        building2.setProgress(4);
+        building2.setDetails(buildingDetails2);
+        clan.getBuildings().put(BuildingName.FORGE, building2);
 
         DisasterDetails details = new DisasterDetails();
         details.setIdentifier("disaster");
@@ -245,7 +256,9 @@ public class DisasterResolutionServiceTest {
 
         // then verify penalty applied
         Assert.assertEquals(1, clan.getBuildings().get(BuildingName.MONUMENT).getLevel());
-        Assert.assertEquals(0, clan.getBuildings().get(BuildingName.MONUMENT).getProgress());
+        Assert.assertEquals(19, clan.getBuildings().get(BuildingName.MONUMENT).getProgress());
+        Assert.assertEquals(0, clan.getBuildings().get(BuildingName.FORGE).getLevel());
+        Assert.assertEquals(0, clan.getBuildings().get(BuildingName.FORGE).getProgress());
     }
 
 }

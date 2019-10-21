@@ -121,7 +121,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('TRAP', 'en', 'All you need is to place it and tomorrow you can collect it. Improves the chance of finding food.'),
     ('TRAP', 'cs', 'Stačí rozmístit a zítra sesbírat. Zvýší šanci na nalezení jídla.'),
     ('HAMMER', 'en', 'When you have a hammer, everything`s a nail. Improves the chance of crafting rare items.'),
-    ('HAMMER', 'cs', 'Všechny je hřebík, když máš velké kladivo. Zvýší šanci na výrobu vzácného předmětu.'),
+    ('HAMMER', 'cs', 'Všechno je hřebík, když máš velké kladivo. Zvýší šanci na výrobu vzácného předmětu.'),
     ('SHOVEL', 'en', 'Finally something I can lean on when working. Improves craftsmanship when building without the necessity to pay any extra junk.'),
     ('SHOVEL', 'cs', 'Konečně něco, o co se mohu při práci opřít. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
     ('BINOCULARS', 'en', 'If I see it, I can hit it. Improves the chance of finding food.'),

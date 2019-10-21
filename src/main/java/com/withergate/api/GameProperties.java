@@ -35,5 +35,6 @@ public class GameProperties {
     private int disasterPartialSuccessThreshold;
     private int disasterResourceLoss;
     private int disasterFameLoss;
+    private int disasterBuildingProgressLoss;
 
 }
