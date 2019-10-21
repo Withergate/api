@@ -60,7 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
             } else {
                 // append to existing
                 LocalizedText localizedText = texts.get(text.getLang());
-                localizedText.setText(localizedText.getText() + " " + enhancedText);
+                localizedText.setText(localizedText.getText() + "\n" + enhancedText);
             }
         }
     }
