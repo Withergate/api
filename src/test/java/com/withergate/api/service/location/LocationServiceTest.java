@@ -77,6 +77,7 @@ public class LocationServiceTest {
 
         LocationAction action = new LocationAction();
         action.setState(ActionState.PENDING);
+        action.setType(LocationActionType.VISIT);
         action.setCharacter(character);
         action.setLocation(Location.WASTELAND);
 
@@ -99,6 +100,135 @@ public class LocationServiceTest {
     }
 
     @Test
+    public void testGivenPendingLocationActionWhenHandlingSuccessfulEncounterThenVerifyPartialResourcesAwarded() {
+        // given pending location action
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Dragons");
+        clan.setFood(10);
+        clan.setJunk(12);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(10);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setScavenge(4);
+        character.setState(CharacterState.BUSY);
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setType(LocationActionType.VISIT);
+        action.setCharacter(character);
+        action.setLocation(Location.WASTELAND);
+
+        LocationDescription description = new LocationDescription();
+        description.setEncounterChance(25);
+        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
+
+        List<LocationAction> actions = new ArrayList<>();
+        actions.add(action);
+
+        Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND)))
+                .thenReturn(true); // encounter success
+
+        // when performing pending actions
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
+
+        locationService.processLocationActions(1);
+
+        // then verify some resources awarded
+        Assert.assertEquals(12, clan.getFood());
+        Assert.assertEquals(14, clan.getJunk());
+    }
+
+    @Test
+    public void testGivenPendingLocationActionWhenHandlingFailedEncounterThenVerifyNoResourcesAwarded() {
+        // given pending location action
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Dragons");
+        clan.setFood(10);
+        clan.setJunk(12);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setScavenge(4);
+        character.setState(CharacterState.BUSY);
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setType(LocationActionType.VISIT);
+        action.setCharacter(character);
+        action.setLocation(Location.WASTELAND);
+
+        LocationDescription description = new LocationDescription();
+        description.setEncounterChance(25);
+        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
+
+        List<LocationAction> actions = new ArrayList<>();
+        actions.add(action);
+
+        Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND)))
+                .thenReturn(false); // encounter failure
+
+        // when performing pending actions
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
+
+        locationService.processLocationActions(1);
+
+        // then verify no resources awarded
+        Assert.assertEquals(10, clan.getFood());
+        Assert.assertEquals(12, clan.getJunk());
+    }
+
+    @Test
+    public void testGivenPendingLocationActionWhenHandlingSuccessfulEncounterThenVerifyPartialInformationAwarded() {
+        // given pending location action
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setName("Dragons");
+        clan.setInformation(5);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setHitpoints(10);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setIntellect(4);
+        character.setState(CharacterState.BUSY);
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setType(LocationActionType.SCOUT);
+        action.setCharacter(character);
+        action.setLocation(Location.WASTELAND);
+
+        LocationDescription description = new LocationDescription();
+        description.setEncounterChance(25);
+        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
+
+        List<LocationAction> actions = new ArrayList<>();
+        actions.add(action);
+
+        Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
+        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND)))
+                .thenReturn(true); // encounter success
+
+        // when performing pending actions
+        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
+
+        locationService.processLocationActions(1);
+
+        // then verify partial information awarded
+        Assert.assertEquals(7, clan.getInformation());
+    }
+
+    @Test
     public void testGivenPendingLocationActionWhenLowLootDiceRollThenVerifyLootFound() {
         // given pending location action
         Clan clan = new Clan();
@@ -107,6 +237,7 @@ public class LocationServiceTest {
 
         Character character = new Character();
         character.setId(1);
+        character.setHitpoints(10);
         character.setName("Rusty Nick");
         character.setClan(clan);
         character.setScavenge(5);
@@ -114,6 +245,7 @@ public class LocationServiceTest {
 
         LocationAction action = new LocationAction();
         action.setState(ActionState.PENDING);
+        action.setType(LocationActionType.VISIT);
         action.setCharacter(character);
         action.setLocation(Location.WASTELAND);
 
@@ -148,6 +280,7 @@ public class LocationServiceTest {
 
         Character character = new Character();
         character.setId(1);
+        character.setHitpoints(10);
         character.setName("Rusty Nick");
         character.setClan(clan);
         character.setScavenge(5);
@@ -155,6 +288,7 @@ public class LocationServiceTest {
 
         LocationAction action = new LocationAction();
         action.setState(ActionState.PENDING);
+        action.setType(LocationActionType.VISIT);
         action.setCharacter(character);
         action.setLocation(Location.NEIGHBORHOOD);
 
@@ -186,6 +320,7 @@ public class LocationServiceTest {
         // given character
         Character character = new Character();
         character.setId(1);
+        character.setHitpoints(10);
         character.setScavenge(3);
         character.setName("Misty Fox");
 
@@ -241,6 +376,7 @@ public class LocationServiceTest {
         // given character
         Character character = new Character();
         character.setId(1);
+        character.setHitpoints(10);
         character.setScavenge(3);
         character.setName("Loud Garry");
 
@@ -296,6 +432,7 @@ public class LocationServiceTest {
         // given character
         Character character = new Character();
         character.setId(1);
+        character.setHitpoints(10);
         character.setIntellect(4);
         character.setName("Loud Garry");
 

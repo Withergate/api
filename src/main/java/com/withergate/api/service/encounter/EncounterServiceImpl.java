@@ -40,7 +40,7 @@ public class EncounterServiceImpl implements EncounterService {
     private final NotificationService notificationService;
 
     @Override
-    public void handleEncounter(ClanNotification notification, Character character, Location location) {
+    public boolean handleEncounter(ClanNotification notification, Character character, Location location) {
         // load random encounter from the repository
         List<Encounter> encounters = encounterRepository.findAllByLocation(location);
         int index = randomService.getRandomInt(0, encounters.size() - 1);
@@ -50,11 +50,13 @@ public class EncounterServiceImpl implements EncounterService {
 
         notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[]{});
 
+        boolean success = false;
         switch (encounter.getType()) {
             case COMBAT:
                 // handle combat and check if character won, if yes, handle reward
                 if (combatService.handleSingleCombat(notification, encounter.getDifficulty(), character)) {
                     handleSuccess(encounter, character, notification);
+                    success = true;
                 } else {
                     handleFailure(encounter, character, notification);
                 }
@@ -66,6 +68,7 @@ public class EncounterServiceImpl implements EncounterService {
                     handleFailure(encounter, character, notification);
                 } else {
                     handleSuccess(encounter, character, notification);
+                    success = true;
                 }
                 break;
             case SCAVENGE:
@@ -75,6 +78,7 @@ public class EncounterServiceImpl implements EncounterService {
                     handleFailure(encounter, character, notification);
                 } else {
                     handleSuccess(encounter, character, notification);
+                    success = true;
                 }
                 break;
             case CRAFTSMANSHIP:
@@ -84,6 +88,7 @@ public class EncounterServiceImpl implements EncounterService {
                     handleFailure(encounter, character, notification);
                 } else {
                     handleSuccess(encounter, character, notification);
+                    success = true;
                 }
                 break;
             case COMBAT_ROLL:
@@ -93,12 +98,15 @@ public class EncounterServiceImpl implements EncounterService {
                     handleFailure(encounter, character, notification);
                 } else {
                     handleSuccess(encounter, character, notification);
+                    success = true;
                 }
                 break;
             default:
                 log.error("Unknown encounter type triggered: {}!", encounter.getType());
                 break;
         }
+
+        return success;
     }
 
     private void handleSuccess(Encounter encounter, Character character, ClanNotification notification) {
@@ -106,10 +114,6 @@ public class EncounterServiceImpl implements EncounterService {
 
         // update notification
         notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{});
-
-        // handle experience
-        character.setExperience(character.getExperience() + 2);
-        notification.setExperience(2);
 
         Clan clan = character.getClan();
 
@@ -125,7 +129,7 @@ public class EncounterServiceImpl implements EncounterService {
                 break;
             case JUNK:
                 // add junk
-                int junk = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
+                int junk = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of caps
                 clan.setJunk(clan.getJunk() + junk);
                 clanService.saveClan(clan);
 
@@ -133,7 +137,7 @@ public class EncounterServiceImpl implements EncounterService {
                 break;
             case INFORMATION:
                 // add information
-                int information = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of information
+                int information = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of information
                 clan.setInformation(clan.getInformation() + information);
                 clanService.saveClan(clan);
 

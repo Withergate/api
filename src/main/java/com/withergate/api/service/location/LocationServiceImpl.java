@@ -80,54 +80,49 @@ public class LocationServiceImpl implements LocationService {
         Character character = action.getCharacter();
         LocationDescription description = locationDescriptionRepository.getOne(action.getLocation());
 
-        /*
-         * ENCOUNTER
-         *
-         * If the character encounters a random event, process it and finish exploration. The chance for an encounter
-         * differs based on location type.
-         *
-         * Character's intellect can decrease encounter chance.
-         */
+        // handle random encounter first
+        boolean encounter = false;
+        boolean encounterSuccess = false;
         int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (encounterRoll <= description.getEncounterChance() - character.getIntellect()) {
             log.debug("Random encounter triggered!");
 
-            encounterService.handleEncounter(notification, character, action.getLocation());
-            return;
-        }
+            // handle encounter, experience is handled by encounter service
+            encounterSuccess = encounterService.handleEncounter(notification, character, action.getLocation());
+            encounter = true;
 
-        // add experience for exploration
-        character.setExperience(character.getExperience() + 1);
-        notification.setExperience(1);
-
-        /*
-         * INFORMATION
-         */
-        if (action.getType() == LocationAction.LocationActionType.SCOUT) {
-            log.debug("Information increased.");
-            int information = action.getCharacter().getIntellect() + description.getInformationBonus();
-
-            // contacts trait
-            if (character.getTraits().containsKey(TraitName.CONTACTS)) {
-                information += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
-                NotificationDetail contactsDetail = new NotificationDetail();
-                notificationService.addLocalizedTexts(contactsDetail.getText(), "detail.trait.contacts", new String[]{},
-                        character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
-                notification.getDetails().add(contactsDetail);
+            if (encounterSuccess) {
+                character.setExperience(character.getExperience() + 2);
+                notification.setExperience(2);
             }
+        }
 
-            Clan clan = character.getClan();
-            clan.setInformation(clan.getInformation() + information);
+        // add experience for exploration if encounter not triggered
+        if (!encounter) {
+            character.setExperience(character.getExperience() + 1);
+            notification.setExperience(1);
+        }
 
-            notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
-            notification.setInformation(information);
-
+        // unsuccessful encounter will terminate the action
+        if ((encounter && !encounterSuccess) || character.getHitpoints() < 1) {
             return;
         }
 
-        /*
-         * LOOT
-         */
+        // action result
+        switch (action.getType()) {
+            case VISIT:
+                handleSearchResult(notification, character, description, encounter);
+                break;
+            case SCOUT:
+                handleScoutResult(notification, character, description, encounter);
+                break;
+            default: log.error("Unknown location action type: {}", action.getType());
+        }
+    }
+
+    private void handleSearchResult(ClanNotification notification, Character character, LocationDescription description,
+                                    boolean encounter) {
+        // loot
         int lootProbability = description.getItemChance() + character.getScavenge();
         int lootRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (lootRoll <= lootProbability) {
@@ -135,22 +130,59 @@ public class LocationServiceImpl implements LocationService {
             itemService.generateItemForCharacter(character, notification);
         }
 
-        // Junk and food
+        // junk and food
         Clan clan = character.getClan();
         notificationService.addLocalizedTexts(notification.getText(), "location.resources", new String[] {});
 
         int junk = character.getScavenge() + description.getJunkBonus() + getIncomeBonus(character, notification,
                 BonusType.SCAVENGE_JUNK);
+
+        // decrease junk when encounter triggered
+        if (encounter) {
+            junk = junk / 2;
+        }
+
         clan.setJunk(clan.getJunk() + junk);
-        notification.setJunkIncome(junk);
+        notification.setJunkIncome(notification.getJunkIncome() + junk);
 
         int food = character.getScavenge() + description.getFoodBonus() + getIncomeBonus(character, notification,
                 BonusType.SCAVENGE_FOOD);
+
+        // decrease food when encounter triggered
+        if (encounter) {
+            food = food / 2;
+        }
+
         clan.setFood(clan.getFood() + food);
-        notification.setFoodIncome(food);
+        notification.setFoodIncome(notification.getFoodIncome() + food);
     }
 
-    // add bonus to found junk and food when character has certain traits or items
+    private void handleScoutResult(ClanNotification notification, Character character, LocationDescription description,
+                                    boolean encounter) {
+        log.debug("Information increased.");
+        int information = character.getIntellect() + description.getInformationBonus();
+
+        // contacts trait
+        if (character.getTraits().containsKey(TraitName.CONTACTS)) {
+            information += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
+            NotificationDetail contactsDetail = new NotificationDetail();
+            notificationService.addLocalizedTexts(contactsDetail.getText(), "detail.trait.contacts", new String[]{},
+                    character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
+            notification.getDetails().add(contactsDetail);
+        }
+
+        // decrease information when encounter triggered
+        if (encounter) {
+            information = information / 2;
+        }
+
+        Clan clan = character.getClan();
+        clan.setInformation(clan.getInformation() + information);
+
+        notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
+        notification.setInformation(notification.getInformation() + information);
+    }
+
     private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
         int bonus = 0;
 

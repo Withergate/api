@@ -53,7 +53,7 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('TRAINING_GROUNDS', 'en', 'Each level of this building grants free experience to all resting characters every turn.'),
     ('TRAINING_GROUNDS', 'cs', 'Odpočívající postavy dostanou každé kolo zkušenosti zdarma.'),
     ('MONUMENT', 'en', 'Each level of this building grants free fame every turn.'),
-    ('MONUMENT', 'cs', 'Každá úroveň této budovy poskutuje slávu každé kolo.'),
+    ('MONUMENT', 'cs', 'Každá úroveň této budovy poskytuje slávu každé kolo.'),
     ('FORGE', 'en', 'Pay junk and craft a random weapon! High craftsmanship affects the rarity of the crafted item.'),
     ('FORGE', 'cs', 'Zaplať šrot a vyrob náhodnou zbraň! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
     ('WORKSHOP', 'en', 'Pay junk and craft a random gear! High craftsmanship affects the rarity of the crafted item.'),

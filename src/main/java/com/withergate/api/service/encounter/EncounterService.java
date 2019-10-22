@@ -11,5 +11,13 @@ import com.withergate.api.model.character.Character;
  */
 public interface EncounterService {
 
-    void handleEncounter(ClanNotification notification, Character character, Location location);
+    /**
+     * Handles random encounter.
+     *
+     * @param notification notification
+     * @param character character
+     * @param location location
+     * @return true if encounter was successful
+     */
+    boolean handleEncounter(ClanNotification notification, Character character, Location location);
 }
