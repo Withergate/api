@@ -22,7 +22,7 @@ public class MarketTradeAction extends BaseAction {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "offer_id", nullable = false, updatable = false)
+    @JoinColumn(name = "offer_id")
     private MarketOffer offer;
 
     @Override

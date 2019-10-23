@@ -324,7 +324,6 @@ public class TradeServiceTest {
         Assert.assertEquals(buyer, weapon.getClan());
         Assert.assertEquals(30, seller.getCaps());
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
-        Mockito.verify(marketOfferRepository).delete(offer);
     }
 
     @Test
@@ -376,7 +375,6 @@ public class TradeServiceTest {
         Assert.assertEquals(buyer, weapon.getClan());
         Assert.assertEquals(15, buyer.getCaps());
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
-        Mockito.verify(marketOfferRepository).delete(offer);
     }
 
     @Test

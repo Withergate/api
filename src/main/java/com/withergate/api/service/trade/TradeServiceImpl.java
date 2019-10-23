@@ -221,8 +221,5 @@ public class TradeServiceImpl implements TradeService {
                     buyer.getTraits().get(TraitName.MERCHANT).getDetails().getName());
             buyerNotification.getDetails().add(merchantDetail);
         }
-
-        // delete offer
-        marketOfferRepository.delete(offer);
     }
 }
