@@ -136,6 +136,10 @@ public class TradeServiceImpl implements TradeService {
             throw new InvalidActionException("This offer either does not exist or does not belong to your clan.");
         }
 
+        if (!offer.get().getState().equals(State.PUBLISHED)) {
+            throw new InvalidActionException("This offer is not in PUBLISHED state and cannot be cancelled.");
+        }
+
         // return item to the seller
         Item item = itemService.loadItemByType(offer.get().getItemId(), offer.get().getDetails().getItemType());
         item.setClan(offer.get().getSeller());
