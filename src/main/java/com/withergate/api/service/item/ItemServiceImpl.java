@@ -409,15 +409,31 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteItem(Item item) {
         if (item instanceof Weapon) {
-            weaponRepository.delete((Weapon) item);
+            Weapon weapon = (Weapon) item;
+            if (weapon.getCharacter() != null) {
+                unequipWeapon(weapon, weapon.getCharacter(), weapon.getCharacter().getClan());
+            }
+            weapon.setClan(null);
+            weaponRepository.delete(weapon);
         }
         if (item instanceof Outfit) {
-            outfitRepository.delete((Outfit) item);
+            Outfit outfit = (Outfit) item;
+            if (outfit.getCharacter() != null) {
+                unequipOutfit(outfit, outfit.getCharacter(), outfit.getCharacter().getClan());
+            }
+            outfit.setClan(null);
+            outfitRepository.delete(outfit);
         }
         if (item instanceof Gear) {
-            gearRepository.delete((Gear) item);
+            Gear gear = (Gear) item;
+            if (gear.getCharacter() != null) {
+                unequipGear(gear, gear.getCharacter(), gear.getCharacter().getClan());
+            }
+            gear.setClan(null);
+            gearRepository.delete(gear);
         }
         if (item instanceof Consumable) {
+            item.setClan(null);
             consumableRepository.delete((Consumable) item);
         }
     }

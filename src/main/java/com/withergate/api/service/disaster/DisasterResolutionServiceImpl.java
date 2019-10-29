@@ -105,6 +105,19 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         items.addAll(clan.getGear());
         items.addAll(clan.getConsumables());
 
+        // consider equipped items
+        for (Character character : clan.getCharacters()) {
+            if (character.getWeapon() != null) {
+                items.add(character.getWeapon());
+            }
+            if (character.getOutfit() != null) {
+                items.add(character.getOutfit());
+            }
+            if (character.getGear() != null) {
+                items.add(character.getGear());
+            }
+        }
+
         if (items.isEmpty()) {
             log.debug("No items found.");
 
@@ -115,7 +128,6 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         Item item = items.get(randomService.getRandomInt(0, items.size() - 1));
 
         // delete selected item
-        item.setClan(null);
         itemService.deleteItem(item);
 
         NotificationDetail detail = new NotificationDetail();
