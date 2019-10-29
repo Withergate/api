@@ -14,6 +14,7 @@ import lombok.Setter;
 public class GamePropertiesDTO {
 
     private final int maxTurns;
+    private final String turnTimes;
     private final int healing;
     private final int foodConsumption;
     private final int starvationInjury;
@@ -27,6 +28,7 @@ public class GamePropertiesDTO {
      */
     public GamePropertiesDTO(GameProperties properties) {
         this.maxTurns = properties.getMaxTurns();
+        this.turnTimes = properties.getTurnTimes();
         this.healing = properties.getHealing();
         this.foodConsumption = properties.getFoodConsumption();
         this.starvationInjury = properties.getStarvationInjury();

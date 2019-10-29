@@ -29,7 +29,7 @@ public class TurnScheduler {
     /**
      * Processes all turn-related events at specified times.
      */
-    @Scheduled(cron = "0 0 6,18 * * *", zone = "UTC") // every day at 6am and 6pm UTC
+    @Scheduled(cron = "0 0 ${game.turnTimes} * * *", zone = "UTC") // every day at specified UTC hours
     public void processTurn() {
 
         // process current turn

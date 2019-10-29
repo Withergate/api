@@ -20,6 +20,7 @@ public class GameProperties {
 
     // main config
     private int maxTurns;
+    private String turnTimes;
 
     // general
     private int healing;
