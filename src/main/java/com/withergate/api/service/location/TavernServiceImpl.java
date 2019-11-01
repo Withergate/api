@@ -108,6 +108,10 @@ public class TavernServiceImpl implements TavernService {
             offer.setPrice(price);
 
             tavernOfferRepository.save(offer);
+
+            // update filter
+            filter.getAvatars().add(character.getImageUrl());
+            filter.getNames().add(character.getName());
         }
     }
 
