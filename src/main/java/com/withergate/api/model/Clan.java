@@ -11,6 +11,8 @@ import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.Outfit;
 import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
@@ -122,6 +124,13 @@ public class Clan {
     private Map<BuildingDetails.BuildingName, Building> buildings;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "identifier")
+    @MapKeyClass(ResearchDetails.ResearchName.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    @JsonView(Views.Internal.class)
+    private Map<ResearchDetails.ResearchName, Research> research;
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
     private Set<Quest> quests;
 
@@ -168,6 +177,17 @@ public class Clan {
     @JsonView(Views.Internal.class)
     public Collection<Building> getBuildingsAsList() {
         return buildings.values();
+    }
+
+    /**
+     * Returns the research as List.
+     *
+     * @return the list of research records
+     */
+    @JsonProperty("research")
+    @JsonView(Views.Internal.class)
+    public Collection<Research> getResearchAsList() {
+        return research.values();
     }
 
     /**

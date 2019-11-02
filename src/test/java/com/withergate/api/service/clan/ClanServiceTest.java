@@ -1,12 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
@@ -30,6 +23,7 @@ import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.research.ResearchService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +31,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -58,6 +59,9 @@ public class ClanServiceTest {
 
     @Mock
     private BuildingService buildingService;
+
+    @Mock
+    private ResearchService researchService;
 
     @Mock
     private TavernService tavernService;
@@ -82,7 +86,8 @@ public class ClanServiceTest {
         properties.setStarvationFame(1);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService, randomService, traitService, properties, turnRepository);
+                buildingService, researchService, tavernService, randomService, traitService, properties,
+                turnRepository);
     }
 
     @Test(expected = EntityConflictException.class)

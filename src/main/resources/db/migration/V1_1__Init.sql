@@ -52,6 +52,28 @@ CREATE TABLE buildings (
     CONSTRAINT building_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
+-- Research
+DROP TABLE IF EXISTS research_details;
+CREATE TABLE research_details (
+    identifier VARCHAR(16) UNIQUE NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
+    information_level INT NOT NULL,
+    cost INT NOT NULL,
+    PRIMARY KEY (identifier)
+);
+
+DROP TABLE IF EXISTS research;
+CREATE TABLE research (
+    research_id INT AUTO_INCREMENT,
+    identifier VARCHAR(16),
+    progress INT NOT NULL DEFAULT 0,
+    completed BIT NOT NULL,
+    clan_id INT NOT NULL,
+    PRIMARY KEY (research_id),
+    CONSTRAINT research_details_fk FOREIGN KEY (identifier) REFERENCES research_details (identifier),
+    CONSTRAINT research_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
 -- Items
 DROP TABLE IF EXISTS weapon_details;
 CREATE TABLE item_details (
@@ -312,6 +334,9 @@ CREATE TABLE localized_texts (
     building_name VARCHAR(16),
     building_description VARCHAR(16),
     building_info VARCHAR(16),
+    research_name VARCHAR(16),
+    research_description VARCHAR(16),
+    research_info VARCHAR(16),
     item_name VARCHAR(16),
     item_description VARCHAR(16),
     quest_name VARCHAR(16),
@@ -331,6 +356,9 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_building_name_fk FOREIGN KEY (building_name) REFERENCES building_details (identifier),
     CONSTRAINT localized_text_building_description_fk FOREIGN KEY (building_description) REFERENCES building_details (identifier),
     CONSTRAINT localized_text_building_info_fk FOREIGN KEY (building_info) REFERENCES building_details (identifier),
+    CONSTRAINT localized_text_research_name_fk FOREIGN KEY (research_name) REFERENCES research_details (identifier),
+    CONSTRAINT localized_text_research_description_fk FOREIGN KEY (research_description) REFERENCES research_details (identifier),
+    CONSTRAINT localized_text_research_info_fk FOREIGN KEY (research_info) REFERENCES research_details (identifier),
     CONSTRAINT localized_text_item_name_fk FOREIGN KEY (item_name) REFERENCES item_details (identifier),
     CONSTRAINT localized_text_item_description_fk FOREIGN KEY (item_description) REFERENCES item_details (identifier),
     CONSTRAINT localized_text_quest_name_fk FOREIGN KEY (quest_name) REFERENCES quest_details (identifier),

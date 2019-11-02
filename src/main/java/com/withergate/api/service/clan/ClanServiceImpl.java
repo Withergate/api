@@ -1,11 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.Clan.DefaultAction;
@@ -33,12 +27,19 @@ import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.research.ResearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Clan service. Handles all basic operations over the clan entity.
@@ -67,6 +68,7 @@ public class ClanServiceImpl implements ClanService {
     private final NotificationService notificationService;
     private final QuestService questService;
     private final BuildingService buildingService;
+    private final ResearchService researchService;
     private final TavernService tavernService;
     private final RandomService randomService;
     private final TraitService traitService;
@@ -153,6 +155,10 @@ public class ClanServiceImpl implements ClanService {
             building.setClan(clan);
             clan.getBuildings().put(details.getIdentifier(), building);
         }
+
+        // assign research
+        clan.setResearch(new HashMap<>());
+        researchService.assignResearch(clan);
 
         clan = clanRepository.save(clan);
 
