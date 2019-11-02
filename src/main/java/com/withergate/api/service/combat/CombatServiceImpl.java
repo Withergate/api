@@ -141,17 +141,15 @@ public class CombatServiceImpl implements CombatService {
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
-        character.getClan()
-                .setCaps(character.getClan().getCaps() + ARENA_CAPS); // add caps to the winner
-        character.getClan()
-                .setFame(character.getClan().getFame() + ARENA_FAME); // add fame to the winner
+        character.getClan().changeCaps(ARENA_CAPS); // add caps to the winner
+        character.getClan().changeFame(ARENA_FAME); // add fame to the winner
 
-        notification.setCapsIncome(ARENA_CAPS);
-        notification.setFameIncome(ARENA_FAME);
+        notification.changeCaps(ARENA_CAPS);
+        notification.changeFame(ARENA_FAME);
 
         // handle experience
-        character.setExperience(character.getExperience() + 2);
-        notification.setExperience(2);
+        character.changeExperience(2);
+        notification.changeExperience(2);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
@@ -177,8 +175,8 @@ public class CombatServiceImpl implements CombatService {
                 .addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
 
         // handle experience
-        character.setExperience(character.getExperience() + 1);
-        notification.setExperience(1);
+        character.changeExperience(1);
+        notification.changeExperience(1);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);

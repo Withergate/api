@@ -71,8 +71,8 @@ public class BuildingServiceImpl implements BuildingService {
             }
 
             // award experience
-            character.setExperience(character.getExperience() + 1);
-            notification.setExperience(1);
+            character.changeExperience(1);
+            notification.changeExperience(1);
 
             // dismiss action
             action.setState(ActionState.COMPLETED);
@@ -89,11 +89,11 @@ public class BuildingServiceImpl implements BuildingService {
         // monument
         if (clan.getBuildings().get(BuildingName.MONUMENT).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingName.MONUMENT);
-            clan.setFame(clan.getFame() + building.getLevel());
+            clan.changeFame(building.getLevel());
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
-            notification.setFameIncome(building.getLevel());
+            notification.changeFame(building.getLevel());
 
             notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[] {});
             notificationService.save(notification);
@@ -102,11 +102,11 @@ public class BuildingServiceImpl implements BuildingService {
         // GMO farm
         if (clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
-            clan.setFood(clan.getFood() + building.getLevel() * 2);
+            clan.changeFood(building.getLevel() * 2);
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
-            notification.setFoodIncome(building.getLevel() * 2);
+            notification.changeFood(building.getLevel() * 2);
             notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[] {});
             notificationService.save(notification);
         }
@@ -116,11 +116,11 @@ public class BuildingServiceImpl implements BuildingService {
             Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
             for (Character character : clan.getCharacters()) {
                 if (character.getState() == CharacterState.READY) {
-                    character.setExperience(character.getExperience() + building.getLevel());
+                    character.changeExperience(building.getLevel());
 
                     ClanNotification notification = new ClanNotification(turnId, clan.getId());
                     notification.setHeader(character.getName());
-                    notification.setExperience(building.getLevel());
+                    notification.changeExperience(building.getLevel());
                     notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[] {});
                     notificationService.save(notification);
                 }
@@ -161,8 +161,8 @@ public class BuildingServiceImpl implements BuildingService {
 
             // award fame
             int fame = gameProperties.getBuildingFame() * building.getLevel();
-            notification.setFameIncome(notification.getFameIncome() + fame);
-            clan.setFame(clan.getFame() + fame);
+            notification.changeFame(fame);
+            clan.changeFame(fame);
         }
     }
 

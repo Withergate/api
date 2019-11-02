@@ -148,7 +148,7 @@ public class QuestServiceImpl implements QuestService {
 
         // award experience
         character.setExperience(character.getExperience() + 2);
-        notification.setExperience(2);
+        notification.changeExperience(2);
 
         quest.setProgress(quest.getProgress() + 1);
 
@@ -165,10 +165,10 @@ public class QuestServiceImpl implements QuestService {
             quest.setCompleted(true);
 
             // income
-            clan.setFame(clan.getFame() + quest.getDetails().getFameReward());
-            completionNotification.setFameIncome(quest.getDetails().getFameReward());
-            clan.setCaps(clan.getCaps() + quest.getDetails().getCapsReward());
-            completionNotification.setCapsIncome(quest.getDetails().getCapsReward());
+            clan.changeFame(quest.getDetails().getFameReward());
+            completionNotification.changeFame(quest.getDetails().getFameReward());
+            clan.changeCaps(quest.getDetails().getCapsReward());
+            completionNotification.changeCaps(quest.getDetails().getCapsReward());
 
             notificationService.save(completionNotification);
         }
@@ -181,7 +181,7 @@ public class QuestServiceImpl implements QuestService {
 
         // award experience
         character.setExperience(character.getExperience() + 1);
-        notification.setExperience(1);
+        notification.changeExperience(1);
     }
 
     private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {

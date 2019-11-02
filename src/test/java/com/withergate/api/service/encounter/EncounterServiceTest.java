@@ -128,11 +128,8 @@ public class EncounterServiceTest {
 
         encounterService.handleEncounter(notification, character, Location.CITY_CENTER);
 
-        // then verify notification updated
-        ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
-        Mockito.verify(clanService).saveClan(captor.capture());
-
-        assertEquals(16, captor.getValue().getCaps());
+        // then verify clan updated
+        assertEquals(16, clan.getCaps());
     }
 
     @Test

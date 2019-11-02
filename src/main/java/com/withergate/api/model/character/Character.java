@@ -171,4 +171,15 @@ public class Character {
         return combat + weaponCombat;
     }
 
+    /*
+     * Setters
+     */
+    public void changeHitpoints(int hitpoints) {
+        this.hitpoints += hitpoints;
+    }
+
+    public void changeExperience(int experience) {
+        this.experience += experience;
+    }
+
 }

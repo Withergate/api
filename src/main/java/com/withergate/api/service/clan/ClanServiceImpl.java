@@ -246,8 +246,6 @@ public class ClanServiceImpl implements ClanService {
 
         ClanNotification notification = new ClanNotification(turnId, clan.getId());
         notification.setHeader(clan.getName());
-        notification.setFoodIncome(0);
-        notification.setInjury(0);
         notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[] {});
 
         Iterator<Character> iterator = clan.getCharacters().iterator();
@@ -270,21 +268,21 @@ public class ClanServiceImpl implements ClanService {
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
                         new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFoodIncome(notification.getFoodIncome() - gameProperties.getFoodConsumption());
+                notification.changeFood(- gameProperties.getFoodConsumption());
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
-                character.setHitpoints(character.getHitpoints() - gameProperties.getStarvationInjury());
+                character.changeHitpoints(- gameProperties.getStarvationInjury());
                 character.setState(CharacterState.STARVING);
 
                 // lose fame
-                clan.setFame(clan.getFame() - gameProperties.getStarvationFame());
+                clan.changeFame(- gameProperties.getStarvationFame());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFameIncome(notification.getFameIncome() - gameProperties.getStarvationFame());
-                notification.setInjury(notification.getInjury() + gameProperties.getStarvationInjury());
+                notification.changeFame(- gameProperties.getStarvationFame());
+                notification.changeInjury(gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
                     log.debug("Character {} died of starvation.", character.getName());
@@ -352,10 +350,10 @@ public class ClanServiceImpl implements ClanService {
             }
 
             int healing = Math.min(points, hitpointsMissing);
-            character.setHitpoints(character.getHitpoints() + healing);
+            character.changeHitpoints(healing);
 
             notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
-            notification.setHealing(healing);
+            notification.changeHealing(healing);
 
             notificationService.save(notification);
         }
@@ -367,10 +365,10 @@ public class ClanServiceImpl implements ClanService {
                 // level up
                 log.debug("Character {} leveled up.", character.getName());
 
-                character.setExperience(character.getExperience() - character.getNextLevelExperience());
+                character.changeExperience(- character.getNextLevelExperience());
                 int hpIncrease = randomService.getRandomInt(1, RandomServiceImpl.K6);
                 character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
-                character.setHitpoints(character.getHitpoints() + hpIncrease);
+                character.changeHitpoints(hpIncrease);
                 character.setLevel(character.getLevel() + 1);
 
                 // notification
@@ -400,7 +398,7 @@ public class ClanServiceImpl implements ClanService {
 
         // handle next level
         if (clan.getInformation() >= clan.getNextLevelInformation()) {
-            clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
+            clan.changeInformation(- clan.getNextLevelInformation());
             clan.setInformationLevel(clan.getInformationLevel() + 1);
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());

@@ -65,8 +65,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         // compute injury
         int injury = outcome.getCombatWinner() - outcome.getCombatLoser() - getArmor(outcome.getLoser());
         if (injury < 1) injury = 1;
-        outcome.getLoser().setHitpoints(outcome.getLoser().getHitpoints() - injury);
-        outcome.getLoserNotification().setInjury(outcome.getLoserNotification().getInjury() + injury);
+        outcome.getLoser().changeHitpoints(- injury);
+        outcome.getLoserNotification().changeInjury(injury);
 
         // update notification
         NotificationDetail detailCombat = new NotificationDetail();

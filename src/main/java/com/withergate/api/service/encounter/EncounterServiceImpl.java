@@ -122,26 +122,20 @@ public class EncounterServiceImpl implements EncounterService {
                 // add caps
                 int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
 
-                clan.setCaps(clan.getCaps() + caps);
-                clanService.saveClan(clan);
-
-                notification.setCapsIncome(caps);
+                clan.changeCaps(caps);
+                notification.changeCaps(caps);
                 break;
             case JUNK:
                 // add junk
                 int junk = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of caps
-                clan.setJunk(clan.getJunk() + junk);
-                clanService.saveClan(clan);
-
-                notification.setJunkIncome(junk);
+                clan.changeJunk(junk);
+                notification.changeJunk(junk);
                 break;
             case INFORMATION:
                 // add information
                 int information = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of information
-                clan.setInformation(clan.getInformation() + information);
-                clanService.saveClan(clan);
-
-                notification.setInformation(information);
+                clan.changeInformation(information);
+                notification.changeInformation(information);
                 break;
             case ITEM:
                 // generate item
@@ -170,8 +164,8 @@ public class EncounterServiceImpl implements EncounterService {
         notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
 
         // handle experience
-        character.setExperience(character.getExperience() + 1);
-        notification.setExperience(1);
+        character.changeExperience(1);
+        notification.changeExperience(1);
 
         Clan clan = character.getClan();
 
@@ -183,16 +177,16 @@ public class EncounterServiceImpl implements EncounterService {
                 int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
                 int caps = Math.min(clan.getCaps(), diceRoll);
 
-                clan.setCaps(clan.getCaps() - caps);
+                clan.changeCaps(- caps);
 
                 // update notification
-                notification.setCapsIncome(- caps);
+                notification.changeCaps(- caps);
                 break;
             case INJURY:
                 int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
 
-                character.setHitpoints(character.getHitpoints() - injury);
-                notification.setInjury(injury);
+                character.changeHitpoints(- injury);
+                notification.changeInjury(injury);
 
                 if (character.getHitpoints() < 1) {
                     NotificationDetail detail = new NotificationDetail();

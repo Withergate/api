@@ -137,7 +137,7 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Population limit exceeded.");
         }
 
-        clan.setCaps(clan.getCaps() - cost);
+        clan.changeCaps(- cost);
 
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
@@ -201,9 +201,9 @@ public class ActionServiceImpl implements ActionService {
         // pay junk
         Clan clan = character.getClan();
         if (request.getType().equals(BuildingAction.Type.CONSTRUCT)) {
-            clan.setJunk(clan.getJunk() - character.getCraftsmanship());
+            clan.changeJunk(- character.getCraftsmanship());
         } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
-            clan.setJunk(clan.getJunk() - buildingDetails.getVisitJunkCost());
+            clan.changeJunk(- buildingDetails.getVisitJunkCost());
         }
 
         // character needs to be marked as busy
@@ -277,7 +277,7 @@ public class ActionServiceImpl implements ActionService {
             }
 
             // pay the price and save the action
-            clan.setCaps(clan.getCaps() - cost);
+            clan.changeCaps(- cost);
         }
 
         if (request.getType().equals(TradeType.SELL)) {
@@ -289,8 +289,8 @@ public class ActionServiceImpl implements ActionService {
             }
 
             // pay the price
-            clan.setFood(clan.getFood() - request.getFood());
-            clan.setJunk(clan.getJunk() - request.getJunk());
+            clan.changeFood(- request.getFood());
+            clan.changeJunk(- request.getJunk());
         }
 
         // save the action
@@ -322,7 +322,7 @@ public class ActionServiceImpl implements ActionService {
         }
 
         // pay caps
-        clan.setCaps(clan.getCaps() - offer.getPrice());
+        clan.changeCaps(- offer.getPrice());
 
         // create action
         MarketTradeAction action = new MarketTradeAction();
@@ -371,9 +371,9 @@ public class ActionServiceImpl implements ActionService {
         disasterService.saveDisasterAction(action);
 
         // pay resources
-        clan.setCaps(clan.getCaps() - solution.getCapsCost());
-        clan.setJunk(clan.getJunk() - solution.getJunkCost());
-        clan.setFood(clan.getFood() - solution.getFoodCost());
+        clan.changeCaps(- solution.getCapsCost());
+        clan.changeJunk(- solution.getJunkCost());
+        clan.changeFood(- solution.getFoodCost());
 
         // mark character as busy and save the clan
         character.setState(CharacterState.BUSY);

@@ -92,15 +92,15 @@ public class LocationServiceImpl implements LocationService {
             encounter = true;
 
             if (encounterSuccess) {
-                character.setExperience(character.getExperience() + 2);
-                notification.setExperience(2);
+                character.changeExperience(2);
+                notification.changeExperience(2);
             }
         }
 
         // add experience for exploration if encounter not triggered
         if (!encounter) {
-            character.setExperience(character.getExperience() + 1);
-            notification.setExperience(1);
+            character.changeExperience(1);
+            notification.changeExperience(1);
         }
 
         // unsuccessful encounter will terminate the action
@@ -142,8 +142,8 @@ public class LocationServiceImpl implements LocationService {
             junk = junk / 2;
         }
 
-        clan.setJunk(clan.getJunk() + junk);
-        notification.setJunkIncome(notification.getJunkIncome() + junk);
+        clan.changeJunk(junk);
+        notification.changeJunk(junk);
 
         int food = character.getScavenge() + description.getFoodBonus() + getIncomeBonus(character, notification,
                 BonusType.SCAVENGE_FOOD);
@@ -153,8 +153,8 @@ public class LocationServiceImpl implements LocationService {
             food = food / 2;
         }
 
-        clan.setFood(clan.getFood() + food);
-        notification.setFoodIncome(notification.getFoodIncome() + food);
+        clan.changeFood(food);
+        notification.changeFood(food);
     }
 
     private void handleScoutResult(ClanNotification notification, Character character, LocationDescription description,
@@ -177,10 +177,10 @@ public class LocationServiceImpl implements LocationService {
         }
 
         Clan clan = character.getClan();
-        clan.setInformation(clan.getInformation() + information);
+        clan.changeInformation(information);
 
         notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
-        notification.setInformation(notification.getInformation() + information);
+        notification.changeInformation(information);
     }
 
     private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {

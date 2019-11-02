@@ -1,6 +1,5 @@
 package com.withergate.api.service.trade;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.withergate.api.model.Clan;
@@ -159,13 +158,13 @@ public class TradeServiceImpl implements TradeService {
             // if item is offered for market price, sell it
             if (offer.getPrice() == offer.getDetails().getPrice()) {
                 Clan clan = offer.getSeller();
-                clan.setCaps(clan.getCaps() + offer.getPrice());
+                clan.changeCaps(offer.getPrice());
 
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
                 notificationService.addLocalizedTexts(notification.getText(), "clan.trade.item.computer",
                         new String[]{}, offer.getDetails().getName());
-                notification.setCapsIncome(offer.getDetails().getPrice());
+                notification.changeCaps(offer.getDetails().getPrice());
                 notificationService.save(notification);
 
                 // delete offer
@@ -178,16 +177,16 @@ public class TradeServiceImpl implements TradeService {
         Clan clan = action.getCharacter().getClan();
 
         if (action.getType().equals(TradeType.BUY)) {
-            clan.setJunk(clan.getJunk() + action.getJunk());
-            notification.setJunkIncome(action.getJunk());
+            clan.changeJunk(action.getJunk());
+            notification.changeJunk(action.getJunk());
 
-            clan.setFood(clan.getFood() + action.getFood());
-            notification.setFoodIncome(action.getFood());
+            clan.changeFood(action.getFood());
+            notification.changeFood(action.getFood());
 
             notificationService.addLocalizedTexts(notification.getText(), "character.trade.resourcesBuy", new String[]{});
         } else if (action.getType().equals(TradeType.SELL)) {
-            clan.setCaps(clan.getCaps() + action.getJunk() + action.getFood());
-            notification.setCapsIncome(action.getJunk() + action.getFood());
+            clan.changeCaps(action.getJunk() + action.getFood());
+            notification.changeCaps(action.getJunk() + action.getFood());
 
             notificationService.addLocalizedTexts(notification.getText(), "character.trade.resourcesSell", new String[]{});
         }
@@ -200,8 +199,8 @@ public class TradeServiceImpl implements TradeService {
         // add money to seller
         int price = offer.getPrice();
         Clan seller = offer.getSeller();
-        seller.setCaps(seller.getCaps() + price);
-        sellerNotification.setCapsIncome(price);
+        seller.changeCaps(price);
+        sellerNotification.changeCaps(price);
         notificationService.addLocalizedTexts(sellerNotification.getText(), "clan.trade.item",
                 new String[]{action.getCharacter().getName(), action.getCharacter().getClan().getName()});
 
@@ -219,7 +218,7 @@ public class TradeServiceImpl implements TradeService {
         // check merchant trait
         if (buyer.getTraits().containsKey(TraitName.MERCHANT)) {
             int bonus = buyer.getTraits().get(TraitName.MERCHANT).getDetails().getBonus();
-            buyer.getClan().setCaps(buyer.getClan().getCaps() + bonus);
+            buyer.getClan().changeCaps(bonus);
             NotificationDetail merchantDetail = new NotificationDetail();
             notificationService.addLocalizedTexts(merchantDetail.getText(), "detail.trait.merchant", new String[]{},
                     buyer.getTraits().get(TraitName.MERCHANT).getDetails().getName());

@@ -1,25 +1,5 @@
 package com.withergate.api.model;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.MapKeyClass;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.building.Building;
@@ -35,6 +15,25 @@ import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.MapKeyClass;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -198,6 +197,33 @@ public class Clan {
      */
     public enum DefaultAction {
         REST, EXPLORE_NEIGHBORHOOD
+    }
+
+    /*
+     * Setters.
+     */
+    public void changeFood(int food) {
+        this.food += food;
+    }
+
+    public void changeJunk(int junk) {
+        this.junk += junk;
+    }
+
+    public void changeCaps(int caps) {
+        this.caps += caps;
+    }
+
+    public void changeFame(int fame) {
+        this.fame += fame;
+    }
+
+    public void changeInformation(int information) {
+        this.information += information;
+    }
+
+    public void changeDisasterProgress(int progress) {
+        this.disasterProgress += progress;
     }
 
 }

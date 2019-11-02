@@ -244,12 +244,12 @@ public class DisasterServiceImpl implements DisasterService {
 
     private void handleActionSuccess(DisasterAction action, ClanNotification notification) {
         // reward experience
-        action.getCharacter().setExperience(action.getCharacter().getExperience() + 2);
-        notification.setExperience(2);
+        action.getCharacter().changeExperience(2);
+        notification.changeExperience(2);
 
         // increase clan progress
         Clan clan = action.getCharacter().getClan();
-        clan.setDisasterProgress(clan.getDisasterProgress() + action.getSolution().getBonus());
+        clan.changeDisasterProgress(action.getSolution().getBonus());
         if (clan.getDisasterProgress() > 100) {
             // 100% is maximumG
             clan.setDisasterProgress(100);
@@ -265,8 +265,8 @@ public class DisasterServiceImpl implements DisasterService {
 
     private void handleActionFailure(DisasterAction action, ClanNotification notification) {
         // reward experience
-        action.getCharacter().setExperience(action.getCharacter().getExperience() + 1);
-        notification.setExperience(1);
+        action.getCharacter().changeExperience(1);
+        notification.changeExperience(1);
 
         // set notification text
         notificationService.addLocalizedTexts(notification.getText(), "disaster.action.failure", new String[]{});
