@@ -407,6 +407,7 @@ CREATE TABLE actions (
     action_type VARCHAR(16),
     offer_id INT,
     building VARCHAR(16),
+    research VARCHAR(16),
     quest_id INT,
     trade_type VARCHAR(16),
     food INT DEFAULT 0,

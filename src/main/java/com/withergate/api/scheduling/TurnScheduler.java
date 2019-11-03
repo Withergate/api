@@ -51,6 +51,9 @@ public class TurnScheduler {
         // process building actions
         actionService.processBuildingActions(currentTurn.getTurnId());
 
+        // process research actions
+        actionService.processResearchActions(currentTurn.getTurnId());
+
         // process quest actions
         actionService.processQuestActions(currentTurn.getTurnId());
 

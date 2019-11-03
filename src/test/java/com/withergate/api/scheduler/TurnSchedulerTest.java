@@ -71,6 +71,7 @@ public class TurnSchedulerTest {
         // then verify all actions triggered
         Mockito.verify(actionService).assignDefaultActions();
         Mockito.verify(actionService).processBuildingActions(1);
+        Mockito.verify(actionService).processResearchActions(1);
         Mockito.verify(actionService).processLocationActions(1);
         Mockito.verify(actionService).processQuestActions(1);
         Mockito.verify(actionService).processTradeActions(1);
@@ -92,6 +93,7 @@ public class TurnSchedulerTest {
         // then verify all actions triggered
         Mockito.verify(actionService, Mockito.never()).assignDefaultActions();
         Mockito.verify(actionService, Mockito.never()).processBuildingActions(1);
+        Mockito.verify(actionService, Mockito.never()).processResearchActions(1);
         Mockito.verify(actionService, Mockito.never()).processLocationActions(1);
         Mockito.verify(actionService, Mockito.never()).processQuestActions(1);
         Mockito.verify(actionService, Mockito.never()).processTradeActions(1);

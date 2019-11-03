@@ -8,6 +8,7 @@ import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.QuestAction;
+import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.building.BuildingDetails;
@@ -25,8 +26,10 @@ import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.model.request.ResearchRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.request.TavernRequest;
+import com.withergate.api.model.research.Research;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
@@ -38,6 +41,7 @@ import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.research.ResearchService;
 import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
 import lombok.AllArgsConstructor;
@@ -61,6 +65,7 @@ public class ActionServiceImpl implements ActionService {
     private final CharacterService characterService;
     private final LocationService locationService;
     private final BuildingService buildingService;
+    private final ResearchService researchService;
     private final QuestService questService;
     private final TradeService tradeService;
     private final ArenaService arenaService;
@@ -205,6 +210,34 @@ public class ActionServiceImpl implements ActionService {
         } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
             clan.changeJunk(- buildingDetails.getVisitJunkCost());
         }
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
+    }
+
+    @Transactional
+    @Override
+    public void createResearchAction(ResearchRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting building action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if research is available
+        if (!clan.getResearch().containsKey(request.getResearch())) {
+            throw new InvalidActionException("The specified research is not available to your clan.");
+        }
+
+        Research research = clan.getResearch().get(request.getResearch());
+        if (research.isCompleted()) {
+            throw new InvalidActionException("This research has been completed already.");
+        }
+
+        ResearchAction action = new ResearchAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setResearch(research.getDetails().getIdentifier());
+
+        researchService.saveResearchAction(action);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -403,6 +436,16 @@ public class ActionServiceImpl implements ActionService {
 
         // building actions
         buildingService.processBuildingActions(turnId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
+    @Override
+    public void processResearchActions(int turnId) {
+        log.debug("-> Processing research actions");
+
+        // research actions
+        researchService.processResearchActions(turnId);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
