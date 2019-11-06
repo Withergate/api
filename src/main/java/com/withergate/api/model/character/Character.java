@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BaseAction;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
@@ -122,6 +124,7 @@ public class Character {
 
     // Actions
 
+    @JsonIgnore
     @OneToMany(mappedBy = "character", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BaseAction> actions;
 
@@ -135,6 +138,17 @@ public class Character {
     }
 
     // Helper functions
+
+    /**
+     * Returns current action of the character.
+     *
+     * @return the current action
+     */
+    @JsonProperty("action")
+    public Optional<BaseAction> getCurrentAction() {
+        if (actions == null) return Optional.empty();
+        return actions.stream().filter(a -> a.getState().equals(ActionState.PENDING)).findFirst();
+    }
 
     /**
      * Returns the experience needed for next level.

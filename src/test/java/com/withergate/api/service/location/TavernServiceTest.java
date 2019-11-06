@@ -156,6 +156,7 @@ public class TavernServiceTest {
 
         TavernOffer offer = new TavernOffer();
         offer.setId(1);
+        offer.setState(State.AVAILABLE);
 
         List<TavernOffer> offers = new ArrayList<>();
         offers.add(offer);
@@ -171,8 +172,8 @@ public class TavernServiceTest {
         // when preparing offers
         tavernService.prepareTavernOffers(clan, new CharacterFilter());
 
-        // then verify old offers marked as processed and new created
-        Assert.assertEquals(State.PROCESSED, offer.getState());
+        // then verify old offers deleted and new created
+        Mockito.verify(tavernOfferRepository).delete(offer);
         Mockito.verify(characterService).save(character1);
         Mockito.verify(characterService).save(character2);
         Mockito.verify(characterService).save(character3);

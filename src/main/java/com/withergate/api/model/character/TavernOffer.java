@@ -3,6 +3,7 @@ package com.withergate.api.model.character;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withergate.api.model.Clan;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,7 +38,7 @@ public class TavernOffer {
     @JsonIgnore
     private Clan clan;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id", nullable = false)
     private Character character;
 
