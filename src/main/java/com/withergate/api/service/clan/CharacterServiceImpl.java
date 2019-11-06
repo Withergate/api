@@ -7,11 +7,14 @@ import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.character.Trait;
+import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,7 @@ public class CharacterServiceImpl implements CharacterService {
     private final RandomService randomService;
     private final NameService nameService;
     private final TraitService traitService;
+    private final NotificationService notificationService;
 
     @Override
     public Character load(int characterId) {
@@ -111,6 +115,36 @@ public class CharacterServiceImpl implements CharacterService {
 
         character.setState(CharacterState.RESTING);
         save(character);
+    }
+
+    @Override
+    public void increaseCharacterLevel(Character character, int turnId) {
+        log.debug("Character {} leveled up.", character.getName());
+
+        character.changeExperience(- character.getNextLevelExperience());
+        int hpIncrease = randomService.getRandomInt(1, RandomServiceImpl.K6);
+        character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
+        character.changeHitpoints(hpIncrease);
+        character.setLevel(character.getLevel() + 1);
+
+        // notification
+        ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
+        notification.setHeader(character.getName());
+        notification.setImageUrl(character.getImageUrl());
+        notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[] {character.getName()});
+
+        // add random trait to character
+        Trait trait = traitService.getRandomTrait(character);
+        character.getTraits().put(trait.getDetails().getIdentifier(), trait);
+        log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
+                new String[] {character.getName()});
+        notification.getDetails().add(detail);
+
+        // save
+        notificationService.save(notification);
     }
 
     private int getRandomAbilityValue() {

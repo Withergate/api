@@ -1,5 +1,11 @@
 package com.withergate.api.service.clan;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.Clan.DefaultAction;
@@ -9,18 +15,13 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
-import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.clan.ClanRepository;
-import com.withergate.api.service.RandomService;
-import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
@@ -34,12 +35,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Clan service. Handles all basic operations over the clan entity.
@@ -70,10 +65,7 @@ public class ClanServiceImpl implements ClanService {
     private final BuildingService buildingService;
     private final ResearchService researchService;
     private final TavernService tavernService;
-    private final RandomService randomService;
-    private final TraitService traitService;
     private final GameProperties gameProperties;
-    private final TurnRepository turnRepository;
 
     @Override
     public Clan getClan(int clanId) {
@@ -97,7 +89,7 @@ public class ClanServiceImpl implements ClanService {
 
     @Transactional
     @Override
-    public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException {
+    public Clan createClan(int clanId, ClanRequest clanRequest, int turn) throws EntityConflictException, ValidationException {
         // validate clan name
         if (clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
             throw new ValidationException("Clan name must be between 6 and 30 characters long.");
@@ -115,18 +107,15 @@ public class ClanServiceImpl implements ClanService {
             throw new EntityConflictException("Clan with the provided name already exists.");
         }
 
-        // get current turn
-        Turn turn = turnRepository.findFirstByOrderByTurnIdDesc();
-
         // Create clan with initial resources.
         Clan clan = new Clan();
         clan.setId(clanId);
         clan.setName(clanRequest.getName());
         clan.setLastActivity(LocalDateTime.now());
         clan.setFame(0);
-        clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn.getTurnId()));
-        clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn.getTurnId()));
-        clan.setFood(INITIAL_FOOD + getStartingResourceBonus(turn.getTurnId()));
+        clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn));
+        clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn));
+        clan.setFood(INITIAL_FOOD + getStartingResourceBonus(turn));
         clan.setInformation(0);
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
@@ -369,32 +358,7 @@ public class ClanServiceImpl implements ClanService {
         for (Character character : clan.getCharacters()) {
             if (character.getExperience() >= character.getNextLevelExperience()) {
                 // level up
-                log.debug("Character {} leveled up.", character.getName());
-
-                character.changeExperience(- character.getNextLevelExperience());
-                int hpIncrease = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
-                character.changeHitpoints(hpIncrease);
-                character.setLevel(character.getLevel() + 1);
-
-                // notification
-                ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
-                notification.setHeader(character.getName());
-                notification.setImageUrl(character.getImageUrl());
-                notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[] {character.getName()});
-
-                // add random trait to character
-                Trait trait = traitService.getRandomTrait(character);
-                character.getTraits().put(trait.getDetails().getIdentifier(), trait);
-                log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
-
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
-                        new String[] {character.getName()});
-                notification.getDetails().add(detail);
-
-                // save
-                notificationService.save(notification);
+                characterService.increaseCharacterLevel(character, turnId);
             }
         }
     }

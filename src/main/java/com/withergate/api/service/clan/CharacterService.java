@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -15,7 +16,7 @@ public interface CharacterService {
 
     /**
      * Loads single character from database.
-     * 
+     *
      * @param characterId character ID
      * @return the character
      */
@@ -30,7 +31,7 @@ public interface CharacterService {
 
     /**
      * Saves the provided character.
-     * 
+     *
      * @param character the character to be saved
      * @return the saved character
      */
@@ -55,8 +56,16 @@ public interface CharacterService {
      * Marks character as resting.
      *
      * @param characterId the character ID
-     * @param clanId      the clan ID
+     * @param clanId the clan ID
      * @throws InvalidActionException invalid action
      */
     void markCharacterAsResting(int characterId, int clanId) throws InvalidActionException;
+
+    /**
+     * Increases level for provided character.
+     *
+     * @param character character
+     * @param turnId turn
+     */
+    void increaseCharacterLevel(Character character, int turnId);
 }

@@ -55,11 +55,12 @@ public interface ClanService {
      *
      * @param clanId      the clan ID
      * @param clanRequest the clan request date
+     * @param turn        turn in which the clan is created
      * @return the created clan
      * @throws EntityConflictException entity conflict
      * @throws ValidationException     validation error
      */
-    Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException;
+    Clan createClan(int clanId, ClanRequest clanRequest, int turn) throws EntityConflictException, ValidationException;
 
     /**
      * Adds new random character to the provided clan.

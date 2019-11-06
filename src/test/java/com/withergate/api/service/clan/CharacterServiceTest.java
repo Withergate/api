@@ -1,6 +1,7 @@
 package com.withergate.api.service.clan;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.withergate.api.model.Clan;
@@ -8,11 +9,15 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.character.Trait;
+import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,11 +43,14 @@ public class CharacterServiceTest {
     @Mock
     private TraitService traitService;
 
+    @Mock
+    private NotificationService notificationService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        characterService = new CharacterServiceImpl(characterRepository, randomService, nameService, traitService);
+        characterService = new CharacterServiceImpl(characterRepository, randomService, nameService, traitService, notificationService);
     }
 
     @Test
@@ -172,6 +180,36 @@ public class CharacterServiceTest {
         characterService.markCharacterAsResting(1, 1);
 
         // then expect exception
+    }
+
+    @Test
+    public void givenCharacterWhenLevellingUpThenVerifyTraitAssigned() {
+        // given character
+        Clan clan = new Clan();
+        clan.setId(1);
+
+        Character character = new Character();
+        character.setName("John");
+        character.setHitpoints(10);
+        character.setId(1);
+        character.setLevel(1);
+        character.setExperience(11);
+        character.setTraits(new HashMap<>());
+        character.setClan(clan);
+
+        // when levelling up
+        TraitDetails details = new TraitDetails();
+        details.setIdentifier(TraitName.BUILDER);
+        Trait trait = new Trait();
+        trait.setDetails(details);
+        Mockito.when(traitService.getRandomTrait(character)).thenReturn(trait);
+
+        characterService.increaseCharacterLevel(character, 1);
+
+        // then verify trait assigned
+        Assert.assertEquals(details, character.getTraits().values().iterator().next().getDetails());
+        Assert.assertEquals(2, character.getLevel());
+        Assert.assertEquals(1, character.getExperience());
     }
 
 }
