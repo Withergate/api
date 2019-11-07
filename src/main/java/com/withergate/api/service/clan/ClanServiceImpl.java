@@ -21,6 +21,8 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -195,6 +197,9 @@ public class ClanServiceImpl implements ClanService {
 
             // check information level
             checkInformationLevel(turnId, clan);
+
+            // perform end-turn research updates
+            performResearchEndTurnUpdates(turnId, clan);
 
             // mark characters as ready
             markCharactersReady(clan);
@@ -377,8 +382,54 @@ public class ClanServiceImpl implements ClanService {
             // assign quests
             questService.assignQuests(clan, notification);
 
+            // notify about new research
+            notifyAvailableResearch(clan, notification);
+
             // save notification
             notificationService.save(notification);
+        }
+    }
+
+    private void performResearchEndTurnUpdates(int turnId, Clan clan) {
+        log.debug("Performing end turn research updates");
+
+        if (clan.getResearch().containsKey(ResearchName.CULINARY) && clan.getResearch().get(ResearchName.CULINARY).isCompleted()) {
+            int fame = clan.getFood() / 20;
+            if (fame > 0) {
+                ClanNotification notification = new ClanNotification(turnId, clan.getId());
+                notification.setHeader(clan.getName());
+
+                clan.changeFame(fame);
+                notification.changeFame(fame);
+
+                notificationService.addLocalizedTexts(notification.getText(), "research.culinary", new String[]{});
+                notificationService.save(notification);
+            }
+        }
+
+        if (clan.getResearch().containsKey(ResearchName.DECORATION) && clan.getResearch().get(ResearchName.DECORATION).isCompleted()) {
+            int fame = clan.getJunk() / 20;
+            if (fame > 0) {
+                ClanNotification notification = new ClanNotification(turnId, clan.getId());
+                notification.setHeader(clan.getName());
+
+                clan.changeFame(fame);
+                notification.changeFame(fame);
+
+                notificationService.addLocalizedTexts(notification.getText(), "research.decoration", new String[]{});
+                notificationService.save(notification);
+            }
+        }
+    }
+
+    private void notifyAvailableResearch(Clan clan, ClanNotification notification) {
+        for (Research research : clan.getResearch().values()) {
+            if (research.getDetails().getInformationLevel() == clan.getInformationLevel()) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "research.new", new String[]{},
+                        research.getDetails().getName());
+                notification.getDetails().add(detail);
+            }
         }
     }
 

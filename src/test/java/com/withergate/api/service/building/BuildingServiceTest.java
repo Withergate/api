@@ -20,6 +20,7 @@ import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 
@@ -50,6 +51,9 @@ public class BuildingServiceTest {
     @Mock
     private ItemService itemService;
 
+    @Mock
+    private RandomService randomService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -58,7 +62,7 @@ public class BuildingServiceTest {
         properties.setBuildingFame(1);
 
         buildingService = new BuildingServiceImpl(itemService, buildingActionRepository,
-                buildingDetailsRepository, notificationService, properties);
+                buildingDetailsRepository, notificationService, randomService, properties);
     }
 
     @Test

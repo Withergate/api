@@ -19,8 +19,11 @@ import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
+import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
@@ -41,6 +44,7 @@ public class BuildingServiceImpl implements BuildingService {
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final NotificationService notificationService;
+    private final RandomService randomService;
     private final GameProperties gameProperties;
 
     @Override
@@ -160,10 +164,8 @@ public class BuildingServiceImpl implements BuildingService {
             notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[] {}, details.getName());
             notification.getDetails().add(detail);
 
-            // award fame
-            int fame = gameProperties.getBuildingFame() * building.getLevel();
-            notification.changeFame(fame);
-            clan.changeFame(fame);
+            // level up bonuses
+            processBuildingLevelUpBonuses(building, clan, notification);
         }
     }
 
@@ -218,6 +220,36 @@ public class BuildingServiceImpl implements BuildingService {
             bonus += character.getGear().getDetails().getBonus();
         }
 
+        // research side effect
+        if (bonusType.equals(BonusType.CRAFTING) && character.getClan().getResearch().containsKey(ResearchName.FORGERY)
+                && character.getClan().getResearch().get(ResearchName.FORGERY).isCompleted()) {
+            // add caps to clan for forgery
+            int caps = randomService.getRandomInt(1, RandomServiceImpl.K4);
+            character.getClan().changeCaps(caps);
+            notification.changeCaps(caps);
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.forgery", new String[]{});
+            notification.getDetails().add(detail);
+        }
+
         return bonus;
+    }
+
+    private void processBuildingLevelUpBonuses(Building building, Clan clan, ClanNotification notification) {
+        // award fame
+        int fame = gameProperties.getBuildingFame() * building.getLevel();
+        notification.changeFame(fame);
+        clan.changeFame(fame);
+
+        if (clan.getResearch().containsKey(ResearchName.ARCHITECTURE) && clan.getResearch().get(ResearchName.ARCHITECTURE).isCompleted()) {
+            // add fame to clan for architecture
+            notification.changeFame(2);
+            clan.changeFame(2);
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.architecture", new String[]{});
+            notification.getDetails().add(detail);
+        }
     }
 }

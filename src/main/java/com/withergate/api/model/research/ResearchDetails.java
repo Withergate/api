@@ -60,7 +60,7 @@ public class ResearchDetails {
      * Research name. Declared as enum for easier code references and for restricting allowed database values.
      */
     public enum ResearchName {
-        FORGERY, BEGGING, ARCHITECTURE
+        FORGERY, BEGGING, ARCHITECTURE, CULINARY, DECORATION
     }
 
 }

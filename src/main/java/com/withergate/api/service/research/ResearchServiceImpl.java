@@ -89,7 +89,7 @@ public class ResearchServiceImpl implements ResearchService {
 
         notificationService.addLocalizedTexts(notification.getText(), "research.work", new String[] {}, details.getName());
 
-        if (!research.isCompleted() && research.getProgress() > details.getCost()) {
+        if (!research.isCompleted() && research.getProgress() >= details.getCost()) {
             research.setProgress(details.getCost());
             research.setCompleted(true);
 

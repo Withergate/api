@@ -13,6 +13,7 @@ import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
@@ -160,16 +161,8 @@ public class LocationServiceImpl implements LocationService {
     private void handleScoutResult(ClanNotification notification, Character character, LocationDescription description,
                                     boolean encounter) {
         log.debug("Information increased.");
-        int information = character.getIntellect() + description.getInformationBonus();
-
-        // contacts trait
-        if (character.getTraits().containsKey(TraitName.CONTACTS)) {
-            information += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
-            NotificationDetail contactsDetail = new NotificationDetail();
-            notificationService.addLocalizedTexts(contactsDetail.getText(), "detail.trait.contacts", new String[]{},
-                    character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
-            notification.getDetails().add(contactsDetail);
-        }
+        int information = character.getIntellect() + description.getInformationBonus()
+                + getScoutingBonus(character, notification, encounter);
 
         // decrease information when encounter triggered
         if (encounter) {
@@ -222,5 +215,34 @@ public class LocationServiceImpl implements LocationService {
         }
 
         return bonus;
+    }
+
+    private int getScoutingBonus(Character character, ClanNotification notification, boolean encounter) {
+        int bonus = 0;
+
+        // contacts trait
+        if (character.getTraits().containsKey(TraitName.CONTACTS)) {
+            bonus += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.contacts", new String[]{},
+                    character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
+            notification.getDetails().add(detail);
+        }
+
+        // research side effect
+        if (!encounter && character.getClan().getResearch().containsKey(ResearchName.BEGGING) &&
+                character.getClan().getResearch().get(ResearchName.BEGGING).isCompleted()) {
+            // add food to clan for begging
+            int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
+            character.getClan().changeFood(food);
+            notification.changeFood(food);
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.begging", new String[]{});
+            notification.getDetails().add(detail);
+        }
+
+        return bonus;
+
     }
 }
