@@ -107,6 +107,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.building.levelup', 'cs', 'Tvé budově [] se zvýšila úroveň.'),
     ('detail.trait.builder', 'en', '{} used his/her Builder trait and increased the construction speed.'),
     ('detail.trait.builder', 'cs', '{} použil/a svou schopnost Stavitel a rychlost stavby se zvýšila.'),
+    ('detail.trait.boffin', 'en', '{} used his/her [] trait and increased the research speed.'),
+    ('detail.trait.boffin', 'cs', '{} použil/a svou schopnost [] a rychlost výzkumu se zvýšila.'),
     ('detail.trait.fighter', 'en', '{} got a combat bonus for having a trait Fighter and fighting with a melee weapon.'),
     ('detail.trait.fighter', 'cs', '{} získal/a bonus k bojové síly za schopnost Rváč při boji se zbraní nablízko.'),
     ('detail.trait.sharpshooter', 'en', '{} got a combat bonus for having a trait Sharpshooter and fighting with a ranged weapon.'),

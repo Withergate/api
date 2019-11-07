@@ -218,13 +218,18 @@ public class ActionServiceImpl implements ActionService {
     @Transactional
     @Override
     public void createResearchAction(ResearchRequest request, int clanId) throws InvalidActionException {
-        log.debug("Submitting building action for request {}.", request);
+        log.debug("Submitting research action for request {}.", request);
         Character character = getCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
 
         // check if research is available
         if (!clan.getResearch().containsKey(request.getResearch())) {
             throw new InvalidActionException("The specified research is not available to your clan.");
+        }
+
+        // check requirements
+        if (clan.getResearch().get(request.getResearch()).getDetails().getInformationLevel() > clan.getInformationLevel()) {
+            throw new InvalidActionException("You need higher information level to perform this action.");
         }
 
         Research research = clan.getResearch().get(request.getResearch());

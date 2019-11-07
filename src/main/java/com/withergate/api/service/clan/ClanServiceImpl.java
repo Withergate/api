@@ -146,7 +146,6 @@ public class ClanServiceImpl implements ClanService {
         }
 
         // assign research
-        clan.setResearch(new HashMap<>());
         researchService.assignResearch(clan);
 
         clan = clanRepository.save(clan);

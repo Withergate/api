@@ -13,6 +13,7 @@ import com.withergate.api.model.item.Weapon;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
@@ -145,6 +146,7 @@ public class Clan {
     public Clan() {
         characters = new HashSet<>();
         buildings = new EnumMap<>(BuildingName.class);
+        research = new EnumMap<>(ResearchName.class);
         weapons = new HashSet<>();
         outfits = new HashSet<>();
         gear = new HashSet<>();

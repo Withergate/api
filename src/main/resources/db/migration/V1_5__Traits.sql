@@ -8,7 +8,8 @@ INSERT INTO trait_details(identifier, bonus, image_url) VALUES
     ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png'),
     ('LIZARD', 2, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
     ('CONTACTS', 2, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
-    ('MERCHANT', 5, 'https://storage.googleapis.com/withergate-images/traits/merchant-trait.png');
+    ('MERCHANT', 5, 'https://storage.googleapis.com/withergate-images/traits/merchant-trait.png'),
+    ('BOFFIN', 2, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -28,7 +29,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('CONTACTS', 'en', 'Contacts'),
     ('CONTACTS', 'cs', 'Kontakty'),
     ('MERCHANT', 'en', 'Merchant'),
-    ('MERCHANT', 'cs', 'Obchodník');
+    ('MERCHANT', 'cs', 'Obchodník'),
+    ('BOFFIN', 'en', 'Boffin'),
+    ('BOFFIN', 'cs', 'Vědátor');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -48,4 +51,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('CONTACTS', 'en', 'Character with this trait will receive bonus information when scouring.'),
     ('CONTACTS', 'cs', 'Postava s touto schopností získá více informací při pátrání.'),
     ('MERCHANT', 'en', 'Character with this trait will receive some caps when buying an item on the marketplace. This trait is applied after performing the trade and will not affect the seller.'),
-    ('MERCHANT', 'cs', 'Postava s touto schopností získá několik zátek zpátky při koupi předmětu na tržišti. Tento bonus se aktivuje až po uzavření obchodu a neovlivní prodávajícího hráče..');
+    ('MERCHANT', 'cs', 'Postava s touto schopností získá několik zátek zpátky při koupi předmětu na tržišti. Tento bonus se aktivuje až po uzavření obchodu a neovlivní prodávajícího hráče..'),
+    ('BOFFIN', 'en', 'Character with this trait will receive a bonus when researching.'),
+    ('BOFFIN', 'cs', 'Postava s touto schopností dostane bonus při výzkumu');

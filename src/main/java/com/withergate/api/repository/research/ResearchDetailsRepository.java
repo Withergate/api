@@ -4,8 +4,6 @@ import com.withergate.api.model.research.ResearchDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * ResearchDetails repository.
  *
@@ -13,7 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface ResearchDetailsRepository extends JpaRepository<ResearchDetails, ResearchDetails.ResearchName> {
-
-    List<ResearchDetails> findAllByInformationLevel(int informationLevel);
 
 }
