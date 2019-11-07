@@ -504,11 +504,6 @@ public class ActionServiceImpl implements ActionService {
                 continue;
             }
 
-            // resting
-            if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.REST)) {
-                character.setState(CharacterState.RESTING);
-            }
-
             // exploration
             if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD)) {
                 character.setState(CharacterState.BUSY);

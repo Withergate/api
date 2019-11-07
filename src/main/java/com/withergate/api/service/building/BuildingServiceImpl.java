@@ -115,11 +115,12 @@ public class BuildingServiceImpl implements BuildingService {
         if (clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
             for (Character character : clan.getCharacters()) {
-                if (character.getState() == CharacterState.READY) {
+                if (character.getState().equals(CharacterState.RESTING)) {
                     character.changeExperience(building.getLevel());
 
                     ClanNotification notification = new ClanNotification(turnId, clan.getId());
                     notification.setHeader(character.getName());
+                    notification.setImageUrl(character.getImageUrl());
                     notification.changeExperience(building.getLevel());
                     notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[] {});
                     notificationService.save(notification);
