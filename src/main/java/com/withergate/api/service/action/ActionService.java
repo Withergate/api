@@ -142,7 +142,7 @@ public interface ActionService {
     void processDisaster(int turnId);
 
     /**
-     * Assing default actions to all characters.
+     * Assign default actions to all characters.
      */
     void assignDefaultActions();
 

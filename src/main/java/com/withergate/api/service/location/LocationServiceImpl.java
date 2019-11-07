@@ -230,8 +230,8 @@ public class LocationServiceImpl implements LocationService {
         }
 
         // research side effect
-        if (!encounter && character.getClan().getResearch().containsKey(ResearchName.BEGGING) &&
-                character.getClan().getResearch().get(ResearchName.BEGGING).isCompleted()) {
+        if (!encounter && character.getClan().getResearch().containsKey(ResearchName.BEGGING)
+                && character.getClan().getResearch().get(ResearchName.BEGGING).isCompleted()) {
             // add food to clan for begging
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
             character.getClan().changeFood(food);

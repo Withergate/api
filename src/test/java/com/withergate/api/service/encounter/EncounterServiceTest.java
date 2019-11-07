@@ -1,31 +1,27 @@
 package com.withergate.api.service.encounter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.encounter.EncounterType;
 import com.withergate.api.model.encounter.PenaltyType;
 import com.withergate.api.model.encounter.RewardType;
+import com.withergate.api.model.location.Location;
+import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,20 +42,13 @@ public class EncounterServiceTest {
     private CombatService combatService;
 
     @Mock
-    private ClanService clanService;
-
-    @Mock
-    private CharacterService characterService;
-
-    @Mock
     private NotificationService notificationService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        encounterService = new EncounterServiceImpl(encounterRepository, itemService, randomService, combatService,
-                clanService, characterService, notificationService);
+        encounterService = new EncounterServiceImpl(encounterRepository, itemService, randomService, combatService, notificationService);
     }
 
     @Test

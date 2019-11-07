@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
@@ -12,8 +11,6 @@ import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
@@ -35,8 +32,6 @@ public class EncounterServiceImpl implements EncounterService {
     private final ItemService itemService;
     private final RandomService randomService;
     private final CombatService combatService;
-    private final ClanService clanService;
-    private final CharacterService characterService;
     private final NotificationService notificationService;
 
     @Override
@@ -141,16 +136,6 @@ public class EncounterServiceImpl implements EncounterService {
                 // generate item
                 itemService.generateItemForCharacter(character, notification);
                 break;
-            case CHARACTER:
-                // generate character
-                Character generated = characterService.generateRandomCharacter(prepareCharacterFilter(clan));
-                generated.setClan(clan);
-                clan.getCharacters().add(generated);
-
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{character.getName()});
-                notification.getDetails().add(detail);
-                break;
             default:
                 log.error("Unknown type of reward!");
                 break;
@@ -200,16 +185,6 @@ public class EncounterServiceImpl implements EncounterService {
                 log.error("Unknown type of penalty: {}!", encounter.getPenalty());
                 break;
         }
-    }
-
-    private CharacterFilter prepareCharacterFilter(Clan clan) {
-        CharacterFilter filter = new CharacterFilter();
-        for (Character character : clan.getCharacters()) {
-            filter.getAvatars().add(character.getImageUrl());
-            filter.getNames().add(character.getName());
-        }
-
-        return filter;
     }
 
 }
