@@ -95,7 +95,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
     ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'COMMON', 12 1, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('TRAP', 'GEAR', 'COMMON', 12, 1, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
     ('HAMMER', 'GEAR', 'COMMON', 12, 1, 'CRAFTING', 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
     ('SHOVEL', 'GEAR', 'RARE', 25, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
     ('BINOCULARS', 'GEAR', 'RARE', 25, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),

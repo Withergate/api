@@ -375,26 +375,26 @@ public class ItemServiceImpl implements ItemService {
                 character.setExperience(character.getExperience() + consumable.get().getDetails().getEffect());
                 break;
             case BUFF_COMBAT:
-                if (character.getCombat() > 5) {
-                    throw new InvalidActionException("This character already reached max combat value!");
+                if (character.getCombat() > 6 || character.getHitpoints() < character.getMaxHitpoints()) {
+                    throw new InvalidActionException("This character is injured or already reached max combat value!");
                 }
                 character.setCombat(character.getCombat() + 1);
                 break;
             case BUFF_SCAVENGE:
-                if (character.getScavenge() > 5) {
-                    throw new InvalidActionException("This character already reached max scavenge value!");
+                if (character.getScavenge() > 6 || character.getHitpoints() < character.getMaxHitpoints()) {
+                    throw new InvalidActionException("This character is injured or already reached max scavenge value!");
                 }
                 character.setScavenge(character.getScavenge() + 1);
                 break;
             case BUFF_CRAFTSMANSHIP:
-                if (character.getCraftsmanship() > 5) {
-                    throw new InvalidActionException("This character already reached max craftsmanship value!");
+                if (character.getCraftsmanship() > 6) {
+                    throw new InvalidActionException("This character is injured or already reached max craftsmanship value!");
                 }
                 character.setCraftsmanship(character.getCraftsmanship() + 1);
                 break;
             case BUFF_INTELLECT:
-                if (character.getIntellect() > 5) {
-                    throw new InvalidActionException("This character already reached max intellect value!");
+                if (character.getIntellect() > 6) {
+                    throw new InvalidActionException("This character is injured or already reached max intellect value!");
                 }
                 character.setIntellect(character.getIntellect() + 1);
                 break;

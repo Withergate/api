@@ -182,18 +182,48 @@ public class Character {
             weaponCombat = weapon.getDetails().getCombat();
         }
 
-        return combat + weaponCombat;
+        return getCombat() + weaponCombat;
     }
 
-    /*
-     * Setters
-     */
+    // Setters
+
     public void changeHitpoints(int hitpoints) {
         this.hitpoints += hitpoints;
     }
 
     public void changeExperience(int experience) {
         this.experience += experience;
+    }
+
+    // Enhanced getters
+
+    public int getCombat() {
+        return getStat(combat);
+    }
+
+    public int getScavenge() {
+        return getStat(scavenge);
+    }
+
+    public int getCraftsmanship() {
+        return getStat(craftsmanship);
+    }
+
+    public int getIntellect() {
+        return getStat(intellect);
+    }
+
+    private int getStat(int value) {
+        if (hitpoints < (maxHitpoints / 3.0)) { // below 33%
+            value = value - 2;
+        } else if (hitpoints < (maxHitpoints * 2 / 3.0)) { // below 33%
+            value = value - 1;
+        }
+
+        if (value < 1) {
+            value = 1;
+        }
+        return value;
     }
 
 }

@@ -177,6 +177,8 @@ public class ClanServiceImpl implements ClanService {
     @Override
     public void performClanTurnUpdates(int turnId) {
         for (Clan clan : getAllClans()) {
+            log.debug("-> Performing turn updates for clan {}.", clan.getId());
+
             // delete dead characters
             deleteDeadCharacters(clan);
 
@@ -368,11 +370,11 @@ public class ClanServiceImpl implements ClanService {
     }
 
     private void checkInformationLevel(int turnId, Clan clan) {
-        log.debug("Clan {} has information level {}.", clan.getName(), clan.getInformationLevel());
+        log.debug("Clan {} has information level {}.", clan.getId(), clan.getInformationLevel());
 
         // handle next level
         if (clan.getInformation() >= clan.getNextLevelInformation()) {
-            log.debug("Increasing clan's information level for clan: {}", clan.getName());
+            log.debug("Increasing clan's information level.");
 
             clan.changeInformation(- clan.getNextLevelInformation());
             clan.setInformationLevel(clan.getInformationLevel() + 1);
