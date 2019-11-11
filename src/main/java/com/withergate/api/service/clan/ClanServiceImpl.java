@@ -208,6 +208,9 @@ public class ClanServiceImpl implements ClanService {
 
             // reset arena
             clan.setArena(false);
+
+            // probably redundant
+            clanRepository.save(clan);
         }
     }
 
