@@ -112,7 +112,6 @@ public class CombatServiceImpl implements CombatService {
                                       ClanNotification notification2) {
         while (true) {
             CombatResult result = combatRoundService.handleCombatRound(character1, notification1, character2, notification2);
-            log.debug("Combat round result: {}", result);
 
             // add details to both players
             for (NotificationDetail detail : result.getDetails()) {

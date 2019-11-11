@@ -1,12 +1,12 @@
 -- Weapon details
 INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, bonus, image_url) VALUES
-    ('KNIFE', 'WEAPON', 'COMMON', 'MELEE', 15, 1, 'https://storage.googleapis.com/withergate-images/items/knife.png'),
-    ('AXE', 'WEAPON', 'RARE', 'MELEE', 30, 2, 'https://storage.googleapis.com/withergate-images/items/axe.png'),
-    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 15, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
+    ('KNIFE', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 'https://storage.googleapis.com/withergate-images/items/knife.png'),
+    ('AXE', 'WEAPON', 'RARE', 'MELEE', 25, 2, 'https://storage.googleapis.com/withergate-images/items/axe.png'),
+    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
     ('CHAINSAW', 'WEAPON', 'EPIC', 'MELEE', 50, 3, 'https://storage.googleapis.com/withergate-images/items/chainsaw.png'),
-    ('BOOMERANG', 'WEAPON', 'COMMON', 'RANGED', 15, 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.png'),
-    ('THROWING_KNIVES', 'WEAPON', 'COMMON', 'RANGED', 30, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png'),
-    ('CROSSBOW', 'WEAPON', 'RARE', 'RANGED', 40, 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.png'),
+    ('BOOMERANG', 'WEAPON', 'COMMON', 'RANGED', 12, 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.png'),
+    ('THROWING_KNIVES', 'WEAPON', 'COMMON', 'RANGED', 25, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png'),
+    ('CROSSBOW', 'WEAPON', 'RARE', 'RANGED', 30, 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.png'),
     ('HAND_GUN', 'WEAPON', 'EPIC', 'RANGED', 50, 4, 'https://storage.googleapis.com/withergate-images/items/handgun.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
@@ -47,7 +47,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Consumable details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, image_url) VALUES
-    ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 10, 4, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
+    ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 12, 4, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
     ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
     ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 15, 5, 3, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
     ('OLD_BOOK', 'CONSUMABLE', 'RARE', 35, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
@@ -94,9 +94,9 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
-    ('SAW', 'GEAR', 'COMMON', 15, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'COMMON', 15, 1, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
-    ('HAMMER', 'GEAR', 'COMMON', 15, 1, 'CRAFTING', 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
+    ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
+    ('TRAP', 'GEAR', 'COMMON', 12 1, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('HAMMER', 'GEAR', 'COMMON', 12, 1, 'CRAFTING', 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
     ('SHOVEL', 'GEAR', 'RARE', 25, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
     ('BINOCULARS', 'GEAR', 'RARE', 25, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 40, 3, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/items/detector.png');
@@ -131,9 +131,9 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Outfit details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, image_url) VALUES
-    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 15, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
-    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 30, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
-    ('KEVLAR', 'OUTFIT', 'EPIC', 50, 3, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
+    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 12, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
+    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 25, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
+    ('KEVLAR', 'OUTFIT', 'EPIC', 45, 3, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('LEATHER_CLOTHES', 'en', 'Leather clothes'),

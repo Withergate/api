@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EncounterServiceImpl implements EncounterService {
 
+    private static final int BASE_REWARD = 3;
+
     private final EncounterRepository encounterRepository;
     private final ItemService itemService;
     private final RandomService randomService;
@@ -115,20 +117,20 @@ public class EncounterServiceImpl implements EncounterService {
         switch (encounter.getReward()) {
             case CAPS:
                 // add caps
-                int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
+                int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
 
                 clan.changeCaps(caps);
                 notification.changeCaps(caps);
                 break;
             case JUNK:
                 // add junk
-                int junk = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of caps
+                int junk = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
                 clan.changeJunk(junk);
                 notification.changeJunk(junk);
                 break;
             case INFORMATION:
                 // add information
-                int information = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of information
+                int information = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
                 clan.changeInformation(information);
                 notification.changeInformation(information);
                 break;

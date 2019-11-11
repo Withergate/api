@@ -368,10 +368,12 @@ public class ClanServiceImpl implements ClanService {
     }
 
     private void checkInformationLevel(int turnId, Clan clan) {
-        log.debug("Increasing clan's information level for clan: {}", clan.getName());
+        log.debug("Clan {} has information level {}.", clan.getName(), clan.getInformationLevel());
 
         // handle next level
         if (clan.getInformation() >= clan.getNextLevelInformation()) {
+            log.debug("Increasing clan's information level for clan: {}", clan.getName());
+
             clan.changeInformation(- clan.getNextLevelInformation());
             clan.setInformationLevel(clan.getInformationLevel() + 1);
 

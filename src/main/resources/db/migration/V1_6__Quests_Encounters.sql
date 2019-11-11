@@ -1,19 +1,19 @@
 -- Quests
 INSERT INTO quest_details (identifier, quest_type, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
-    ('quest.1', 'COMBAT', 2, 4, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
-    ('quest.2', 'INTELLECT', 7, 2, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
-    ('quest.3', 'CRAFTSMANSHIP', 6, 3, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),
-    ('quest.4', 'COMBAT', 4, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest04.png'),
-    ('quest.5', 'COMBAT', 4, 2, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest05.png'),
-    ('quest.6', 'COMBAT', 3, 3, 45, 20, 'https://storage.googleapis.com/withergate-images/quests/quest06.png'),
-    ('quest.7', 'COMBAT', 3, 3, 60, 25, 'https://storage.googleapis.com/withergate-images/quests/quest07.png'),
-    ('quest.8', 'SCAVENGE', 6, 3, 50, 30, 'https://storage.googleapis.com/withergate-images/quests/quest08.png'),
-    ('quest.9', 'CRAFTSMANSHIP', 7, 3, 60, 30, 'https://storage.googleapis.com/withergate-images/quests/quest09.png'),
-    ('quest.10', 'CRAFTSMANSHIP', 6, 3, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest10.png'),
-    ('quest.11', 'INTELLECT', 5, 3, 40, 20, 'https://storage.googleapis.com/withergate-images/quests/quest11.png'),
-    ('quest.12', 'SCAVENGE', 6, 3, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest12.png'),
-    ('quest.13', 'COMBAT', 4, 3, 45, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
-    ('quest.14', 'INTELLECT', 4, 3, 50, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png');
+    ('quest.1', 'COMBAT', 2, 4, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
+    ('quest.2', 'INTELLECT', 8, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
+    ('quest.3', 'CRAFTSMANSHIP', 7, 3, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),
+    ('quest.4', 'COMBAT', 4, 2, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest04.png'),
+    ('quest.5', 'COMBAT', 4, 2, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest05.png'),
+    ('quest.6', 'COMBAT', 3, 3, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest06.png'),
+    ('quest.7', 'COMBAT', 3, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest07.png'),
+    ('quest.8', 'SCAVENGE', 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest08.png'),
+    ('quest.9', 'CRAFTSMANSHIP', 7, 3, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest09.png'),
+    ('quest.10', 'CRAFTSMANSHIP', 8, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest10.png'),
+    ('quest.11', 'INTELLECT', 7, 3, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest11.png'),
+    ('quest.12', 'SCAVENGE', 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest12.png'),
+    ('quest.13', 'COMBAT', 4, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
+    ('quest.14', 'INTELLECT', 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.1', 'en', 'Deratization'),
