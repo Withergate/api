@@ -6,7 +6,6 @@ import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.action.LocationAction;
-import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.action.ResourceTradeAction;
@@ -35,6 +34,7 @@ import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
@@ -63,6 +63,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ActionServiceImpl implements ActionService {
 
     private final CharacterService characterService;
+    private final ClanService clanService;
     private final LocationService locationService;
     private final BuildingService buildingService;
     private final ResearchService researchService;
@@ -342,9 +343,8 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public void createMarketTradeAction(MarketTradeRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting market trade action for request {}.", request);
-        Character character = getCharacter(request.getCharacterId(), clanId);
-        Clan clan = character.getClan();
 
+        Clan clan = clanService.getClan(clanId);
         MarketOffer offer = tradeService.loadMarketOffer(request.getOfferId());
 
         if (offer == null || !offer.getState().equals(State.PUBLISHED)) {
@@ -362,18 +362,9 @@ public class ActionServiceImpl implements ActionService {
         // pay caps
         clan.changeCaps(- offer.getPrice());
 
-        // create action
-        MarketTradeAction action = new MarketTradeAction();
-        action.setCharacter(character);
-        action.setOffer(offer);
-        action.setState(ActionState.PENDING);
-        tradeService.saveMarketTradeAction(action);
-
-        // mark offer as sold
-        offer.setState(State.SOLD);
-
-        // mark character as busy and save the clan
-        character.setState(CharacterState.BUSY);
+        // change offer state
+        offer.setState(State.PENDING);
+        offer.setBuyer(clan);
     }
 
     @Transactional

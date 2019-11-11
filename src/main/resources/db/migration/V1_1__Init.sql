@@ -375,10 +375,12 @@ CREATE TABLE market_offers (
     offer_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
     seller_id INT NOT NULL,
+    buyer_id INT,
     item_id INT NOT NULL,
     price INT NOT NULL,
     identifier VARCHAR(16) NOT NULL,
     CONSTRAINT offer_seller_fk FOREIGN KEY (seller_id) REFERENCES clans (clan_id),
+    CONSTRAINT offer_buyer_fk FOREIGN KEY (buyer_id) REFERENCES clans (clan_id),
     CONSTRAINT offer_identifier_fk FOREIGN KEY (identifier) REFERENCES item_details (identifier),
     PRIMARY KEY (offer_id)
 );

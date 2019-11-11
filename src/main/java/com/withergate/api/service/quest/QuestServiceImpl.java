@@ -72,7 +72,6 @@ public class QuestServiceImpl implements QuestService {
         NotificationDetail notificationDetail = new NotificationDetail();
         notificationService.addLocalizedTexts(notificationDetail.getText(), "detail.quest.assigned", new String[] {}, details.getName());
         notification.getDetails().add(notificationDetail);
-
     }
 
     @Override

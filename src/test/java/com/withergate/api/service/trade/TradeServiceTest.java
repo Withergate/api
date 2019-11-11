@@ -6,12 +6,8 @@ import java.util.Optional;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
-import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.item.ItemType;
@@ -23,7 +19,6 @@ import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
-import com.withergate.api.repository.action.MarketTradeActionRepository;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.repository.trade.MarketOfferRepository;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -40,15 +35,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import static com.withergate.api.model.trade.MarketOffer.State.SOLD;
+
 public class TradeServiceTest {
 
     private TradeServiceImpl tradeService;
 
     @Mock
     private ResourceTradeActionRepository resourceTradeActionRepository;
-
-    @Mock
-    private MarketTradeActionRepository marketTradeActionRepository;
 
     @Mock
     private NotificationService notificationService;
@@ -63,7 +57,7 @@ public class TradeServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        tradeService = new TradeServiceImpl(resourceTradeActionRepository, marketTradeActionRepository, notificationService,
+        tradeService = new TradeServiceImpl(resourceTradeActionRepository, notificationService,
                 itemService, marketOfferRepository);
     }
 
@@ -81,21 +75,6 @@ public class TradeServiceTest {
 
         // then verify action saved
         Mockito.verify(resourceTradeActionRepository).save(action);
-    }
-
-    @Test
-    public void testGivenMarketTradeActionWhenSavingActionThenVerifyActionSaved() {
-        // given action
-        MarketTradeAction action = new MarketTradeAction();
-        action.setOffer(new MarketOffer());
-        action.setCharacter(new Character());
-        action.setState(ActionState.PENDING);
-
-        // when saving action
-        tradeService.saveMarketTradeAction(action);
-
-        // then verify action saved
-        Mockito.verify(marketTradeActionRepository).save(action);
     }
 
     @Test
@@ -283,7 +262,7 @@ public class TradeServiceTest {
     }
 
     @Test
-    public void givenMarketOfferWhenProcessingMarketOfferActionThenVerifyOfferHandled() {
+    public void givenMarketOfferWhenProcessingTradeThenVerifyOfferHandled() {
         // given market offer
         Weapon weapon = new Weapon();
         weapon.setId(1);
@@ -304,77 +283,20 @@ public class TradeServiceTest {
         offer.setId(2);
         offer.setItemId(1);
         offer.setDetails(details);
-        offer.setState(State.SOLD);
+        offer.setState(State.PENDING);
         offer.setPrice(20);
         offer.setSeller(seller);
+        offer.setBuyer(buyer);
 
-        Character character = new Character();
-        character.setClan(buyer);
+        Mockito.when(marketOfferRepository.findAllByState(State.PENDING)).thenReturn(List.of(offer));
 
-        MarketTradeAction action = new MarketTradeAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setOffer(offer);
-        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
-
-        // when processing trade actions
+        // when processing trade
         tradeService.processMarketTradeActions(1);
 
         // then verify offer handled
         Assert.assertEquals(buyer, weapon.getClan());
         Assert.assertEquals(30, seller.getCaps());
-        Assert.assertEquals(ActionState.COMPLETED, action.getState());
-    }
-
-    @Test
-    public void givenCharacterMerchantWhenProcessingMarketOfferActionThenVerifyCapsReceived() {
-        // given market offer and character merchant
-        Weapon weapon = new Weapon();
-        weapon.setId(1);
-        weapon.setClan(null);
-        WeaponDetails details = new WeaponDetails();
-        details.setItemType(ItemType.WEAPON);
-        weapon.setDetails(details);
-        Mockito.when(itemService.loadItemByType(1, ItemType.WEAPON)).thenReturn(weapon);
-
-        Clan seller = new Clan();
-        seller.setId(3);
-        seller.setCaps(10);
-
-        Clan buyer = new Clan();
-        buyer.setId(4);
-        buyer.setCaps(10);
-
-        MarketOffer offer = new MarketOffer();
-        offer.setId(2);
-        offer.setItemId(1);
-        offer.setDetails(details);
-        offer.setState(State.SOLD);
-        offer.setPrice(20);
-        offer.setSeller(seller);
-
-        Character character = new Character();
-        character.setClan(buyer);
-        TraitDetails traitDetails = new TraitDetails();
-        traitDetails.setIdentifier(TraitName.MERCHANT);
-        traitDetails.setBonus(5);
-        Trait trait = new Trait();
-        trait.setDetails(traitDetails);
-        character.getTraits().put(TraitName.MERCHANT, trait);
-
-        MarketTradeAction action = new MarketTradeAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setOffer(offer);
-        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
-
-        // when processing trade actions
-        tradeService.processMarketTradeActions(1);
-
-        // then verify caps added to buyer
-        Assert.assertEquals(buyer, weapon.getClan());
-        Assert.assertEquals(15, buyer.getCaps());
-        Assert.assertEquals(ActionState.COMPLETED, action.getState());
+        Assert.assertEquals(SOLD, offer.getState());
     }
 
     @Test

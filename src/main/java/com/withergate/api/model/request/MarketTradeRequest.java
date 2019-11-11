@@ -12,7 +12,6 @@ import lombok.Setter;
 @Setter
 public class MarketTradeRequest {
 
-    private int characterId;
     private int offerId;
 
 }

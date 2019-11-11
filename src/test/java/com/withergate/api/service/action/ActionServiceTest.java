@@ -24,6 +24,7 @@ import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
@@ -47,6 +48,9 @@ public class ActionServiceTest {
 
     @Mock
     private CharacterService characterService;
+
+    @Mock
+    private ClanService clanService;
 
     @Mock
     private BuildingService buildingService;
@@ -76,7 +80,7 @@ public class ActionServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        actionService = new ActionServiceImpl(characterService, locationService, buildingService, researchService,
+        actionService = new ActionServiceImpl(characterService, clanService, locationService, buildingService, researchService,
                 questService, tradeService, arenaService, tavernService, disasterService);
     }
 
