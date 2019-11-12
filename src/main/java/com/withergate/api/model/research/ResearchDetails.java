@@ -47,6 +47,9 @@ public class ResearchDetails {
     @JoinColumn(name = "research_info")
     private Map<String, LocalizedText> info;
 
+    @Column(name = "value", nullable = false)
+    private int value; // universal field representing some research data
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
@@ -60,7 +63,7 @@ public class ResearchDetails {
      * Research name. Declared as enum for easier code references and for restricting allowed database values.
      */
     public enum ResearchName {
-        FORGERY, BEGGING, ARCHITECTURE, CULINARY, DECORATION
+        FORGERY, BEGGING, ARCHITECTURE, COLLECTING, CULINARY, DECORATION
     }
 
 }

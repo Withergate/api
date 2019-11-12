@@ -19,6 +19,7 @@ import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
@@ -242,10 +243,11 @@ public class BuildingServiceImpl implements BuildingService {
         notification.changeFame(fame);
         clan.changeFame(fame);
 
-        if (clan.getResearch().containsKey(ResearchName.ARCHITECTURE) && clan.getResearch().get(ResearchName.ARCHITECTURE).isCompleted()) {
+        Research architecture = clan.getResearch().get(ResearchName.ARCHITECTURE);
+        if (architecture != null && architecture.isCompleted()) {
             // add fame to clan for architecture
-            notification.changeFame(2);
-            clan.changeFame(2);
+            notification.changeFame(architecture.getDetails().getValue());
+            clan.changeFame(architecture.getDetails().getValue());
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.research.architecture", new String[]{});

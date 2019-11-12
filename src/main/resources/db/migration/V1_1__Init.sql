@@ -57,6 +57,7 @@ DROP TABLE IF EXISTS research_details;
 CREATE TABLE research_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
     image_url VARCHAR(256) NOT NULL,
+    value INT NOT NULL,
     information_level INT NOT NULL,
     cost INT NOT NULL,
     PRIMARY KEY (identifier)

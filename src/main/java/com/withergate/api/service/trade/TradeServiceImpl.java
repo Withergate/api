@@ -10,6 +10,8 @@ import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.PublishOfferRequest;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
@@ -201,5 +203,25 @@ public class TradeServiceImpl implements TradeService {
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.item.bought", new String[]{}, offer.getDetails().getName());
         buyerNotification.getDetails().add(detail);
+
+        // handle research bonuses
+        handleBonuses(offer.getBuyer(), buyerNotification);
+    }
+
+    private void handleBonuses(Clan buyer, ClanNotification buyerNotification) {
+        Research collecting = buyer.getResearch().get(ResearchName.COLLECTING);
+        if (collecting != null && collecting.isCompleted() && buyer.getCaps() >= 10) {
+            // pay caps
+            buyer.changeCaps(- 10);
+            buyerNotification.changeCaps(- 10);
+
+            // award fame
+            buyer.changeFame(collecting.getDetails().getValue());
+            buyerNotification.changeFame(collecting.getDetails().getValue());
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.collecting", new String[]{});
+            buyerNotification.getDetails().add(detail);
+        }
     }
 }

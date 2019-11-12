@@ -117,6 +117,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.research.forgery', 'cs', 'Postavě se podařilo při výrobě vytvořit pár falešných zátek.'),
     ('detail.research.architecture', 'en', 'Your clan received bonus fame due to the use of Wasteland architecture.'),
     ('detail.research.architecture', 'cs', 'Tvůj klan obdržel slávu navíc díky stavně za použití architektury Pustiny.'),
+    ('detail.research.collecting', 'en', 'Your clan paid extra caps when purchasing an item and received bonus fame.'),
+    ('detail.research.collecting', 'cs', 'Tvůj klan zaplatil za předmět více zátek a obdržel slávu navíc.'),
     ('detail.trait.builder', 'en', '{} used his/her Builder trait and increased the construction speed.'),
     ('detail.trait.builder', 'cs', '{} použil/a svou schopnost Stavitel a rychlost stavby se zvýšila.'),
     ('detail.trait.boffin', 'en', '{} used his/her [] trait and increased the research speed.'),

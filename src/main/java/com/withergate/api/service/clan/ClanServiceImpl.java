@@ -400,8 +400,9 @@ public class ClanServiceImpl implements ClanService {
     private void performResearchEndTurnUpdates(int turnId, Clan clan) {
         log.debug("Performing end turn research updates");
 
-        if (clan.getResearch().containsKey(ResearchName.CULINARY) && clan.getResearch().get(ResearchName.CULINARY).isCompleted()) {
-            int fame = clan.getFood() / 20;
+        Research culinary = clan.getResearch().get(ResearchName.CULINARY);
+        if (culinary != null && culinary.isCompleted()) {
+            int fame = clan.getFood() / culinary.getDetails().getValue();
             if (fame > 0) {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
@@ -414,8 +415,9 @@ public class ClanServiceImpl implements ClanService {
             }
         }
 
-        if (clan.getResearch().containsKey(ResearchName.DECORATION) && clan.getResearch().get(ResearchName.DECORATION).isCompleted()) {
-            int fame = clan.getJunk() / 20;
+        Research decoration = clan.getResearch().get(ResearchName.DECORATION);
+        if (decoration != null && decoration.isCompleted()) {
+            int fame = clan.getJunk() / decoration.getDetails().getValue();
             if (fame > 0) {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
