@@ -1,12 +1,14 @@
 package com.withergate.api.service.research;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
+import com.withergate.api.model.item.Gear;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.research.Research;
@@ -110,6 +112,14 @@ public class ResearchServiceImpl implements ResearchService {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.boffin", new String[] {character.getName()},
                     trait.getDetails().getName());
+            notification.getDetails().add(detail);
+        }
+
+        Gear gear = character.getGear();
+        if (gear != null && gear.getDetails().getBonusType().equals(BonusType.RESEARCH)) {
+            bonus += gear.getDetails().getBonus();
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
         }
 

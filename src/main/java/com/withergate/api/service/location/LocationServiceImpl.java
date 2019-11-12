@@ -198,7 +198,7 @@ public class LocationServiceImpl implements LocationService {
         Gear gear = character.getGear();
         if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.junk", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.junk", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
@@ -206,7 +206,7 @@ public class LocationServiceImpl implements LocationService {
 
         if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.food", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.food", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();

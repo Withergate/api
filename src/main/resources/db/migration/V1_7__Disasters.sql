@@ -233,7 +233,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.clans.s1', 'd.clans', 'AUTOMATIC', 0, 3, 0, 0, 0),
     ('d.clans.s2', 'd.clans', 'INTELLECT', 7, 6, 0, 0, 0),
-    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 5, 6, 10, 0, 0),
+    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 5, 6, 20, 0, 0),
     ('d.clans.s4', 'd.clans', 'COMBAT', 6, 8, 0, 0, 0),
     ('d.clans.s5', 'd.clans', 'AUTOMATIC', 0, 15, 0, 150, 0);
 
