@@ -5,6 +5,8 @@ import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResearchAction;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
@@ -106,6 +108,7 @@ public class ResearchServiceImpl implements ResearchService {
     private int getResearchBonus(Character character, ClanNotification notification) {
         int bonus = 0;
 
+        // trait
         if (character.getTraits().containsKey(TraitName.BOFFIN)) {
             Trait trait = character.getTraits().get(TraitName.BOFFIN);
             bonus += trait.getDetails().getBonus();
@@ -115,11 +118,21 @@ public class ResearchServiceImpl implements ResearchService {
             notification.getDetails().add(detail);
         }
 
+        // gear
         Gear gear = character.getGear();
         if (gear != null && gear.getDetails().getBonusType().equals(BonusType.RESEARCH)) {
             bonus += gear.getDetails().getBonus();
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
+            notification.getDetails().add(detail);
+        }
+
+        // building
+        Building study = character.getClan().getBuildings().get(BuildingName.STUDY);
+        if (study != null && study.getLevel() > 0) {
+            bonus += study.getLevel();
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.building.study", new String[] {}, study.getDetails().getName());
             notification.getDetails().add(detail);
         }
 

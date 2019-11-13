@@ -111,6 +111,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.item.bought', 'cs', 'Předmět [] byl přidán do klanového skladu.'),
     ('detail.building.levelup', 'en', '[] advanced to the next level.'),
     ('detail.building.levelup', 'cs', 'Tvé budově [] se zvýšila úroveň.'),
+    ('detail.building.study', 'en', 'The building [] increased your research speed.'),
+    ('detail.building.study', 'cs', 'Rychlost výzkumu se zvýšila díky budově [].'),
     ('detail.research.begging', 'en', 'Character managed to receive some food when begging.'),
     ('detail.research.begging', 'cs', 'Postavě se podařilo při výzvědách vyžebrat trochu jídla.'),
     ('detail.research.forgery', 'en', 'Character managed to forge some caps when crafting.'),
