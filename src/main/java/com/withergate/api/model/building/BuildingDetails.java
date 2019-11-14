@@ -59,7 +59,6 @@ public class BuildingDetails {
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost; // cost per level
 
-
     /**
      * Building name. Declared as enum for easier code references and for restricting allowed database values.
      */

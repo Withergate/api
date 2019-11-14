@@ -31,7 +31,7 @@ public class TavernServiceImpl implements TavernService {
 
     private static final int TAVERN_OFFERS = 3;
     private static final int ATTRIBUTE_PRICE = 8;
-    private static final int TRAIT_PRICE = 30;
+    private static final int TRAIT_PRICE = 16;
 
     private final TavernActionRepository tavernActionRepository;
     private final NotificationService notificationService;

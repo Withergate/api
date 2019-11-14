@@ -128,6 +128,12 @@ public class EncounterServiceImpl implements EncounterService {
                 clan.changeJunk(junk);
                 notification.changeJunk(junk);
                 break;
+            case FOOD:
+                // add food
+                int food = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
+                clan.changeFood(food);
+                notification.changeFood(food);
+                break;
             case INFORMATION:
                 // add information
                 int information = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
