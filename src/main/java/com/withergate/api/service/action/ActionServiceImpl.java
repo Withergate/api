@@ -10,7 +10,7 @@ import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.action.TavernAction;
-import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.building.Building;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
@@ -166,29 +166,20 @@ public class ActionServiceImpl implements ActionService {
         Character character = getCharacter(request.getCharacterId(), clanId);
 
         // check if action is applicable
-        BuildingDetails buildingDetails = buildingService.getBuildingDetails(request.getBuilding());
-        if (buildingDetails == null) {
+        Building building = character.getClan().getBuildings().get(request.getBuilding());
+        if (building == null) {
             throw new InvalidActionException("This building does not exist");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings().containsKey(request.getBuilding())) {
-            throw new InvalidActionException("This building is not constructed yet!");
-        }
-
-        if (request.getType() == BuildingAction.Type.VISIT
-                && character.getClan().getBuildings().get(request.getBuilding()).getLevel() < 1) {
+        if (request.getType() == BuildingAction.Type.VISIT && building.getLevel() < 1) {
             throw new InvalidActionException("This building has not reached sufficient level yet!!");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan()
-                .getBuildings()
-                .get(request.getBuilding())
-                .getDetails()
-                .isVisitable()) {
+        if (request.getType() == BuildingAction.Type.VISIT && !building.getDetails().isVisitable()) {
             throw new InvalidActionException("This building does not support this type of action.");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getJunk() < buildingDetails.getVisitJunkCost()) {
+        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getJunk() < building.getVisitJunkCost()) {
             throw new InvalidActionException("Not enough junk to perform this action!");
         }
 
@@ -199,7 +190,7 @@ public class ActionServiceImpl implements ActionService {
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(buildingDetails.getIdentifier());
+        action.setBuilding(building.getDetails().getIdentifier());
         action.setType(request.getType());
 
         buildingService.saveBuildingAction(action);
@@ -209,7 +200,7 @@ public class ActionServiceImpl implements ActionService {
         if (request.getType().equals(BuildingAction.Type.CONSTRUCT)) {
             clan.changeJunk(- character.getCraftsmanship());
         } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
-            clan.changeJunk(- buildingDetails.getVisitJunkCost());
+            clan.changeJunk(- building.getVisitJunkCost());
         }
 
         // character needs to be marked as busy

@@ -1,11 +1,11 @@
 -- Research details
 INSERT INTO research_details(identifier, value, information_level, cost, image_url) VALUES
     ('FORGERY', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/reserach/forgery.png'),
-    ('BEGGING', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/buildings/begging.png'),
-    ('ARCHITECTURE', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/buildings/architecture.png'),
-    ('COLLECTING', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/buildings/collecting.png'),
-    ('CULINARY', 30, 4, 50, 'https://storage.googleapis.com/withergate-images/buildings/culinary.png'),
-    ('DECORATION', 30, 4, 50, 'https://storage.googleapis.com/withergate-images/buildings/decoration.png');
+    ('BEGGING', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/research/begging.png'),
+    ('ARCHITECTURE', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
+    ('COLLECTING', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
+    ('CULINARY', 30, 4, 50, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
+    ('DECORATION', 30, 4, 50, 'https://storage.googleapis.com/withergate-images/research/decoration.png');
 
 INSERT INTO localized_texts(research_name, lang, text) VALUES
     ('FORGERY', 'en', 'Forgery'),
