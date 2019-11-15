@@ -13,8 +13,9 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.GearDetails;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemDetails;
+import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
@@ -324,12 +325,13 @@ public class LocationServiceTest {
         character.setScavenge(3);
         character.setName("Misty Fox");
 
-        GearDetails details = new GearDetails();
+        ItemDetails details = new ItemDetails();
         details.setBonusType(BonusType.SCAVENGE_FOOD);
         details.setBonus(2);
-        Gear gear = new Gear();
+        details.setItemType(ItemType.GEAR);
+        Item gear = new Item();
         gear.setDetails(details);
-        character.setGear(gear);
+        character.getItems().add(gear);
 
         Trait trait = new Trait();
         TraitDetails traitDetails = new TraitDetails();
@@ -380,12 +382,13 @@ public class LocationServiceTest {
         character.setScavenge(3);
         character.setName("Loud Garry");
 
-        GearDetails details = new GearDetails();
+        ItemDetails details = new ItemDetails();
         details.setBonusType(BonusType.SCAVENGE_JUNK);
         details.setBonus(2);
-        Gear gear = new Gear();
+        details.setItemType(ItemType.GEAR);
+        Item gear = new Item();
         gear.setDetails(details);
-        character.setGear(gear);
+        character.getItems().add(gear);
 
         Trait trait = new Trait();
         TraitDetails traitDetails = new TraitDetails();

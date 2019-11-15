@@ -8,7 +8,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
@@ -195,7 +195,7 @@ public class LocationServiceImpl implements LocationService {
             bonus += character.getTraits().get(TraitName.HOARDER).getDetails().getBonus();
         }
 
-        Gear gear = character.getGear();
+        Item gear = character.getGear();
         if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.junk", new String[] {}, gear.getDetails().getName());

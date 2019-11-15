@@ -1,6 +1,6 @@
 -- Research details
 INSERT INTO research_details(identifier, value, information_level, cost, image_url) VALUES
-    ('FORGERY', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/reserach/forgery.png'),
+    ('FORGERY', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/research/forgery.png'),
     ('BEGGING', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/research/begging.png'),
     ('ARCHITECTURE', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
     ('COLLECTING', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),

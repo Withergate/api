@@ -38,8 +38,7 @@ public class ItemController {
     public ResponseEntity<Void> equipWeapon(Principal principal, @RequestBody EquipRequest request)
             throws InvalidActionException {
 
-        itemService.equipItem(request.getItemId(), request.getItemType(), request.getCharacterId(),
-                Integer.parseInt(principal.getName()));
+        itemService.equipItem(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -55,8 +54,7 @@ public class ItemController {
     public ResponseEntity<Void> unequipWeapon(Principal principal, @RequestBody EquipRequest request)
             throws InvalidActionException {
 
-        itemService.unequipItem(request.getItemId(), request.getItemType(), request.getCharacterId(),
-                Integer.parseInt(principal.getName()));
+        itemService.unequipItem(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

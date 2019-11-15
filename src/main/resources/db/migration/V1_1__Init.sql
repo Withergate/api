@@ -75,63 +75,6 @@ CREATE TABLE research (
     CONSTRAINT research_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
 
--- Items
-DROP TABLE IF EXISTS weapon_details;
-CREATE TABLE item_details (
-    identifier VARCHAR(16) NOT NULL,
-    item_type VARCHAR(16) NOT NULL,
-    image_url VARCHAR(256) NOT NULL,
-    rarity VARCHAR(8) NOT NULL,
-    price INT NOT NULL,
-    prereq INT,
-    bonus INT,
-    bonus_type VARCHAR(16),
-    effect_type VARCHAR(32),
-    weapon_type VARCHAR(16),
-    PRIMARY KEY (identifier)
-);
-
-DROP TABLE IF EXISTS weapons;
-CREATE TABLE weapons (
-    weapon_id INT AUTO_INCREMENT,
-    item_identifier VARCHAR(16),
-    clan_id INT DEFAULT NULL,
-    PRIMARY KEY (weapon_id),
-    CONSTRAINT weapon_weapon_details_fk FOREIGN KEY (item_identifier) REFERENCES item_details (identifier),
-    CONSTRAINT weapon_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
-);
-
-DROP TABLE IF EXISTS consumables;
-CREATE TABLE consumables (
-    consumable_id INT AUTO_INCREMENT,
-    item_identifier VARCHAR(16),
-    clan_id INT DEFAULT NULL,
-    PRIMARY KEY (consumable_id),
-    CONSTRAINT consumable_consumable_details_fk FOREIGN KEY (item_identifier) REFERENCES item_details (identifier),
-    CONSTRAINT consumable_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
-);
-
-DROP TABLE IF EXISTS gear;
-CREATE TABLE gear (
-    gear_id INT AUTO_INCREMENT,
-    item_identifier VARCHAR(16),
-    clan_id INT DEFAULT NULL,
-    PRIMARY KEY (gear_id),
-    CONSTRAINT gear_gear_details_fk FOREIGN KEY (item_identifier) REFERENCES item_details (identifier),
-    CONSTRAINT gear_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
-);
-
-DROP TABLE IF EXISTS outfits;
-CREATE TABLE outfits (
-    outfit_id INT AUTO_INCREMENT,
-    item_identifier VARCHAR(16),
-    clan_id INT DEFAULT NULL,
-    PRIMARY KEY (outfit_id),
-    CONSTRAINT outfit_outfit_details_fk FOREIGN KEY (item_identifier) REFERENCES item_details (identifier),
-    CONSTRAINT outfit_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
-);
-
-
 -- Characters
 DROP TABLE IF EXISTS characters;
 CREATE TABLE characters (
@@ -149,14 +92,36 @@ CREATE TABLE characters (
     scavenge INT NOT NULL,
     craftsmanship INT NOT NULL,
     intellect INT NOT NULL,
-    weapon_id INT DEFAULT NULL,
-    gear_id INT DEFAULT NULL,
-    outfit_id INT DEFAULT NULL,
     PRIMARY KEY (character_id),
-    CONSTRAINT character_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
-    CONSTRAINT character_weapon_fk FOREIGN KEY (weapon_id) REFERENCES weapons (weapon_id),
-    CONSTRAINT character_gear_fk FOREIGN KEY (gear_id) REFERENCES gear (gear_id),
-    CONSTRAINT character_outfit_fk FOREIGN KEY (outfit_id) REFERENCES outfits (outfit_id)
+    CONSTRAINT character_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
+);
+
+-- Items
+DROP TABLE IF EXISTS item_details;
+CREATE TABLE item_details (
+    identifier VARCHAR(16) NOT NULL,
+    item_type VARCHAR(16) NOT NULL,
+    image_url VARCHAR(256) NOT NULL,
+    rarity VARCHAR(8) NOT NULL,
+    price INT NOT NULL,
+    prereq INT DEFAULT 0,
+    bonus INT DEFAULT 0,
+    bonus_type VARCHAR(16),
+    effect_type VARCHAR(32),
+    weapon_type VARCHAR(16),
+    PRIMARY KEY (identifier)
+);
+
+DROP TABLE IF EXISTS items;
+CREATE TABLE items (
+    item_id INT AUTO_INCREMENT,
+    identifier VARCHAR(16),
+    clan_id INT DEFAULT NULL,
+    character_id INT DEFAULT NULL,
+    PRIMARY KEY (item_id),
+    CONSTRAINT item_item_details_fk FOREIGN KEY (identifier) REFERENCES item_details (identifier),
+    CONSTRAINT item_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
+    CONSTRAINT item_character_fk FOREIGN KEY (character_id) REFERENCES characters (character_id)
 );
 
 -- Traits

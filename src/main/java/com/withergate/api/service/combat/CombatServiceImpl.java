@@ -6,7 +6,6 @@ import java.util.List;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.notification.ClanNotification;
@@ -186,9 +185,9 @@ public class CombatServiceImpl implements CombatService {
     }
 
     private void unequipRangedWeapon(Character character, ClanNotification notification) {
-        if (character.getWeapon() != null && character.getWeapon().getDetails().getType().equals(WeaponType.RANGED)) {
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
             try {
-                itemService.unequipItem(character.getWeapon().getId(), ItemType.WEAPON, character.getId(), character.getClan().getId());
+                itemService.unequipItem(character.getWeapon().getId(), character.getId(), character.getClan().getId());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.arena.unequip", new String[]{character.getName()});

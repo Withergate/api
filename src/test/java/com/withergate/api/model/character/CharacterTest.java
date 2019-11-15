@@ -1,7 +1,8 @@
 package com.withergate.api.model.character;
 
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.item.WeaponDetails;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemDetails;
+import com.withergate.api.model.item.ItemType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,11 +15,12 @@ public class CharacterTest {
         character.setName("Rusty Nick");
         character.setCombat(3);
 
-        WeaponDetails details = new WeaponDetails();
-        details.setCombat(1);
-        Weapon weapon = new Weapon();
+        ItemDetails details = new ItemDetails();
+        details.setBonus(1);
+        details.setItemType(ItemType.WEAPON);
+        Item weapon = new Item();
         weapon.setDetails(details);
-        character.setWeapon(weapon);
+        character.getItems().add(weapon);
 
         // when getting total combat
         int result = character.getTotalCombat();

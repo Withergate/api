@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,13 +30,13 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @Setter
-public abstract class ItemDetails {
+public class ItemDetails {
 
     @Id
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price", updatable = false, nullable = false)
     private int price;
 
     @Column(name = "rarity", updatable = false, nullable = false)
@@ -58,6 +59,31 @@ public abstract class ItemDetails {
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
+
+    @Column(name = "bonus", updatable = false)
+    private int bonus;
+
+    @Column(name = "bonus_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private BonusType bonusType;
+
+    @Column(name = "prereq", updatable = false)
+    private int prereq;
+
+    @Column(name = "effect_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private EffectType effectType;
+
+    @Column(name = "weapon_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private WeaponType weaponType;
+
+    /**
+     * Weapon type.
+     */
+    public enum WeaponType {
+        MELEE, RANGED
+    }
 
     /**
      * Item rarity.

@@ -2,11 +2,8 @@ package com.withergate.api.repository.item;
 
 import java.util.List;
 
-import com.withergate.api.model.item.ConsumableDetails;
-import com.withergate.api.model.item.GearDetails;
 import com.withergate.api.model.item.ItemDetails;
-import com.withergate.api.model.item.OutfitDetails;
-import com.withergate.api.model.item.WeaponDetails;
+import com.withergate.api.model.item.ItemType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String> {
 
-    List<WeaponDetails> findWeaponDetailsByRarity(ItemDetails.Rarity rarity);
-
-    List<OutfitDetails> findOutfitDetailsByRarity(ItemDetails.Rarity rarity);
-
-    List<GearDetails> findGearDetailsByRarity(ItemDetails.Rarity rarity);
-
-    List<ConsumableDetails> findConsumableDetailsByRarity(ItemDetails.Rarity rarity);
+    List<ItemDetails> findItemDetailsByRarityAndItemType(ItemDetails.Rarity rarity, ItemType itemType);
 
 }

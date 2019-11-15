@@ -98,12 +98,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
     }
 
     private void handleItemLoss(Clan clan, ClanNotification notification) {
-        List<Item> items = new ArrayList<>();
-
-        items.addAll(clan.getWeapons());
-        items.addAll(clan.getOutfits());
-        items.addAll(clan.getGear());
-        items.addAll(clan.getConsumables());
+        List<Item> items = new ArrayList<>(clan.getItems());
 
         // consider equipped items
         for (Character character : clan.getCharacters()) {
@@ -131,7 +126,8 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         itemService.deleteItem(item);
 
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.item.loss", new String[]{}, item.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.item.loss", new String[]{},
+                item.getDetails().getName());
         notification.getDetails().add(detail);
     }
 

@@ -1,23 +1,11 @@
 package com.withergate.api.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Consumable;
-import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.Outfit;
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.quest.Quest;
-import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
-import com.withergate.api.model.view.Views;
-import com.withergate.api.service.clan.ClanServiceImpl;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,12 +19,22 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.model.building.Building;
+import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.building.BuildingDetails.BuildingName;
+import com.withergate.api.model.character.Character;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
+import com.withergate.api.model.view.Views;
+import com.withergate.api.service.clan.ClanServiceImpl;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -103,19 +101,7 @@ public class Clan {
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
-    private Set<Weapon> weapons;
-
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
-    @JsonView(Views.Internal.class)
-    private Set<Gear> gear;
-
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
-    @JsonView(Views.Internal.class)
-    private Set<Outfit> outfits;
-
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
-    @JsonView(Views.Internal.class)
-    private Set<Consumable> consumables;
+    private Set<Item> items;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapKeyColumn(name = "identifier")
@@ -147,10 +133,7 @@ public class Clan {
         characters = new HashSet<>();
         buildings = new EnumMap<>(BuildingName.class);
         research = new EnumMap<>(ResearchName.class);
-        weapons = new HashSet<>();
-        outfits = new HashSet<>();
-        gear = new HashSet<>();
-        consumables = new HashSet<>();
+        items = new HashSet<>();
     }
 
     /**

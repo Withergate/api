@@ -6,7 +6,6 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.item.Item;
-import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.PublishOfferRequest;
@@ -93,20 +92,19 @@ public class TradeServiceImpl implements TradeService {
     @Transactional
     @Override
     public void publishMarketOffer(PublishOfferRequest request, int clanId) throws InvalidActionException {
-        Item item = itemService.loadItemByType(request.getItemId(), request.getType());
-        ItemDetails details = itemService.loadItemDetailsByType(request.getItemId(), request.getType());
+        Item item = itemService.loadItem(request.getItemId());
 
         // check validity
         if (item == null || item.getClan().getId() != clanId) {
             throw new InvalidActionException("This item does not belong to your clan!");
         }
-        if (request.getPrice() < details.getPrice()) {
+        if (request.getPrice() < item.getDetails().getPrice()) {
             throw new InvalidActionException("Price is too low!");
         }
 
         // create market offer
         MarketOffer offer = new MarketOffer();
-        offer.setDetails(details);
+        offer.setDetails(item.getDetails());
         offer.setSeller(item.getClan());
         offer.setItemId(request.getItemId());
         offer.setPrice(request.getPrice());
@@ -131,7 +129,7 @@ public class TradeServiceImpl implements TradeService {
         }
 
         // return item to the seller
-        Item item = itemService.loadItemByType(offer.get().getItemId(), offer.get().getDetails().getItemType());
+        Item item = itemService.loadItem(offer.get().getItemId());
         item.setClan(offer.get().getSeller());
 
         // delete the offer
@@ -194,7 +192,7 @@ public class TradeServiceImpl implements TradeService {
                 new String[]{offer.getBuyer().getName()}, offer.getDetails().getName());
 
         // transfer item
-        Item item = itemService.loadItemByType(offer.getItemId(), offer.getDetails().getItemType());
+        Item item = itemService.loadItem(offer.getItemId());
         item.setClan(offer.getBuyer());
 
         // update notification

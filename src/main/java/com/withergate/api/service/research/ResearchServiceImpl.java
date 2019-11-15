@@ -10,7 +10,7 @@ import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.research.Research;
@@ -119,7 +119,7 @@ public class ResearchServiceImpl implements ResearchService {
         }
 
         // gear
-        Gear gear = character.getGear();
+        Item gear = character.getGear();
         if (gear != null && gear.getDetails().getBonusType().equals(BonusType.RESEARCH)) {
             bonus += gear.getDetails().getBonus();
             NotificationDetail detail = new NotificationDetail();

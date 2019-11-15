@@ -15,7 +15,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -204,7 +204,7 @@ public class BuildingServiceImpl implements BuildingService {
             notification.getDetails().add(detail);
         }
 
-        Gear gear = character.getGear();
+        Item gear = character.getGear();
         if (bonusType.equals(BonusType.CONSTRUCT) && gear != null && gear.getDetails().getBonusType().equals(BonusType.CONSTRUCT)) {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());

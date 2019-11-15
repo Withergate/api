@@ -16,6 +16,7 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterSolution;
+import com.withergate.api.model.item.ItemDetails.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
@@ -109,6 +110,10 @@ public class ActionServiceImpl implements ActionService {
         if (clan.isArena()) {
             throw new InvalidActionException("You already have selected a character to enter arena this turn!");
         }
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
+            throw new InvalidActionException("Ranged weapons are not allowed in the arena.");
+        }
+
         clan.setArena(true);
 
         ArenaAction action = new ArenaAction();
