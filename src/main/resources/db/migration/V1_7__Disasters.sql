@@ -27,8 +27,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.mutants.s1', 'd.mutants', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.mutants.s2', 'd.mutants', 'CRAFTSMANSHIP', 5, 10, 5, 0, 0),
-    ('d.mutants.s3', 'd.mutants', 'COMBAT', 4, 12, 0, 0, 0),
+    ('d.mutants.s2', 'd.mutants', 'CRAFTSMANSHIP', 6, 10, 5, 0, 0),
+    ('d.mutants.s3', 'd.mutants', 'COMBAT', 5, 12, 0, 0, 0),
     ('d.mutants.s4', 'd.mutants', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
@@ -78,7 +78,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.inquisition.s1', 'd.inquisition', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.inquisition.s2', 'd.inquisition', 'INTELLECT', 5, 10, 0, 0, 0),
+    ('d.inquisition.s2', 'd.inquisition', 'INTELLECT', 7, 10, 0, 0, 0),
     ('d.inquisition.s3', 'd.inquisition', 'CRAFTSMANSHIP', 6, 12, 10, 0, 0),
     ('d.inquisition.s4', 'd.inquisition', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
@@ -131,7 +131,7 @@ INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, 
     ('d.refugees.s1', 'd.refugees', 'AUTOMATIC', 0, 5, 0, 0, 0),
     ('d.refugees.s2', 'd.refugees', 'INTELLECT', 7, 10, 0, 0, 0),
     ('d.refugees.s3', 'd.refugees', 'AUTOMATIC', 0, 12, 0, 0, 30),
-    ('d.refugees.s4', 'd.refugees', 'COMBAT', 4, 12, 0, 0, 0);
+    ('d.refugees.s4', 'd.refugees', 'COMBAT', 4, 10, 0, 0, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.refugees.s1', 'en', 'Let them in... but keep an eye on them!'),
@@ -232,8 +232,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.clans.s1', 'd.clans', 'AUTOMATIC', 0, 3, 0, 0, 0),
-    ('d.clans.s2', 'd.clans', 'INTELLECT', 7, 6, 0, 0, 0),
-    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 5, 6, 20, 0, 0),
+    ('d.clans.s2', 'd.clans', 'INTELLECT', 8, 6, 0, 0, 0),
+    ('d.clans.s3', 'd.clans', 'CRAFTSMANSHIP', 6, 6, 10, 0, 0),
     ('d.clans.s4', 'd.clans', 'COMBAT', 6, 8, 0, 0, 0),
     ('d.clans.s5', 'd.clans', 'AUTOMATIC', 0, 15, 0, 150, 0);
 
@@ -258,5 +258,5 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.clans.s3', 'cs', 'Ti zručnější z nás mohou naše oděvy upravit tak, abychom vypadali jako opravdoví pánové Pustiny. Úspěch záleží na hodnotě zručnosti postavy.'),
     ('d.clans.s4', 'en', 'There are rumors in the wasteland that our clan is incapable and weak. A little bird told us about the source of these lies. We should find them and teach them some manners! This action will trigger a combat and may lead to an injury, death and failure of the character.'),
     ('d.clans.s4', 'cs', 'V Pustině se šíří řeči, že náš klan je neschopný. Malý ptáček nám naštěstí pověděl, kdo je zdrojem těchto lží a pomluv. Pojďme mu ukázat, kdo je tu pánem. Akce vyvolá boj s rizikem zranění či smrti a rovněž neúspěchu.'),
-    ('d.clans.s5', 'en', 'Zátky řeší vše... bude jich ale potřeba opravdu hodně, protože nejsme jediní, kdo platí.'),
-    ('d.clans.s5', 'cs', 'Everything can be bought with caps. But we will need a lot of them since we are not the only ones paying.');
+    ('d.clans.s5', 'en', 'Everything can be bought with caps. But we will need a lot of them since we are not the only ones paying.'),
+    ('d.clans.s5', 'cs', 'Zátky řeší vše... bude jich ale potřeba opravdu hodně, protože nejsme jediní, kdo platí.');
