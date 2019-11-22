@@ -45,14 +45,14 @@ public class TurnScheduler {
         // assign default actions
         actionService.assignDefaultActions();
 
-        // process location actions
-        actionService.processLocationActions(currentTurn.getTurnId());
+        // process research actions
+        actionService.processResearchActions(currentTurn.getTurnId());
 
         // process building actions
         actionService.processBuildingActions(currentTurn.getTurnId());
 
-        // process research actions
-        actionService.processResearchActions(currentTurn.getTurnId());
+        // process location actions
+        actionService.processLocationActions(currentTurn.getTurnId());
 
         // process quest actions
         actionService.processQuestActions(currentTurn.getTurnId());
