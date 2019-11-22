@@ -66,8 +66,6 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidActionException("Item with this ID does not support equipping!");
         }
 
-        Clan clan = item.getClan();
-
         // check clan
         if (item.getClan() == null || item.getClan().getId() != clanId) {
             log.error("Item with ID {} is not available in the clan storage of clan ID {}!", itemId, clanId);
@@ -80,8 +78,8 @@ public class ItemServiceImpl implements ItemService {
 
         item.setCharacter(character);
         character.getItems().add(item);
+        item.getClan().getItems().remove(item);
         item.setClan(null);
-        clan.getItems().remove(item);
     }
 
     @Transactional
@@ -89,7 +87,6 @@ public class ItemServiceImpl implements ItemService {
     public void unequipItem(int itemId, int characterId, int clanId) throws InvalidActionException {
         Item item = itemRepository.getOne(itemId);
         Character character = characterRepository.getOne(characterId);
-        Clan clan = clanRepository.getOne(clanId);
 
         // check clan and character
         if (character.getId() != characterId || character.getClan().getId() != clanId) {
@@ -106,8 +103,8 @@ public class ItemServiceImpl implements ItemService {
         // process unequip action
         item.setCharacter(null);
         character.getItems().remove(item);
-        item.setClan(clan);
-        clan.getItems().add(item);
+        item.setClan(character.getClan());
+        character.getClan().getItems().add(item);
     }
 
     @Override
