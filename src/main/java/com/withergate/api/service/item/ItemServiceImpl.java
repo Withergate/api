@@ -1,7 +1,5 @@
 package com.withergate.api.service.item;
 
-import java.util.List;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -13,7 +11,6 @@ import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
-import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.item.ItemDetailsRepository;
 import com.withergate.api.repository.item.ItemRepository;
 import com.withergate.api.service.RandomService;
@@ -24,6 +21,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Item service.
@@ -39,7 +38,6 @@ public class ItemServiceImpl implements ItemService {
     private static final int RARE_ITEM_CHANCE = 20;
 
     private final CharacterRepository characterRepository;
-    private final ClanRepository clanRepository;
     private final ItemDetailsRepository itemDetailsRepository;
     private final ItemRepository itemRepository;
     private final RandomService randomService;
@@ -60,10 +58,9 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidActionException("Character is already holding an item of this type.!");
         }
 
-        // load item
         if (item.getDetails().getItemType().equals(ItemType.CONSUMABLE)) {
-            log.error("Item with ID {} does not support equipping.!", itemId);
-            throw new InvalidActionException("Item with this ID does not support equipping!");
+            useConsumable(item, character);
+            return;
         }
 
         // check clan
@@ -161,17 +158,10 @@ public class ItemServiceImpl implements ItemService {
         notification.getDetails().add(detail);
     }
 
-    @Transactional
-    @Override
-    public void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException {
-        log.debug("Using consumable {} with character {}", consumableId, characterId);
+    private void useConsumable(Item consumable, Character character) throws InvalidActionException {
+        log.debug("Using consumable {} with character {}", consumable.getId(), character.getId());
 
-        // load character
-        Character character = characterRepository.getOne(characterId);
-
-        // load consumable
-        Item consumable = itemRepository.getOne(consumableId);
-        if (consumable.getClan().getId() != clanId) {
+        if (consumable.getClan().getId() != character.getClan().getId()) {
             throw new InvalidActionException("Consumable not found or doesn't belong to your clan!");
         }
 

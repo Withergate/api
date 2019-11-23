@@ -1,8 +1,5 @@
 package com.withergate.api.controller.item;
 
-import java.security.Principal;
-
-import com.withergate.api.model.request.ConsumableRequest;
 import com.withergate.api.model.request.EquipRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
@@ -13,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 /**
  * Item controller.
@@ -55,22 +54,6 @@ public class ItemController {
             throws InvalidActionException {
 
         itemService.unequipItem(request.getItemId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    /**
-     * Handles item use action.
-     *
-     * @param principal the principal
-     * @param request the usage request
-     * @return empty response body
-     * @throws InvalidActionException invalid action
-     */
-    @PostMapping("/items/consumables/use")
-    public ResponseEntity<Void> useConsumable(Principal principal, @RequestBody ConsumableRequest request)
-            throws InvalidActionException {
-
-        itemService.useConsumable(request.getConsumableId(), request.getCharacterId(), Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

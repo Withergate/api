@@ -61,16 +61,6 @@ public interface ItemService {
     void generateCraftableItem(Character character, int buildingLevel, int bonus, ClanNotification notification, ItemType type);
 
     /**
-     * Use the consumable with the provided character.
-     *
-     * @param consumableId the consumable ID
-     * @param characterId  the character ID
-     * @param clanId       the clan ID
-     * @throws InvalidActionException invalid action
-     */
-    void useConsumable(int consumableId, int characterId, int clanId) throws InvalidActionException;
-
-    /**
      * Deletes the provided item.
      *
      * @param item the item to be deleted

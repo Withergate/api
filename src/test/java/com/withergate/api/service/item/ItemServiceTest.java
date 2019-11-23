@@ -1,10 +1,5 @@
 package com.withergate.api.service.item;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
@@ -15,7 +10,6 @@ import com.withergate.api.model.item.ItemDetails.Rarity;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.clan.CharacterRepository;
-import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.item.ItemDetailsRepository;
 import com.withergate.api.repository.item.ItemRepository;
 import com.withergate.api.service.RandomService;
@@ -30,6 +24,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -39,9 +38,6 @@ public class ItemServiceTest {
 
     @Mock
     private CharacterRepository characterRepository;
-
-    @Mock
-    private ClanRepository clanRepository;
 
     @Mock
     private ItemDetailsRepository itemDetailsRepository;
@@ -59,7 +55,7 @@ public class ItemServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        itemService = new ItemServiceImpl(characterRepository, clanRepository, itemDetailsRepository,
+        itemService = new ItemServiceImpl(characterRepository, itemDetailsRepository,
                 itemRepository, randomService, notificationService);
     }
 
@@ -91,7 +87,6 @@ public class ItemServiceTest {
         // when equipping weapon
         Mockito.when(itemRepository.getOne(3)).thenReturn(weapon);
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
-        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.equipItem(3,2, 1);
 
@@ -131,7 +126,6 @@ public class ItemServiceTest {
         // when unequipping weapon
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
         Mockito.when(itemRepository.getOne(3)).thenReturn(weapon);
-        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.unequipItem(3,2, 1);
 
@@ -169,7 +163,6 @@ public class ItemServiceTest {
         // when equipping weapon
         Mockito.when(itemRepository.getOne(3)).thenReturn(weapon);
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
-        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.equipItem(3,2, 1);
 
@@ -204,7 +197,6 @@ public class ItemServiceTest {
         // when equipping outfit
         Mockito.when(itemRepository.getOne(3)).thenReturn(outfit);
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
-        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.equipItem(3,2, 1);
 
@@ -244,7 +236,6 @@ public class ItemServiceTest {
         // when unequipping outfit
         Mockito.when(characterRepository.getOne(2)).thenReturn(character);
         Mockito.when(itemRepository.getOne(3)).thenReturn(outfit);
-        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         itemService.unequipItem(3,2, 1);
 
@@ -412,7 +403,7 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.getOne(1)).thenReturn(consumable);
 
         // when using consumable
-        itemService.useConsumable(1, 1, 1);
+        itemService.equipItem(1, 1, 1);
 
         // then verify character healed and consumable deleted
         Assert.assertEquals(7, character.getHitpoints());
@@ -446,7 +437,7 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.getOne(1)).thenReturn(consumable);
 
         // when using consumable
-        itemService.useConsumable(1, 1, 1);
+        itemService.equipItem(1, 1, 1);
 
         // then verify character gained experience and consumable deleted
         Assert.assertEquals(5, character.getExperience());
@@ -479,7 +470,7 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.getOne(1)).thenReturn(consumable);
 
         // when using consumable
-        itemService.useConsumable(1, 1, 1);
+        itemService.equipItem(1, 1, 1);
 
         // then verify character combat increased and consumable deleted
         Assert.assertEquals(6, character.getCombat());
@@ -512,7 +503,7 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.getOne(1)).thenReturn(consumable);
 
         // when using consumable
-        itemService.useConsumable(1, 1, 1);
+        itemService.equipItem(1, 1, 1);
 
         // then verify character scavenge increased and consumable deleted
         Assert.assertEquals(6, character.getScavenge());
@@ -545,7 +536,7 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.getOne(1)).thenReturn(consumable);
 
         // when using consumable
-        itemService.useConsumable(1, 1, 1);
+        itemService.equipItem(1, 1, 1);
 
         // then verify character craftsmanship increased and consumable deleted
         Assert.assertEquals(6, character.getCraftsmanship());
@@ -578,7 +569,7 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.getOne(1)).thenReturn(consumable);
 
         // when using consumable
-        itemService.useConsumable(1, 1, 1);
+        itemService.equipItem(1, 1, 1);
 
         // then verify character intellect increased and consumable deleted
         Assert.assertEquals(6, character.getIntellect());
