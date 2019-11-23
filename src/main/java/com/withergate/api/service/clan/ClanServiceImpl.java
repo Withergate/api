@@ -15,24 +15,22 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
-import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.clan.ClanRepository;
-import com.withergate.api.service.RandomService;
-import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.research.ResearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -67,11 +65,9 @@ public class ClanServiceImpl implements ClanService {
     private final NotificationService notificationService;
     private final QuestService questService;
     private final BuildingService buildingService;
+    private final ResearchService researchService;
     private final TavernService tavernService;
-    private final RandomService randomService;
-    private final TraitService traitService;
     private final GameProperties gameProperties;
-    private final TurnRepository turnRepository;
 
     @Override
     public Clan getClan(int clanId) {
@@ -95,7 +91,7 @@ public class ClanServiceImpl implements ClanService {
 
     @Transactional
     @Override
-    public Clan createClan(int clanId, ClanRequest clanRequest) throws EntityConflictException, ValidationException {
+    public Clan createClan(int clanId, ClanRequest clanRequest, int turn) throws EntityConflictException, ValidationException {
         // validate clan name
         if (clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
             throw new ValidationException("Clan name must be between 6 and 30 characters long.");
@@ -113,18 +109,15 @@ public class ClanServiceImpl implements ClanService {
             throw new EntityConflictException("Clan with the provided name already exists.");
         }
 
-        // get current turn
-        Turn turn = turnRepository.findFirstByOrderByTurnIdDesc();
-
         // Create clan with initial resources.
         Clan clan = new Clan();
         clan.setId(clanId);
         clan.setName(clanRequest.getName());
         clan.setLastActivity(LocalDateTime.now());
         clan.setFame(0);
-        clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn.getTurnId()));
-        clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn.getTurnId()));
-        clan.setFood(INITIAL_FOOD + getStartingResourceBonus(turn.getTurnId()));
+        clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn));
+        clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn));
+        clan.setFood(INITIAL_FOOD + getStartingResourceBonus(turn));
         clan.setInformation(0);
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
@@ -154,6 +147,9 @@ public class ClanServiceImpl implements ClanService {
             clan.getBuildings().put(details.getIdentifier(), building);
         }
 
+        // assign research
+        researchService.assignResearch(clan);
+
         clan = clanRepository.save(clan);
 
         // prepare tavern offers
@@ -181,6 +177,8 @@ public class ClanServiceImpl implements ClanService {
     @Override
     public void performClanTurnUpdates(int turnId) {
         for (Clan clan : getAllClans()) {
+            log.debug("-> Performing turn updates for clan {}.", clan.getId());
+
             // delete dead characters
             deleteDeadCharacters(clan);
 
@@ -202,11 +200,17 @@ public class ClanServiceImpl implements ClanService {
             // check information level
             checkInformationLevel(turnId, clan);
 
+            // perform end-turn research updates
+            performResearchEndTurnUpdates(turnId, clan);
+
             // mark characters as ready
             markCharactersReady(clan);
 
             // reset arena
             clan.setArena(false);
+
+            // probably redundant
+            clanRepository.saveAndFlush(clan);
         }
     }
 
@@ -246,8 +250,6 @@ public class ClanServiceImpl implements ClanService {
 
         ClanNotification notification = new ClanNotification(turnId, clan.getId());
         notification.setHeader(clan.getName());
-        notification.setFoodIncome(0);
-        notification.setInjury(0);
         notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[] {});
 
         Iterator<Character> iterator = clan.getCharacters().iterator();
@@ -270,21 +272,21 @@ public class ClanServiceImpl implements ClanService {
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
                         new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFoodIncome(notification.getFoodIncome() - gameProperties.getFoodConsumption());
+                notification.changeFood(- gameProperties.getFoodConsumption());
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
-                character.setHitpoints(character.getHitpoints() - gameProperties.getStarvationInjury());
+                character.changeHitpoints(- gameProperties.getStarvationInjury());
                 character.setState(CharacterState.STARVING);
 
                 // lose fame
-                clan.setFame(clan.getFame() - gameProperties.getStarvationFame());
+                clan.changeFame(- gameProperties.getStarvationFame());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.setFameIncome(notification.getFameIncome() - gameProperties.getStarvationFame());
-                notification.setInjury(notification.getInjury() + gameProperties.getStarvationInjury());
+                notification.changeFame(- gameProperties.getStarvationFame());
+                notification.changeInjury(gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
                     log.debug("Character {} died of starvation.", character.getName());
@@ -352,10 +354,10 @@ public class ClanServiceImpl implements ClanService {
             }
 
             int healing = Math.min(points, hitpointsMissing);
-            character.setHitpoints(character.getHitpoints() + healing);
+            character.changeHitpoints(healing);
 
             notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
-            notification.setHealing(healing);
+            notification.changeHealing(healing);
 
             notificationService.save(notification);
         }
@@ -365,42 +367,19 @@ public class ClanServiceImpl implements ClanService {
         for (Character character : clan.getCharacters()) {
             if (character.getExperience() >= character.getNextLevelExperience()) {
                 // level up
-                log.debug("Character {} leveled up.", character.getName());
-
-                character.setExperience(character.getExperience() - character.getNextLevelExperience());
-                int hpIncrease = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                character.setMaxHitpoints(character.getMaxHitpoints() + hpIncrease);
-                character.setHitpoints(character.getHitpoints() + hpIncrease);
-                character.setLevel(character.getLevel() + 1);
-
-                // notification
-                ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
-                notification.setHeader(character.getName());
-                notification.setImageUrl(character.getImageUrl());
-                notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[] {character.getName()});
-
-                // add random trait to character
-                Trait trait = traitService.getRandomTrait(character);
-                character.getTraits().put(trait.getDetails().getIdentifier(), trait);
-                log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
-
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
-                        new String[] {character.getName()});
-                notification.getDetails().add(detail);
-
-                // save
-                notificationService.save(notification);
+                characterService.increaseCharacterLevel(character, turnId);
             }
         }
     }
 
     private void checkInformationLevel(int turnId, Clan clan) {
-        log.debug("Increasing clan's information level for clan: {}", clan.getName());
+        log.debug("Clan {} has information level {}.", clan.getId(), clan.getInformationLevel());
 
         // handle next level
         if (clan.getInformation() >= clan.getNextLevelInformation()) {
-            clan.setInformation(clan.getInformation() - clan.getNextLevelInformation());
+            log.debug("Increasing clan's information level.");
+
+            clan.changeInformation(- clan.getNextLevelInformation());
             clan.setInformationLevel(clan.getInformationLevel() + 1);
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
@@ -410,8 +389,56 @@ public class ClanServiceImpl implements ClanService {
             // assign quests
             questService.assignQuests(clan, notification);
 
+            // notify about new research
+            notifyAvailableResearch(clan, notification);
+
             // save notification
             notificationService.save(notification);
+        }
+    }
+
+    private void performResearchEndTurnUpdates(int turnId, Clan clan) {
+        log.debug("Performing end turn research updates");
+
+        Research culinary = clan.getResearch().get(ResearchName.CULINARY);
+        if (culinary != null && culinary.isCompleted()) {
+            int fame = clan.getFood() / culinary.getDetails().getValue();
+            if (fame > 0) {
+                ClanNotification notification = new ClanNotification(turnId, clan.getId());
+                notification.setHeader(clan.getName());
+
+                clan.changeFame(fame);
+                notification.changeFame(fame);
+
+                notificationService.addLocalizedTexts(notification.getText(), "research.culinary", new String[]{});
+                notificationService.save(notification);
+            }
+        }
+
+        Research decoration = clan.getResearch().get(ResearchName.DECORATION);
+        if (decoration != null && decoration.isCompleted()) {
+            int fame = clan.getJunk() / decoration.getDetails().getValue();
+            if (fame > 0) {
+                ClanNotification notification = new ClanNotification(turnId, clan.getId());
+                notification.setHeader(clan.getName());
+
+                clan.changeFame(fame);
+                notification.changeFame(fame);
+
+                notificationService.addLocalizedTexts(notification.getText(), "research.decoration", new String[]{});
+                notificationService.save(notification);
+            }
+        }
+    }
+
+    private void notifyAvailableResearch(Clan clan, ClanNotification notification) {
+        for (Research research : clan.getResearch().values()) {
+            if (research.getDetails().getInformationLevel() == clan.getInformationLevel()) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "research.new", new String[]{},
+                        research.getDetails().getName());
+                notification.getDetails().add(detail);
+            }
         }
     }
 

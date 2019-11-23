@@ -6,5 +6,5 @@ package com.withergate.api.model.encounter;
  * @author Martin Myslik
  */
 public enum RewardType {
-    CAPS, JUNK, CHARACTER, ITEM, INFORMATION
+    CAPS, JUNK, FOOD, ITEM, INFORMATION
 }

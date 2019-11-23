@@ -6,24 +6,15 @@ import java.util.Optional;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
-import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.GearDetails;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
-import com.withergate.api.model.item.Outfit;
-import com.withergate.api.model.item.OutfitDetails;
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
-import com.withergate.api.repository.action.MarketTradeActionRepository;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.repository.trade.MarketOfferRepository;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -40,15 +31,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import static com.withergate.api.model.trade.MarketOffer.State.SOLD;
+
 public class TradeServiceTest {
 
     private TradeServiceImpl tradeService;
 
     @Mock
     private ResourceTradeActionRepository resourceTradeActionRepository;
-
-    @Mock
-    private MarketTradeActionRepository marketTradeActionRepository;
 
     @Mock
     private NotificationService notificationService;
@@ -63,7 +53,7 @@ public class TradeServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        tradeService = new TradeServiceImpl(resourceTradeActionRepository, marketTradeActionRepository, notificationService,
+        tradeService = new TradeServiceImpl(resourceTradeActionRepository, notificationService,
                 itemService, marketOfferRepository);
     }
 
@@ -81,21 +71,6 @@ public class TradeServiceTest {
 
         // then verify action saved
         Mockito.verify(resourceTradeActionRepository).save(action);
-    }
-
-    @Test
-    public void testGivenMarketTradeActionWhenSavingActionThenVerifyActionSaved() {
-        // given action
-        MarketTradeAction action = new MarketTradeAction();
-        action.setOffer(new MarketOffer());
-        action.setCharacter(new Character());
-        action.setState(ActionState.PENDING);
-
-        // when saving action
-        tradeService.saveMarketTradeAction(action);
-
-        // then verify action saved
-        Mockito.verify(marketTradeActionRepository).save(action);
     }
 
     @Test
@@ -140,22 +115,20 @@ public class TradeServiceTest {
         Clan clan = new Clan();
         clan.setId(2);
 
-        OutfitDetails details = new OutfitDetails();
-        details.setArmor(1);
+        ItemDetails details = new ItemDetails();
+        details.setBonus(1);
         details.setIdentifier("RAGS");
         details.setPrice(20);
-        Outfit outfit = new Outfit();
+        Item outfit = new Item();
         outfit.setId(1);
         outfit.setDetails(details);
         outfit.setClan(clan);
 
-        Mockito.when(itemService.loadItemByType(1, ItemType.OUTFIT)).thenReturn(outfit);
-        Mockito.when(itemService.loadItemDetailsByType(1, ItemType.OUTFIT)).thenReturn(details);
+        Mockito.when(itemService.loadItem(1)).thenReturn(outfit);
 
         PublishOfferRequest request = new PublishOfferRequest();
         request.setItemId(1);
         request.setPrice(20);
-        request.setType(ItemType.OUTFIT);
 
         // when publishing offer
         tradeService.publishMarketOffer(request, 2);
@@ -174,22 +147,20 @@ public class TradeServiceTest {
         Clan clan = new Clan();
         clan.setId(3);
 
-        OutfitDetails details = new OutfitDetails();
-        details.setArmor(1);
+        ItemDetails details = new ItemDetails();
+        details.setBonus(1);
         details.setIdentifier("RAGS");
         details.setPrice(20);
-        Outfit outfit = new Outfit();
+        Item outfit = new Item();
         outfit.setId(1);
         outfit.setDetails(details);
         outfit.setClan(clan);
 
-        Mockito.when(itemService.loadItemByType(1, ItemType.OUTFIT)).thenReturn(outfit);
-        Mockito.when(itemService.loadItemDetailsByType(1, ItemType.OUTFIT)).thenReturn(details);
+        Mockito.when(itemService.loadItem(1)).thenReturn(outfit);
 
         PublishOfferRequest request = new PublishOfferRequest();
         request.setItemId(1);
         request.setPrice(20);
-        request.setType(ItemType.OUTFIT);
 
         // when publishing offer
         tradeService.publishMarketOffer(request, 2);
@@ -201,22 +172,20 @@ public class TradeServiceTest {
         Clan clan = new Clan();
         clan.setId(2);
 
-        OutfitDetails details = new OutfitDetails();
-        details.setArmor(1);
+        ItemDetails details = new ItemDetails();
+        details.setBonus(1);
         details.setIdentifier("RAGS");
         details.setPrice(20);
-        Outfit outfit = new Outfit();
+        Item outfit = new Item();
         outfit.setId(1);
         outfit.setDetails(details);
         outfit.setClan(clan);
 
-        Mockito.when(itemService.loadItemByType(1, ItemType.OUTFIT)).thenReturn(outfit);
-        Mockito.when(itemService.loadItemDetailsByType(1, ItemType.OUTFIT)).thenReturn(details);
+        Mockito.when(itemService.loadItem(1)).thenReturn(outfit);
 
         PublishOfferRequest request = new PublishOfferRequest();
         request.setItemId(1);
         request.setPrice(10);
-        request.setType(ItemType.OUTFIT);
 
         // when publishing offer
         tradeService.publishMarketOffer(request, 2);
@@ -225,14 +194,14 @@ public class TradeServiceTest {
     @Test
     public void givenMarketOfferWhenDeletingOfferThenVerifyOfferDeletedAndItemReturned() throws Exception {
         // given market offer
-        Gear gear = new Gear();
+        Item gear = new Item();
         gear.setClan(null);
         gear.setId(2);
-        GearDetails details = new GearDetails();
+        ItemDetails details = new ItemDetails();
         details.setItemType(ItemType.GEAR);
         gear.setDetails(details);
 
-        Mockito.when(itemService.loadItemByType(2, ItemType.GEAR)).thenReturn(gear);
+        Mockito.when(itemService.loadItem(2)).thenReturn(gear);
 
         Clan clan = new Clan();
         clan.setId(3);
@@ -257,14 +226,14 @@ public class TradeServiceTest {
     @Test(expected = InvalidActionException.class)
     public void givenMarketOfferFromDifferentClanWhenDeletingOfferThenExpectException() throws Exception {
         // given market offer
-        Gear gear = new Gear();
+        Item gear = new Item();
         gear.setClan(null);
         gear.setId(2);
-        GearDetails details = new GearDetails();
+        ItemDetails details = new ItemDetails();
         details.setItemType(ItemType.GEAR);
         gear.setDetails(details);
 
-        Mockito.when(itemService.loadItemByType(2, ItemType.GEAR)).thenReturn(gear);
+        Mockito.when(itemService.loadItem(2)).thenReturn(gear);
 
         Clan clan = new Clan();
         clan.setId(4);
@@ -283,15 +252,15 @@ public class TradeServiceTest {
     }
 
     @Test
-    public void givenMarketOfferWhenProcessingMarketOfferActionThenVerifyOfferHandled() {
+    public void givenMarketOfferWhenProcessingTradeThenVerifyOfferHandled() {
         // given market offer
-        Weapon weapon = new Weapon();
+        Item weapon = new Item();
         weapon.setId(1);
         weapon.setClan(null);
-        WeaponDetails details = new WeaponDetails();
+        ItemDetails details = new ItemDetails();
         details.setItemType(ItemType.WEAPON);
         weapon.setDetails(details);
-        Mockito.when(itemService.loadItemByType(1, ItemType.WEAPON)).thenReturn(weapon);
+        Mockito.when(itemService.loadItem(1)).thenReturn(weapon);
 
         Clan seller = new Clan();
         seller.setId(3);
@@ -304,77 +273,20 @@ public class TradeServiceTest {
         offer.setId(2);
         offer.setItemId(1);
         offer.setDetails(details);
-        offer.setState(State.SOLD);
+        offer.setState(State.PENDING);
         offer.setPrice(20);
         offer.setSeller(seller);
+        offer.setBuyer(buyer);
 
-        Character character = new Character();
-        character.setClan(buyer);
+        Mockito.when(marketOfferRepository.findAllByState(State.PENDING)).thenReturn(List.of(offer));
 
-        MarketTradeAction action = new MarketTradeAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setOffer(offer);
-        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
-
-        // when processing trade actions
+        // when processing trade
         tradeService.processMarketTradeActions(1);
 
         // then verify offer handled
         Assert.assertEquals(buyer, weapon.getClan());
         Assert.assertEquals(30, seller.getCaps());
-        Assert.assertEquals(ActionState.COMPLETED, action.getState());
-    }
-
-    @Test
-    public void givenCharacterMerchantWhenProcessingMarketOfferActionThenVerifyCapsReceived() {
-        // given market offer and character merchant
-        Weapon weapon = new Weapon();
-        weapon.setId(1);
-        weapon.setClan(null);
-        WeaponDetails details = new WeaponDetails();
-        details.setItemType(ItemType.WEAPON);
-        weapon.setDetails(details);
-        Mockito.when(itemService.loadItemByType(1, ItemType.WEAPON)).thenReturn(weapon);
-
-        Clan seller = new Clan();
-        seller.setId(3);
-        seller.setCaps(10);
-
-        Clan buyer = new Clan();
-        buyer.setId(4);
-        buyer.setCaps(10);
-
-        MarketOffer offer = new MarketOffer();
-        offer.setId(2);
-        offer.setItemId(1);
-        offer.setDetails(details);
-        offer.setState(State.SOLD);
-        offer.setPrice(20);
-        offer.setSeller(seller);
-
-        Character character = new Character();
-        character.setClan(buyer);
-        TraitDetails traitDetails = new TraitDetails();
-        traitDetails.setIdentifier(TraitName.MERCHANT);
-        traitDetails.setBonus(5);
-        Trait trait = new Trait();
-        trait.setDetails(traitDetails);
-        character.getTraits().put(TraitName.MERCHANT, trait);
-
-        MarketTradeAction action = new MarketTradeAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setOffer(offer);
-        Mockito.when(marketTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
-
-        // when processing trade actions
-        tradeService.processMarketTradeActions(1);
-
-        // then verify caps added to buyer
-        Assert.assertEquals(buyer, weapon.getClan());
-        Assert.assertEquals(15, buyer.getCaps());
-        Assert.assertEquals(ActionState.COMPLETED, action.getState());
+        Assert.assertEquals(SOLD, offer.getState());
     }
 
     @Test
@@ -439,14 +351,14 @@ public class TradeServiceTest {
     @Test
     public void givenMarketOfferWhenPriceIsMarketPriceThenVerifyItemPurchasedByComputer() {
         // given market offer
-        Weapon weapon = new Weapon();
+        Item weapon = new Item();
         weapon.setId(1);
         weapon.setClan(null);
-        WeaponDetails details = new WeaponDetails();
+        ItemDetails details = new ItemDetails();
         details.setItemType(ItemType.WEAPON);
         details.setPrice(20);
         weapon.setDetails(details);
-        Mockito.when(itemService.loadItemByType(1, ItemType.WEAPON)).thenReturn(weapon);
+        Mockito.when(itemService.loadItem(1)).thenReturn(weapon);
 
         Clan seller = new Clan();
         seller.setId(3);

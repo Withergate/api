@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.encounter.Encounter;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
@@ -12,8 +11,6 @@ import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.EncounterRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
@@ -31,12 +28,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EncounterServiceImpl implements EncounterService {
 
+    private static final int BASE_REWARD = 3;
+
     private final EncounterRepository encounterRepository;
     private final ItemService itemService;
     private final RandomService randomService;
     private final CombatService combatService;
-    private final ClanService clanService;
-    private final CharacterService characterService;
     private final NotificationService notificationService;
 
     @Override
@@ -120,42 +117,32 @@ public class EncounterServiceImpl implements EncounterService {
         switch (encounter.getReward()) {
             case CAPS:
                 // add caps
-                int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
+                int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
 
-                clan.setCaps(clan.getCaps() + caps);
-                clanService.saveClan(clan);
-
-                notification.setCapsIncome(caps);
+                clan.changeCaps(caps);
+                notification.changeCaps(caps);
                 break;
             case JUNK:
                 // add junk
-                int junk = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of caps
-                clan.setJunk(clan.getJunk() + junk);
-                clanService.saveClan(clan);
-
-                notification.setJunkIncome(junk);
+                int junk = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
+                clan.changeJunk(junk);
+                notification.changeJunk(junk);
+                break;
+            case FOOD:
+                // add food
+                int food = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
+                clan.changeFood(food);
+                notification.changeFood(food);
                 break;
             case INFORMATION:
                 // add information
-                int information = randomService.getRandomInt(1, RandomServiceImpl.K6); // random amount of information
-                clan.setInformation(clan.getInformation() + information);
-                clanService.saveClan(clan);
-
-                notification.setInformation(information);
+                int information = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
+                clan.changeInformation(information);
+                notification.changeInformation(information);
                 break;
             case ITEM:
                 // generate item
                 itemService.generateItemForCharacter(character, notification);
-                break;
-            case CHARACTER:
-                // generate character
-                Character generated = characterService.generateRandomCharacter(prepareCharacterFilter(clan));
-                generated.setClan(clan);
-                clan.getCharacters().add(generated);
-
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.character.joined", new String[]{character.getName()});
-                notification.getDetails().add(detail);
                 break;
             default:
                 log.error("Unknown type of reward!");
@@ -170,8 +157,8 @@ public class EncounterServiceImpl implements EncounterService {
         notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
 
         // handle experience
-        character.setExperience(character.getExperience() + 1);
-        notification.setExperience(1);
+        character.changeExperience(1);
+        notification.changeExperience(1);
 
         Clan clan = character.getClan();
 
@@ -183,16 +170,16 @@ public class EncounterServiceImpl implements EncounterService {
                 int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
                 int caps = Math.min(clan.getCaps(), diceRoll);
 
-                clan.setCaps(clan.getCaps() - caps);
+                clan.changeCaps(- caps);
 
                 // update notification
-                notification.setCapsIncome(- caps);
+                notification.changeCaps(- caps);
                 break;
             case INJURY:
                 int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
 
-                character.setHitpoints(character.getHitpoints() - injury);
-                notification.setInjury(injury);
+                character.changeHitpoints(- injury);
+                notification.changeInjury(injury);
 
                 if (character.getHitpoints() < 1) {
                     NotificationDetail detail = new NotificationDetail();
@@ -206,16 +193,6 @@ public class EncounterServiceImpl implements EncounterService {
                 log.error("Unknown type of penalty: {}!", encounter.getPenalty());
                 break;
         }
-    }
-
-    private CharacterFilter prepareCharacterFilter(Clan clan) {
-        CharacterFilter filter = new CharacterFilter();
-        for (Character character : clan.getCharacters()) {
-            filter.getAvatars().add(character.getImageUrl());
-            filter.getNames().add(character.getName());
-        }
-
-        return filter;
     }
 
 }

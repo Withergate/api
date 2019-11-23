@@ -80,8 +80,8 @@ public class ArenaServiceTest {
         // then verify combat initiated
         ArgumentCaptor<List<Character>> captor = ArgumentCaptor.forClass(List.class);
         Mockito.verify(combatService).handleArenaFights(captor.capture());
-        Assert.assertEquals(character1, captor.getValue().get(0));
-        Assert.assertEquals(character2, captor.getValue().get(1));
+        Assert.assertTrue(captor.getValue().contains(character1));
+        Assert.assertTrue(captor.getValue().contains(character2));
 
         // check actions completed
         Assert.assertEquals(ActionState.COMPLETED, action1.getState());

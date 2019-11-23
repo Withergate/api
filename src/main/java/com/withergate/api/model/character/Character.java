@@ -2,14 +2,18 @@ package com.withergate.api.model.character;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,17 +23,16 @@ import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BaseAction;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.Outfit;
-import com.withergate.api.model.item.Weapon;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemType;
 import com.withergate.api.service.clan.CharacterServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
@@ -99,17 +102,9 @@ public class Character {
 
     // Items
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "weapon_id")
-    private Weapon weapon;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gear_id")
-    private Gear gear;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "outfit_id")
-    private Outfit outfit;
+    @JsonIgnore
+    @OneToMany(mappedBy = "character", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<Item> items;
 
     // Traits
 
@@ -122,6 +117,7 @@ public class Character {
 
     // Actions
 
+    @JsonIgnore
     @OneToMany(mappedBy = "character", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BaseAction> actions;
 
@@ -130,11 +126,23 @@ public class Character {
      */
     public Character() {
         traits = new EnumMap<>(TraitName.class);
+        items = new HashSet<>();
         state = CharacterState.READY;
         level = 1;
     }
 
     // Helper functions
+
+    /**
+     * Returns current action of the character.
+     *
+     * @return the current action
+     */
+    @JsonProperty("action")
+    public Optional<BaseAction> getCurrentAction() {
+        if (actions == null) return Optional.empty();
+        return actions.stream().filter(a -> a.getState().equals(ActionState.PENDING)).findFirst();
+    }
 
     /**
      * Returns the experience needed for next level.
@@ -164,11 +172,74 @@ public class Character {
     @JsonProperty("totalCombat")
     public int getTotalCombat() {
         int weaponCombat = 0;
-        if (weapon != null) {
-            weaponCombat = weapon.getDetails().getCombat();
+        if (getWeapon() != null) {
+            weaponCombat = getWeapon().getDetails().getBonus();
         }
 
-        return combat + weaponCombat;
+        return getCombat() + weaponCombat;
+    }
+
+    // Item getters
+
+    @JsonProperty("weapon")
+    public Item getWeapon() {
+        return items.stream().filter(item -> item.getDetails().getItemType().equals(ItemType.WEAPON)).findFirst().orElse(null);
+    }
+
+    @JsonProperty("gear")
+    public Item getGear() {
+        return items.stream().filter(item -> item.getDetails().getItemType().equals(ItemType.GEAR)).findFirst().orElse(null);
+    }
+
+    @JsonProperty("outfit")
+    public Item getOutfit() {
+        return items.stream().filter(item -> item.getDetails().getItemType().equals(ItemType.OUTFIT)).findFirst().orElse(null);
+    }
+
+    @JsonIgnore
+    public Item getItem(ItemType type) {
+        return items.stream().filter(item -> item.getDetails().getItemType().equals(type)).findFirst().orElse(null);
+    }
+
+    // Setters
+
+    public void changeHitpoints(int hitpoints) {
+        this.hitpoints += hitpoints;
+    }
+
+    public void changeExperience(int experience) {
+        this.experience += experience;
+    }
+
+    // Enhanced getters
+
+    public int getCombat() {
+        return getStat(combat);
+    }
+
+    public int getScavenge() {
+        return getStat(scavenge);
+    }
+
+    public int getCraftsmanship() {
+        return getStat(craftsmanship);
+    }
+
+    public int getIntellect() {
+        return getStat(intellect);
+    }
+
+    private int getStat(int value) {
+        if (hitpoints < (maxHitpoints / 3.0)) { // below 33%
+            value = value - 2;
+        } else if (hitpoints < (maxHitpoints * 2 / 3.0)) { // below 33%
+            value = value - 1;
+        }
+
+        if (value < 1) {
+            value = 1;
+        }
+        return value;
     }
 
 }

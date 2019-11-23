@@ -64,8 +64,8 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
             notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getSuccessText(), new String[]{});
 
             // reward fame
-            clan.setFame(clan.getFame() + disaster.getDetails().getFameReward());
-            notification.setFameIncome(disaster.getDetails().getFameReward());
+            clan.changeFame(disaster.getDetails().getFameReward());
+            notification.changeFame(disaster.getDetails().getFameReward());
         }
 
         log.debug("Clan finished disaster with {}% and will receive {} penalties", clan.getDisasterProgress(), numPenalties);
@@ -98,12 +98,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
     }
 
     private void handleItemLoss(Clan clan, ClanNotification notification) {
-        List<Item> items = new ArrayList<>();
-
-        items.addAll(clan.getWeapons());
-        items.addAll(clan.getOutfits());
-        items.addAll(clan.getGear());
-        items.addAll(clan.getConsumables());
+        List<Item> items = new ArrayList<>(clan.getItems());
 
         // consider equipped items
         for (Character character : clan.getCharacters()) {
@@ -131,7 +126,8 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         itemService.deleteItem(item);
 
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.item.loss", new String[]{}, item.getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.item.loss", new String[]{},
+                item.getDetails().getName());
         notification.getDetails().add(detail);
     }
 
@@ -139,10 +135,10 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         int foodLoss = Math.min(gameProperties.getDisasterResourceLoss(), clan.getFood());
         int junkLoss = Math.min(gameProperties.getDisasterResourceLoss(), clan.getJunk());
 
-        clan.setFood(clan.getFood() - foodLoss);
-        clan.setJunk(clan.getJunk() - junkLoss);
-        notification.setFoodIncome(-foodLoss);
-        notification.setJunkIncome(-junkLoss);
+        clan.changeFood(- foodLoss);
+        clan.changeJunk(- junkLoss);
+        notification.changeFood(- foodLoss);
+        notification.changeJunk(- junkLoss);
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.resource.loss", new String[]{});
@@ -150,8 +146,8 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
     }
 
     private void handleFameLoss(Clan clan, ClanNotification notification) {
-        clan.setFame(clan.getFame() - gameProperties.getDisasterFameLoss());
-        notification.setFameIncome(notification.getFameIncome() - gameProperties.getDisasterFameLoss());
+        clan.changeFame(- gameProperties.getDisasterFameLoss());
+        notification.changeFame(- gameProperties.getDisasterFameLoss());
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.fame.loss", new String[]{});
@@ -162,7 +158,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         for (Character character : clan.getCharacters()) {
             int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
 
-            character.setHitpoints(character.getHitpoints() - injury);
+            character.changeHitpoints(- injury);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.character.injury",
@@ -176,7 +172,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
 
             notification.getDetails().add(detail);
 
-            notification.setInjury(notification.getInjury() + injury);
+            notification.changeInjury(injury);
         }
     }
 

@@ -1,5 +1,10 @@
 package com.withergate.api.service.building;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
@@ -14,19 +19,15 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.GearDetails;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,9 @@ public class BuildingServiceTest {
     @Mock
     private ItemService itemService;
 
+    @Mock
+    private RandomService randomService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -58,7 +62,7 @@ public class BuildingServiceTest {
         properties.setBuildingFame(1);
 
         buildingService = new BuildingServiceImpl(itemService, buildingActionRepository,
-                buildingDetailsRepository, notificationService, properties);
+                buildingDetailsRepository, notificationService, randomService, properties);
     }
 
     @Test
@@ -215,12 +219,13 @@ public class BuildingServiceTest {
         character.setClan(clan);
         character.setName("Test");
 
-        GearDetails gearDetails = new GearDetails();
+        ItemDetails gearDetails = new ItemDetails();
         gearDetails.setBonus(3);
         gearDetails.setBonusType(BonusType.CONSTRUCT);
-        Gear gear = new Gear();
+        gearDetails.setItemType(ItemType.GEAR);
+        Item gear = new Item();
         gear.setDetails(gearDetails);
-        character.setGear(gear);
+        character.getItems().add(gear);
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
@@ -419,12 +424,13 @@ public class BuildingServiceTest {
         clan.setBuildings(new HashMap<>());
         character.setClan(clan);
 
-        GearDetails gearDetails = new GearDetails();
+        ItemDetails gearDetails = new ItemDetails();
         gearDetails.setBonus(1);
         gearDetails.setBonusType(BonusType.CRAFTING);
-        Gear gear = new Gear();
+        gearDetails.setItemType(ItemType.GEAR);
+        Item gear = new Item();
         gear.setDetails(gearDetails);
-        character.setGear(gear);
+        character.getItems().add(gear);
 
         BuildingDetails details = new BuildingDetails();
         details.setIdentifier(BuildingName.WORKSHOP);

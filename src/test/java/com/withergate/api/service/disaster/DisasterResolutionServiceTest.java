@@ -14,9 +14,9 @@ import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterPenalty;
 import com.withergate.api.model.disaster.DisasterPenalty.Type;
+import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
-import com.withergate.api.model.item.Weapon;
-import com.withergate.api.model.item.WeaponDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -126,18 +126,15 @@ public class DisasterResolutionServiceTest {
         clan.setJunk(50);
         clan.setFood(50);
         clan.setFame(50);
-        clan.setWeapons(new HashSet<>());
-        clan.setOutfits(new HashSet<>());
-        clan.setGear(new HashSet<>());
-        clan.setConsumables(new HashSet<>());
+        clan.setItems(new HashSet<>());
 
-        WeaponDetails weaponDetails = new WeaponDetails();
+        ItemDetails weaponDetails = new ItemDetails();
         weaponDetails.setItemType(ItemType.WEAPON);
         weaponDetails.setIdentifier("Weapon");
-        Weapon weapon = new Weapon();
+        Item weapon = new Item();
         weapon.setDetails(weaponDetails);
         weapon.setClan(clan);
-        clan.getWeapons().add(weapon);
+        clan.getItems().add(weapon);
 
         DisasterDetails details = new DisasterDetails();
         details.setIdentifier("disaster");

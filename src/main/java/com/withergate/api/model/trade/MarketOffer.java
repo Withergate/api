@@ -50,11 +50,15 @@ public class MarketOffer {
     @JoinColumn(name = "seller_id")
     private Clan seller;
 
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private Clan buyer;
+
     /**
      * Market offer state.
      */
     public enum State {
-        PUBLISHED, SOLD
+        PUBLISHED, PENDING, SOLD
     }
 
 }

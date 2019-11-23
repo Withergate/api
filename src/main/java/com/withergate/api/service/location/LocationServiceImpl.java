@@ -8,11 +8,12 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
@@ -59,8 +60,6 @@ public class LocationServiceImpl implements LocationService {
         for (LocationAction action : actions) {
             Character character = action.getCharacter();
 
-            log.debug("Character {} is exploring {}.", character.getName(), action.getLocation());
-
             // prepare notification
             ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
@@ -92,15 +91,15 @@ public class LocationServiceImpl implements LocationService {
             encounter = true;
 
             if (encounterSuccess) {
-                character.setExperience(character.getExperience() + 2);
-                notification.setExperience(2);
+                character.changeExperience(2);
+                notification.changeExperience(2);
             }
         }
 
         // add experience for exploration if encounter not triggered
         if (!encounter) {
-            character.setExperience(character.getExperience() + 1);
-            notification.setExperience(1);
+            character.changeExperience(1);
+            notification.changeExperience(1);
         }
 
         // unsuccessful encounter will terminate the action
@@ -142,8 +141,8 @@ public class LocationServiceImpl implements LocationService {
             junk = junk / 2;
         }
 
-        clan.setJunk(clan.getJunk() + junk);
-        notification.setJunkIncome(notification.getJunkIncome() + junk);
+        clan.changeJunk(junk);
+        notification.changeJunk(junk);
 
         int food = character.getScavenge() + description.getFoodBonus() + getIncomeBonus(character, notification,
                 BonusType.SCAVENGE_FOOD);
@@ -153,23 +152,15 @@ public class LocationServiceImpl implements LocationService {
             food = food / 2;
         }
 
-        clan.setFood(clan.getFood() + food);
-        notification.setFoodIncome(notification.getFoodIncome() + food);
+        clan.changeFood(food);
+        notification.changeFood(food);
     }
 
     private void handleScoutResult(ClanNotification notification, Character character, LocationDescription description,
                                     boolean encounter) {
         log.debug("Information increased.");
-        int information = character.getIntellect() + description.getInformationBonus();
-
-        // contacts trait
-        if (character.getTraits().containsKey(TraitName.CONTACTS)) {
-            information += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
-            NotificationDetail contactsDetail = new NotificationDetail();
-            notificationService.addLocalizedTexts(contactsDetail.getText(), "detail.trait.contacts", new String[]{},
-                    character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
-            notification.getDetails().add(contactsDetail);
-        }
+        int information = character.getIntellect() + description.getInformationBonus()
+                + getScoutingBonus(character, notification, encounter);
 
         // decrease information when encounter triggered
         if (encounter) {
@@ -177,10 +168,10 @@ public class LocationServiceImpl implements LocationService {
         }
 
         Clan clan = character.getClan();
-        clan.setInformation(clan.getInformation() + information);
+        clan.changeInformation(information);
 
         notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
-        notification.setInformation(notification.getInformation() + information);
+        notification.changeInformation(information);
     }
 
     private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
@@ -204,10 +195,10 @@ public class LocationServiceImpl implements LocationService {
             bonus += character.getTraits().get(TraitName.HOARDER).getDetails().getBonus();
         }
 
-        Gear gear = character.getGear();
+        Item gear = character.getGear();
         if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.junk", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.junk", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
@@ -215,12 +206,41 @@ public class LocationServiceImpl implements LocationService {
 
         if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.food", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.food", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
         }
 
         return bonus;
+    }
+
+    private int getScoutingBonus(Character character, ClanNotification notification, boolean encounter) {
+        int bonus = 0;
+
+        // contacts trait
+        if (character.getTraits().containsKey(TraitName.CONTACTS)) {
+            bonus += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.contacts", new String[]{},
+                    character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
+            notification.getDetails().add(detail);
+        }
+
+        // research side effect
+        if (!encounter && character.getClan().getResearch().containsKey(ResearchName.BEGGING)
+                && character.getClan().getResearch().get(ResearchName.BEGGING).isCompleted()) {
+            // add food to clan for begging
+            int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
+            character.getClan().changeFood(food);
+            notification.changeFood(food);
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.begging", new String[]{});
+            notification.getDetails().add(detail);
+        }
+
+        return bonus;
+
     }
 }

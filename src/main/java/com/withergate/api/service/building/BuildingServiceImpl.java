@@ -15,12 +15,16 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Gear;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
+import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
@@ -41,6 +45,7 @@ public class BuildingServiceImpl implements BuildingService {
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final NotificationService notificationService;
+    private final RandomService randomService;
     private final GameProperties gameProperties;
 
     @Override
@@ -71,8 +76,8 @@ public class BuildingServiceImpl implements BuildingService {
             }
 
             // award experience
-            character.setExperience(character.getExperience() + 1);
-            notification.setExperience(1);
+            character.changeExperience(1);
+            notification.changeExperience(1);
 
             // dismiss action
             action.setState(ActionState.COMPLETED);
@@ -89,11 +94,11 @@ public class BuildingServiceImpl implements BuildingService {
         // monument
         if (clan.getBuildings().get(BuildingName.MONUMENT).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingName.MONUMENT);
-            clan.setFame(clan.getFame() + building.getLevel());
+            clan.changeFame(building.getLevel());
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
-            notification.setFameIncome(building.getLevel());
+            notification.changeFame(building.getLevel());
 
             notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[] {});
             notificationService.save(notification);
@@ -102,11 +107,11 @@ public class BuildingServiceImpl implements BuildingService {
         // GMO farm
         if (clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
-            clan.setFood(clan.getFood() + building.getLevel() * 2);
+            clan.changeFood(building.getLevel() * 2);
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
-            notification.setFoodIncome(building.getLevel() * 2);
+            notification.changeFood(building.getLevel() * 2);
             notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[] {});
             notificationService.save(notification);
         }
@@ -115,12 +120,13 @@ public class BuildingServiceImpl implements BuildingService {
         if (clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS).getLevel() > 0) {
             Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
             for (Character character : clan.getCharacters()) {
-                if (character.getState() == CharacterState.READY) {
-                    character.setExperience(character.getExperience() + building.getLevel());
+                if (character.getState().equals(CharacterState.RESTING)) {
+                    character.changeExperience(building.getLevel());
 
                     ClanNotification notification = new ClanNotification(turnId, clan.getId());
                     notification.setHeader(character.getName());
-                    notification.setExperience(building.getLevel());
+                    notification.setImageUrl(character.getImageUrl());
+                    notification.changeExperience(building.getLevel());
                     notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[] {});
                     notificationService.save(notification);
                 }
@@ -159,10 +165,8 @@ public class BuildingServiceImpl implements BuildingService {
             notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[] {}, details.getName());
             notification.getDetails().add(detail);
 
-            // award fame
-            int fame = gameProperties.getBuildingFame() * building.getLevel();
-            notification.setFameIncome(notification.getFameIncome() + fame);
-            clan.setFame(clan.getFame() + fame);
+            // level up bonuses
+            processBuildingLevelUpBonuses(building, clan, notification);
         }
     }
 
@@ -200,10 +204,10 @@ public class BuildingServiceImpl implements BuildingService {
             notification.getDetails().add(detail);
         }
 
-        Gear gear = character.getGear();
+        Item gear = character.getGear();
         if (bonusType.equals(BonusType.CONSTRUCT) && gear != null && gear.getDetails().getBonusType().equals(BonusType.CONSTRUCT)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.work", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
@@ -211,12 +215,43 @@ public class BuildingServiceImpl implements BuildingService {
 
         if (bonusType.equals(BonusType.CRAFTING) && gear != null && gear.getDetails().getBonusType().equals(BonusType.CRAFTING)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "gear.bonus.work", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
         }
 
+        // research side effect
+        if (bonusType.equals(BonusType.CRAFTING) && character.getClan().getResearch().containsKey(ResearchName.FORGERY)
+                && character.getClan().getResearch().get(ResearchName.FORGERY).isCompleted()) {
+            // add caps to clan for forgery
+            int caps = randomService.getRandomInt(1, RandomServiceImpl.K4);
+            character.getClan().changeCaps(caps);
+            notification.changeCaps(caps);
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.forgery", new String[]{});
+            notification.getDetails().add(detail);
+        }
+
         return bonus;
+    }
+
+    private void processBuildingLevelUpBonuses(Building building, Clan clan, ClanNotification notification) {
+        // award fame
+        int fame = gameProperties.getBuildingFame() * building.getLevel();
+        notification.changeFame(fame);
+        clan.changeFame(fame);
+
+        Research architecture = clan.getResearch().get(ResearchName.ARCHITECTURE);
+        if (architecture != null && architecture.isCompleted()) {
+            // add fame to clan for architecture
+            notification.changeFame(architecture.getDetails().getValue());
+            clan.changeFame(architecture.getDetails().getValue());
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.architecture", new String[]{});
+            notification.getDetails().add(detail);
+        }
     }
 }

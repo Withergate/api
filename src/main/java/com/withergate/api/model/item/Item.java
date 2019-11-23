@@ -1,15 +1,17 @@
 package com.withergate.api.model.item;
 
-import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withergate.api.model.Clan;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-
-import com.withergate.api.model.notification.LocalizedText;
+import com.withergate.api.model.character.Character;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,16 +20,30 @@ import lombok.Setter;
  *
  * @author Martin Myslik
  */
-@MappedSuperclass
+@Entity
+@Table(name = "items")
 @Getter
 @Setter
-public abstract class Item {
+public class Item {
+
+    @Id
+    @Column(name = "item_id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "identifier")
+    private ItemDetails details;
+
+    @ManyToOne
+    @JoinColumn(name = "character_id")
+    @JsonIgnore
+    private Character character;
 
     @ManyToOne
     @JoinColumn(name = "clan_id")
     @JsonIgnore
     private Clan clan;
 
-    public abstract Map<String, LocalizedText> getName();
 
 }

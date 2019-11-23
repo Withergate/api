@@ -6,7 +6,6 @@ import java.util.List;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.item.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
 import com.withergate.api.model.notification.ClanNotification;
@@ -112,7 +111,6 @@ public class CombatServiceImpl implements CombatService {
                                       ClanNotification notification2) {
         while (true) {
             CombatResult result = combatRoundService.handleCombatRound(character1, notification1, character2, notification2);
-            log.debug("Combat round result: {}", result);
 
             // add details to both players
             for (NotificationDetail detail : result.getDetails()) {
@@ -141,17 +139,15 @@ public class CombatServiceImpl implements CombatService {
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
-        character.getClan()
-                .setCaps(character.getClan().getCaps() + ARENA_CAPS); // add caps to the winner
-        character.getClan()
-                .setFame(character.getClan().getFame() + ARENA_FAME); // add fame to the winner
+        character.getClan().changeCaps(ARENA_CAPS); // add caps to the winner
+        character.getClan().changeFame(ARENA_FAME); // add fame to the winner
 
-        notification.setCapsIncome(ARENA_CAPS);
-        notification.setFameIncome(ARENA_FAME);
+        notification.changeCaps(ARENA_CAPS);
+        notification.changeFame(ARENA_FAME);
 
         // handle experience
-        character.setExperience(character.getExperience() + 2);
-        notification.setExperience(2);
+        character.changeExperience(2);
+        notification.changeExperience(2);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
@@ -177,8 +173,8 @@ public class CombatServiceImpl implements CombatService {
                 .addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
 
         // handle experience
-        character.setExperience(character.getExperience() + 1);
-        notification.setExperience(1);
+        character.changeExperience(1);
+        notification.changeExperience(1);
 
         ArenaResult result = new ArenaResult();
         result.setCharacter(character);
@@ -189,9 +185,9 @@ public class CombatServiceImpl implements CombatService {
     }
 
     private void unequipRangedWeapon(Character character, ClanNotification notification) {
-        if (character.getWeapon() != null && character.getWeapon().getDetails().getType().equals(WeaponType.RANGED)) {
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
             try {
-                itemService.unequipItem(character.getWeapon().getId(), ItemType.WEAPON, character.getId(), character.getClan().getId());
+                itemService.unequipItem(character.getWeapon().getId(), character.getId(), character.getClan().getId());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.arena.unequip", new String[]{character.getName()});

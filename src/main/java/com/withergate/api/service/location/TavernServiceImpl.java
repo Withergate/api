@@ -6,6 +6,7 @@ import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.TavernActionRepository;
@@ -30,7 +31,7 @@ public class TavernServiceImpl implements TavernService {
 
     private static final int TAVERN_OFFERS = 3;
     private static final int ATTRIBUTE_PRICE = 8;
-    private static final int TRAIT_PRICE = 30;
+    private static final int TRAIT_PRICE = 16;
 
     private final TavernActionRepository tavernActionRepository;
     private final NotificationService notificationService;
@@ -92,7 +93,9 @@ public class TavernServiceImpl implements TavernService {
         // delete all old offers
         List<TavernOffer> offers = tavernOfferRepository.findAllByClan(clan);
         for (TavernOffer offer : offers) {
-            offer.setState(TavernOffer.State.PROCESSED);
+            if (offer.getState().equals(State.AVAILABLE)) {
+                tavernOfferRepository.delete(offer);
+            }
         }
 
         // create new offers
@@ -108,6 +111,10 @@ public class TavernServiceImpl implements TavernService {
             offer.setPrice(price);
 
             tavernOfferRepository.save(offer);
+
+            // update filter
+            filter.getAvatars().add(character.getImageUrl());
+            filter.getNames().add(character.getName());
         }
     }
 

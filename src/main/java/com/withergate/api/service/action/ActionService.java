@@ -6,6 +6,7 @@ import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.model.request.ResearchRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -52,6 +53,15 @@ public interface ActionService {
      * @throws InvalidActionException invalid action
      */
     void createBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Creates and persists a research action based on the request. Throws an exception if this action
+     * cannot be performed.
+     *
+     * @param request the research request
+     * @throws InvalidActionException invalid action
+     */
+    void createResearchAction(ResearchRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Creates and persists a quest action based on the request. Throws an exception if this action
@@ -104,6 +114,13 @@ public interface ActionService {
     void processBuildingActions(int turnId);
 
     /**
+     * Executes all pending research actions.
+     *
+     * @param turnId turn ID
+     */
+    void processResearchActions(int turnId);
+
+    /**
      * Executes all pending quest actions.
      *
      * @param turnId turn ID
@@ -125,7 +142,7 @@ public interface ActionService {
     void processDisaster(int turnId);
 
     /**
-     * Assing default actions to all characters.
+     * Assign default actions to all characters.
      */
     void assignDefaultActions();
 

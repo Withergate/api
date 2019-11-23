@@ -104,4 +104,36 @@ public class ClanNotification {
         if (details == null) details = new ArrayList<>();
     }
 
+    public void changeFood(int food) {
+        this.foodIncome += food;
+    }
+
+    public void changeJunk(int junk) {
+        this.junkIncome += junk;
+    }
+
+    public void changeCaps(int caps) {
+        this.capsIncome += caps;
+    }
+
+    public void changeFame(int fame) {
+        this.fameIncome += fame;
+    }
+
+    public void changeInformation(int information) {
+        this.information += information;
+    }
+
+    public void changeInjury(int injury) {
+        this.injury += injury;
+    }
+
+    public void changeExperience(int experience) {
+        this.experience += experience;
+    }
+
+    public void changeHealing(int healing) {
+        this.healing += healing;
+    }
+
 }

@@ -65,8 +65,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         // compute injury
         int injury = outcome.getCombatWinner() - outcome.getCombatLoser() - getArmor(outcome.getLoser());
         if (injury < 1) injury = 1;
-        outcome.getLoser().setHitpoints(outcome.getLoser().getHitpoints() - injury);
-        outcome.getLoserNotification().setInjury(outcome.getLoserNotification().getInjury() + injury);
+        outcome.getLoser().changeHitpoints(- injury);
+        outcome.getLoserNotification().changeInjury(injury);
 
         // update notification
         NotificationDetail detailCombat = new NotificationDetail();
@@ -111,7 +111,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
     // add combat bonus to a character with certain traits if conditions are met
     private int getCombatBonus(Character character, ClanNotification notification) {
         if (character.getTraits().containsKey(TraitName.FIGHTER) && character.getWeapon() != null
-                && character.getWeapon().getDetails().getType() == WeaponType.MELEE) {
+                && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.MELEE)) {
             log.trace("Checking fighter trait bonus.");
             if (randomService.getRandomInt(1, 100) < 50) {
                 NotificationDetail detail = new NotificationDetail();
@@ -124,7 +124,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         }
 
         if (character.getTraits().containsKey(TraitName.SHARPSHOOTER) && character.getWeapon() != null
-                && character.getWeapon().getDetails().getType() == WeaponType.RANGED) {
+                && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
             log.trace("Checking sharpshooter trait bonus.");
             if (randomService.getRandomInt(1, 100) < 50) {
                 NotificationDetail detail = new NotificationDetail();
@@ -141,7 +141,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
 
     private int getArmor(Character character) {
         if (character.getOutfit() != null) {
-            return character.getOutfit().getDetails().getArmor();
+            return character.getOutfit().getDetails().getBonus();
         }
 
         return 0;

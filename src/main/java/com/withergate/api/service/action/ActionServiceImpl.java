@@ -6,16 +6,17 @@ import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.action.LocationAction;
-import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.QuestAction;
+import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.action.TavernAction;
-import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.building.Building;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterSolution;
+import com.withergate.api.model.item.ItemDetails.WeaponType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.quest.Quest;
@@ -25,19 +26,23 @@ import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.model.request.ResearchRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.request.TavernRequest;
+import com.withergate.api.model.research.Research;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.research.ResearchService;
 import com.withergate.api.service.trade.TradeService;
 import com.withergate.api.service.trade.TradeServiceImpl;
 import lombok.AllArgsConstructor;
@@ -59,8 +64,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ActionServiceImpl implements ActionService {
 
     private final CharacterService characterService;
+    private final ClanService clanService;
     private final LocationService locationService;
     private final BuildingService buildingService;
+    private final ResearchService researchService;
     private final QuestService questService;
     private final TradeService tradeService;
     private final ArenaService arenaService;
@@ -103,6 +110,10 @@ public class ActionServiceImpl implements ActionService {
         if (clan.isArena()) {
             throw new InvalidActionException("You already have selected a character to enter arena this turn!");
         }
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
+            throw new InvalidActionException("Ranged weapons are not allowed in the arena.");
+        }
+
         clan.setArena(true);
 
         ArenaAction action = new ArenaAction();
@@ -137,7 +148,7 @@ public class ActionServiceImpl implements ActionService {
             throw new InvalidActionException("Population limit exceeded.");
         }
 
-        clan.setCaps(clan.getCaps() - cost);
+        clan.changeCaps(- cost);
 
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
@@ -160,29 +171,20 @@ public class ActionServiceImpl implements ActionService {
         Character character = getCharacter(request.getCharacterId(), clanId);
 
         // check if action is applicable
-        BuildingDetails buildingDetails = buildingService.getBuildingDetails(request.getBuilding());
-        if (buildingDetails == null) {
+        Building building = character.getClan().getBuildings().get(request.getBuilding());
+        if (building == null) {
             throw new InvalidActionException("This building does not exist");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan().getBuildings().containsKey(request.getBuilding())) {
-            throw new InvalidActionException("This building is not constructed yet!");
-        }
-
-        if (request.getType() == BuildingAction.Type.VISIT
-                && character.getClan().getBuildings().get(request.getBuilding()).getLevel() < 1) {
+        if (request.getType() == BuildingAction.Type.VISIT && building.getLevel() < 1) {
             throw new InvalidActionException("This building has not reached sufficient level yet!!");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && !character.getClan()
-                .getBuildings()
-                .get(request.getBuilding())
-                .getDetails()
-                .isVisitable()) {
+        if (request.getType() == BuildingAction.Type.VISIT && !building.getDetails().isVisitable()) {
             throw new InvalidActionException("This building does not support this type of action.");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getJunk() < buildingDetails.getVisitJunkCost()) {
+        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getJunk() < building.getVisitJunkCost()) {
             throw new InvalidActionException("Not enough junk to perform this action!");
         }
 
@@ -193,7 +195,7 @@ public class ActionServiceImpl implements ActionService {
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(buildingDetails.getIdentifier());
+        action.setBuilding(building.getDetails().getIdentifier());
         action.setType(request.getType());
 
         buildingService.saveBuildingAction(action);
@@ -201,10 +203,43 @@ public class ActionServiceImpl implements ActionService {
         // pay junk
         Clan clan = character.getClan();
         if (request.getType().equals(BuildingAction.Type.CONSTRUCT)) {
-            clan.setJunk(clan.getJunk() - character.getCraftsmanship());
+            clan.changeJunk(- character.getCraftsmanship());
         } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
-            clan.setJunk(clan.getJunk() - buildingDetails.getVisitJunkCost());
+            clan.changeJunk(- building.getVisitJunkCost());
         }
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
+    }
+
+    @Transactional
+    @Override
+    public void createResearchAction(ResearchRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting research action for request {}.", request);
+        Character character = getCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if research is available
+        if (!clan.getResearch().containsKey(request.getResearch())) {
+            throw new InvalidActionException("The specified research is not available to your clan.");
+        }
+
+        // check requirements
+        if (clan.getResearch().get(request.getResearch()).getDetails().getInformationLevel() > clan.getInformationLevel()) {
+            throw new InvalidActionException("You need higher information level to perform this action.");
+        }
+
+        Research research = clan.getResearch().get(request.getResearch());
+        if (research.isCompleted()) {
+            throw new InvalidActionException("This research has been completed already.");
+        }
+
+        ResearchAction action = new ResearchAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setResearch(research.getDetails().getIdentifier());
+
+        researchService.saveResearchAction(action);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -277,7 +312,7 @@ public class ActionServiceImpl implements ActionService {
             }
 
             // pay the price and save the action
-            clan.setCaps(clan.getCaps() - cost);
+            clan.changeCaps(- cost);
         }
 
         if (request.getType().equals(TradeType.SELL)) {
@@ -289,8 +324,8 @@ public class ActionServiceImpl implements ActionService {
             }
 
             // pay the price
-            clan.setFood(clan.getFood() - request.getFood());
-            clan.setJunk(clan.getJunk() - request.getJunk());
+            clan.changeFood(- request.getFood());
+            clan.changeJunk(- request.getJunk());
         }
 
         // save the action
@@ -304,9 +339,8 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public void createMarketTradeAction(MarketTradeRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting market trade action for request {}.", request);
-        Character character = getCharacter(request.getCharacterId(), clanId);
-        Clan clan = character.getClan();
 
+        Clan clan = clanService.getClan(clanId);
         MarketOffer offer = tradeService.loadMarketOffer(request.getOfferId());
 
         if (offer == null || !offer.getState().equals(State.PUBLISHED)) {
@@ -322,20 +356,11 @@ public class ActionServiceImpl implements ActionService {
         }
 
         // pay caps
-        clan.setCaps(clan.getCaps() - offer.getPrice());
+        clan.changeCaps(- offer.getPrice());
 
-        // create action
-        MarketTradeAction action = new MarketTradeAction();
-        action.setCharacter(character);
-        action.setOffer(offer);
-        action.setState(ActionState.PENDING);
-        tradeService.saveMarketTradeAction(action);
-
-        // mark offer as sold
-        offer.setState(State.SOLD);
-
-        // mark character as busy and save the clan
-        character.setState(CharacterState.BUSY);
+        // change offer state
+        offer.setState(State.PENDING);
+        offer.setBuyer(clan);
     }
 
     @Transactional
@@ -371,9 +396,9 @@ public class ActionServiceImpl implements ActionService {
         disasterService.saveDisasterAction(action);
 
         // pay resources
-        clan.setCaps(clan.getCaps() - solution.getCapsCost());
-        clan.setJunk(clan.getJunk() - solution.getJunkCost());
-        clan.setFood(clan.getFood() - solution.getFoodCost());
+        clan.changeCaps(- solution.getCapsCost());
+        clan.changeJunk(- solution.getJunkCost());
+        clan.changeFood(- solution.getFoodCost());
 
         // mark character as busy and save the clan
         character.setState(CharacterState.BUSY);
@@ -403,6 +428,16 @@ public class ActionServiceImpl implements ActionService {
 
         // building actions
         buildingService.processBuildingActions(turnId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
+    @Override
+    public void processResearchActions(int turnId) {
+        log.debug("-> Processing research actions");
+
+        // research actions
+        researchService.processResearchActions(turnId);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
@@ -459,11 +494,6 @@ public class ActionServiceImpl implements ActionService {
             // only applicable to ready characters
             if (!character.getState().equals(CharacterState.READY)) {
                 continue;
-            }
-
-            // resting
-            if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.REST)) {
-                character.setState(CharacterState.RESTING);
             }
 
             // exploration

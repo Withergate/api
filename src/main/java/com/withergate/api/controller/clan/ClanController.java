@@ -5,7 +5,9 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.model.turn.Turn;
 import com.withergate.api.model.view.Views;
+import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClanController {
 
     private final ClanService clanService;
+    private final TurnRepository turnRepository;
 
     /**
      * Retrieves the clan for the authenticated player.
@@ -68,7 +71,8 @@ public class ClanController {
             throws EntityConflictException, ValidationException {
         log.debug("Creating a new clan for player {}", principal.getName());
 
-        Clan clan = clanService.createClan(Integer.parseInt(principal.getName()), clanRequest);
+        Turn turn = turnRepository.findFirstByOrderByTurnIdDesc();
+        Clan clan = clanService.createClan(Integer.parseInt(principal.getName()), clanRequest, turn.getTurnId());
         return new ResponseEntity<>(clan, HttpStatus.CREATED);
     }
 

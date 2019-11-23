@@ -18,6 +18,7 @@ public class RandomServiceImpl implements RandomService {
 
     // random dice rolls
     public static final int K6 = 6;
+    public static final int K4 = 4;
     public static final int K10 = 10;
     public static final int K100 = 100;
 

@@ -25,7 +25,7 @@ INSERT INTO localized_texts(location_description, lang, text) VALUES
     ('WASTELAND', 'en', 'Wasteland is the desolated area all around you. It might seem abandonded but do not be mistaken. Other characters roam this area so searching this place can sometimes be dangerous.'),
     ('WASTELAND', 'cs', 'Pustina je vyprahlá oblast všude okolo. Může se zdát opuštěná, ale věz, že se zde nachází mnoho nebezpečí.'),
     ('CITY_CENTER', 'en', 'The ruins of the center of Withergate hides the most valuable treasures. Unfortunately, run by local gangs and roamed by scavengers, this place can sometimes prove to be very dangerous. On the other hand, if you are lucky, you can find some useful items here.'),
-    ('CITY_CENTER', 'cs', 'Ruiny centra Withergate ukrývají ty největší poklady. Jedná o velmi nebezpečnou oblast obývanou lokálními gangy, mutanty a tím nejhorším, co pustina vyplivla. Pokud budete mít štěstí, můžete zde nalézt opravdové poklady.');
+    ('CITY_CENTER', 'cs', 'Ruiny centra Withergate ukrývají ty největší poklady. Jedná se o velmi nebezpečnou oblast obývanou lokálními gangy, mutanty a tím nejhorším, co pustina vyplivla. Pokud budete mít štěstí, můžete zde nalézt opravdové poklady.');
 
 INSERT INTO localized_texts(location_info, lang, text) VALUES
     ('NEIGHBORHOOD', 'en', 'Neighborhood is a relatively safe location. The most probable outcome is finding some junk or food.'),

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
@@ -20,16 +19,14 @@ import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
-import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.clan.ClanRepository;
-import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.research.ResearchService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,16 +57,10 @@ public class ClanServiceTest {
     private BuildingService buildingService;
 
     @Mock
+    private ResearchService researchService;
+
+    @Mock
     private TavernService tavernService;
-
-    @Mock
-    private RandomService randomService;
-
-    @Mock
-    private TraitService traitService;
-
-    @Mock
-    private TurnRepository turnRepository;
 
     @Before
     public void setUp() {
@@ -82,7 +73,7 @@ public class ClanServiceTest {
         properties.setStarvationFame(1);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService, randomService, traitService, properties, turnRepository);
+                buildingService, researchService, tavernService, properties);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -96,7 +87,7 @@ public class ClanServiceTest {
 
         // when creating new clan
         ClanRequest clanRequest = new ClanRequest("Stalkers");
-        clanService.createClan(2, clanRequest);
+        clanService.createClan(2, clanRequest, 1);
 
         // then expect exception
     }
@@ -112,7 +103,7 @@ public class ClanServiceTest {
 
         // when creating new clan
         ClanRequest clanRequest = new ClanRequest("Dragons");
-        clanService.createClan(1, clanRequest);
+        clanService.createClan(1, clanRequest, 1);
 
         // then expect exception
     }
@@ -123,7 +114,7 @@ public class ClanServiceTest {
         ClanRequest clanRequest = new ClanRequest("aaa");
 
         // when clan name too short
-        clanService.createClan(1, clanRequest);
+        clanService.createClan(1, clanRequest, 1);
 
         // then expect exception
     }
@@ -147,13 +138,9 @@ public class ClanServiceTest {
         Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class)))
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
-        Turn turn = new Turn();
-        turn.setTurnId(1);
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
-
         // when creating new clan
         ClanRequest clanRequest = new ClanRequest("Dragons");
-        clanService.createClan(2, clanRequest);
+        clanService.createClan(2, clanRequest, 1);
 
         // then verify clan saved
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
@@ -168,10 +155,7 @@ public class ClanServiceTest {
     public void testGivenClanRequestWhenCreatingClanLateThenVerifyBonusResourcesGiven() throws Exception {
         // given clan request
         ClanRequest clanRequest = new ClanRequest("Dragons");
-
-        Turn turn = new Turn();
-        turn.setTurnId(3);
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+        int turn = 3;
 
         Character[] characters = new Character[5];
         for (int i = 0; i < 5; i++) {
@@ -184,7 +168,7 @@ public class ClanServiceTest {
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
         // when creating new clan in late turn
-        clanService.createClan(2, clanRequest);
+        clanService.createClan(2, clanRequest, turn);
 
         // then verify clan saved
         ArgumentCaptor<Clan> captor = ArgumentCaptor.forClass(Clan.class);
@@ -540,44 +524,6 @@ public class ClanServiceTest {
         // then verify correct characters deleted
         Mockito.verify(characterService, Mockito.never()).delete(character1);
         Mockito.verify(characterService).delete(character2);
-    }
-
-    @Test
-    public void givenCharacterWhenLevellingUpThenVerifyTraitAssigned() {
-        // given character
-        Clan clan = new Clan();
-        clan.setId(1);
-
-        Character character = new Character();
-        character.setName("John");
-        character.setHitpoints(10);
-        character.setId(1);
-        character.setLevel(1);
-        character.setExperience(11);
-        character.setTraits(new HashMap<>());
-        character.setClan(clan);
-
-        Set<Character> characters = new HashSet<>();
-        characters.add(character);
-        clan.setCharacters(characters);
-
-        List<Clan> clans = new ArrayList<>();
-        clans.add(clan);
-        Mockito.when(clanRepository.findAll()).thenReturn(clans);
-
-        // when levelling up
-        TraitDetails details = new TraitDetails();
-        details.setIdentifier(TraitName.BUILDER);
-        Trait trait = new Trait();
-        trait.setDetails(details);
-        Mockito.when(traitService.getRandomTrait(character)).thenReturn(trait);
-
-        clanService.performClanTurnUpdates(1);
-
-        // then verify trait assigned
-        Assert.assertEquals(details, character.getTraits().values().iterator().next().getDetails());
-        Assert.assertEquals(2, character.getLevel());
-        Assert.assertEquals(1, character.getExperience());
     }
 
 }

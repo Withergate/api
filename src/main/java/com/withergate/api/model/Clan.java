@@ -26,11 +26,11 @@ import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Consumable;
-import com.withergate.api.model.item.Gear;
-import com.withergate.api.model.item.Outfit;
-import com.withergate.api.model.item.Weapon;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.quest.Quest;
+import com.withergate.api.model.research.Research;
+import com.withergate.api.model.research.ResearchDetails;
+import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
@@ -101,19 +101,7 @@ public class Clan {
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
-    private Set<Weapon> weapons;
-
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
-    @JsonView(Views.Internal.class)
-    private Set<Gear> gear;
-
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
-    @JsonView(Views.Internal.class)
-    private Set<Outfit> outfits;
-
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
-    @JsonView(Views.Internal.class)
-    private Set<Consumable> consumables;
+    private Set<Item> items;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapKeyColumn(name = "identifier")
@@ -121,6 +109,13 @@ public class Clan {
     @MapKeyEnumerated(EnumType.STRING)
     @JsonView(Views.Internal.class)
     private Map<BuildingDetails.BuildingName, Building> buildings;
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "identifier")
+    @MapKeyClass(ResearchDetails.ResearchName.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    @JsonView(Views.Internal.class)
+    private Map<ResearchDetails.ResearchName, Research> research;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
@@ -137,10 +132,8 @@ public class Clan {
     public Clan() {
         characters = new HashSet<>();
         buildings = new EnumMap<>(BuildingName.class);
-        weapons = new HashSet<>();
-        outfits = new HashSet<>();
-        gear = new HashSet<>();
-        consumables = new HashSet<>();
+        research = new EnumMap<>(ResearchName.class);
+        items = new HashSet<>();
     }
 
     /**
@@ -172,6 +165,17 @@ public class Clan {
     }
 
     /**
+     * Returns the research as List.
+     *
+     * @return the list of research records
+     */
+    @JsonProperty("research")
+    @JsonView(Views.Internal.class)
+    public Collection<Research> getResearchAsList() {
+        return research.values();
+    }
+
+    /**
      * Returns the information needed for next level.
      *
      * @return the information needed for next level
@@ -198,6 +202,33 @@ public class Clan {
      */
     public enum DefaultAction {
         REST, EXPLORE_NEIGHBORHOOD
+    }
+
+    /*
+     * Setters.
+     */
+    public void changeFood(int food) {
+        this.food += food;
+    }
+
+    public void changeJunk(int junk) {
+        this.junk += junk;
+    }
+
+    public void changeCaps(int caps) {
+        this.caps += caps;
+    }
+
+    public void changeFame(int fame) {
+        this.fame += fame;
+    }
+
+    public void changeInformation(int information) {
+        this.information += information;
+    }
+
+    public void changeDisasterProgress(int progress) {
+        this.disasterProgress += progress;
     }
 
 }

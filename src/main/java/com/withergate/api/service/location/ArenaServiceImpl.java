@@ -1,6 +1,7 @@
 package com.withergate.api.service.location;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,7 @@ public class ArenaServiceImpl implements ArenaService {
         log.debug("{} characters entered arena.", characters.size());
 
         // process arena fights
+        Collections.shuffle(characters);
         List<ArenaResult> results = combatService.handleArenaFights(characters);
 
         for (ArenaResult result : results) {

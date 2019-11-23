@@ -1,13 +1,14 @@
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image_url) VALUES
-    ('SICK_BAY', 15, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
+    ('SICK_BAY', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
     ('GMO_FARM', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
     ('TRAINING_GROUNDS', 8, 0, false, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
-    ('MONUMENT', 15, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
+    ('MONUMENT', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
     ('FORGE', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
     ('WORKSHOP', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
     ('RAGS_SHOP', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
-    ('QUARTERS', 15, false, 10, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png');
+    ('QUARTERS', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
+    ('STUDY', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/study.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -25,7 +26,9 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('RAGS_SHOP', 'en', 'Rags shop'),
     ('RAGS_SHOP', 'cs', 'Hadrárna'),
     ('QUARTERS', 'en', 'Quarters'),
-    ('QUARTERS', 'cs', 'Ubikace');
+    ('QUARTERS', 'cs', 'Ubikace'),
+    ('STUDY', 'en', 'Study'),
+    ('STUDY', 'cs', 'Studovna');
 
 INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
@@ -43,7 +46,9 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('RAGS_SHOP', 'en', 'We will make you a great outfit out of everything you found in the wasteland.'),
     ('RAGS_SHOP', 'cs', 'Uděláme ti skvělý vohoz ze všeho, cos našel v pustině.'),
     ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),
-    ('QUARTERS', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.');
+    ('QUARTERS', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.'),
+    ('STUDY', 'en', 'I have 100 ideas every day. 99 of them are bad and the remaining one is brilliant. The problem is finding which one is that.'),
+    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -54,11 +59,13 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('TRAINING_GROUNDS', 'cs', 'Odpočívající postavy dostanou každé kolo zkušenosti zdarma.'),
     ('MONUMENT', 'en', 'Each level of this building grants free fame every turn.'),
     ('MONUMENT', 'cs', 'Každá úroveň této budovy poskytuje slávu každé kolo.'),
-    ('FORGE', 'en', 'Pay junk and craft a random weapon! High craftsmanship affects the rarity of the crafted item.'),
-    ('FORGE', 'cs', 'Zaplať šrot a vyrob náhodnou zbraň! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
-    ('WORKSHOP', 'en', 'Pay junk and craft a random gear! High craftsmanship affects the rarity of the crafted item.'),
-    ('WORKSHOP', 'cs', 'Zaplať šrot a vyrob náhodný kus výbavy! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
-    ('RAGS_SHOP', 'en', 'Pay junk and craft a random outfit! High craftsmanship affects the rarity of the crafted item.'),
-    ('RAGS_SHOP', 'cs', 'Zaplať šrot a vyrob náhodný oděv! Zručnost ovlivňuje šanci na vyšší raritu předmětu.'),
+    ('FORGE', 'en', 'Pay junk and craft a random weapon! High craftsmanship and building level affect the rarity of the crafted item. Higher building levels decrease the crafting cost.'),
+    ('FORGE', 'cs', 'Zaplať šrot a vyrob náhodnou zbraň! Zručnost a úroveň budovy ovlivňují šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
+    ('WORKSHOP', 'en', 'Pay junk and craft a random gear! High craftsmanship and building level affect the rarity of the crafted item. Higher building levels decrease the crafting cost.'),
+    ('WORKSHOP', 'cs', 'Zaplať šrot a vyrob náhodný kus výbavy! Zručnost a úroveň budovy ovlivňují šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
+    ('RAGS_SHOP', 'en', 'Pay junk and craft a random outfit! High craftsmanship and building level affect the rarity of the crafted item. Higher building levels decrease the crafting cost.'),
+    ('RAGS_SHOP', 'cs', 'Zaplať šrot a vyrob náhodný oděv! Zručnost a úroveň budovy ovlivňuj šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
     ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
-    ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.');
+    ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.'),
+    ('STUDY', 'en', 'Each level of this building increases the speed of research.'),
+    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu.');

@@ -1,8 +1,5 @@
 package com.withergate.api.service.trade;
 
-import java.util.List;
-
-import com.withergate.api.model.action.MarketTradeAction;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.trade.MarketOffer;
@@ -24,13 +21,6 @@ public interface TradeService {
      * @param action the action to be saved
      */
     void saveResourceTradeAction(ResourceTradeAction action);
-
-    /**
-     * Saves the provided action.
-     *
-     * @param action the action to be saved
-     */
-    void saveMarketTradeAction(MarketTradeAction action);
 
     /**
      * Gets specified market offer.
