@@ -63,7 +63,7 @@ public class BuildingDetails {
      * Building name. Declared as enum for easier code references and for restricting allowed database values.
      */
     public enum BuildingName {
-        SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT, FORGE, WORKSHOP, RAGS_SHOP, QUARTERS, STUDY
+        SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT, FORGE, WORKSHOP, RAGS_SHOP, QUARTERS, STUDY, WATCHTOWER
     }
 
 }

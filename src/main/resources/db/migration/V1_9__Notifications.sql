@@ -32,6 +32,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('building.gmofarm.income', 'cs', 'Na GMO farmě se podařilo vyprodukovat jídlo pro tvůj klan.'),
     ('building.traininggrounds.income', 'en', 'Character gained experience when training at the Training grounds.'),
     ('building.traininggrounds.income', 'cs', 'Postava získala zkušenosti tréninkem na cvičišti.'),
+    ('building.watchtower.income', 'en', 'Your Watchtower generated information for your clan.'),
+    ('building.watchtower.income', 'cs', 'Na Pozorovatelně se podařilo získat informace pro tvůj klan.'),
     ('character.healing', 'en', 'Character has recovered some health when resting.'),
     ('character.healing', 'cs', 'Postavě se zvedlo zdraví zdraví při odpočinku.'),
     ('character.levelup', 'en', 'Character has advanced to a higher level.'),

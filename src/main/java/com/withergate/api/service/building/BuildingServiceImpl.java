@@ -132,6 +132,18 @@ public class BuildingServiceImpl implements BuildingService {
                 }
             }
         }
+
+        // Watchtower
+        if (clan.getBuildings().get(BuildingName.WATCHTOWER).getLevel() > 0) {
+            Building building = clan.getBuildings().get(BuildingName.WATCHTOWER);
+            clan.changeInformation(building.getLevel());
+
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notification.changeInformation(building.getLevel());
+            notificationService.addLocalizedTexts(notification.getText(), "building.watchtower.income", new String[] {});
+            notificationService.save(notification);
+        }
     }
 
     @Override

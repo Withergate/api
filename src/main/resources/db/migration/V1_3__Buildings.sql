@@ -8,7 +8,8 @@ INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image
     ('WORKSHOP', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
     ('RAGS_SHOP', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
     ('QUARTERS', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
-    ('STUDY', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/study.png');
+    ('STUDY', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
+    ('WATCHTOWER', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/watchtower.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -28,7 +29,9 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('QUARTERS', 'en', 'Quarters'),
     ('QUARTERS', 'cs', 'Ubikace'),
     ('STUDY', 'en', 'Study'),
-    ('STUDY', 'cs', 'Studovna');
+    ('STUDY', 'cs', 'Studovna'),
+    ('WATCHTOWER', 'en', 'Watchtower'),
+    ('WATCHTOWER', 'cs', 'Pozorovatelna');
 
 INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
@@ -48,7 +51,9 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),
     ('QUARTERS', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.'),
     ('STUDY', 'en', 'I have 100 ideas every day. 99 of them are bad and the remaining one is brilliant. The problem is finding which one is that.'),
-    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.');
+    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.'),
+    ('WATCHTOWER', 'en', 'This is the best way to drift through the day... and warn others when mutants are approaching.'),
+    ('WATCHTOWER', 'cs', 'Co to nevidí, oko mé, modravé... hele, mutant!');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -68,4 +73,6 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
     ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.'),
     ('STUDY', 'en', 'Each level of this building increases the speed of research.'),
-    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu.');
+    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu.'),
+    ('WATCHTOWER', 'en', 'Each level of this building grants 1 free information every turn.'),
+    ('WATCHTOWER', 'cs', 'Každá úroveň této budovy poskytuje 1 informaci zdarma každé kolo.');
