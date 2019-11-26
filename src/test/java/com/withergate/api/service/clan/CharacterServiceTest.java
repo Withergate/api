@@ -1,7 +1,6 @@
 package com.withergate.api.service.clan;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.withergate.api.model.Clan;
@@ -9,9 +8,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
@@ -194,22 +190,16 @@ public class CharacterServiceTest {
         character.setId(1);
         character.setLevel(1);
         character.setExperience(11);
-        character.setTraits(new HashMap<>());
         character.setClan(clan);
 
         // when levelling up
-        TraitDetails details = new TraitDetails();
-        details.setIdentifier(TraitName.BUILDER);
-        Trait trait = new Trait();
-        trait.setDetails(details);
-        Mockito.when(traitService.getRandomTrait(character)).thenReturn(trait);
 
         characterService.increaseCharacterLevel(character, 1);
 
         // then verify trait assigned
-        Assert.assertEquals(details, character.getTraits().values().iterator().next().getDetails());
         Assert.assertEquals(2, character.getLevel());
         Assert.assertEquals(1, character.getExperience());
+        Assert.assertEquals(1, character.getSkillPoints());
     }
 
 }

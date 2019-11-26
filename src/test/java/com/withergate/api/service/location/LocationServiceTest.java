@@ -338,6 +338,7 @@ public class LocationServiceTest {
         traitDetails.setIdentifier(TraitName.HUNTER);
         traitDetails.setBonus(2);
         trait.setDetails(traitDetails);
+        trait.setActive(true);
         character.getTraits().put(TraitName.HUNTER, trait);
 
         Clan clan = new Clan();
@@ -395,6 +396,7 @@ public class LocationServiceTest {
         traitDetails.setIdentifier(TraitName.HOARDER);
         traitDetails.setBonus(2);
         trait.setDetails(traitDetails);
+        trait.setActive(true);
         character.getTraits().put(TraitName.HOARDER, trait);
 
         Clan clan = new Clan();

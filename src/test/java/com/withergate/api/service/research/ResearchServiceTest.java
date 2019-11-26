@@ -125,6 +125,7 @@ public class ResearchServiceTest {
         traitDetails.setBonus(2);
         traitDetails.setIdentifier(TraitName.BOFFIN);
         Trait trait = new Trait();
+        trait.setActive(true);
         trait.setDetails(traitDetails);
         character.getTraits().put(TraitName.BOFFIN, trait);
 

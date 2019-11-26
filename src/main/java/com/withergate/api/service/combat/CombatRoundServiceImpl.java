@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.item.WeaponType;
@@ -110,7 +111,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
 
     // add combat bonus to a character with certain traits if conditions are met
     private int getCombatBonus(Character character, ClanNotification notification) {
-        if (character.getTraits().containsKey(TraitName.FIGHTER) && character.getWeapon() != null
+        Trait fighter = character.getTraits().get(TraitName.FIGHTER);
+        if (fighter != null && fighter.isActive() && character.getWeapon() != null
                 && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.MELEE)) {
             log.trace("Checking fighter trait bonus.");
             if (randomService.getRandomInt(1, 100) < 50) {
@@ -123,7 +125,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             }
         }
 
-        if (character.getTraits().containsKey(TraitName.SHARPSHOOTER) && character.getWeapon() != null
+        Trait sharpshooter = character.getTraits().get(TraitName.SHARPSHOOTER);
+        if (sharpshooter != null && sharpshooter.isActive() && character.getWeapon() != null
                 && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
             log.trace("Checking sharpshooter trait bonus.");
             if (randomService.getRandomInt(1, 100) < 50) {

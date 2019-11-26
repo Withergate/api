@@ -109,7 +109,8 @@ public class ResearchServiceImpl implements ResearchService {
         int bonus = 0;
 
         // trait
-        if (character.getTraits().containsKey(TraitName.BOFFIN)) {
+        Trait boffin = character.getTraits().get(TraitName.BOFFIN);
+        if (boffin != null && boffin.isActive()) {
             Trait trait = character.getTraits().get(TraitName.BOFFIN);
             bonus += trait.getDetails().getBonus();
             NotificationDetail detail = new NotificationDetail();

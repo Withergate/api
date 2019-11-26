@@ -1,5 +1,7 @@
 package com.withergate.api.service.location;
 
+import java.util.List;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.TavernAction;
@@ -13,8 +15,6 @@ import com.withergate.api.repository.action.TavernActionRepository;
 import com.withergate.api.repository.clan.TavernOfferRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.notification.NotificationService;
-
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -125,10 +125,7 @@ public class TavernServiceImpl implements TavernService {
         price += character.getScavenge() * ATTRIBUTE_PRICE;
         price += character.getCraftsmanship() * ATTRIBUTE_PRICE;
         price += character.getIntellect() * ATTRIBUTE_PRICE;
-
-        if (character.getTraits().size() > 0) {
-            price += TRAIT_PRICE;
-        }
+        price += character.getSkillPoints() * TRAIT_PRICE;
 
         return price;
     }

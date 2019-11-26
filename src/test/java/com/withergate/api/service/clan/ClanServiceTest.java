@@ -322,6 +322,7 @@ public class ClanServiceTest {
         details.setIdentifier(TraitName.ASCETIC);
         Trait trait = new Trait();
         trait.setDetails(details);
+        trait.setActive(true);
         character3.getTraits().put(TraitName.ASCETIC, trait);
         clan.getCharacters().add(character3);
 

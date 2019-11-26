@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
         Character character = characterRepository.getOne(characterId);
 
         if (character.getItem(item.getDetails().getItemType()) != null) {
-            throw new InvalidActionException("Character is already holding an item of this type.!");
+            throw new InvalidActionException("Character is already holding an item of this type!");
         }
 
         if (item.getDetails().getItemType().equals(ItemType.CONSUMABLE)) {

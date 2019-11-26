@@ -7,6 +7,7 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.location.Location;
@@ -177,7 +178,8 @@ public class LocationServiceImpl implements LocationService {
     private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
         int bonus = 0;
 
-        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && character.getTraits().containsKey(TraitName.HUNTER)) {
+        Trait hunter = character.getTraits().get(TraitName.HUNTER);
+        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && hunter != null && hunter.isActive()) {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.scavenge", new String[]{},
                     character.getTraits().get(TraitName.HUNTER).getDetails().getName());
@@ -186,7 +188,8 @@ public class LocationServiceImpl implements LocationService {
             bonus += character.getTraits().get(TraitName.HUNTER).getDetails().getBonus();
         }
 
-        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && character.getTraits().containsKey(TraitName.HOARDER)) {
+        Trait hoarder = character.getTraits().get(TraitName.HOARDER);
+        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && hoarder != null && hoarder.isActive()) {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.scavenge", new String[]{},
                     character.getTraits().get(TraitName.HOARDER).getDetails().getName());
@@ -198,7 +201,8 @@ public class LocationServiceImpl implements LocationService {
         Item gear = character.getGear();
         if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.junk", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.junk", new String[] {},
+                    gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
@@ -206,7 +210,8 @@ public class LocationServiceImpl implements LocationService {
 
         if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.food", new String[] {}, gear.getDetails().getName());
+            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.food", new String[] {},
+                    gear.getDetails().getName());
             notification.getDetails().add(detail);
 
             bonus += character.getGear().getDetails().getBonus();
@@ -219,7 +224,8 @@ public class LocationServiceImpl implements LocationService {
         int bonus = 0;
 
         // contacts trait
-        if (character.getTraits().containsKey(TraitName.CONTACTS)) {
+        Trait contacts = character.getTraits().get(TraitName.CONTACTS);
+        if (contacts != null && contacts.isActive()) {
             bonus += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.contacts", new String[]{},

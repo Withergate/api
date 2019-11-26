@@ -92,6 +92,7 @@ CREATE TABLE characters (
     scavenge INT NOT NULL,
     craftsmanship INT NOT NULL,
     intellect INT NOT NULL,
+    skill_points INT NOT NULL,
     PRIMARY KEY (character_id),
     CONSTRAINT character_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );
@@ -136,6 +137,8 @@ CREATE TABLE trait_details (
 DROP TABLE IF EXISTS traits;
 CREATE TABLE traits (
     trait_id INT AUTO_INCREMENT,
+    trait_order INT,
+    active BIT,
     identifier VARCHAR(16),
     character_id INT,
     PRIMARY KEY (trait_id),

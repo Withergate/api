@@ -15,7 +15,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -35,7 +35,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -173,7 +176,8 @@ public class ClanServiceImpl implements ClanService {
         return character;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
     public void performClanTurnUpdates(int turnId) {
         for (Clan clan : getAllClans()) {
@@ -257,7 +261,8 @@ public class ClanServiceImpl implements ClanService {
             Character character = iterator.next();
 
             // ascetic
-            if (character.getTraits().containsKey(TraitDetails.TraitName.ASCETIC)) {
+            Trait ascetic = character.getTraits().get(TraitName.ASCETIC);
+            if (ascetic != null && ascetic.isActive()) {
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[] {character.getName()});
                 notification.getDetails().add(detail);
@@ -345,7 +350,8 @@ public class ClanServiceImpl implements ClanService {
             }
 
             // lizard trait
-            if (character.getTraits().containsKey(TraitName.LIZARD)) {
+            Trait lizaard = character.getTraits().get(TraitName.LIZARD);
+            if (lizaard != null && lizaard.isActive()) {
                 points += character.getTraits().get(TraitName.LIZARD).getDetails().getBonus();
                 NotificationDetail lizardDetail = new NotificationDetail();
                 notificationService.addLocalizedTexts(lizardDetail.getText(), "detail.trait.lizard",

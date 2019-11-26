@@ -175,6 +175,7 @@ public class BuildingServiceTest {
         traitDetails.setIdentifier(TraitName.BUILDER);
         Trait trait = new Trait();
         trait.setDetails(traitDetails);
+        trait.setActive(true);
         character.getTraits().put(TraitName.BUILDER, trait);
 
         BuildingAction action = new BuildingAction();
@@ -464,6 +465,7 @@ public class BuildingServiceTest {
         clan.setBuildings(new HashMap<>());
         clan.setFame(10);
         clan.setFood(5);
+        clan.setInformation(0);
         clan.setCharacters(new HashSet<>());
 
         BuildingDetails monumentDetails = new BuildingDetails();
@@ -483,9 +485,16 @@ public class BuildingServiceTest {
         BuildingDetails groundsDetails = new BuildingDetails();
         groundsDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
         Building grounds = new Building();
-        grounds.setDetails(monumentDetails);
+        grounds.setDetails(groundsDetails);
         grounds.setLevel(0);
         clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, grounds);
+
+        BuildingDetails watchtowerDetails = new BuildingDetails();
+        watchtowerDetails.setIdentifier(BuildingName.WATCHTOWER);
+        Building watchtower = new Building();
+        watchtower.setDetails(watchtowerDetails);
+        watchtower.setLevel(1);
+        clan.getBuildings().put(BuildingName.WATCHTOWER, watchtower);
 
         // when processing passive acitons
         buildingService.processPassiveBuildingBonuses(1, clan);
@@ -493,6 +502,7 @@ public class BuildingServiceTest {
         // then verify fame and food awarded
         Assert.assertEquals(12, clan.getFame());
         Assert.assertEquals(7, clan.getFood());
+        Assert.assertEquals(1, clan.getInformation());
     }
 
 }

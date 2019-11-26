@@ -27,6 +27,12 @@ public class Trait {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "trait_order", updatable = false, nullable = false)
+    private int order;
+
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "identifier")
     private TraitDetails details;

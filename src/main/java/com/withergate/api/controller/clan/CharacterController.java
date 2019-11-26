@@ -3,7 +3,9 @@ package com.withergate.api.controller.clan;
 import java.security.Principal;
 
 import com.withergate.api.model.request.CharacterRestRequest;
+import com.withergate.api.model.request.TraitRequest;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.TraitService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CharacterController {
 
     private final CharacterService characterService;
+    private final TraitService traitService;
 
     /**
      * Marks character as resting.
@@ -36,6 +39,20 @@ public class CharacterController {
             throws InvalidActionException {
 
         characterService.markCharacterAsResting(request.getCharacterId(), Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Activates trait for character.
+     *
+     * @param request the request with character id
+     * @throws InvalidActionException invalid action
+     */
+    @PostMapping("/characters/trait")
+    public ResponseEntity<Void> activateTrait(Principal principal, @RequestBody TraitRequest request)
+            throws InvalidActionException {
+
+        traitService.activateTrait(request.getCharacterId(), Integer.parseInt(principal.getName()), request.getTraitName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

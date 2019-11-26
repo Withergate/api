@@ -1,5 +1,6 @@
 package com.withergate.api.model.character;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -7,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BaseAction;
+import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemType;
@@ -108,6 +110,9 @@ public class Character {
 
     // Traits
 
+    @Column(name = "skill_points", nullable = false)
+    private int skillPoints;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id")
     @MapKeyColumn(name = "identifier")
@@ -161,7 +166,19 @@ public class Character {
      */
     @JsonProperty("traits")
     public Collection<Trait> getTraitsAsList() {
-        return traits.values();
+        if (clan == null) {
+            return new ArrayList<>();
+        }
+        return traits.values().stream().filter(trait -> trait.getOrder() <= getMaxOrder()).collect(Collectors.toList());
+    }
+
+    @JsonIgnore
+    public long getMaxOrder() {
+        if (clan == null) {
+            return -1;
+        }
+
+        return traits.values().stream().filter(Trait::isActive).count() + clan.getBuildings().get(BuildingName.TRAINING_GROUNDS).getLevel();
     }
 
     /**

@@ -91,11 +91,13 @@ public class CharacterServiceImpl implements CharacterService {
         character.setLevel(1);
         character.setExperience(0);
 
-        // add random trait to weak veterans
+        // init traits
+        traitService.assignTraits(character);
+
+        // add skill point to weak characters
         if ((character.getCombat() + character.getScavenge()
                 + character.getCraftsmanship() + character.getIntellect()) <= FREE_TRAIT_THRESHOLD) {
-            Trait trait = traitService.getRandomTrait(character);
-            character.getTraits().put(trait.getDetails().getIdentifier(), trait);
+            character.setSkillPoints(1);
         }
 
         return character;
@@ -133,10 +135,8 @@ public class CharacterServiceImpl implements CharacterService {
         notification.setImageUrl(character.getImageUrl());
         notificationService.addLocalizedTexts(notification.getText(), "character.levelup", new String[] {character.getName()});
 
-        // add random trait to character
-        Trait trait = traitService.getRandomTrait(character);
-        character.getTraits().put(trait.getDetails().getIdentifier(), trait);
-        log.debug("New trait assigned to {}: {}", character.getName(), trait.getDetails().getIdentifier());
+        // add skill points character
+        character.setSkillPoints(character.getSkillPoints() + 1);
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.character.levelup.trait",
