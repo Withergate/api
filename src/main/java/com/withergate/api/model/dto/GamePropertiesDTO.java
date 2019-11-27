@@ -23,6 +23,7 @@ public class GamePropertiesDTO {
     private final int disasterPartialSuccessThreshold;
     private final int buildingFame;
     private final int researchFame;
+    private final int tavernRefreshPrice;
 
     /**
      * Constructor.
@@ -38,6 +39,7 @@ public class GamePropertiesDTO {
         this.disasterPartialSuccessThreshold = properties.getDisasterPartialSuccessThreshold();
         this.buildingFame = properties.getBuildingFame();
         this.researchFame = properties.getResearchFame();
+        this.tavernRefreshPrice = properties.getTavernRefreshPrice();
     }
 
 }

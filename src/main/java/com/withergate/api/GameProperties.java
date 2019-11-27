@@ -29,6 +29,7 @@ public class GameProperties {
     private int starvationFame;
     private int buildingFame;
     private int researchFame;
+    private int tavernRefreshPrice;
 
     // disasters
     private List<Integer> disasterTurns;

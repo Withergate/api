@@ -79,7 +79,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 INSERT INTO disaster_solutions(identifier, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
     ('d.inquisition.s1', 'd.inquisition', 'AUTOMATIC', 0, 5, 0, 0, 0),
     ('d.inquisition.s2', 'd.inquisition', 'INTELLECT', 7, 10, 0, 0, 0),
-    ('d.inquisition.s3', 'd.inquisition', 'CRAFTSMANSHIP', 6, 12, 10, 0, 0),
+    ('d.inquisition.s3', 'd.inquisition', 'CRAFTSMANSHIP', 5, 12, 10, 0, 0),
     ('d.inquisition.s4', 'd.inquisition', 'AUTOMATIC', 0, 20, 0, 50, 0);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES

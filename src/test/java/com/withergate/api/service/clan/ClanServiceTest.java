@@ -231,25 +231,6 @@ public class ClanServiceTest {
     }
 
     @Test
-    public void testGivenClanWhenHiringCharacterThenVerifyClanSavedWithCharacter() {
-        // given clan
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setName("Stalkers");
-        clan.setCharacters(new HashSet<>());
-
-        Character hired = new Character();
-        hired.setName("Hired");
-        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class))).thenReturn(hired);
-
-        // when hiring character
-        clanService.hireCharacter(clan);
-
-        // then verify clan saved with character
-        assertEquals(hired, clan.getCharacters().iterator().next());
-    }
-
-    @Test
     public void testGivenClanListWhenClearingArenaFlagsThenVerifyClansUnmarked() {
         // given clans
         List<Clan> clans = new ArrayList<>();

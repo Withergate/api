@@ -3,7 +3,6 @@ package com.withergate.api.service.clan;
 import java.util.List;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
@@ -61,14 +60,6 @@ public interface ClanService {
      * @throws ValidationException     validation error
      */
     Clan createClan(int clanId, ClanRequest clanRequest, int turn) throws EntityConflictException, ValidationException;
-
-    /**
-     * Adds new random character to the provided clan.
-     *
-     * @param clan the clan
-     * @return the created character
-     */
-    Character hireCharacter(Clan clan);
 
     /**
      * Performs all clan turn updates.

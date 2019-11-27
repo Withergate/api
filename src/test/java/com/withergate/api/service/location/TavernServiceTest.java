@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.TavernAction;
@@ -13,8 +14,10 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.repository.action.TavernActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.clan.TavernOfferRepository;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,12 +42,18 @@ public class TavernServiceTest {
     @Mock
     private CharacterService characterService;
 
+    @Mock
+    private ClanRepository clanRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        GameProperties properties = new GameProperties();
+        properties.setTavernRefreshPrice(10);
+
         tavernService = new TavernServiceImpl(tavernActionRepository, notificationService, tavernOfferRepository,
-                characterService);
+                characterService, clanRepository, properties);
     }
 
     @Test
@@ -170,7 +179,7 @@ public class TavernServiceTest {
                 .thenReturn(character1, character2, character3);
 
         // when preparing offers
-        tavernService.prepareTavernOffers(clan, new CharacterFilter());
+        tavernService.prepareTavernOffers(clan);
 
         // then verify old offers deleted and new created
         Mockito.verify(tavernOfferRepository).delete(offer);
@@ -178,6 +187,20 @@ public class TavernServiceTest {
         Mockito.verify(characterService).save(character2);
         Mockito.verify(characterService).save(character3);
         Mockito.verify(tavernOfferRepository, Mockito.times(3)).save(Mockito.any(TavernOffer.class));
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenClanWithoutCapsWhenRefreshingTavernOffersThenVerifyExceptionThrown() throws Exception {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setCaps(0);
+        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
+
+        // when refreshing offers
+        tavernService.refreshTavernOffers(1);
+
+        // then verify exception thrown
     }
 
     private Character mockCharacter(int id, String name) {

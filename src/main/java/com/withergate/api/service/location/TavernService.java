@@ -4,6 +4,7 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.service.exception.InvalidActionException;
 
 import java.util.List;
 
@@ -49,8 +50,14 @@ public interface TavernService {
      * Prepare new tavern offers for given clan.
      *
      * @param clan the clan
-     * @param filter character filter
      */
-    void prepareTavernOffers(Clan clan, CharacterFilter filter);
+    void prepareTavernOffers(Clan clan);
+
+    /**
+     * Manually refreshes tavern offers for provided clan. Throws an exception if action could not be performed.
+     *
+     * @param clanId clan ID
+     */
+    void refreshTavernOffers(int clanId) throws InvalidActionException;
 
 }

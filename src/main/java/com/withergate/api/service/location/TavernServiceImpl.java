@@ -2,6 +2,7 @@ package com.withergate.api.service.location;
 
 import java.util.List;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.TavernAction;
@@ -12,12 +13,15 @@ import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.action.TavernActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.clan.TavernOfferRepository;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tavern service implementation.
@@ -37,6 +41,8 @@ public class TavernServiceImpl implements TavernService {
     private final NotificationService notificationService;
     private final TavernOfferRepository tavernOfferRepository;
     private final CharacterService characterService;
+    private final ClanRepository clanRepository;
+    private final GameProperties gameProperties;
 
     @Override
     public TavernOffer loadTavernOffer(int offerId) {
@@ -87,7 +93,7 @@ public class TavernServiceImpl implements TavernService {
     }
 
     @Override
-    public void prepareTavernOffers(Clan clan, CharacterFilter filter) {
+    public void prepareTavernOffers(Clan clan) {
         log.debug("Preparing tavern offers for clan {}.", clan.getId());
 
         // delete all old offers
@@ -97,6 +103,9 @@ public class TavernServiceImpl implements TavernService {
                 tavernOfferRepository.delete(offer);
             }
         }
+
+        // generate filter
+        CharacterFilter filter = getCharacterFilter(clan);
 
         // create new offers
         for (int i = 0; i < TAVERN_OFFERS; i++) {
@@ -118,6 +127,21 @@ public class TavernServiceImpl implements TavernService {
         }
     }
 
+    @Transactional
+    @Override
+    public void refreshTavernOffers(int clanId) throws InvalidActionException {
+        Clan clan = clanRepository.getOne(clanId);
+
+        // check price
+        if (clan.getCaps() < gameProperties.getTavernRefreshPrice()) {
+            throw new InvalidActionException("Not enough caps to perform this action.");
+        }
+
+        clan.changeCaps(- gameProperties.getTavernRefreshPrice());
+
+        prepareTavernOffers(clan);
+    }
+
     private int calculateOfferPrice(Character character) {
         int price = 0;
 
@@ -128,5 +152,16 @@ public class TavernServiceImpl implements TavernService {
         price += character.getSkillPoints() * TRAIT_PRICE;
 
         return price;
+    }
+
+    private CharacterFilter getCharacterFilter(Clan clan) {
+        CharacterFilter filter = new CharacterFilter();
+
+        for (Character character : clan.getCharacters()) {
+            filter.getNames().add(character.getName());
+            filter.getAvatars().add(character.getImageUrl());
+        }
+
+        return filter;
     }
 }
