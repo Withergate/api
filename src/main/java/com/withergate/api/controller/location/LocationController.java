@@ -7,8 +7,9 @@ import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
-import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.location.LocationService;
+import com.withergate.api.service.location.TavernService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LocationController {
 
-    private final ActionService actionService;
+    private final TavernService tavernService;
+    private final LocationService locationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
 
     /**
@@ -42,7 +44,7 @@ public class LocationController {
     public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) throws InvalidActionException {
         log.debug("Executing location action for player {}", principal.getName());
 
-        actionService.createLocationAction(request, Integer.parseInt(principal.getName()));
+        locationService.saveLocationAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -57,7 +59,7 @@ public class LocationController {
     public ResponseEntity<Void> visitTavern(Principal principal, @RequestBody TavernRequest request) throws InvalidActionException {
         log.debug("Executing tavern action for player {}", principal.getName());
 
-        actionService.createTavernAction(request, Integer.parseInt(principal.getName()));
+        tavernService.saveTavernAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -23,6 +23,15 @@ public interface CharacterService {
     Character load(int characterId);
 
     /**
+     * Loads character in READY state and checks if he belongs to the provided clan. Throws an exception otherwise.
+     *
+     * @param characterId character ID
+     * @param clanId clan ID
+     * @return loaded character
+     */
+    Character loadReadyCharacter(int characterId, int clanId) throws InvalidActionException;
+
+    /**
      * Loads all characters from database.
      *
      * @return the list of loaded characters

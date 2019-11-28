@@ -8,19 +8,24 @@ import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.request.ResearchRequest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails;
 import com.withergate.api.repository.action.ResearchActionRepository;
 import com.withergate.api.repository.research.ResearchDetailsRepository;
+import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Research service implementation.
@@ -36,10 +41,39 @@ public class ResearchServiceImpl implements ResearchService {
     private final ResearchActionRepository actionRepository;
     private final NotificationService notificationService;
     private final GameProperties gameProperties;
+    private final CharacterService characterService;
 
+    @Transactional
     @Override
-    public void saveResearchAction(ResearchAction action) {
+    public void saveResearchAction(ResearchRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting research action for request {}.", request);
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if research is available
+        if (!clan.getResearch().containsKey(request.getResearch())) {
+            throw new InvalidActionException("The specified research is not available to your clan.");
+        }
+
+        // check requirements
+        if (clan.getResearch().get(request.getResearch()).getDetails().getInformationLevel() > clan.getInformationLevel()) {
+            throw new InvalidActionException("You need higher information level to perform this action.");
+        }
+
+        Research research = clan.getResearch().get(request.getResearch());
+        if (research.isCompleted()) {
+            throw new InvalidActionException("This research has been completed already.");
+        }
+
+        ResearchAction action = new ResearchAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setResearch(research.getDetails().getIdentifier());
+
         actionRepository.save(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
     }
 
     @Override

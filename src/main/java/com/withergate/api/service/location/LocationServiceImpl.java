@@ -7,24 +7,28 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
-import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Location service implementation.
@@ -42,15 +46,30 @@ public class LocationServiceImpl implements LocationService {
     private final ItemService itemService;
     private final NotificationService notificationService;
     private final LocationDescriptionRepository locationDescriptionRepository;
+    private final CharacterService characterService;
 
+    @Transactional
     @Override
-    public LocationDescription getLocationDescription(Location location) {
-        return locationDescriptionRepository.getOne(location);
-    }
+    public void saveLocationAction(LocationRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting location action request: {}", request.toString());
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
 
-    @Override
-    public void saveLocationAction(LocationAction action) {
+        // check if this location supports given action type
+        LocationDescription description = locationDescriptionRepository.getOne(request.getLocation());
+        if (request.getType() == LocationAction.LocationActionType.SCOUT && !description.isScouting()) {
+            throw new InvalidActionException("Location not found or does not support specified action!");
+        }
+
+        LocationAction action = new LocationAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setLocation(request.getLocation());
+        action.setType(request.getType());
+
         locationActionRepository.save(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
     }
 
     @Override

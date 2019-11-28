@@ -3,12 +3,17 @@ package com.withergate.api.service.location;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.repository.action.ArenaActionRepository;
 import com.withergate.api.repository.arena.ArenaStatsRepository;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,25 +39,15 @@ public class ArenaServiceTest {
     @Mock
     private ArenaStatsRepository arenaStatsRepository;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        arenaService = new ArenaServiceImpl(arenaActionRepository, combatService, notificationService, arenaStatsRepository);
-    }
-
-    @Test
-    public void testGivenArenaActionWhenSavingActionThenVerifyActionSaved() {
-        // given action
-        ArenaAction action = new ArenaAction();
-        action.setCharacter(new Character());
-        action.setState(ActionState.PENDING);
-
-        // when saving action
-        arenaService.saveArenaAction(action);
-
-        // then verify action saved
-        Mockito.verify(arenaActionRepository).save(action);
+        arenaService = new ArenaServiceImpl(arenaActionRepository, combatService, notificationService, arenaStatsRepository,
+                characterService);
     }
 
     @Test
@@ -86,6 +81,31 @@ public class ArenaServiceTest {
         // check actions completed
         Assert.assertEquals(ActionState.COMPLETED, action1.getState());
         Assert.assertEquals(ActionState.COMPLETED, action2.getState());
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenArenaRequestWhenCharacterAlreadyInArenaForClanThenVerifyExceptionThrown() throws InvalidActionException {
+        // given arena request
+        ArenaRequest request = new ArenaRequest();
+        request.setCharacterId(1);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setArena(true);
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        // when creating location action
+        arenaService.saveArenaAction(request, 1);
+
+        // then expect exception
     }
 
     private Character mockCharacter(int id, String name) {

@@ -13,18 +13,24 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.quest.QuestDetails;
 import com.withergate.api.model.quest.QuestDetails.Type;
+import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
 
 public class QuestServiceTest {
 
@@ -45,12 +51,107 @@ public class QuestServiceTest {
     @Mock
     private RandomService randomService;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository,
-                combatService, randomService);
+                combatService, randomService, characterService);
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenQuestRequestWhenNoQuestsForClanThenVerifyExceptionThrown() throws InvalidActionException {
+        // given quest request
+        QuestRequest request = new QuestRequest();
+        request.setCharacterId(1);
+        request.setQuestId(1);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setQuests(new HashSet<>());
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        // when creating quest action
+        questService.saveQuestAction(request, 1);
+
+        // then expect exception
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenQuestRequestWhenQuestAlreadyCompletedThenVerifyExceptionThrown() throws InvalidActionException {
+        // given quest request
+        QuestRequest request = new QuestRequest();
+        request.setCharacterId(1);
+        request.setQuestId(1);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setQuests(new HashSet<>());
+        clan.setName("Dragons");
+
+        Quest quest = new Quest();
+        quest.setId(1);
+        quest.setCompleted(true);
+        clan.getQuests().add(quest);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        // when creating quest action
+        questService.saveQuestAction(request, 1);
+
+        // then expect exception
+    }
+
+    @Test
+    public void testGivenQuestRequestWhenQuestAvailableThenVerifyActionSaved() throws InvalidActionException {
+        // given quest request
+        QuestRequest request = new QuestRequest();
+        request.setCharacterId(1);
+        request.setQuestId(1);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setQuests(new HashSet<>());
+        clan.setName("Dragons");
+
+        Quest quest = new Quest();
+        quest.setId(1);
+        quest.setCompleted(false);
+        clan.getQuests().add(quest);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        // when creating building action
+        questService.saveQuestAction(request, 1);
+
+        // then verify action saved
+        ArgumentCaptor<QuestAction> captor = ArgumentCaptor.forClass(QuestAction.class);
+        Mockito.verify(questActionRepository).save(captor.capture());
+        assertEquals(character, captor.getValue().getCharacter());
+        assertEquals(quest, captor.getValue().getQuest());
     }
 
     @Test
@@ -73,26 +174,6 @@ public class QuestServiceTest {
 
         // then verify quests added
         Assert.assertEquals(1, clan.getQuests().toArray().length);
-    }
-
-    @Test
-    public void testGivenQuestActionWhenSavingActionThenVerifyActionSaved() {
-        // given quest action
-        QuestAction action = new QuestAction();
-
-        Character character = new Character();
-        character.setName("Character");
-        Quest quest = new Quest();
-        quest.setId(1);
-
-        action.setCharacter(character);
-        action.setQuest(quest);
-
-        // when saving action
-        questService.saveQuestAction(action);
-
-        // then verify action saved
-        Mockito.verify(questActionRepository).save(action);
     }
 
     @Test

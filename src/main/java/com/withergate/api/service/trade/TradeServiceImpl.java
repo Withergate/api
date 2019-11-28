@@ -5,21 +5,28 @@ import java.util.Optional;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResourceTradeAction;
+import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.PublishOfferRequest;
+import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.trade.MarketOfferRepository;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,20 +37,101 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Martin Myslik
  */
+@Slf4j
 @AllArgsConstructor
 @Service
 public class TradeServiceImpl implements TradeService {
 
-    public static final int RESOURCE_TRADE_LIMIT = 20;
+    private static final int RESOURCE_TRADE_LIMIT = 20;
 
     private final ResourceTradeActionRepository resourceTradeActionRepository;
     private final NotificationService notificationService;
     private final ItemService itemService;
     private final MarketOfferRepository marketOfferRepository;
+    private final CharacterService characterService;
+    private final ClanRepository clanRepository;
 
+    @Transactional
     @Override
-    public void saveResourceTradeAction(ResourceTradeAction action) {
+    public void saveResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting resource trade action for request {}.", request);
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        ResourceTradeAction action = new ResourceTradeAction();
+        action.setCharacter(character);
+        action.setType(request.getType());
+        action.setFood(request.getFood());
+        action.setJunk(request.getJunk());
+        action.setState(ActionState.PENDING);
+
+        // check resource limit
+        if (request.getJunk() + request.getFood() > TradeServiceImpl.RESOURCE_TRADE_LIMIT) {
+            throw new InvalidActionException("Your character cannot carry that much!");
+        }
+
+        if (request.getJunk() + request.getFood() < 1) {
+            throw new InvalidActionException("No resources specified!");
+        }
+
+        // check if clan has enough resources
+        if (request.getType().equals(TradeType.BUY)) {
+            int resourcesToBuy = request.getFood() + request.getJunk();
+            int cost = resourcesToBuy * 2;
+            if (clan.getCaps() < cost) {
+                throw new InvalidActionException("Not enough caps!");
+            }
+
+            // pay the price and save the action
+            clan.changeCaps(- cost);
+        }
+
+        if (request.getType().equals(TradeType.SELL)) {
+            if (clan.getFood() < request.getFood()) {
+                throw new InvalidActionException("Not enough food!");
+            }
+            if (clan.getJunk() < request.getJunk()) {
+                throw new InvalidActionException("Not enough junk!");
+            }
+
+            // pay the price
+            clan.changeFood(- request.getFood());
+            clan.changeJunk(- request.getJunk());
+        }
+
+        // save the action
         resourceTradeActionRepository.save(action);
+
+        // mark character as busy and save the clan
+        character.setState(CharacterState.BUSY);
+    }
+
+    @Transactional
+    @Override
+    public void handleMarketTradeAction(MarketTradeRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting market trade action for request {}.", request);
+
+        Clan clan = clanRepository.getOne(clanId);
+        MarketOffer offer = loadMarketOffer(request.getOfferId());
+
+        if (offer == null || !offer.getState().equals(State.PUBLISHED)) {
+            throw new InvalidActionException("This offer is not available.");
+        }
+
+        if (clan.getId() == offer.getSeller().getId()) {
+            throw new InvalidActionException("You cannot buy your own item!");
+        }
+
+        if (clan.getCaps() < offer.getPrice()) {
+            throw new InvalidActionException("Not enough caps to perform this action.");
+        }
+
+        // pay caps
+        clan.changeCaps(- offer.getPrice());
+
+        // change offer state
+        offer.setState(State.PENDING);
+        offer.setBuyer(clan);
     }
 
     @Override

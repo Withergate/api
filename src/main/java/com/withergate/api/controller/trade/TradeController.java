@@ -9,7 +9,6 @@ import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.view.Views;
-import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.trade.TradeService;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TradeController {
 
-    private final ActionService actionService;
     private final TradeService tradeService;
 
     /**
@@ -48,7 +46,7 @@ public class TradeController {
     @PostMapping("/trade/resources/action")
     public ResponseEntity<Void> submitResourceTradeAction(Principal principal, @RequestBody ResourceTradeRequest request)
             throws InvalidActionException {
-        actionService.createResourceTradeAction(request, Integer.parseInt(principal.getName()));
+        tradeService.saveResourceTradeAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -76,7 +74,7 @@ public class TradeController {
     @PostMapping("/trade/market/action")
     public ResponseEntity<Void> submitMarketTradeAction(Principal principal, @RequestBody MarketTradeRequest request)
             throws InvalidActionException {
-        actionService.createMarketTradeAction(request, Integer.parseInt(principal.getName()));
+        tradeService.handleMarketTradeAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

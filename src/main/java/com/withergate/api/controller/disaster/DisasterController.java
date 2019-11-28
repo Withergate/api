@@ -1,12 +1,11 @@
 package com.withergate.api.controller.disaster;
 
+import java.security.Principal;
+
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.request.DisasterRequest;
-import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
-
-import java.security.Principal;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DisasterController {
 
     private final DisasterService disasterService;
-    private final ActionService actionService;
 
     /**
      * Retrieves the current disaster for clan.
@@ -52,7 +50,7 @@ public class DisasterController {
     @PostMapping("/disaster/action")
     public ResponseEntity<Void> submitDisasterAction(Principal principal, @RequestBody DisasterRequest request)
             throws InvalidActionException {
-        actionService.createDisasterAction(request, Integer.parseInt(principal.getName()));
+        disasterService.saveDisasterAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

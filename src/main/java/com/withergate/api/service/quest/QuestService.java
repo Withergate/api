@@ -3,6 +3,8 @@ package com.withergate.api.service.quest;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * Quest service interface.
@@ -20,11 +22,11 @@ public interface QuestService {
     void assignQuests(Clan clan, ClanNotification notification);
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
      */
-    void saveQuestAction(QuestAction action);
+    void saveQuestAction(QuestRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Processes all pending quest actions.

@@ -9,19 +9,24 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.quest.QuestDetails;
+import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Quest service implementation.
@@ -38,6 +43,7 @@ public class QuestServiceImpl implements QuestService {
     private final QuestActionRepository questActionRepository;
     private final CombatService combatService;
     private final RandomService randomService;
+    private final CharacterService characterService;
 
     @Override
     public void assignQuests(Clan clan, ClanNotification notification) {
@@ -74,9 +80,39 @@ public class QuestServiceImpl implements QuestService {
         notification.getDetails().add(notificationDetail);
     }
 
+    @Transactional
     @Override
-    public void saveQuestAction(QuestAction action) {
+    public void saveQuestAction(QuestRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting quest action for request {}.", request);
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if the clan contains this quest
+        Quest quest = null;
+        for (Quest q : clan.getQuests()) {
+            if (q.getId() == request.getQuestId()) {
+                // check if not completed
+                if (q.isCompleted()) {
+                    throw new InvalidActionException("This quest has already been completed.");
+                }
+                quest = q;
+                break;
+            }
+        }
+
+        if (quest == null) {
+            throw new InvalidActionException("This quest does not exist.");
+        }
+
+        // persist the action
+        QuestAction action = new QuestAction();
+        action.setCharacter(character);
+        action.setQuest(quest);
+        action.setState(ActionState.PENDING);
         questActionRepository.save(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
     }
 
     @Override

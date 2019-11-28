@@ -16,12 +16,13 @@ import com.withergate.api.model.disaster.DisasterSolution.Type;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.action.DisasterActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.repository.disaster.DisasterRepository;
 import com.withergate.api.repository.disaster.DisasterSolutionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
@@ -52,7 +53,10 @@ public class DisasterServiceTest {
     private DisasterResolutionService disasterResolutionService;
 
     @Mock
-    private ClanService clanService;
+    private ClanRepository clanRepository;
+
+    @Mock
+    private CharacterService characterService;
 
     @Mock
     private TurnRepository turnRepository;
@@ -76,56 +80,8 @@ public class DisasterServiceTest {
         properties.setDisasterTurns(List.of(15, 30, 45));
 
         disasterService = new DisasterServiceImpl(disasterRepository, disasterDetailsRepository, disasterSolutionRepository,
-                disasterActionRepository, disasterResolutionService, clanService, turnRepository, randomService,
+                disasterActionRepository, disasterResolutionService, clanRepository, characterService, turnRepository, randomService,
                 notificationService, combatService, properties);
-    }
-
-    @Test
-    public void testGivenCurrentDisasterWhenGettingDisasterThenVerifyRepositoryEntityReturned() {
-        // given disaster
-        Disaster disaster = new Disaster();
-        disaster.setId(1);
-        disaster.setCompleted(false);
-        disaster.setTurn(15);
-        Mockito.when(disasterRepository.findFirstByCompleted(false)).thenReturn(disaster);
-
-        // when getting current disaster
-        Disaster result = disasterService.getCurrentDisaster();
-
-        // then verify correct entity returned
-        Assert.assertEquals(disaster, result);
-    }
-
-    @Test
-    public void testGivenSolutionIdentifierWhenGettingSolutionThenVerifyRepositoryEntityReturned() {
-        // given solution identifier
-        String identifier = "solution";
-
-        DisasterSolution solution = new DisasterSolution();
-        solution.setIdentifier(identifier);
-        solution.setDifficulty(5);
-        Mockito.when(disasterSolutionRepository.getOne(identifier)).thenReturn(solution);
-
-        // when getting solution
-        DisasterSolution result = disasterService.getDisasterSolution(identifier);
-
-        // then verify correct entity returned
-        Assert.assertEquals(solution, result);
-    }
-
-    @Test
-    public void testGivenDisasterActionWhenSavingActionThenVerifyEntitySaved() {
-        // given action
-        DisasterAction action = new DisasterAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(new Character());
-        action.setSolution(new DisasterSolution());
-
-        // when saving
-        disasterService.saveDisasterAction(action);
-
-        // then verify action saved
-        Mockito.verify(disasterActionRepository).save(action);
     }
 
     @Test
@@ -134,7 +90,7 @@ public class DisasterServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setInformationLevel(1);
-        Mockito.when(clanService.getClan(1)).thenReturn(clan);
+        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         Disaster disaster = new Disaster();
         disaster.setId(1);
@@ -150,7 +106,7 @@ public class DisasterServiceTest {
         Disaster result = disasterService.getDisasterForClan(1);
 
         // then verify no disaster returned
-        Assert.assertEquals(null, result);
+        Assert.assertNull(result);
     }
 
     @Test
@@ -159,7 +115,7 @@ public class DisasterServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setInformationLevel(5);
-        Mockito.when(clanService.getClan(1)).thenReturn(clan);
+        Mockito.when(clanRepository.getOne(1)).thenReturn(clan);
 
         Disaster disaster = new Disaster();
         disaster.setId(1);
@@ -198,7 +154,7 @@ public class DisasterServiceTest {
         ArgumentCaptor<Disaster> captor = ArgumentCaptor.forClass(Disaster.class);
         Mockito.verify(disasterRepository).save(captor.capture());
         Assert.assertEquals("disaster", captor.getValue().getDetails().getIdentifier());
-        Assert.assertEquals(false, captor.getValue().isCompleted());
+        Assert.assertFalse(captor.getValue().isCompleted());
         Assert.assertEquals(15, captor.getValue().getTurn());
     }
 
@@ -225,7 +181,7 @@ public class DisasterServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setDisasterProgress(50);
-        Mockito.when(clanService.getAllClans()).thenReturn(List.of(clan));
+        Mockito.when(clanRepository.findAll()).thenReturn(List.of(clan));
 
         DisasterDetails disasterDetails = new DisasterDetails();
         disasterDetails.setIdentifier("disaster");
@@ -240,7 +196,7 @@ public class DisasterServiceTest {
 
         // then verify resolution service called and disaster updated
         Mockito.verify(disasterResolutionService).handleDisasterResolution(Mockito.eq(clan), Mockito.any(), Mockito.eq(disaster));
-        Assert.assertEquals(true, disaster.isCompleted());
+        Assert.assertTrue(disaster.isCompleted());
     }
 
     @Test

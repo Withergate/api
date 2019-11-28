@@ -16,7 +16,9 @@ import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
 import com.withergate.api.repository.action.ResourceTradeActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.trade.MarketOfferRepository;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
@@ -49,28 +51,18 @@ public class TradeServiceTest {
     @Mock
     private MarketOfferRepository marketOfferRepository;
 
+    @Mock
+    private CharacterService characterService;
+
+    @Mock
+    private ClanRepository clanRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         tradeService = new TradeServiceImpl(resourceTradeActionRepository, notificationService,
-                itemService, marketOfferRepository);
-    }
-
-    @Test
-    public void testGivenResourceTradeActionWhenSavingActionThenVerifyActionSaved() {
-        // given action
-        ResourceTradeAction action = new ResourceTradeAction();
-        action.setCharacter(new Character());
-        action.setFood(10);
-        action.setType(TradeType.BUY);
-        action.setState(ActionState.PENDING);
-
-        // when saving action
-        tradeService.saveResourceTradeAction(action);
-
-        // then verify action saved
-        Mockito.verify(resourceTradeActionRepository).save(action);
+                itemService, marketOfferRepository, characterService, clanRepository);
     }
 
     @Test

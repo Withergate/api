@@ -1,12 +1,11 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.TavernAction;
-import com.withergate.api.model.character.CharacterFilter;
-import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.service.exception.InvalidActionException;
-
 import java.util.List;
+
+import com.withergate.api.model.Clan;
+import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.request.TavernRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * Tavern service interface.
@@ -33,11 +32,12 @@ public interface TavernService {
     List<TavernOffer> loadTavernOffers(TavernOffer.State state, Clan clan);
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
+     * @param clanId clan ID
      */
-    void saveTavernAction(TavernAction action);
+    void saveTavernAction(TavernRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Handles all pending tavern actions.

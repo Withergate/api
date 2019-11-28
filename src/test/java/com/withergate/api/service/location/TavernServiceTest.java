@@ -9,7 +9,6 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TavernOffer.State;
@@ -97,26 +96,6 @@ public class TavernServiceTest {
 
         // then verify correct offers returned
         Assert.assertEquals(offers, result);
-    }
-
-    @Test
-    public void testGivenTavernActionWhenSavingActionThenVerifyRepositoryCalled() {
-        // given action
-        TavernAction action = new TavernAction();
-        action.setCharacter(mockCharacter(1, "Joe"));
-        action.setState(ActionState.PENDING);
-
-        TavernOffer offer = new TavernOffer();
-        offer.setState(State.AVAILABLE);
-        offer.setCharacter(mockCharacter(2, "Julia"));
-        offer.setPrice(50);
-        action.setOffer(offer);
-
-        // when saving action
-        tavernService.saveTavernAction(action);
-
-        // then verify repository called
-        Mockito.verify(tavernActionRepository).save(action);
     }
 
     @Test

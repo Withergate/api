@@ -1,8 +1,7 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.model.action.LocationAction;
-import com.withergate.api.model.location.Location;
-import com.withergate.api.model.location.LocationDescription;
+import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * Location service interface.
@@ -12,19 +11,12 @@ import com.withergate.api.model.location.LocationDescription;
 public interface LocationService {
 
     /**
-     * Gets location description for given location type.
+     * Validates and saves the provided action.
      *
-     * @param location the location type
-     * @return location description
+     * @param request the action to be saved
+     * @param clanId  clan ID
      */
-    LocationDescription getLocationDescription(Location location);
-
-    /**
-     * Saves the provided action.
-     *
-     * @param action the action to be saved
-     */
-    void saveLocationAction(LocationAction action);
+    void saveLocationAction(LocationRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Handles all pending location actions.

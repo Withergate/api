@@ -1,6 +1,7 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.model.action.ArenaAction;
+import com.withergate.api.model.request.ArenaRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * Arena service interface.
@@ -10,11 +11,12 @@ import com.withergate.api.model.action.ArenaAction;
 public interface ArenaService {
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
+     * @param clanId clan ID
      */
-    void saveArenaAction(ArenaAction action);
+    void saveArenaAction(ArenaRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Handles all pending arena actions.

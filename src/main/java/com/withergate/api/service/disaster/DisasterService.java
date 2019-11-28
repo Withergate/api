@@ -1,8 +1,8 @@
 package com.withergate.api.service.disaster;
 
-import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.disaster.Disaster;
-import com.withergate.api.model.disaster.DisasterSolution;
+import com.withergate.api.model.request.DisasterRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * Disaster service.
@@ -10,21 +10,6 @@ import com.withergate.api.model.disaster.DisasterSolution;
  * @author Martin Myslik
  */
 public interface DisasterService {
-
-    /**
-     * Loads the current disaster.
-     *
-     * @return the loaded disaster
-     */
-    Disaster getCurrentDisaster();
-
-    /**
-     * Loads the disaster solution based on its identifier.
-     *
-     * @param  identifier solution identifier
-     * @return the loaded disaster solution
-     */
-    DisasterSolution getDisasterSolution(String identifier);
 
     /**
      * Loads the current disaster. Checks whether the disaster is visible for the provided clan.
@@ -42,11 +27,12 @@ public interface DisasterService {
     void handleDisaster(int turnId);
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
+     * @param clanId clan ID
      */
-    void saveDisasterAction(DisasterAction action);
+    void saveDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Processes all pending disaster actions.

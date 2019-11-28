@@ -1,11 +1,10 @@
 package com.withergate.api.controller.building;
 
-import com.withergate.api.model.request.BuildingRequest;
-import com.withergate.api.service.action.ActionService;
-import com.withergate.api.service.exception.InvalidActionException;
-
 import java.security.Principal;
 
+import com.withergate.api.model.request.BuildingRequest;
+import com.withergate.api.service.building.BuildingService;
+import com.withergate.api.service.exception.InvalidActionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BuildingController {
 
-    private final ActionService actionService;
+    private final BuildingService buildingService;
 
     /**
      * Submits a new building action and checks if this action is applicable. Throws an exception if not.
@@ -37,7 +36,7 @@ public class BuildingController {
     public ResponseEntity<Void> submitBuildingAction(Principal principal, @RequestBody BuildingRequest request)
             throws InvalidActionException {
 
-        actionService.createBuildingAction(request, Integer.parseInt(principal.getName()));
+        buildingService.saveBuildingAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

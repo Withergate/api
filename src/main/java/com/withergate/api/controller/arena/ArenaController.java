@@ -6,8 +6,8 @@ import java.util.List;
 import com.withergate.api.model.arena.ArenaStats;
 import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.repository.arena.ArenaStatsRepository;
-import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.location.ArenaService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ArenaController {
 
-    private final ActionService actionService;
+    private final ArenaService arenaService;
     private final ArenaStatsRepository arenaStatsRepository;
 
     /**
@@ -41,7 +41,7 @@ public class ArenaController {
     public ResponseEntity<Void> visitArena(Principal principal, @RequestBody ArenaRequest request) throws InvalidActionException {
         log.debug("Executing arena action for player {}", principal.getName());
 
-        actionService.createArenaAction(request, Integer.parseInt(principal.getName()));
+        arenaService.saveArenaAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

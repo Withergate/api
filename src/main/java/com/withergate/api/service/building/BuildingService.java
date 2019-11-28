@@ -3,6 +3,8 @@ package com.withergate.api.service.building;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.request.BuildingRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 import java.util.List;
 
@@ -14,11 +16,12 @@ import java.util.List;
 public interface BuildingService {
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
+     * @param clanId clan ID
      */
-    void saveBuildingAction(BuildingAction action);
+    void saveBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Processes all pending building actions.

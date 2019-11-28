@@ -6,7 +6,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
-import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.repository.clan.CharacterRepository;
@@ -41,6 +40,17 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character load(int characterId) {
         return characterRepository.getOne(characterId);
+    }
+
+    @Override
+    public Character loadReadyCharacter(int characterId, int clanId) throws InvalidActionException {
+        Character character = characterRepository.getOne(characterId);
+        if (character.getClan().getId() != clanId || character.getState() != CharacterState.READY) {
+            log.error("Action cannot be performed with this character: {}!", character.getId());
+            throw new InvalidActionException("The provided character is not ready or does not belong to your clan!");
+        }
+
+        return character;
     }
 
     @Override

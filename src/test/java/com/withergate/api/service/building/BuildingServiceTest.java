@@ -23,17 +23,23 @@ import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
 
 public class BuildingServiceTest {
 
@@ -54,6 +60,9 @@ public class BuildingServiceTest {
     @Mock
     private RandomService randomService;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -62,7 +71,117 @@ public class BuildingServiceTest {
         properties.setBuildingFame(1);
 
         buildingService = new BuildingServiceImpl(itemService, buildingActionRepository,
-                buildingDetailsRepository, notificationService, randomService, properties);
+                buildingDetailsRepository, notificationService, randomService, properties, characterService);
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenBuildingVisitRequestWhenClanDoesNotHaveBuildingThenVerifyExceptionThrown() throws InvalidActionException {
+        // given building request
+        BuildingRequest request = new BuildingRequest();
+        request.setCharacterId(1);
+        request.setBuilding(BuildingName.FORGE);
+        request.setType(Type.VISIT);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setBuildings(new HashMap<>());
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        BuildingDetails buildingDetails = new BuildingDetails();
+        buildingDetails.setIdentifier(BuildingName.FORGE);
+        Mockito.when(buildingService.getBuildingDetails(BuildingName.FORGE)).thenReturn(buildingDetails);
+
+        // when creating building action
+        buildingService.saveBuildingAction(request, 1);
+
+        // then expect exception
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenBuildingVisitRequestWhenBuildingInsufficientLevelThenVerifyExceptionThrown() throws InvalidActionException {
+        // given building request
+        BuildingRequest request = new BuildingRequest();
+        request.setCharacterId(1);
+        request.setBuilding(BuildingName.FORGE);
+        request.setType(Type.VISIT);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setBuildings(new HashMap<>());
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        BuildingDetails buildingDetails = new BuildingDetails();
+        buildingDetails.setIdentifier(BuildingName.FORGE);
+        Mockito.when(buildingService.getBuildingDetails(BuildingName.FORGE)).thenReturn(buildingDetails);
+
+        Building building = new Building();
+        building.setDetails(buildingDetails);
+        building.setLevel(0);
+        clan.getBuildings().put(BuildingName.FORGE, building);
+
+        // when creating building action
+        buildingService.saveBuildingAction(request, 1);
+
+        // then expect exception
+    }
+
+    @Test
+    public void testGivenBuildingVisitRequestWhenBuildingSufficientLevelThenActionCreated() throws InvalidActionException {
+        // given building request
+        BuildingRequest request = new BuildingRequest();
+        request.setCharacterId(1);
+        request.setBuilding(BuildingName.FORGE);
+        request.setType(Type.VISIT);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setJunk(10);
+        clan.setBuildings(new HashMap<>());
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        BuildingDetails buildingDetails = new BuildingDetails();
+        buildingDetails.setIdentifier(BuildingName.FORGE);
+        buildingDetails.setVisitJunkCost(10);
+        buildingDetails.setVisitable(true);
+        Mockito.when(buildingService.getBuildingDetails(BuildingName.FORGE)).thenReturn(buildingDetails);
+
+        Building building = new Building();
+        building.setDetails(buildingDetails);
+        building.setLevel(1);
+        clan.getBuildings().put(BuildingName.FORGE, building);
+
+        // when creating building action
+        buildingService.saveBuildingAction(request, 1);
+
+        // then verify action created
+        ArgumentCaptor<BuildingAction> captor = ArgumentCaptor.forClass(BuildingAction.class);
+        Mockito.verify(buildingActionRepository).save(captor.capture());
+
+        assertEquals(character, captor.getValue().getCharacter());
+        assertEquals(BuildingName.FORGE, captor.getValue().getBuilding());
     }
 
     @Test
@@ -289,21 +408,6 @@ public class BuildingServiceTest {
 
         // then verify correct list returned
         Assert.assertEquals(1, result.size());
-    }
-
-    @Test
-    public void testGivenBuildingActionWhenSavingActionThenVerifyActionSaved() {
-        // given building action
-        BuildingAction action = new BuildingAction();
-        action.setBuilding(BuildingName.RAGS_SHOP);
-        action.setCharacter(new Character());
-        action.setState(ActionState.PENDING);
-
-        // when saving action
-        buildingService.saveBuildingAction(action);
-
-        // then verify action saved
-        Mockito.verify(buildingActionRepository).save(action);
     }
 
     @Test

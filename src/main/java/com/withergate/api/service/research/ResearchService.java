@@ -1,7 +1,8 @@
 package com.withergate.api.service.research;
 
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.ResearchAction;
+import com.withergate.api.model.request.ResearchRequest;
+import com.withergate.api.service.exception.InvalidActionException;
 
 /**
  * Research service.
@@ -11,11 +12,12 @@ import com.withergate.api.model.action.ResearchAction;
 public interface ResearchService {
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
+     * @param clanId clan ID
      */
-    void saveResearchAction(ResearchAction action);
+    void saveResearchAction(ResearchRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Processes all pending research actions.

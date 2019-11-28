@@ -5,18 +5,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
-import com.withergate.api.model.character.Character;
 import com.withergate.api.model.arena.ArenaStats;
+import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.item.ItemDetails.WeaponType;
 import com.withergate.api.model.location.ArenaResult;
+import com.withergate.api.model.request.ArenaRequest;
 import com.withergate.api.repository.action.ArenaActionRepository;
 import com.withergate.api.repository.arena.ArenaStatsRepository;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Arena service implementation.
@@ -32,10 +39,33 @@ public class ArenaServiceImpl implements ArenaService {
     private final CombatService combatService;
     private final NotificationService notificationService;
     private final ArenaStatsRepository arenaStatsRepository;
+    private final CharacterService characterService;
 
+    @Transactional
     @Override
-    public void saveArenaAction(ArenaAction action) {
+    public void saveArenaAction(ArenaRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting arena action request: {}", request.toString());
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check arena requirements
+        if (clan.isArena()) {
+            throw new InvalidActionException("You already have selected a character to enter arena this turn!");
+        }
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
+            throw new InvalidActionException("Ranged weapons are not allowed in the arena.");
+        }
+
+        clan.setArena(true);
+
+        ArenaAction action = new ArenaAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+
         arenaActionRepository.save(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
     }
 
     @Override

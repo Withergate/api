@@ -8,10 +8,12 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.repository.action.TavernActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.clan.TavernOfferRepository;
@@ -54,9 +56,42 @@ public class TavernServiceImpl implements TavernService {
         return tavernOfferRepository.findAllByStateAndClan(state, clan);
     }
 
+    @Transactional
     @Override
-    public void saveTavernAction(TavernAction action) {
+    public void saveTavernAction(TavernRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting tavern action request: {}", request.toString());
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        TavernOffer offer = loadTavernOffer(request.getOfferId());
+        if (offer == null || offer.getClan().getId() != clanId
+                || !offer.getState().equals(TavernOffer.State.AVAILABLE)) {
+            throw new InvalidActionException("This offer either doesn't exists or does not belong to your clan!");
+        }
+
+        int cost = offer.getPrice();
+        if (clan.getCaps() < cost) {
+            throw new InvalidActionException("Not enough resources to perform this action!");
+        }
+
+        if (clan.getCharacters().size() >= clan.getPopulationLimit()) {
+            throw new InvalidActionException("Population limit exceeded.");
+        }
+
+        clan.changeCaps(- cost);
+
+        TavernAction action = new TavernAction();
+        action.setState(ActionState.PENDING);
+        action.setCharacter(character);
+        action.setOffer(offer);
+
         tavernActionRepository.save(action);
+
+        // character needs to be marked as busy
+        character.setState(CharacterState.BUSY);
+
+        // mark offer as hired
+        offer.setState(TavernOffer.State.HIRED);
     }
 
     @Override

@@ -10,25 +10,30 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterSolution;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.action.DisasterActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.repository.disaster.DisasterRepository;
 import com.withergate.api.repository.disaster.DisasterSolutionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Disaster service implementation.
@@ -45,7 +50,8 @@ public class DisasterServiceImpl implements DisasterService {
     private final DisasterSolutionRepository disasterSolutionRepository;
     private final DisasterActionRepository disasterActionRepository;
     private final DisasterResolutionService disasterResolutionService;
-    private final ClanService clanService;
+    private final ClanRepository clanRepository;
+    private final CharacterService characterService;
     private final TurnRepository turnRepository;
     private final RandomService randomService;
     private final NotificationService notificationService;
@@ -53,18 +59,8 @@ public class DisasterServiceImpl implements DisasterService {
     private final GameProperties gameProperties;
 
     @Override
-    public Disaster getCurrentDisaster() {
-        return disasterRepository.findFirstByCompleted(false);
-    }
-
-    @Override
-    public DisasterSolution getDisasterSolution(String identifier) {
-        return disasterSolutionRepository.getOne(identifier);
-    }
-
-    @Override
     public Disaster getDisasterForClan(int clanId) {
-        Clan clan = clanService.getClan(clanId);
+        Clan clan = clanRepository.getOne(clanId);
 
         // get the current disaster
         Disaster disaster = disasterRepository.findFirstByCompleted(false);
@@ -107,9 +103,45 @@ public class DisasterServiceImpl implements DisasterService {
         }
     }
 
+    @Transactional
     @Override
-    public void saveDisasterAction(DisasterAction action) {
+    public void saveDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException {
+        log.debug("Submitting disaster action for request {}.", request);
+        Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
+        Clan clan = character.getClan();
+
+        // check if disaster solution belongs to the current disaster
+        Disaster disaster = disasterRepository.findFirstByCompleted(false);
+        DisasterSolution solution = disasterSolutionRepository.getOne(request.getSolution());
+        if (!solution.getDisaster().equals(disaster.getDetails())) {
+            throw new InvalidActionException("This solution either doesn't exist or doesn't belong to the current disaster.");
+        }
+
+        // check resources
+        if (solution.getCapsCost() > clan.getCaps() || solution.getJunkCost() > clan.getJunk()
+                || solution.getFoodCost() > clan.getFood()) {
+            throw new InvalidActionException("Not enough resources to perform this action.");
+        }
+
+        // check completion
+        if (clan.getDisasterProgress() >= 100) {
+            throw new InvalidActionException("Your already averted this disaster!");
+        }
+
+        // create action
+        DisasterAction action = new DisasterAction();
+        action.setCharacter(character);
+        action.setSolution(solution);
+        action.setState(ActionState.PENDING);
         disasterActionRepository.save(action);
+
+        // pay resources
+        clan.changeCaps(- solution.getCapsCost());
+        clan.changeJunk(- solution.getJunkCost());
+        clan.changeFood(- solution.getFoodCost());
+
+        // mark character as busy and save the clan
+        character.setState(CharacterState.BUSY);
     }
 
     @Override
@@ -135,7 +167,7 @@ public class DisasterServiceImpl implements DisasterService {
         log.debug("Triggering disaster: {}", disaster.getDetails().getIdentifier());
 
         // handle disaster
-        for (Clan clan : clanService.getAllClans()) {
+        for (Clan clan : clanRepository.findAll()) {
             // handle disaster
             handleClanDisaster(turnId, clan, disaster);
 

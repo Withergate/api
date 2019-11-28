@@ -1,7 +1,8 @@
 package com.withergate.api.service.trade;
 
-import com.withergate.api.model.action.ResourceTradeAction;
+import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.PublishOfferRequest;
+import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -16,11 +17,20 @@ import org.springframework.data.domain.Pageable;
 public interface TradeService {
 
     /**
-     * Saves the provided action.
+     * Validates and saves the provided action.
      *
-     * @param action the action to be saved
+     * @param request the action to be saved
+     * @param clanId clan ID
      */
-    void saveResourceTradeAction(ResourceTradeAction action);
+    void saveResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Validates handles market trade action.
+     *
+     * @param request the action to be saved
+     * @param clanId clan ID
+     */
+    void handleMarketTradeAction(MarketTradeRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Gets specified market offer.

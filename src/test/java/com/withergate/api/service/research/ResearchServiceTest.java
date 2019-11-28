@@ -16,6 +16,7 @@ import com.withergate.api.model.research.ResearchDetails;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.ResearchActionRepository;
 import com.withergate.api.repository.research.ResearchDetailsRepository;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,6 +38,9 @@ public class ResearchServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -44,7 +48,7 @@ public class ResearchServiceTest {
         GameProperties properties = new GameProperties();
         properties.setResearchFame(5);
 
-        researchService = new ResearchServiceImpl(detailsRepository, actionRepository, notificationService, properties);
+        researchService = new ResearchServiceImpl(detailsRepository, actionRepository, notificationService, properties, characterService);
     }
 
     @Test

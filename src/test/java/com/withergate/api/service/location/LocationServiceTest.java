@@ -19,19 +19,25 @@ import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
 
 public class LocationServiceTest {
 
@@ -55,12 +61,86 @@ public class LocationServiceTest {
     @Mock
     private LocationDescriptionRepository locationDescriptionRepository;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         locationService = new LocationServiceImpl(locationActionRepository, randomService,
-                encounterService, itemService, notificationService, locationDescriptionRepository);
+                encounterService, itemService, notificationService, locationDescriptionRepository, characterService);
+    }
+
+    @Test
+    public void testGivenLocationRequestWhenCreatingLocationActionThenVerifyEntitiesSaved() throws InvalidActionException {
+        // given location request
+        LocationRequest request = new LocationRequest();
+        request.setCharacterId(1);
+        request.setLocation(Location.WASTELAND);
+        request.setType(LocationAction.LocationActionType.VISIT);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        LocationDescription description = new LocationDescription();
+        description.setLocation(Location.WASTELAND);
+        description.setScouting(true);
+        Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
+
+        // when creating location action
+        locationService.saveLocationAction(request, 1);
+
+        // then verify action saved and character updated
+        ArgumentCaptor<LocationAction> captorAction = ArgumentCaptor.forClass(LocationAction.class);
+
+        Mockito.verify(locationActionRepository).save(captorAction.capture());
+
+        assertEquals(ActionState.PENDING, captorAction.getValue().getState());
+        assertEquals(character, captorAction.getValue().getCharacter());
+        assertEquals(Location.WASTELAND, captorAction.getValue().getLocation());
+
+        assertEquals(CharacterState.BUSY, character.getState());
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenLocationRequestWhenScoutingInNonSupportedLocationThenVerifyExceptionThrown() throws InvalidActionException {
+        // given location request
+        LocationRequest request = new LocationRequest();
+        request.setCharacterId(1);
+        request.setLocation(Location.NEIGHBORHOOD);
+        request.setType(LocationActionType.SCOUT);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setName("Dragons");
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        LocationDescription description = new LocationDescription();
+        description.setLocation(Location.NEIGHBORHOOD);
+        description.setScouting(false);
+        Mockito.when(locationDescriptionRepository.getOne(Location.NEIGHBORHOOD)).thenReturn(description);
+
+        // when creating location action
+        locationService.saveLocationAction(request, 1);
+
+        // then expect exception
     }
 
     @Test
@@ -468,35 +548,6 @@ public class LocationServiceTest {
 
         // then verify information increased
         Assert.assertEquals(8, clan.getInformation());
-    }
-
-    @Test
-    public void testGivenLocationWhenGettingDescriptionThenVerifyDescriptionReturned() {
-        // given location
-        Location location = Location.CITY_CENTER;
-
-        LocationDescription description = new LocationDescription();
-        description.setLocation(Location.CITY_CENTER);
-        Mockito.when(locationDescriptionRepository.getOne(Location.CITY_CENTER)).thenReturn(description);
-
-        // when getting description
-        LocationDescription result = locationService.getLocationDescription(location);
-
-        // then verify correct description returned
-        Assert.assertEquals(description, result);
-    }
-
-    @Test
-    public void testGivenLocationActionWhenSavingThenVerifyRepositoryCalled() {
-        // given action
-        LocationAction action = new LocationAction();
-        action.setLocation(Location.NEIGHBORHOOD);
-
-        // when saving
-        locationService.saveLocationAction(action);
-
-        // then verify repository called
-        Mockito.verify(locationActionRepository).save(action);
     }
 
 }
