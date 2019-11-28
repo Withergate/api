@@ -172,13 +172,19 @@ public class Character {
         return traits.values().stream().filter(trait -> trait.getOrder() <= getMaxOrder()).collect(Collectors.toList());
     }
 
+    /**
+     * Gets the maximum available trait order.
+     *
+     * @return the max order
+     */
     @JsonIgnore
     public long getMaxOrder() {
         if (clan == null) {
             return -1;
         }
 
-        return traits.values().stream().filter(Trait::isActive).count() + clan.getBuildings().get(BuildingName.TRAINING_GROUNDS).getLevel();
+        return 1 + traits.values().stream().filter(Trait::isActive).count()
+                + clan.getBuildings().get(BuildingName.TRAINING_GROUNDS).getLevel();
     }
 
     /**

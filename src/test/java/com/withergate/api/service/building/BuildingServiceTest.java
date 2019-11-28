@@ -489,12 +489,12 @@ public class BuildingServiceTest {
         grounds.setLevel(0);
         clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, grounds);
 
-        BuildingDetails watchtowerDetails = new BuildingDetails();
-        watchtowerDetails.setIdentifier(BuildingName.WATCHTOWER);
-        Building watchtower = new Building();
-        watchtower.setDetails(watchtowerDetails);
-        watchtower.setLevel(1);
-        clan.getBuildings().put(BuildingName.WATCHTOWER, watchtower);
+        BuildingDetails studyDetails = new BuildingDetails();
+        studyDetails.setIdentifier(BuildingName.STUDY);
+        Building study = new Building();
+        study.setDetails(studyDetails);
+        study.setLevel(1);
+        clan.getBuildings().put(BuildingName.STUDY, study);
 
         // when processing passive acitons
         buildingService.processPassiveBuildingBonuses(1, clan);

@@ -1,6 +1,6 @@
 -- Building details
 INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image_url) VALUES
-    ('SICK_BAY', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
+    ('SICK_BAY', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
     ('GMO_FARM', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
     ('TRAINING_GROUNDS', 12, 0, false, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
     ('MONUMENT', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
@@ -8,8 +8,7 @@ INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, image
     ('WORKSHOP', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
     ('RAGS_SHOP', 12, true, 10, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
     ('QUARTERS', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
-    ('STUDY', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
-    ('WATCHTOWER', 12, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/watchtower.png');
+    ('STUDY', 16, false, 0, 'https://storage.googleapis.com/withergate-images/buildings/study.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -29,9 +28,7 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('QUARTERS', 'en', 'Quarters'),
     ('QUARTERS', 'cs', 'Ubikace'),
     ('STUDY', 'en', 'Study'),
-    ('STUDY', 'cs', 'Studovna'),
-    ('WATCHTOWER', 'en', 'Watchtower'),
-    ('WATCHTOWER', 'cs', 'Pozorovatelna');
+    ('STUDY', 'cs', 'Studovna');
 
 INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
@@ -51,9 +48,7 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),
     ('QUARTERS', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.'),
     ('STUDY', 'en', 'I have 100 ideas every day. 99 of them are bad and the remaining one is brilliant. The problem is finding which one is that.'),
-    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.'),
-    ('WATCHTOWER', 'en', 'This is the best way to drift through the day... and warn others when mutants are approaching.'),
-    ('WATCHTOWER', 'cs', 'Co to nevidí, oko mé, modravé... hele, mutant!');
+    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -72,7 +67,5 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('RAGS_SHOP', 'cs', 'Zaplať šrot a vyrob náhodný oděv! Zručnost a úroveň budovy ovlivňuj šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
     ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
     ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.'),
-    ('STUDY', 'en', 'Each level of this building increases the speed of research.'),
-    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu.'),
-    ('WATCHTOWER', 'en', 'Each level of this building grants 1 free information every turn.'),
-    ('WATCHTOWER', 'cs', 'Každá úroveň této budovy poskytuje 1 informaci zdarma každé kolo.');
+    ('STUDY', 'en', 'Each level of this building increases the speed of research and grants free information point every turn..'),
+    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu a poskytuje informaci zdarma každé kolo.');

@@ -99,7 +99,10 @@ public class TradeServiceImpl implements TradeService {
             throw new InvalidActionException("This item does not belong to your clan!");
         }
         if (request.getPrice() < item.getDetails().getPrice()) {
-            throw new InvalidActionException("Price is too low!");
+            throw new InvalidActionException("Price must not be lower than market price!");
+        }
+        if (request.getPrice() > item.getDetails().getPrice() * 2) {
+            throw new InvalidActionException("Price must not be higher than double the market price.!");
         }
 
         // create market offer
