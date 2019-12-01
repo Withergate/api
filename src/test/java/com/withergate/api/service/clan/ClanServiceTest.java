@@ -301,6 +301,7 @@ public class ClanServiceTest {
         character3.setHitpoints(1);
         TraitDetails details = new TraitDetails();
         details.setIdentifier(TraitName.ASCETIC);
+        details.setBonus(1);
         Trait trait = new Trait();
         trait.setDetails(details);
         trait.setActive(true);
@@ -315,7 +316,7 @@ public class ClanServiceTest {
         clanService.performClanTurnUpdates(1);
 
         // then verify food consumed and buildings triggered
-        Assert.assertEquals(6, clan.getFood());
+        Assert.assertEquals(5, clan.getFood());
         Mockito.verify(buildingService).processPassiveBuildingBonuses(1, clan);
     }
 

@@ -1,13 +1,10 @@
 package com.withergate.api.service.combat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.item.WeaponType;
+import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.RandomService;
@@ -17,6 +14,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Combat round service implementation. Used for detail combat mechanics.
@@ -90,11 +90,12 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         // compute the chance to flee the combat
         int fleeRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         double fleeChance = 100 - ((double) outcome.getLoser().getHitpoints() / outcome.getLoser().getMaxHitpoints()) * 100;
-        if (outcome.getLoser().getHitpoints() > 0 && fleeChance > fleeRoll) {
+        if (outcome.getLoser().getHitpoints() > 0
+                && (outcome.getLoser().getHitpoints() < outcome.getLoser().getMaxHitpoints() / 3.0 || fleeChance > fleeRoll)) {
             finished = true;
             NotificationDetail fleeDetail = new NotificationDetail();
             notificationService.addLocalizedTexts(fleeDetail.getText(), "detail.combat.flee",
-                    new String[]{outcome.getLoser().getName(), String.valueOf(fleeRoll), String.valueOf((int) fleeChance)});
+                    new String[]{outcome.getLoser().getName(), String.valueOf((int) fleeChance)});
 
             details.add(fleeDetail);
         }
@@ -113,7 +114,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
     private int getCombatBonus(Character character, ClanNotification notification) {
         Trait fighter = character.getTraits().get(TraitName.FIGHTER);
         if (fighter != null && fighter.isActive() && character.getWeapon() != null
-                && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.MELEE)) {
+                && character.getWeapon().getDetails().getWeaponType().equals(ItemDetails.WeaponType.MELEE)) {
             log.trace("Checking fighter trait bonus.");
             if (randomService.getRandomInt(1, 100) < 50) {
                 NotificationDetail detail = new NotificationDetail();
@@ -127,7 +128,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
 
         Trait sharpshooter = character.getTraits().get(TraitName.SHARPSHOOTER);
         if (sharpshooter != null && sharpshooter.isActive() && character.getWeapon() != null
-                && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
+                && character.getWeapon().getDetails().getWeaponType().equals(ItemDetails.WeaponType.RANGED)) {
             log.trace("Checking sharpshooter trait bonus.");
             if (randomService.getRandomInt(1, 100) < 50) {
                 NotificationDetail detail = new NotificationDetail();

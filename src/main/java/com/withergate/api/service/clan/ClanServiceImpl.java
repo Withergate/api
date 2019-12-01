@@ -244,6 +244,7 @@ public class ClanServiceImpl implements ClanService {
         Iterator<Character> iterator = clan.getCharacters().iterator();
         while (iterator.hasNext()) {
             Character character = iterator.next();
+            int consumption = gameProperties.getFoodConsumption();
 
             // ascetic
             Trait ascetic = character.getTraits().get(TraitName.ASCETIC);
@@ -252,17 +253,17 @@ public class ClanServiceImpl implements ClanService {
                 notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[] {character.getName()});
                 notification.getDetails().add(detail);
 
-                continue; // skip food consumption
+                consumption -= ascetic.getDetails().getBonus();
             }
 
-            if (clan.getFood() >= gameProperties.getFoodConsumption()) {
-                clan.setFood(clan.getFood() - gameProperties.getFoodConsumption());
+            if (clan.getFood() >= consumption) {
+                clan.setFood(clan.getFood() - consumption);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
                         new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.changeFood(- gameProperties.getFoodConsumption());
+                notification.changeFood(- consumption);
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
