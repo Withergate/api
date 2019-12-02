@@ -69,7 +69,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character generateRandomCharacter(CharacterFilter filter) {
+    public Character generateRandomCharacter(CharacterFilter filter, int[] attributes) {
         Character character = new Character();
 
         // set character's state to READY
@@ -89,10 +89,10 @@ public class CharacterServiceImpl implements CharacterService {
         character.setMaxHitpoints(hitpoints);
 
         // generate random stats
-        character.setCombat(getRandomAbilityValue());
-        character.setScavenge(getRandomAbilityValue());
-        character.setCraftsmanship(getRandomAbilityValue());
-        character.setIntellect(getRandomAbilityValue());
+        character.setCombat(attributes[0]);
+        character.setScavenge(attributes[1]);
+        character.setCraftsmanship(attributes[2]);
+        character.setIntellect(attributes[3]);
 
         // generate random avatar
         character.setImageUrl(nameService.generateRandomAvatar(gender, filter.getAvatars()));
@@ -155,14 +155,6 @@ public class CharacterServiceImpl implements CharacterService {
 
         // save
         notificationService.save(notification);
-    }
-
-    private int getRandomAbilityValue() {
-        // random ability value is the average between two k6 dice rolls rounded down to ensure fair distribution
-        int value1 = randomService.getRandomInt(1, RandomServiceImpl.K6);
-        int value2 = randomService.getRandomInt(1, RandomServiceImpl.K6);
-
-        return (int) ((value1 + value2) / 2.0);
     }
 
 }

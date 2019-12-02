@@ -24,6 +24,7 @@ import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
@@ -54,6 +55,7 @@ public class ClanServiceImpl implements ClanService {
     public static final int INFORMATION_QUOTIENT = 10;
     public static final int BASIC_POPULATION_LIMIT = 6;
     public static final int INITIAL_CLAN_SIZE = 5;
+    public static final int MAX_CHARACTER_STRENGTH = 17;
 
     private static final int INITIAL_FOOD = 20;
     private static final int INITIAL_JUNK = 20;
@@ -70,6 +72,7 @@ public class ClanServiceImpl implements ClanService {
     private final BuildingService buildingService;
     private final ResearchService researchService;
     private final TavernService tavernService;
+    private final RandomService randomService;
     private final GameProperties gameProperties;
 
     @Override
@@ -129,7 +132,8 @@ public class ClanServiceImpl implements ClanService {
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
         for (int i = 0; i < INITIAL_CLAN_SIZE; i++) {
-            Character character = characterService.generateRandomCharacter(filter);
+            Character character = characterService.generateRandomCharacter(filter,
+                    randomService.getRandomAttributeCombination(MAX_CHARACTER_STRENGTH - i * 2));
             character.setClan(clan);
             clan.getCharacters().add(character);
 

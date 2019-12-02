@@ -13,6 +13,7 @@ import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
@@ -66,7 +67,8 @@ public class CombatServiceImpl implements CombatService {
         // check if list is odd
         if (characters.size() % 2 != 0) {
             log.debug("There is odd number of arena competitors. Generating random opponent...");
-            characters.add(characterService.generateRandomCharacter(new CharacterFilter()));
+            characters.add(characterService.generateRandomCharacter(new CharacterFilter(),
+                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH)));
         }
 
         // split characters into fighting pairs

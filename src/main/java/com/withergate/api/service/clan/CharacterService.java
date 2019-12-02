@@ -59,7 +59,7 @@ public interface CharacterService {
      * @param filter filter
      * @return the generated character
      */
-    Character generateRandomCharacter(CharacterFilter filter);
+    Character generateRandomCharacter(CharacterFilter filter, int[] attributes);
 
     /**
      * Marks character as resting.

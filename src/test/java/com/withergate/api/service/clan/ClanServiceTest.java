@@ -20,6 +20,7 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
@@ -62,6 +63,9 @@ public class ClanServiceTest {
     @Mock
     private TavernService tavernService;
 
+    @Mock
+    private RandomService randomService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -73,7 +77,7 @@ public class ClanServiceTest {
         properties.setStarvationFame(1);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, researchService, tavernService, properties);
+                buildingService, researchService, tavernService, randomService, properties);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -135,7 +139,7 @@ public class ClanServiceTest {
             characters[i] = character;
         }
 
-        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class)))
+        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class), Mockito.any()))
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
         // when creating new clan
@@ -164,7 +168,7 @@ public class ClanServiceTest {
             characters[i] = character;
         }
 
-        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class)))
+        Mockito.when(characterService.generateRandomCharacter(Mockito.any(CharacterFilter.class), Mockito.any()))
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
         // when creating new clan in late turn

@@ -123,10 +123,9 @@ public class CharacterServiceTest {
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
         Mockito.when(nameService.generateRandomName(Mockito.eq(Gender.MALE), Mockito.any())).thenReturn("Rusty Nick");
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K10)).thenReturn(8); // hp
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6))
-                .thenReturn(3,5, 1, 2, 5, 6, 1, 5);
+        int[] attributes = {4, 1, 5, 3};
 
-        Character result = characterService.generateRandomCharacter(new CharacterFilter());
+        Character result = characterService.generateRandomCharacter(new CharacterFilter(), attributes);
 
         // then verify correct values used
         assertEquals("Rusty Nick", result.getName());

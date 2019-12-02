@@ -27,4 +27,21 @@ public class RandomServiceTest {
         Assert.assertTrue(result >= lower);
     }
 
+    @Test
+    public void testGivenSumWhenGeneratingCombinationsThenVerifySumMatching() {
+        // given sum
+        int sum = 16;
+
+        // when generating combination
+        int[] comb = randomService.getRandomAttributeCombination(sum);
+
+        // then verify sum matching
+        int result = 0;
+        for (int i = 0; i < comb.length; i++) {
+            result += comb[i];
+            Assert.assertTrue(comb[i] <= 6);
+        }
+        Assert.assertEquals(sum, result);
+    }
+
 }

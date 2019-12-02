@@ -33,4 +33,12 @@ public interface RandomService {
      */
     ItemType getRandomItemType();
 
+    /**
+     * Generates random attribute combination
+     *
+     * @param n total sum
+     * @return random combination
+     */
+    int[] getRandomAttributeCombination(int n);
+
 }

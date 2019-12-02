@@ -15,6 +15,7 @@ import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.repository.action.TavernActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.clan.TavernOfferRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
@@ -44,6 +45,9 @@ public class TavernServiceTest {
     @Mock
     private ClanRepository clanRepository;
 
+    @Mock
+    private RandomService randomService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -52,7 +56,7 @@ public class TavernServiceTest {
         properties.setTavernRefreshPrice(10);
 
         tavernService = new TavernServiceImpl(tavernActionRepository, notificationService, tavernOfferRepository,
-                characterService, clanRepository, properties);
+                characterService, clanRepository, randomService, properties);
     }
 
     @Test
@@ -154,7 +158,7 @@ public class TavernServiceTest {
         Character character2 = mockCharacter(2, "Julia");
         Character character3 = mockCharacter(3, "James");
 
-        Mockito.when(characterService.generateRandomCharacter(Mockito.any()))
+        Mockito.when(characterService.generateRandomCharacter(Mockito.any(), Mockito.any()))
                 .thenReturn(character1, character2, character3);
 
         // when preparing offers

@@ -17,7 +17,9 @@ import com.withergate.api.model.request.TavernRequest;
 import com.withergate.api.repository.action.TavernActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.clan.TavernOfferRepository;
+import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
@@ -44,6 +46,7 @@ public class TavernServiceImpl implements TavernService {
     private final TavernOfferRepository tavernOfferRepository;
     private final CharacterService characterService;
     private final ClanRepository clanRepository;
+    private final RandomService randomService;
     private final GameProperties gameProperties;
 
     @Override
@@ -144,7 +147,8 @@ public class TavernServiceImpl implements TavernService {
 
         // create new offers
         for (int i = 0; i < TAVERN_OFFERS; i++) {
-            Character character = characterService.generateRandomCharacter(filter);
+            Character character = characterService.generateRandomCharacter(filter,
+                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH - i * 4));
             characterService.save(character);
             int price = calculateOfferPrice(character);
 
