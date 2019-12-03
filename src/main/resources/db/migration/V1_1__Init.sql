@@ -23,7 +23,6 @@ CREATE TABLE clans (
     food INT NOT NULL,
     information INT NOT NULL,
     information_level INT NOT NULL,
-    arena BIT NOT NULL DEFAULT FALSE,
     disaster_progress INT NOT NULL DEFAULT 0,
     default_action VARCHAR(32) NOT NULL,
     PRIMARY KEY (clan_id)

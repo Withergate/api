@@ -199,9 +199,6 @@ public class ClanServiceImpl implements ClanService {
             // mark characters as ready
             markCharactersReady(clan);
 
-            // reset arena
-            clan.setArena(false);
-
             // probably redundant
             clanRepository.saveAndFlush(clan);
         }

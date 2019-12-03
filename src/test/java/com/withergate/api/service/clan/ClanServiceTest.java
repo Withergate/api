@@ -235,26 +235,6 @@ public class ClanServiceTest {
     }
 
     @Test
-    public void testGivenClanListWhenClearingArenaFlagsThenVerifyClansUnmarked() {
-        // given clans
-        List<Clan> clans = new ArrayList<>();
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setName("Stalkers");
-        clan.setArena(true);
-        clans.add(clan);
-        clan.setCharacters(new HashSet<>());
-
-        Mockito.when(clanRepository.findAll()).thenReturn(clans);
-
-        // when clearing arena flags
-        clanService.performClanTurnUpdates(2);
-
-        // then verify clan unmarked
-        assertEquals(false, clan.isArena());
-    }
-
-    @Test
     public void testGivenClanWhenIncreasingInformationLevelThenVerifyQuestServiceCalled() {
         // given clan
         Clan clan = new Clan();

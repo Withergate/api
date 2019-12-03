@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionDescriptor;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ArenaAction;
 import com.withergate.api.model.arena.ArenaStats;
@@ -48,15 +49,17 @@ public class ArenaServiceImpl implements ArenaService {
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
 
-        // check arena requirements
-        if (clan.isArena()) {
-            throw new InvalidActionException("You already have selected a character to enter arena this turn!");
+        // check if another character is in arena already
+        for (Character ch : clan.getCharacters()) {
+            if (ch.getCurrentAction().isPresent() && ch.getCurrentAction().get().getDescriptor().equals(ActionDescriptor.ARENA.name())) {
+                throw new InvalidActionException("You already have selected a character to enter arena this turn!");
+            }
         }
+
+        // check arena requirements
         if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
             throw new InvalidActionException("Ranged weapons are not allowed in the arena.");
         }
-
-        clan.setArena(true);
 
         ArenaAction action = new ArenaAction();
         action.setState(ActionState.PENDING);

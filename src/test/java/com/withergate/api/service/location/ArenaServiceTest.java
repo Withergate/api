@@ -92,7 +92,6 @@ public class ArenaServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setArena(true);
         clan.setName("Dragons");
 
         Character character = new Character();
@@ -100,7 +99,21 @@ public class ArenaServiceTest {
         character.setName("Rusty Nick");
         character.setClan(clan);
         character.setState(CharacterState.READY);
+        clan.getCharacters().add(character);
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        Character character2 = new Character();
+        character2.setId(2);
+        character2.setName("Bloody Justy");
+        character2.setClan(clan);
+        character2.setState(CharacterState.BUSY);
+        clan.getCharacters().add(character2);
+
+        ArenaAction action = new ArenaAction();
+        action.setCharacter(character2);
+        action.setState(ActionState.PENDING);
+        character2.setActions(List.of(action));
+        Mockito.when(characterService.loadReadyCharacter(2, 1)).thenReturn(character2);
 
         // when creating location action
         arenaService.saveArenaAction(request, 1);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionDescriptor;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.TavernAction;
 import com.withergate.api.model.character.Character;
@@ -77,7 +78,13 @@ public class TavernServiceImpl implements TavernService {
             throw new InvalidActionException("Not enough resources to perform this action!");
         }
 
-        if (clan.getCharacters().size() >= clan.getPopulationLimit()) {
+        int limit = clan.getPopulationLimit();
+        for (Character ch : clan.getCharacters()) {
+            if (ch.getCurrentAction().isPresent() && ch.getCurrentAction().get().getDescriptor().equals(ActionDescriptor.TAVERN.name())) {
+                limit--;
+            }
+        }
+        if (clan.getCharacters().size() >= limit) {
             throw new InvalidActionException("Population limit exceeded.");
         }
 

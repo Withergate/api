@@ -45,7 +45,7 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('BUILDER', 'cs', 'Postava s touto schopností staví budovy rychleji, aniž musela platit šrot navíc.'),
     ('LIZARD', 'en', 'Character with this trait heals faster when resting.'),
     ('LIZARD', 'cs', 'Postava s touto schopností se při odpočinku rychleji uzdravuje.'),
-    ('CONTACTS', 'en', 'Character with this trait will receive bonus information when scouring.'),
+    ('CONTACTS', 'en', 'Character with this trait will receive bonus information when scouting.'),
     ('CONTACTS', 'cs', 'Postava s touto schopností získá více informací při pátrání.'),
     ('BOFFIN', 'en', 'Character with this trait will receive a bonus when researching.'),
     ('BOFFIN', 'cs', 'Postava s touto schopností dostane bonus při výzkumu');
