@@ -296,6 +296,7 @@ public class TradeServiceImpl implements TradeService {
         // transfer item
         Item item = itemService.loadItem(offer.getItemId());
         item.setClan(offer.getBuyer());
+        buyerNotification.setItem(true);
 
         // update notification
         notificationService.addLocalizedTexts(buyerNotification.getText(), "clan.trade.item.bought",

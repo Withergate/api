@@ -185,6 +185,7 @@ CREATE TABLE clan_notifications (
     healing INT,
     experience INT,
     information INT,
+    item BIT DEFAULT 0,
     death BIT DEFAULT 0,
     image_url VARCHAR(256) DEFAULT NULL,
     PRIMARY KEY (notification_id),

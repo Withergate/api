@@ -122,6 +122,7 @@ public class ItemServiceImpl implements ItemService {
         Clan clan = character.getClan();
         clan.getItems().add(item);
         item.setClan(clan);
+        notification.setItem(true);
 
         itemRepository.save(item);
 
@@ -148,6 +149,7 @@ public class ItemServiceImpl implements ItemService {
         item.setDetails(details);
         item.setClan(character.getClan());
         character.getClan().getItems().add(item);
+        notification.setItem(true);
         itemRepository.save(item);
 
         NotificationDetail detail = new NotificationDetail();

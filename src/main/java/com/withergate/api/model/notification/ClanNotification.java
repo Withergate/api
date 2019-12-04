@@ -77,6 +77,9 @@ public class ClanNotification {
     @Column(name = "information")
     private int information;
 
+    @Column(name = "item")
+    private boolean item;
+
     @Column(name = "death")
     private boolean death;
 
