@@ -141,9 +141,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel + bonus);
-
-        List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
-        ItemDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
+        ItemDetails details = getRandomItemDetails(type, rarity);
 
         // save item
         Item item = new Item();
@@ -156,6 +154,14 @@ public class ItemServiceImpl implements ItemService {
         notificationService.addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[] {character.getName()},
                 details.getName());
         notification.getDetails().add(detail);
+    }
+
+    @Override
+    public Item generateRandomItem() {
+        ItemDetails details = getRandomItemDetails(randomService.getRandomItemType(), getRandomRarity());
+        Item item = new Item();
+        item.setDetails(details);
+        return itemRepository.save(item);
     }
 
     private void useConsumable(Item consumable, Character character) throws InvalidActionException {
@@ -248,5 +254,10 @@ public class ItemServiceImpl implements ItemService {
         } else {
             return ItemDetails.Rarity.COMMON;
         }
+    }
+
+    private ItemDetails getRandomItemDetails(ItemType type, Rarity rarity) {
+        List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
+        return detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
     }
 }

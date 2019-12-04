@@ -342,7 +342,7 @@ DROP TABLE IF EXISTS market_offers;
 CREATE TABLE market_offers (
     offer_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
-    seller_id INT NOT NULL,
+    seller_id INT,
     buyer_id INT,
     item_id INT NOT NULL,
     price INT NOT NULL,

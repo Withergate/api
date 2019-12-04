@@ -61,6 +61,13 @@ public interface ItemService {
     void generateCraftableItem(Character character, int buildingLevel, int bonus, ClanNotification notification, ItemType type);
 
     /**
+     * Generates random item.
+     *
+     * @return generated item
+     */
+    Item generateRandomItem();
+
+    /**
      * Deletes the provided item.
      *
      * @param item the item to be deleted

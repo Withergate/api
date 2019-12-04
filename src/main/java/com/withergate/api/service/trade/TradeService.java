@@ -89,4 +89,9 @@ public interface TradeService {
      */
     void performComputerTradeActions(int turnId);
 
+    /**
+     * Prepares market offers published by computer and delete the old ones.
+     */
+    void prepareComputerMarketOffers();
+
 }

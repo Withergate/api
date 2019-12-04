@@ -8,6 +8,7 @@ import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Item;
+import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.MarketTradeRequest;
@@ -43,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TradeServiceImpl implements TradeService {
 
     private static final int RESOURCE_TRADE_LIMIT = 20;
+    private static final int CLANS_PER_OFFER = 5;
 
     private final ResourceTradeActionRepository resourceTradeActionRepository;
     private final NotificationService notificationService;
@@ -118,7 +120,7 @@ public class TradeServiceImpl implements TradeService {
             throw new InvalidActionException("This offer is not available.");
         }
 
-        if (clan.getId() == offer.getSeller().getId()) {
+        if (offer.getSeller() != null && clan.getId() == offer.getSeller().getId()) {
             throw new InvalidActionException("You cannot buy your own item!");
         }
 
@@ -160,17 +162,7 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public void processMarketTradeActions(int turnId) {
         for (MarketOffer offer : marketOfferRepository.findAllByState(State.PENDING)) {
-            ClanNotification buyerNotification = new ClanNotification(turnId, offer.getBuyer().getId());
-            buyerNotification.setHeader(offer.getBuyer().getName());
-
-            ClanNotification sellerNotification = new ClanNotification(turnId, offer.getSeller().getId());
-            sellerNotification.setHeader(offer.getSeller().getName());
-
-            processMarketTradeAction(offer, buyerNotification, sellerNotification);
-
-            // save notification
-            notificationService.save(buyerNotification);
-            notificationService.save(sellerNotification);
+            processMarketTradeAction(offer, turnId);
 
             // mark offer as sold
             offer.setState(State.SOLD);
@@ -253,6 +245,31 @@ public class TradeServiceImpl implements TradeService {
         }
     }
 
+    @Override
+    public void prepareComputerMarketOffers() {
+        log.debug("Preparing computer market offers.");
+
+        // delete old unprocessed offers
+        for (MarketOffer offer : marketOfferRepository.findAllByState(State.PUBLISHED)) {
+            if (offer.getSeller() == null) {
+                marketOfferRepository.delete(offer);
+            }
+        }
+
+        // prepare new offers
+        for (int i = 0; i <= clanRepository.count() / CLANS_PER_OFFER; i++) {
+            Item item = itemService.generateRandomItem();
+
+            MarketOffer offer = new MarketOffer();
+            offer.setItemId(item.getId());
+            offer.setDetails(item.getDetails());
+            offer.setPrice(item.getDetails().getPrice() * 2);
+            offer.setState(State.PUBLISHED);
+            offer.setSeller(null);
+            marketOfferRepository.save(offer);
+        }
+    }
+
     private void processResourceTradeAction(ResourceTradeAction action, ClanNotification notification) {
         Clan clan = action.getCharacter().getClan();
 
@@ -272,15 +289,9 @@ public class TradeServiceImpl implements TradeService {
         }
     }
 
-    private void processMarketTradeAction(MarketOffer offer, ClanNotification buyerNotification,
-                                          ClanNotification sellerNotification) {
-        // add money to seller
-        int price = offer.getPrice();
-        Clan seller = offer.getSeller();
-        seller.changeCaps(price);
-        sellerNotification.changeCaps(price);
-        notificationService.addLocalizedTexts(sellerNotification.getText(), "clan.trade.item.sold",
-                new String[]{offer.getBuyer().getName()}, offer.getDetails().getName());
+    private void processMarketTradeAction(MarketOffer offer, int turnId) {
+        ClanNotification buyerNotification = new ClanNotification(turnId, offer.getBuyer().getId());
+        buyerNotification.setHeader(offer.getBuyer().getName());
 
         // transfer item
         Item item = itemService.loadItem(offer.getItemId());
@@ -288,13 +299,29 @@ public class TradeServiceImpl implements TradeService {
 
         // update notification
         notificationService.addLocalizedTexts(buyerNotification.getText(), "clan.trade.item.bought",
-                new String[]{seller.getName()}, offer.getDetails().getName());
+                new String[]{offer.getSeller() != null ? offer.getSeller().getName() : "NPC"}, offer.getDetails().getName());
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.item.bought", new String[]{}, offer.getDetails().getName());
         buyerNotification.getDetails().add(detail);
 
         // handle research bonuses
         handleBonuses(offer.getBuyer(), buyerNotification);
+
+        notificationService.save(buyerNotification);
+
+        if (offer.getSeller() != null) {
+            Clan seller = offer.getSeller();
+
+            ClanNotification sellerNotification = new ClanNotification(turnId, offer.getSeller().getId());
+            sellerNotification.setHeader(seller.getName());
+
+            seller.changeCaps(offer.getPrice());
+            sellerNotification.changeCaps(offer.getPrice());
+            notificationService.addLocalizedTexts(sellerNotification.getText(), "clan.trade.item.sold",
+                    new String[]{offer.getBuyer().getName()}, offer.getDetails().getName());
+
+            notificationService.save(sellerNotification);
+        }
     }
 
     private void handleBonuses(Clan buyer, ClanNotification buyerNotification) {

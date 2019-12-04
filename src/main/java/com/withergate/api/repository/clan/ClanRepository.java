@@ -17,4 +17,6 @@ public interface ClanRepository extends JpaRepository<Clan, Integer> {
     Clan findOneByName(String name);
 
     Page<Clan> findAll(Pageable pageable);
+
+    long count();
 }
