@@ -11,6 +11,8 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.character.Trait;
+import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterSolution;
@@ -279,9 +281,21 @@ public class DisasterServiceImpl implements DisasterService {
         action.getCharacter().changeExperience(2);
         notification.changeExperience(2);
 
+        int progress = action.getSolution().getBonus();
+
+        // trait bonus
+        Trait sparta = action.getCharacter().getTraits().get(TraitName.SPARTA);
+        if (sparta != null && sparta.isActive()) {
+            progress += sparta.getDetails().getBonus();
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.sparta", new String[]{}, sparta.getDetails().getName());
+            notification.getDetails().add(detail);
+        }
+
         // increase clan progress
         Clan clan = action.getCharacter().getClan();
-        clan.changeDisasterProgress(action.getSolution().getBonus());
+        clan.changeDisasterProgress(progress);
         if (clan.getDisasterProgress() > 100) {
             // 100% is maximumG
             clan.setDisasterProgress(100);

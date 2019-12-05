@@ -32,8 +32,6 @@ public class NameServiceImpl implements NameService {
 
     @Override
     public String generateRandomName(Gender gender, Set<String> nameFilter) {
-        log.debug("Generating {} name.", gender);
-
         // fetch and filter name parts
         List<NamePrefix> prefixes = namePrefixRepository.findAll()
                 .stream()
@@ -48,15 +46,12 @@ public class NameServiceImpl implements NameService {
         int nameIndex = randomService.getRandomInt(0, names.size() - 1);
 
         String name = prefixes.get(prefixIndex).getValue() + " " + names.get(nameIndex).getValue();
-        log.debug("Generated name: {}", name);
 
         return name;
     }
 
     @Override
     public String generateRandomAvatar(Gender gender, Set<String> avatarFilter) {
-        log.debug("Generating {} avatar.", gender);
-
         // get all unused avatars
         List<Avatar> avatars = avatarRepository.findAllByGender(gender)
                 .stream()

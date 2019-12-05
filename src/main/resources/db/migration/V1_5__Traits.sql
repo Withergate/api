@@ -8,7 +8,8 @@ INSERT INTO trait_details(identifier, bonus, image_url) VALUES
     ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png'),
     ('LIZARD', 2, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
     ('CONTACTS', 2, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
-    ('BOFFIN', 2, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png');
+    ('BOFFIN', 2, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png'),
+    ('SPARTA', 2, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -28,7 +29,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('CONTACTS', 'en', 'Contacts'),
     ('CONTACTS', 'cs', 'Kontakty'),
     ('BOFFIN', 'en', 'Boffin'),
-    ('BOFFIN', 'cs', 'Vědátor');
+    ('BOFFIN', 'cs', 'Vědátor'),
+    ('SPARTA', 'en', 'This is Sparta!'),
+    ('SPARTA', 'cs', 'This is Sparta!');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -48,4 +51,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('CONTACTS', 'en', 'Character with this trait will receive bonus information when scouting.'),
     ('CONTACTS', 'cs', 'Postava s touto schopností získá více informací při pátrání.'),
     ('BOFFIN', 'en', 'Character with this trait will receive a bonus when researching.'),
-    ('BOFFIN', 'cs', 'Postava s touto schopností dostane bonus při výzkumu');
+    ('BOFFIN', 'cs', 'Postava s touto schopností dostane bonus při výzkumu'),
+    ('SPARTA', 'en', 'Character with this trait will receive bonus progress when successfully averting disaster.'),
+    ('SPARTA', 'cs', 'Postava s touto schopností navýší postup odvrácení pohromy po úspěšné akci řešení pohromy.');

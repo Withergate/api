@@ -11,10 +11,12 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
+import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
@@ -142,7 +144,8 @@ public class LocationServiceImpl implements LocationService {
     private void handleSearchResult(ClanNotification notification, Character character, LocationDescription description,
                                     boolean encounter) {
         // loot
-        int lootProbability = description.getItemChance() + character.getScavenge();
+        int lootProbability = description.getItemChance() + character.getScavenge()
+                + getLootBonus(character, notification, description.getLocation());
         int lootRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (lootRoll <= lootProbability) {
             notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[] {});
@@ -267,5 +270,14 @@ public class LocationServiceImpl implements LocationService {
 
         return bonus;
 
+    }
+
+    private int getLootBonus(Character character, ClanNotification notification, Location location) {
+        Research plentiful = character.getClan().getResearch().get(ResearchName.PLENTIFUL);
+        if (plentiful != null && plentiful.isCompleted() && location.equals(Location.NEIGHBORHOOD)) {
+            return plentiful.getDetails().getValue();
+        }
+
+        return 0;
     }
 }

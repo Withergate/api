@@ -25,6 +25,7 @@ import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
@@ -184,8 +185,8 @@ public class ClanServiceImpl implements ClanService {
             // food consumption
             performFoodConsumption(turnId, clan);
 
-            // perform character healing
-            performCharacterHealing(turnId, clan);
+            // perform resting
+            performResting(turnId, clan);
 
             // perform character leveling
             performCharacterLeveling(turnId, clan);
@@ -299,7 +300,7 @@ public class ClanServiceImpl implements ClanService {
         notificationService.save(notification);
     }
 
-    private void performCharacterHealing(int turnId, Clan clan) {
+    private void performResting(int turnId, Clan clan) {
         for (Character character : clan.getCharacters()) {
             // heal only resting characters
             if (!(character.getState().equals(CharacterState.READY) || character.getState().equals(CharacterState.RESTING))) {
@@ -311,48 +312,21 @@ public class ClanServiceImpl implements ClanService {
                 continue;
             }
 
-            int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
-
-            if (hitpointsMissing == 0) {
-                continue;
-            }
-
             // prepare notification
             ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
+            notification.setImageUrl(character.getImageUrl());
 
-            // each character that is ready heals
-            int points = gameProperties.getHealing();
-            if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
-                Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
-                int bonus = building.getLevel() * gameProperties.getHealing();
-                points += bonus;
+            // handle resting bonuses
+            handleRestingBonuses(character, notification);
 
-                if (building.getLevel() > 0) {
-                    NotificationDetail healingBuildingDetail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
-                            new String[] {String.valueOf(bonus)});
-                    notification.getDetails().add(healingBuildingDetail);
-                }
+            handleHealing(character, notification);
+
+            // discard empty notification
+            if (notification.getDetails().size() > 0) {
+                notificationService.save(notification);
             }
 
-            // lizard trait
-            Trait lizaard = character.getTraits().get(TraitName.LIZARD);
-            if (lizaard != null && lizaard.isActive()) {
-                points += character.getTraits().get(TraitName.LIZARD).getDetails().getBonus();
-                NotificationDetail lizardDetail = new NotificationDetail();
-                notificationService.addLocalizedTexts(lizardDetail.getText(), "detail.trait.lizard",
-                        new String[]{character.getName()}, character.getTraits().get(TraitName.LIZARD).getDetails().getName());
-                notification.getDetails().add(lizardDetail);
-            }
-
-            int healing = Math.min(points, hitpointsMissing);
-            character.changeHitpoints(healing);
-
-            notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
-            notification.changeHealing(healing);
-
-            notificationService.save(notification);
         }
     }
 
@@ -446,6 +420,58 @@ public class ClanServiceImpl implements ClanService {
      */
     private int getStartingResourceBonus(int turn) {
         return (turn - 1) * TURN_INCREMENT;
+    }
+
+    private void handleRestingBonuses(Character character, ClanNotification notification) {
+        Research cultivation = character.getClan().getResearch().get(ResearchName.CULTIVATION);
+        if (cultivation != null && cultivation.isCompleted()) {
+            int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
+            character.getClan().changeFood(food);
+
+            notification.changeFood(food);
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.research.cultivation", new String[]{});
+            notification.getDetails().add(detail);
+        }
+    }
+
+    private void handleHealing(Character character, ClanNotification notification) {
+        int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
+
+        if (hitpointsMissing == 0) {
+            return;
+        }
+
+        // each character that is ready heals
+        int points = gameProperties.getHealing();
+        if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
+            Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
+            int bonus = building.getLevel() * gameProperties.getHealing();
+            points += bonus;
+
+            if (building.getLevel() > 0) {
+                NotificationDetail healingBuildingDetail = new NotificationDetail();
+                notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
+                        new String[] {String.valueOf(bonus)});
+                notification.getDetails().add(healingBuildingDetail);
+            }
+        }
+
+        // lizard trait
+        Trait lizard = character.getTraits().get(TraitName.LIZARD);
+        if (lizard != null && lizard.isActive()) {
+            points += character.getTraits().get(TraitName.LIZARD).getDetails().getBonus();
+            NotificationDetail lizardDetail = new NotificationDetail();
+            notificationService.addLocalizedTexts(lizardDetail.getText(), "detail.trait.lizard",
+                    new String[]{character.getName()}, character.getTraits().get(TraitName.LIZARD).getDetails().getName());
+            notification.getDetails().add(lizardDetail);
+        }
+
+        int healing = Math.min(points, hitpointsMissing);
+        character.changeHitpoints(healing);
+
+        notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
+        notification.changeHealing(healing);
     }
 
 }
