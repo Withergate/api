@@ -67,6 +67,9 @@ public class ItemDetails {
     @Enumerated(EnumType.STRING)
     private BonusType bonusType;
 
+    @Column(name = "bonus_text", updatable = false)
+    private String bonusText;
+
     @Column(name = "prereq", updatable = false)
     private int prereq;
 

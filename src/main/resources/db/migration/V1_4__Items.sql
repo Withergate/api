@@ -93,14 +93,15 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('MIND_PATCH', 'cs', 'Injekcí do hlavy lze vpravit myšlenky chytřejších lidí a zvýšit tak intelekt postavy. A kdo je chytřejší teď, co?');
 
 -- Gear details
-INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, image_url) VALUES
-    ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'COMMON', 12, 1, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
-    ('GLASSES', 'GEAR', 'COMMON', 12, 1, 'RESEARCH', 'https://storage.googleapis.com/withergate-images/items/glasses.png'),
-    ('HAMMER', 'GEAR', 'COMMON', 12, 1, 'CRAFTING', 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
-    ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
-    ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
-    ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'https://storage.googleapis.com/withergate-images/items/detector.png');
+INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, bonus_text, image_url) VALUES
+    ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'detail.gear.bonus.work', 'https://storage.googleapis.com/withergate-images/items/saw.png'),
+    ('TRAP', 'GEAR', 'COMMON', 12, 1, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('GLASSES', 'GEAR', 'COMMON', 12, 1, 'RESEARCH', 'detail.gear.bonus.work', 'https://storage.googleapis.com/withergate-images/items/glasses.png'),
+    ('HAMMER', 'GEAR', 'COMMON', 12, 1, 'CRAFTING', 'detail.gear.bonus.work', 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
+    ('NOTEBOOK', 'GEAR', 'COMMON', 12, 1, 'SCOUTING', 'detail.gear.bonus.information', 'https://storage.googleapis.com/withergate-images/items/notebook.png'),
+    ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'detail.gear.bonus.work', 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
+    ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
+    ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SAW', 'en', 'Saw'),
@@ -111,6 +112,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('GLASSES', 'cs', 'Brýle'),
     ('HAMMER', 'en', 'Hammer'),
     ('HAMMER', 'cs', 'Kladivo'),
+    ('NOTEBOOK', 'en', 'Notebook'),
+    ('NOTEBOOK', 'cs', 'Zápisník'),
     ('SHOVEL', 'en', 'Shovel'),
     ('SHOVEL', 'cs', 'Lopata'),
     ('BINOCULARS', 'en', 'Binoculars'),
@@ -127,6 +130,8 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('GLASSES', 'cs', 'Trošku poškrábané, ale stále funkční. Navíc v nich konečně můžeš vypadat trošku inteligentně. Tento předmět zlepší schopnosti výzkumu dané postavy.'),
     ('HAMMER', 'en', 'When you have a hammer, everything`s a nail. Improves the chance of crafting rare items.'),
     ('HAMMER', 'cs', 'Všechno je hřebík, když máš velké kladivo. Zvýší šanci na výrobu vzácného předmětu.'),
+    ('NOTEBOOK', 'en', 'Some pages are missing but it can still be useful as s journey log. Increases the information gained from scouting.'),
+    ('NOTEBOOK', 'cs', 'Pár stránek sice chybí, ale může se hodit na zápisky z cest. Zvýší počet získaných informací při průzkumu.'),
     ('SHOVEL', 'en', 'Finally something I can lean on when working. Improves craftsmanship when building without the necessity to pay any extra junk.'),
     ('SHOVEL', 'cs', 'Konečně něco, o co se mohu při práci opřít. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
     ('BINOCULARS', 'en', 'If I see it, I can hit it. Improves the chance of finding food.'),

@@ -107,6 +107,7 @@ CREATE TABLE item_details (
     prereq INT DEFAULT 0,
     bonus INT DEFAULT 0,
     bonus_type VARCHAR(16),
+    bonus_text VARCHAR(32),
     effect_type VARCHAR(32),
     weapon_type VARCHAR(16),
     PRIMARY KEY (identifier)

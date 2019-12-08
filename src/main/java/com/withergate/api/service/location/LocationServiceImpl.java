@@ -1,7 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.List;
-
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -31,6 +29,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Location service implementation.
@@ -220,23 +220,15 @@ public class LocationServiceImpl implements LocationService {
             bonus += character.getTraits().get(TraitName.HOARDER).getDetails().getBonus();
         }
 
-        Item gear = character.getGear();
-        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_JUNK)) {
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.junk", new String[] {},
-                    gear.getDetails().getName());
-            notification.getDetails().add(detail);
+        for (Item item : character.getItems()) {
+            if (item.getDetails().getBonusType().equals(bonusType)) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
+                        item.getDetails().getName());
+                notification.getDetails().add(detail);
 
-            bonus += character.getGear().getDetails().getBonus();
-        }
-
-        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && gear != null && gear.getDetails().getBonusType().equals(BonusType.SCAVENGE_FOOD)) {
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.food", new String[] {},
-                    gear.getDetails().getName());
-            notification.getDetails().add(detail);
-
-            bonus += character.getGear().getDetails().getBonus();
+                bonus += character.getGear().getDetails().getBonus();
+            }
         }
 
         return bonus;
@@ -253,6 +245,16 @@ public class LocationServiceImpl implements LocationService {
             notificationService.addLocalizedTexts(detail.getText(), "detail.trait.contacts", new String[]{},
                     character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
             notification.getDetails().add(detail);
+        }
+
+        for (Item item : character.getItems()) {
+            if (item.getDetails().getBonusType().equals(BonusType.SCOUTING)) {
+                bonus += item.getDetails().getBonus();
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[]{},
+                        item.getDetails().getName());
+                notification.getDetails().add(detail);
+            }
         }
 
         // research side effect

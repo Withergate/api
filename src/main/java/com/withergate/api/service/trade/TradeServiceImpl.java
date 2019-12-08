@@ -182,7 +182,7 @@ public class TradeServiceImpl implements TradeService {
             throw new InvalidActionException("Price must not be lower than market price!");
         }
         if (request.getPrice() > item.getDetails().getPrice() * 2) {
-            throw new InvalidActionException("Price must not be higher than double the market price.!");
+            throw new InvalidActionException("Price must not be higher than double the market price!");
         }
 
         // create market offer

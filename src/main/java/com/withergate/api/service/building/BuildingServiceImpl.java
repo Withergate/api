@@ -266,21 +266,15 @@ public class BuildingServiceImpl implements BuildingService {
             notification.getDetails().add(detail);
         }
 
-        Item gear = character.getGear();
-        if (bonusType.equals(BonusType.CONSTRUCT) && gear != null && gear.getDetails().getBonusType().equals(BonusType.CONSTRUCT)) {
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
-            notification.getDetails().add(detail);
+        for (Item item : character.getItems()) {
+            if (item.getDetails().getBonusType().equals(bonusType)) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
+                        item.getDetails().getName());
+                notification.getDetails().add(detail);
 
-            bonus += character.getGear().getDetails().getBonus();
-        }
-
-        if (bonusType.equals(BonusType.CRAFTING) && gear != null && gear.getDetails().getBonusType().equals(BonusType.CRAFTING)) {
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
-            notification.getDetails().add(detail);
-
-            bonus += character.getGear().getDetails().getBonus();
+                bonus += character.getGear().getDetails().getBonus();
+            }
         }
 
         // research side effect

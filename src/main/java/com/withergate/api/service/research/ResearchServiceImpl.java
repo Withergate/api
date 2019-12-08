@@ -153,13 +153,13 @@ public class ResearchServiceImpl implements ResearchService {
             notification.getDetails().add(detail);
         }
 
-        // gear
-        Item gear = character.getGear();
-        if (gear != null && gear.getDetails().getBonusType().equals(BonusType.RESEARCH)) {
-            bonus += gear.getDetails().getBonus();
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, gear.getDetails().getName());
-            notification.getDetails().add(detail);
+        for (Item item : character.getItems()) {
+            if (item.getDetails().getBonusType().equals(BonusType.RESEARCH)) {
+                bonus += item.getDetails().getBonus();
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, item.getDetails().getName());
+                notification.getDetails().add(detail);
+            }
         }
 
         // building
