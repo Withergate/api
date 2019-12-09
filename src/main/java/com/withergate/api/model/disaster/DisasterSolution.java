@@ -33,6 +33,9 @@ public class DisasterSolution {
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
+    @Column(name = "basic", updatable = false, nullable = false)
+    private boolean basic;
+
     @Column(name = "solution_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private Type solutionType;

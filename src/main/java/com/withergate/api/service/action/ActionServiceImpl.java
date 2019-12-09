@@ -1,10 +1,17 @@
 package com.withergate.api.service.action;
 
+import java.util.Optional;
+
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionState;
+import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.action.LocationAction.LocationActionType;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.disaster.Disaster;
+import com.withergate.api.model.disaster.DisasterSolution;
 import com.withergate.api.model.location.Location;
+import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
@@ -139,6 +146,27 @@ public class ActionServiceImpl implements ActionService {
                 continue;
             }
 
+            // handle disaster first
+            if (character.getClan().isPreferDisaster()) {
+                Disaster disaster = disasterService.getDisasterForClan(character.getClan().getId());
+
+                if (disaster != null && character.getClan().getDisasterProgress() < 100) {
+                    Optional<DisasterSolution> solution = disaster.getDetails().getSolutions().stream().filter(DisasterSolution::isBasic)
+                            .findFirst();
+                    if (solution.isPresent()) {
+                        DisasterRequest request = new DisasterRequest();
+                        request.setCharacterId(character.getId());
+                        request.setSolution(solution.get().getIdentifier());
+                        try {
+                            disasterService.saveDisasterAction(request, character.getClan().getId());
+                            continue;
+                        } catch (InvalidActionException e) {
+                            log.error("Error assigning default action.", e);
+                        }
+                    }
+                }
+            }
+
             // exploration
             if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD)) {
                 LocationRequest request = new LocationRequest();
@@ -150,6 +178,8 @@ public class ActionServiceImpl implements ActionService {
                 } catch (InvalidActionException e) {
                     log.error("Error assigning default action.", e);
                 }
+            } else {
+                character.setState(CharacterState.RESTING);
             }
         }
     }

@@ -1,8 +1,5 @@
 package com.withergate.api.controller.clan;
 
-import java.security.Principal;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.TavernOffer;
@@ -27,6 +24,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
+import java.util.List;
 
 /**
  * Clan controller.
@@ -116,7 +116,6 @@ public class ClanController {
      *
      * @param principal   the principal
      * @param request the clan request containing necessary clan details
-     * @throws EntityConflictException entity conflict
      */
     @PutMapping("/clan/defaultAction")
     public ResponseEntity<Void> changeDefaultAction(Principal principal, @RequestBody DefaultActionRequest request) {

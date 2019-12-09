@@ -19,4 +19,6 @@ import lombok.Setter;
 public class DefaultActionRequest {
 
     private Clan.DefaultAction defaultAction;
+    private boolean preferDisaster;
+
 }

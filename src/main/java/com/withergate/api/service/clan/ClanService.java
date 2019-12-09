@@ -1,7 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.List;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.request.ClanRequest;
@@ -10,6 +8,8 @@ import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * ClanService interface.

@@ -122,6 +122,10 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private DefaultAction defaultAction;
 
+    @Column(name = "prefer_disaster", nullable = false)
+    @JsonView(Views.Internal.class)
+    private boolean preferDisaster;
+
     /**
      * Constructor.
      */

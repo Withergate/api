@@ -25,6 +25,7 @@ CREATE TABLE clans (
     information_level INT NOT NULL,
     disaster_progress INT NOT NULL DEFAULT 0,
     default_action VARCHAR(32) NOT NULL,
+    prefer_disaster BIT default 1,
     PRIMARY KEY (clan_id)
 );
 
@@ -270,6 +271,7 @@ CREATE TABLE disaster_penalties (
 DROP TABLE IF EXISTS disaster_solutions;
 CREATE TABLE disaster_solutions (
     identifier VARCHAR(32),
+    basic BIT DEFAULT 0,
     solution_type VARCHAR(32) NOT NULL,
     difficulty INT NOT NULL DEFAULT 0,
     bonus INT NOT NULL DEFAULT 0,

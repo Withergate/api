@@ -129,6 +129,7 @@ public class ClanServiceImpl implements ClanService {
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
         clan.setDefaultAction(DefaultAction.EXPLORE_NEIGHBORHOOD);
+        clan.setPreferDisaster(true);
 
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
@@ -210,6 +211,7 @@ public class ClanServiceImpl implements ClanService {
     public void changeDefaultAction(DefaultActionRequest request, int clanId) {
         Clan clan = clanRepository.getOne(clanId);
         clan.setDefaultAction(request.getDefaultAction());
+        clan.setPreferDisaster(request.isPreferDisaster());
     }
 
     @Override
