@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.Clan.DefaultAction;
 import com.withergate.api.model.building.Building;
@@ -15,8 +16,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ClanRequest;
@@ -24,6 +23,7 @@ import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
@@ -249,14 +249,7 @@ public class ClanServiceImpl implements ClanService {
             int consumption = gameProperties.getFoodConsumption();
 
             // ascetic
-            Trait ascetic = character.getTraits().get(TraitName.ASCETIC);
-            if (ascetic != null && ascetic.isActive()) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.trait.ascetic", new String[] {character.getName()});
-                notification.getDetails().add(detail);
-
-                consumption -= ascetic.getDetails().getBonus();
-            }
+            consumption -= BonusUtils.getTraitBonus(character, BonusType.FOOD_CONSUMPTION, notification, notificationService);
 
             if (clan.getFood() >= consumption) {
                 clan.setFood(clan.getFood() - consumption);
@@ -458,14 +451,7 @@ public class ClanServiceImpl implements ClanService {
         }
 
         // lizard trait
-        Trait lizard = character.getTraits().get(TraitName.LIZARD);
-        if (lizard != null && lizard.isActive()) {
-            points += character.getTraits().get(TraitName.LIZARD).getDetails().getBonus();
-            NotificationDetail lizardDetail = new NotificationDetail();
-            notificationService.addLocalizedTexts(lizardDetail.getText(), "detail.trait.lizard",
-                    new String[]{character.getName()}, character.getTraits().get(TraitName.LIZARD).getDetails().getName());
-            notification.getDetails().add(lizardDetail);
-        }
+        points += BonusUtils.getTraitBonus(character, BonusType.HEALING, notification, notificationService);
 
         int healing = Math.min(points, hitpointsMissing);
         character.changeHitpoints(healing);

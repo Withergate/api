@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
@@ -15,7 +16,6 @@ import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
@@ -284,12 +284,13 @@ public class ClanServiceTest {
         character3.setClan(clan);
         character3.setHitpoints(1);
         TraitDetails details = new TraitDetails();
-        details.setIdentifier(TraitName.ASCETIC);
+        details.setIdentifier("ASCETIC");
         details.setBonus(1);
+        details.setBonusType(BonusType.FOOD_CONSUMPTION);
         Trait trait = new Trait();
         trait.setDetails(details);
         trait.setActive(true);
-        character3.getTraits().put(TraitName.ASCETIC, trait);
+        character3.getTraits().add(trait);
         clan.getCharacters().add(character3);
 
         List<Clan> clans = new ArrayList<>();

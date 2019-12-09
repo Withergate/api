@@ -1,5 +1,6 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
@@ -8,7 +9,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -55,17 +55,18 @@ public class TraitServiceTest {
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
-        details.setIdentifier(TraitName.BUILDER);
+        details.setIdentifier("BUILDER");
+        details.setBonusType(BonusType.CONSTRUCT);
         Trait trait = new Trait();
         trait.setActive(false);
         trait.setOrder(0);
         trait.setDetails(details);
-        character.getTraits().put(TraitName.BUILDER, trait);
+        character.getTraits().add(trait);
 
         Mockito.when(characterRepository.getOne(1)).thenReturn(character);
 
         // when activating trait
-        traitService.activateTrait(1, 1, TraitName.BUILDER);
+        traitService.activateTrait(1, 1, "BUILDER");
 
         // then verify trait activated
         Assert.assertTrue(trait.isActive());
@@ -91,17 +92,17 @@ public class TraitServiceTest {
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
-        details.setIdentifier(TraitName.BUILDER);
+        details.setIdentifier("BUILDER");
         Trait trait = new Trait();
         trait.setActive(false);
         trait.setOrder(3);
         trait.setDetails(details);
-        character.getTraits().put(TraitName.BUILDER, trait);
+        character.getTraits().add(trait);
 
         Mockito.when(characterRepository.getOne(1)).thenReturn(character);
 
         // when activating trait
-        traitService.activateTrait(1, 1, TraitName.BUILDER);
+        traitService.activateTrait(1, 1, "BUILDER");
 
         // then expect exception
     }
@@ -125,17 +126,17 @@ public class TraitServiceTest {
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
-        details.setIdentifier(TraitName.BUILDER);
+        details.setIdentifier("BUILDER");
         Trait trait = new Trait();
         trait.setActive(false);
         trait.setOrder(0);
         trait.setDetails(details);
-        character.getTraits().put(TraitName.BUILDER, trait);
+        character.getTraits().add(trait);
 
         Mockito.when(characterRepository.getOne(1)).thenReturn(character);
 
         // when activating trait
-        traitService.activateTrait(1, 1, TraitName.BUILDER);
+        traitService.activateTrait(1, 1, "BUILDER");
 
         // then expect exception
     }

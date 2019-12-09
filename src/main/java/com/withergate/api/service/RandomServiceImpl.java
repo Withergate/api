@@ -68,7 +68,6 @@ public class RandomServiceImpl implements RandomService {
     @Override
     public int[] getRandomAttributeCombination(int n) {
         int[] attr = new int[ATTRIBUTES];
-        int max = n - ATTRIBUTES;
 
         for (int i = 1; i < attr.length; i++) {
             attr[i] = rand.nextInt(K6 - 1);
@@ -78,7 +77,7 @@ public class RandomServiceImpl implements RandomService {
         for (int i = 1; i < attr.length; i++) {
             attr[i - 1] = attr[i] - attr[i - 1] + 1;
         }
-        attr[attr.length - 1] = max - attr[attr.length - 1] + 1;
+        attr[attr.length - 1] = n - ATTRIBUTES - attr[attr.length - 1] + 1;
 
         // Redistribute attributes if too large
         int i = 0;

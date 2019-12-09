@@ -106,7 +106,7 @@ CREATE TABLE item_details (
     price INT NOT NULL,
     prereq INT DEFAULT 0,
     bonus INT DEFAULT 0,
-    bonus_type VARCHAR(16),
+    bonus_type VARCHAR(32),
     bonus_text VARCHAR(32),
     effect_type VARCHAR(32),
     weapon_type VARCHAR(16),
@@ -130,6 +130,9 @@ DROP TABLE IF EXISTS trait_details;
 CREATE TABLE trait_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
     bonus INT,
+    bonus_type VARCHAR(32),
+    bonus_text VARCHAR(32),
+    optional BIT DEFAULT 0,
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (identifier)
 );

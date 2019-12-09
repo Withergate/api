@@ -1,7 +1,6 @@
 package com.withergate.api.repository.clan;
 
 import com.withergate.api.model.character.TraitDetails;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @author Martin Myslik
  */
 @Repository
-public interface TraitDetailsRepository extends JpaRepository<TraitDetails, TraitDetails.TraitName> {
+public interface TraitDetailsRepository extends JpaRepository<TraitDetails, String> {
 
 }

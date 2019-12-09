@@ -18,7 +18,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
@@ -291,11 +290,12 @@ public class BuildingServiceTest {
 
         TraitDetails traitDetails = new TraitDetails();
         traitDetails.setBonus(2);
-        traitDetails.setIdentifier(TraitName.BUILDER);
+        traitDetails.setIdentifier("BUILDER");
+        traitDetails.setBonusType(BonusType.CONSTRUCT);
         Trait trait = new Trait();
         trait.setDetails(traitDetails);
         trait.setActive(true);
-        character.getTraits().put(TraitName.BUILDER, trait);
+        character.getTraits().add(trait);
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);

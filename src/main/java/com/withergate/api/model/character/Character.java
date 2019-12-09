@@ -2,10 +2,8 @@ package com.withergate.api.model.character;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,9 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyClass;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,7 +27,6 @@ import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BaseAction;
 import com.withergate.api.model.building.BuildingDetails.BuildingName;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.service.clan.CharacterServiceImpl;
@@ -115,10 +109,7 @@ public class Character {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id")
-    @MapKeyColumn(name = "identifier")
-    @MapKeyClass(TraitDetails.TraitName.class)
-    @MapKeyEnumerated(EnumType.STRING)
-    private Map<TraitDetails.TraitName, Trait> traits;
+    private Set<Trait> traits;
 
     // Actions
 
@@ -130,7 +121,7 @@ public class Character {
      * Constructor.
      */
     public Character() {
-        traits = new EnumMap<>(TraitName.class);
+        traits = new HashSet<>();
         items = new HashSet<>();
         state = CharacterState.READY;
         level = 1;
@@ -165,11 +156,15 @@ public class Character {
      * @return the list of traits
      */
     @JsonProperty("traits")
-    public Collection<Trait> getTraitsAsList() {
+    public Collection<Trait> getFilteredTraits() {
         if (clan == null) {
             return new ArrayList<>();
         }
-        return traits.values().stream().filter(trait -> trait.getOrder() <= getMaxOrder()).collect(Collectors.toList());
+        return traits.stream().filter(trait -> trait.getOrder() <= getMaxOrder()).collect(Collectors.toList());
+    }
+
+    public List<Trait> getActiveTraits() {
+        return traits.stream().filter(Trait::isActive).collect(Collectors.toList());
     }
 
     /**
@@ -183,7 +178,7 @@ public class Character {
             return -1;
         }
 
-        return 1 + traits.values().stream().filter(Trait::isActive).count()
+        return 1 + traits.stream().filter(Trait::isActive).count()
                 + clan.getBuildings().get(BuildingName.TRAINING_GROUNDS).getLevel();
     }
 

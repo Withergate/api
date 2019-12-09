@@ -6,13 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.DisasterAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterSolution;
@@ -26,6 +25,7 @@ import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.repository.disaster.DisasterRepository;
 import com.withergate.api.repository.disaster.DisasterSolutionRepository;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
@@ -284,14 +284,7 @@ public class DisasterServiceImpl implements DisasterService {
         int progress = action.getSolution().getBonus();
 
         // trait bonus
-        Trait sparta = action.getCharacter().getTraits().get(TraitName.SPARTA);
-        if (sparta != null && sparta.isActive()) {
-            progress += sparta.getDetails().getBonus();
-
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.sparta", new String[]{}, sparta.getDetails().getName());
-            notification.getDetails().add(detail);
-        }
+        progress += BonusUtils.getTraitBonus(action.getCharacter(), BonusType.DISASTER, notification, notificationService);
 
         // increase clan progress
         Clan clan = action.getCharacter().getClan();
@@ -305,7 +298,7 @@ public class DisasterServiceImpl implements DisasterService {
         notificationService.addLocalizedTexts(notification.getText(), "disaster.action.success", new String[]{});
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.action.success",
-                new String[]{String.valueOf(action.getSolution().getBonus())});
+                new String[]{String.valueOf(progress)});
         notification.getDetails().add(detail);
     }
 

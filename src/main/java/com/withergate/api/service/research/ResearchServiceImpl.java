@@ -9,9 +9,6 @@ import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ResearchRequest;
@@ -19,6 +16,7 @@ import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails;
 import com.withergate.api.repository.action.ResearchActionRepository;
 import com.withergate.api.repository.research.ResearchDetailsRepository;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
@@ -143,24 +141,10 @@ public class ResearchServiceImpl implements ResearchService {
         int bonus = 0;
 
         // trait
-        Trait boffin = character.getTraits().get(TraitName.BOFFIN);
-        if (boffin != null && boffin.isActive()) {
-            Trait trait = character.getTraits().get(TraitName.BOFFIN);
-            bonus += trait.getDetails().getBonus();
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.boffin", new String[] {character.getName()},
-                    trait.getDetails().getName());
-            notification.getDetails().add(detail);
-        }
+        bonus += BonusUtils.getTraitBonus(character, BonusType.RESEARCH, notification, notificationService);
 
-        for (Item item : character.getItems()) {
-            if (item.getDetails().getBonusType().equals(BonusType.RESEARCH)) {
-                bonus += item.getDetails().getBonus();
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), "detail.gear.bonus.work", new String[] {}, item.getDetails().getName());
-                notification.getDetails().add(detail);
-            }
-        }
+        // item
+        bonus += BonusUtils.getItemBonus(character, BonusType.RESEARCH, notification, notificationService);
 
         // building
         Building study = character.getClan().getBuildings().get(BuildingName.STUDY);

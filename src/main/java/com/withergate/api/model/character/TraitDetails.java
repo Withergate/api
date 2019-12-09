@@ -13,6 +13,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,9 +30,8 @@ import lombok.Setter;
 public class TraitDetails {
 
     @Id
-    @Enumerated(EnumType.STRING)
     @Column(name = "identifier", updatable = false, nullable = false)
-    private TraitName identifier;
+    private String identifier;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
@@ -46,14 +46,17 @@ public class TraitDetails {
     @Column(name = "bonus", updatable = false, nullable = false)
     private int bonus;
 
+    @Column(name = "bonus_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private BonusType bonusType;
+
+    @Column(name = "bonus_text", updatable = false)
+    private String bonusText;
+
+    @Column(name = "optional", updatable = false)
+    private boolean optional;
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-
-    /**
-     * Trait name. Declared as enum for restricting database values and easier code referencing.
-     */
-    public enum TraitName {
-        FIGHTER, SHARPSHOOTER, BUILDER, ASCETIC, HUNTER, HOARDER, LIZARD, CONTACTS, BOFFIN, SPARTA
-    }
 }

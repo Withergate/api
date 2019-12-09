@@ -1,15 +1,15 @@
 -- Trait details
-INSERT INTO trait_details(identifier, bonus, image_url) VALUES
-    ('FIGHTER', 1, 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
-    ('SHARPSHOOTER', 1, 'https://storage.googleapis.com/withergate-images/traits/sharpshooter-trait.png'),
-    ('ASCETIC', 1, 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
-    ('HUNTER', 2, 'https://storage.googleapis.com/withergate-images/traits/hunter-trait.png'),
-    ('HOARDER', 2, 'https://storage.googleapis.com/withergate-images/traits/hoarder-trait.png'),
-    ('BUILDER', 2, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png'),
-    ('LIZARD', 2, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
-    ('CONTACTS', 2, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
-    ('BOFFIN', 2, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png'),
-    ('SPARTA', 2, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png');
+INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, image_url) VALUES
+    ('FIGHTER', 1, 'COMBAT_MELEE', 'detail.trait.combat', true, 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
+    ('SHARPSHOOTER', 1, 'COMBAT_RANGED', 'detail.trait.combat', true, 'https://storage.googleapis.com/withergate-images/traits/sharpshooter-trait.png'),
+    ('ASCETIC', 1, 'FOOD_CONSUMPTION', 'detail.trait.ascetic', false, 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
+    ('HUNTER', 2, 'SCAVENGE_FOOD', 'detail.trait.scavenge', false, 'https://storage.googleapis.com/withergate-images/traits/hunter-trait.png'),
+    ('HOARDER', 2, 'SCAVENGE_JUNK', 'detail.trait.scavenge', false, 'https://storage.googleapis.com/withergate-images/traits/hoarder-trait.png'),
+    ('BUILDER', 2, 'CONSTRUCT', 'detail.trait.builder', false, 'https://storage.googleapis.com/withergate-images/traits/builder-trait.png'),
+    ('LIZARD', 2, 'HEALING', 'detail.trait.healing', false, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
+    ('CONTACTS', 2, 'SCOUTING', 'detail.trait.scouting', false, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
+    ('BOFFIN', 2, 'RESEARCH', 'detail.trait.research', false, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png'),
+    ('SPARTA', 2, 'DISASTER', 'detail.trait.disaster', false, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),

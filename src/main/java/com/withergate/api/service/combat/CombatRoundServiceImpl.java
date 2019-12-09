@@ -1,12 +1,15 @@
 package com.withergate.api.service.combat;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.item.ItemDetails;
+import com.withergate.api.model.item.ItemDetails.WeaponType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.notification.NotificationService;
@@ -14,9 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Combat round service implementation. Used for detail combat mechanics.
@@ -112,35 +112,17 @@ public class CombatRoundServiceImpl implements CombatRoundService {
 
     // add combat bonus to a character with certain traits if conditions are met
     private int getCombatBonus(Character character, ClanNotification notification) {
-        Trait fighter = character.getTraits().get(TraitName.FIGHTER);
-        if (fighter != null && fighter.isActive() && character.getWeapon() != null
-                && character.getWeapon().getDetails().getWeaponType().equals(ItemDetails.WeaponType.MELEE)) {
-            log.trace("Checking fighter trait bonus.");
-            if (randomService.getRandomInt(1, 100) < 50) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService
-                        .addLocalizedTexts(detail.getText(), "detail.trait.fighter", new String[]{character.getName()});
-                notification.getDetails().add(detail);
+        int bonus = 0;
 
-                return character.getTraits().get(TraitName.FIGHTER).getDetails().getBonus();
-            }
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.MELEE)) {
+            bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_MELEE, notification, notificationService);
         }
 
-        Trait sharpshooter = character.getTraits().get(TraitName.SHARPSHOOTER);
-        if (sharpshooter != null && sharpshooter.isActive() && character.getWeapon() != null
-                && character.getWeapon().getDetails().getWeaponType().equals(ItemDetails.WeaponType.RANGED)) {
-            log.trace("Checking sharpshooter trait bonus.");
-            if (randomService.getRandomInt(1, 100) < 50) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService
-                        .addLocalizedTexts(detail.getText(), "detail.trait.sharpshooter", new String[]{character.getName()});
-                notification.getDetails().add(detail);
-
-                return character.getTraits().get(TraitName.SHARPSHOOTER).getDetails().getBonus();
-            }
+        if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
+            bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_RANGED, notification, notificationService);
         }
 
-        return 0;
+        return bonus;
     }
 
     private int getArmor(Character character) {

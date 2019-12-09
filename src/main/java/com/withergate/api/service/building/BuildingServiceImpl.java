@@ -13,10 +13,6 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -25,6 +21,7 @@ import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
@@ -258,24 +255,8 @@ public class BuildingServiceImpl implements BuildingService {
     private int getBonus(Character character, ClanNotification notification, BonusType bonusType) {
         int bonus = 0;
 
-        Trait builder = character.getTraits().get(TraitDetails.TraitName.BUILDER);
-        if (bonusType.equals(BonusType.CONSTRUCT) && builder != null && builder.isActive()) {
-            bonus += character.getTraits().get(TraitName.BUILDER).getDetails().getBonus();
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.builder", new String[] {character.getName()});
-            notification.getDetails().add(detail);
-        }
-
-        for (Item item : character.getItems()) {
-            if (item.getDetails().getBonusType().equals(bonusType)) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
-                        item.getDetails().getName());
-                notification.getDetails().add(detail);
-
-                bonus += character.getGear().getDetails().getBonus();
-            }
-        }
+        bonus += BonusUtils.getTraitBonus(character, bonusType, notification, notificationService);
+        bonus += BonusUtils.getItemBonus(character, bonusType, notification, notificationService);
 
         // research side effect
         if (bonusType.equals(BonusType.CRAFTING) && character.getClan().getResearch().containsKey(ResearchName.FORGERY)

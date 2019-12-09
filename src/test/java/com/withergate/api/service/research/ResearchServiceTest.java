@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResearchAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
@@ -127,11 +127,12 @@ public class ResearchServiceTest {
 
         TraitDetails traitDetails = new TraitDetails();
         traitDetails.setBonus(2);
-        traitDetails.setIdentifier(TraitName.BOFFIN);
+        traitDetails.setIdentifier("BOFFIN");
+        traitDetails.setBonusType(BonusType.RESEARCH);
         Trait trait = new Trait();
         trait.setActive(true);
         trait.setDetails(traitDetails);
-        character.getTraits().put(TraitName.BOFFIN, trait);
+        character.getTraits().add(trait);
 
         ResearchAction action = new ResearchAction();
         action.setResearch(ResearchName.BEGGING);

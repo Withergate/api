@@ -1,14 +1,13 @@
 package com.withergate.api.service.location;
 
+import java.util.List;
+
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails.TraitName;
-import com.withergate.api.model.item.Item;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.location.LocationDescription;
 import com.withergate.api.model.notification.ClanNotification;
@@ -18,6 +17,7 @@ import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
@@ -29,8 +29,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Location service implementation.
@@ -200,36 +198,8 @@ public class LocationServiceImpl implements LocationService {
     private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
         int bonus = 0;
 
-        Trait hunter = character.getTraits().get(TraitName.HUNTER);
-        if (bonusType.equals(BonusType.SCAVENGE_FOOD) && hunter != null && hunter.isActive()) {
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.scavenge", new String[]{},
-                    character.getTraits().get(TraitName.HUNTER).getDetails().getName());
-            notification.getDetails().add(detail);
-
-            bonus += character.getTraits().get(TraitName.HUNTER).getDetails().getBonus();
-        }
-
-        Trait hoarder = character.getTraits().get(TraitName.HOARDER);
-        if (bonusType.equals(BonusType.SCAVENGE_JUNK) && hoarder != null && hoarder.isActive()) {
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.scavenge", new String[]{},
-                    character.getTraits().get(TraitName.HOARDER).getDetails().getName());
-            notification.getDetails().add(detail);
-
-            bonus += character.getTraits().get(TraitName.HOARDER).getDetails().getBonus();
-        }
-
-        for (Item item : character.getItems()) {
-            if (item.getDetails().getBonusType().equals(bonusType)) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
-                        item.getDetails().getName());
-                notification.getDetails().add(detail);
-
-                bonus += character.getGear().getDetails().getBonus();
-            }
-        }
+        bonus += BonusUtils.getTraitBonus(character, bonusType, notification, notificationService);
+        bonus += BonusUtils.getItemBonus(character, bonusType, notification, notificationService);
 
         return bonus;
     }
@@ -237,25 +207,11 @@ public class LocationServiceImpl implements LocationService {
     private int getScoutingBonus(Character character, ClanNotification notification, boolean encounter) {
         int bonus = 0;
 
-        // contacts trait
-        Trait contacts = character.getTraits().get(TraitName.CONTACTS);
-        if (contacts != null && contacts.isActive()) {
-            bonus += character.getTraits().get(TraitName.CONTACTS).getDetails().getBonus();
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.trait.contacts", new String[]{},
-                    character.getTraits().get(TraitName.CONTACTS).getDetails().getName());
-            notification.getDetails().add(detail);
-        }
+        // trait
+        bonus += BonusUtils.getTraitBonus(character, BonusType.SCOUTING, notification, notificationService);
 
-        for (Item item : character.getItems()) {
-            if (item.getDetails().getBonusType().equals(BonusType.SCOUTING)) {
-                bonus += item.getDetails().getBonus();
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[]{},
-                        item.getDetails().getName());
-                notification.getDetails().add(detail);
-            }
-        }
+        // item
+        bonus += BonusUtils.getItemBonus(character, BonusType.SCOUTING, notification, notificationService);
 
         // research side effect
         if (!encounter && character.getClan().getResearch().containsKey(ResearchName.BEGGING)

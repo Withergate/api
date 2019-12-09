@@ -12,7 +12,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
 import com.withergate.api.model.item.ItemType;
@@ -415,11 +414,12 @@ public class LocationServiceTest {
 
         Trait trait = new Trait();
         TraitDetails traitDetails = new TraitDetails();
-        traitDetails.setIdentifier(TraitName.HUNTER);
+        traitDetails.setIdentifier("HUNTER");
+        traitDetails.setBonusType(BonusType.SCAVENGE_FOOD);
         traitDetails.setBonus(2);
         trait.setDetails(traitDetails);
         trait.setActive(true);
-        character.getTraits().put(TraitName.HUNTER, trait);
+        character.getTraits().add(trait);
 
         Clan clan = new Clan();
         clan.setId(1);
@@ -473,11 +473,12 @@ public class LocationServiceTest {
 
         Trait trait = new Trait();
         TraitDetails traitDetails = new TraitDetails();
-        traitDetails.setIdentifier(TraitName.HOARDER);
+        traitDetails.setIdentifier("HOARDER");
+        traitDetails.setBonusType(BonusType.SCAVENGE_JUNK);
         traitDetails.setBonus(2);
         trait.setDetails(traitDetails);
         trait.setActive(true);
-        character.getTraits().put(TraitName.HOARDER, trait);
+        character.getTraits().add(trait);
 
         Clan clan = new Clan();
         clan.setId(1);

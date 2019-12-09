@@ -1,6 +1,5 @@
 package com.withergate.api.model.request;
 
-import com.withergate.api.model.character.TraitDetails.TraitName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +13,6 @@ import lombok.Setter;
 public class TraitRequest {
 
     private int characterId;
-    private TraitName traitName;
+    private String traitName;
 
 }
