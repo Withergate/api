@@ -52,7 +52,7 @@ public class CharacterController {
     public ResponseEntity<Void> activateTrait(Principal principal, @RequestBody TraitRequest request)
             throws InvalidActionException {
 
-        traitService.activateTrait(request.getCharacterId(), Integer.parseInt(principal.getName()), request.getTraitName());
+        traitService.activateTrait(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

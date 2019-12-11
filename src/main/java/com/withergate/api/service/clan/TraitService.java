@@ -1,6 +1,7 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.request.TraitRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -20,9 +21,8 @@ public interface TraitService {
     /**
      * Activates the provided trait for given character. Throws an exception if conditions are not met.
      *
-     * @param characterId character ID
+     * @param request request
      * @param clanId clan ID
-     * @param traitName trait to be activated
      */
-    void activateTrait(int characterId, int clanId, String traitName) throws InvalidActionException;
+    void activateTrait(TraitRequest request, int clanId) throws InvalidActionException;
 }

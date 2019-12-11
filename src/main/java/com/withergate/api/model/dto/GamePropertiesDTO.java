@@ -24,6 +24,7 @@ public class GamePropertiesDTO {
     private final int buildingFame;
     private final int researchFame;
     private final int tavernRefreshPrice;
+    private final int trainingPrice;
 
     /**
      * Constructor.
@@ -40,6 +41,7 @@ public class GamePropertiesDTO {
         this.buildingFame = properties.getBuildingFame();
         this.researchFame = properties.getResearchFame();
         this.tavernRefreshPrice = properties.getTavernRefreshPrice();
+        this.trainingPrice = properties.getTrainingPrice();
     }
 
 }

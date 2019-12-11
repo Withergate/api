@@ -14,5 +14,6 @@ public class TraitRequest {
 
     private int characterId;
     private String traitName;
+    private boolean immediate;
 
 }

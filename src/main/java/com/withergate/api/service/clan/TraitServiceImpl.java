@@ -4,11 +4,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
+import com.withergate.api.model.request.TraitRequest;
 import com.withergate.api.repository.clan.CharacterRepository;
 import com.withergate.api.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -27,6 +29,7 @@ public class TraitServiceImpl implements TraitService {
 
     private final TraitDetailsRepository traitDetailsRepository;
     private final CharacterRepository characterRepository;
+    private final GameProperties properties;
 
     @Override
     public void assignTraits(Character character) {
@@ -45,8 +48,8 @@ public class TraitServiceImpl implements TraitService {
 
     @Transactional
     @Override
-    public void activateTrait(int characterId, int clanId, String traitName) throws InvalidActionException {
-        Character character = characterRepository.getOne(characterId);
+    public void activateTrait(TraitRequest request, int clanId) throws InvalidActionException {
+        Character character = characterRepository.getOne(request.getCharacterId());
         Clan clan = character.getClan();
 
         if (clan.getId() != clanId) {
@@ -57,7 +60,7 @@ public class TraitServiceImpl implements TraitService {
             throw new InvalidActionException("This character has no available skill points!");
         }
 
-        Optional<Trait> trait = character.getTraits().stream().filter(t -> t.getDetails().getIdentifier().equals(traitName)).findFirst();
+        Optional<Trait> trait = character.getTraits().stream().filter(t -> t.getDetails().getIdentifier().equals(request.getTraitName())).findFirst();
         if (trait.isEmpty() || trait.get().isActive()) {
             throw new InvalidActionException("This trait does not exist or has been activated already.");
         }
@@ -67,11 +70,21 @@ public class TraitServiceImpl implements TraitService {
             throw new InvalidActionException("This trait is not available for the provided character.");
         }
 
+        if (request.isImmediate()) {
+            if (clan.getCaps() < properties.getTrainingPrice()) {
+                throw new InvalidActionException("Not enough caps to perform training.");
+            }
+            // pay price for immediate training
+            clan.changeCaps(- properties.getTrainingPrice());
+        }
+
         trait.get().setActive(true);
         character.setSkillPoints(character.getSkillPoints() - 1);
 
-        // mark character as resting
-        character.setState(CharacterState.RESTING);
+        // mark character as resting unless immediate training
+        if (!request.isImmediate()) {
+            character.setState(CharacterState.RESTING);
+        }
     }
 
 }
