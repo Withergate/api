@@ -60,6 +60,9 @@ public class ItemDetails {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @Column(name = "combat", updatable = false)
+    private int combat;
+
     @Column(name = "bonus", updatable = false)
     private int bonus;
 

@@ -191,7 +191,7 @@ public class Character {
     public int getTotalCombat() {
         int weaponCombat = 0;
         if (getWeapon() != null) {
-            weaponCombat = getWeapon().getDetails().getBonus();
+            weaponCombat = getWeapon().getDetails().getCombat();
         }
 
         return getCombat() + weaponCombat;

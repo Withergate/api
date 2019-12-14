@@ -127,7 +127,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
 
     private int getArmor(Character character) {
         if (character.getOutfit() != null) {
-            return character.getOutfit().getDetails().getBonus();
+            return character.getOutfit().getDetails().getCombat();
         }
 
         return 0;

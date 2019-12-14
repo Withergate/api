@@ -16,7 +16,7 @@ public class CharacterTest {
         character.setCombat(3);
 
         ItemDetails details = new ItemDetails();
-        details.setBonus(1);
+        details.setCombat(1);
         details.setItemType(ItemType.WEAPON);
         Item weapon = new Item();
         weapon.setDetails(details);

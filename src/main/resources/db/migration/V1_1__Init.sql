@@ -106,6 +106,7 @@ CREATE TABLE item_details (
     rarity VARCHAR(8) NOT NULL,
     price INT NOT NULL,
     prereq INT DEFAULT 0,
+    combat INT DEFAULT 0,
     bonus INT DEFAULT 0,
     bonus_type VARCHAR(32),
     bonus_text VARCHAR(32),

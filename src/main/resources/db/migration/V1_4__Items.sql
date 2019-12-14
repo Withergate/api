@@ -1,5 +1,5 @@
 -- Weapon details
-INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, bonus, image_url) VALUES
+INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, image_url) VALUES
     ('KNIFE', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 'https://storage.googleapis.com/withergate-images/items/knife.png'),
     ('AXE', 'WEAPON', 'RARE', 'MELEE', 25, 2, 'https://storage.googleapis.com/withergate-images/items/axe.png'),
     ('BAT', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
@@ -140,23 +140,33 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
 
 -- Outfit details
-INSERT INTO item_details(identifier, item_type, rarity, price, bonus, image_url) VALUES
-    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 12, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
-    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 20, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
-    ('KEVLAR', 'OUTFIT', 'EPIC', 45, 3, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
+INSERT INTO item_details(identifier, item_type, rarity, price, combat, bonus_type, bonus, bonus_text, image_url) VALUES
+    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 12, 1, null, 0, null, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
+    ('LAB_COAT', 'OUTFIT', 'COMMON', 12, 0, 'RESEARCH', 1, 'detail.gear.bonus.work', 'https://storage.googleapis.com/withergate-images/items/lab-coat.png'),
+    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 20, 2, null, 0, null, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
+    ('CAMO_SUIT', 'OUTFIT', 'RARE', 20, 1, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 'https://storage.googleapis.com/withergate-images/items/camo-suit.png'),
+    ('KEVLAR', 'OUTFIT', 'EPIC', 45, 3, null, 0, null, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('LEATHER_CLOTHES', 'en', 'Leather clothes'),
     ('LEATHER_CLOTHES', 'cs', 'Kožené oblečení'),
+    ('LAB_COAT', 'en', 'Lab coat'),
+    ('LAB_COAT', 'cs', 'Laboratorní plášť'),
     ('LEATHER_COVERED', 'en', 'Leather clothes covered with nails'),
     ('LEATHER_COVERED', 'cs', 'Hřeby pobité kožené oblečení'),
+    ('CAMO_SUIT', 'en', 'Camo suit'),
+    ('CAMO_SUIT', 'cs', 'Maskáče'),
     ('KEVLAR', 'en', 'Kevlar vest'),
     ('KEVLAR', 'cs', 'Kevlarová vesta');
 
 INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('LEATHER_CLOTHES', 'en', 'Standard clothing providing a basic defense.'),
     ('LEATHER_CLOTHES', 'cs', 'Standardní oděv poskytující základní ochranu.'),
+    ('LAB_COAT', 'en', 'Torn lab coat. Does not offer any protection but looks incredibly smart. Increases research speed.'),
+    ('LAB_COAT', 'cs', 'Potrhaný laboratorní plášť. Neposkytuje žádnou ochranu, ale vypadá zatraceně chytře. Zvyšuje rychlost vázkumu.'),
     ('LEATHER_COVERED', 'en', 'Clothing made of leather covered with nails and other metal junk. Unattractive, yes, but it protects every important parts of the body.'),
     ('LEATHER_COVERED', 'cs', 'Oděv z kůže pobité hřeby a dalšími kovovými zbytky. Nevzhledně vypadající, leč dostatečně chránící všechny důležité části těla.'),
+    ('CAMO_SUIT', 'en', 'Camouflage clothing designed to resemble the background environment. It provides basic defense and also decreases chances for random encounters.'),
+    ('CAMO_SUIT', 'cs', 'Maskovací oblečení pro splynutí s okolím. Tento oděv poskytuje základní ochranu a navíc snižuje šanci na náhodné události.'),
     ('KEVLAR', 'en', 'Vest made of ancient material which nobody can produce today. Apart from few scratches, it is a real masterpiece.'),
     ('KEVLAR', 'cs', 'Vesta z pradávného materiálu, který dnes již nikdo neumí vyrobit. Až na pár odřenin je to skutečný skvost..');
