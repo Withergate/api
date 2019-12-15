@@ -46,6 +46,10 @@ public class QuestDetails {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @Column(name = "condition", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private Condition condition;
+
     @Column(name = "completion", nullable = false)
     private int completion;
 
@@ -66,6 +70,13 @@ public class QuestDetails {
      */
     public enum Type {
         COMBAT, INTELLECT, CRAFTSMANSHIP, SCAVENGE
+    }
+
+    /**
+     * Quest condition.
+     */
+    public enum Condition {
+        HEALTHY_CHARACTER, FEMALE_CHARACTER
     }
 
 }

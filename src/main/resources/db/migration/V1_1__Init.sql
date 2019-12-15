@@ -226,7 +226,8 @@ CREATE TABLE encounters (
 DROP TABLE IF EXISTS quest_details;
 CREATE TABLE quest_details (
     identifier VARCHAR(16),
-    quest_type VARCHAR(16) NOT NULL,
+    quest_type VARCHAR(32) NOT NULL,
+    condition VARCHAR(32),
     difficulty INT NOT NULL,
     completion INT NOT NULL,
     caps_reward INT NOT NULL,

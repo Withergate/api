@@ -9,6 +9,7 @@ import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.quest.QuestDetails;
@@ -135,6 +136,7 @@ public class QuestServiceTest {
         Quest quest = new Quest();
         quest.setId(1);
         quest.setCompleted(false);
+        quest.setDetails(new QuestDetails());
         clan.getQuests().add(quest);
 
         Character character = new Character();
@@ -307,6 +309,41 @@ public class QuestServiceTest {
         Mockito.verify(combatService).handleSingleCombat(Mockito.any(ClanNotification.class), Mockito.anyInt(),
                 Mockito.eq(character));
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
+    }
+
+    @Test(expected = InvalidActionException.class)
+    public void testGivenQuestRequestWhenConditionNotMetThenVerifyExceptionThrown() throws InvalidActionException {
+        // given quest request
+        QuestRequest request = new QuestRequest();
+        request.setCharacterId(1);
+        request.setQuestId(1);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setFood(10);
+        clan.setQuests(new HashSet<>());
+        clan.setName("Dragons");
+
+        Quest quest = new Quest();
+        quest.setId(1);
+        quest.setCompleted(false);
+        QuestDetails details = new QuestDetails();
+        details.setCondition(QuestDetails.Condition.FEMALE_CHARACTER);
+        quest.setDetails(details);
+        clan.getQuests().add(quest);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setName("Rusty Nick");
+        character.setGender(Gender.MALE);
+        character.setClan(clan);
+        character.setState(CharacterState.READY);
+        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
+
+        // when creating building action
+        questService.saveQuestAction(request, 1);
+
+        // then verify exception thrown
     }
 
 }

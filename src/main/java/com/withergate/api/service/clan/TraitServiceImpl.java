@@ -60,7 +60,8 @@ public class TraitServiceImpl implements TraitService {
             throw new InvalidActionException("This character has no available skill points!");
         }
 
-        Optional<Trait> trait = character.getTraits().stream().filter(t -> t.getDetails().getIdentifier().equals(request.getTraitName())).findFirst();
+        Optional<Trait> trait = character.getTraits().stream().filter(t ->
+                t.getDetails().getIdentifier().equals(request.getTraitName())).findFirst();
         if (trait.isEmpty() || trait.get().isActive()) {
             throw new InvalidActionException("This trait does not exist or has been activated already.");
         }

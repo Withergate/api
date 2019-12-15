@@ -1,15 +1,11 @@
 package com.withergate.api.service.quest;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.character.Gender;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.quest.Quest;
@@ -27,6 +23,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Quest service implementation.
@@ -76,7 +77,7 @@ public class QuestServiceImpl implements QuestService {
 
         // add notification
         NotificationDetail notificationDetail = new NotificationDetail();
-        notificationService.addLocalizedTexts(notificationDetail.getText(), "detail.quest.assigned", new String[] {}, details.getName());
+        notificationService.addLocalizedTexts(notificationDetail.getText(), "detail.quest.assigned", new String[]{}, details.getName());
         notification.getDetails().add(notificationDetail);
     }
 
@@ -103,6 +104,9 @@ public class QuestServiceImpl implements QuestService {
         if (quest == null) {
             throw new InvalidActionException("This quest does not exist.");
         }
+
+        // check condition
+        checkQuestCondition(character, quest);
 
         // persist the action
         QuestAction action = new QuestAction();
@@ -178,7 +182,7 @@ public class QuestServiceImpl implements QuestService {
 
     private void handleQuestSuccess(Quest quest, Character character, ClanNotification notification) {
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[] {},
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[]{},
                 quest.getDetails().getName());
 
         // award experience
@@ -194,7 +198,7 @@ public class QuestServiceImpl implements QuestService {
 
             ClanNotification completionNotification = new ClanNotification(notification.getTurnId(), notification.getClanId());
             completionNotification.setHeader(quest.getClan().getName());
-            notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[] {},
+            notificationService.addLocalizedTexts(completionNotification.getText(), "quest.completed", new String[]{},
                     quest.getDetails().getName());
 
             quest.setCompleted(true);
@@ -211,7 +215,7 @@ public class QuestServiceImpl implements QuestService {
 
     private void handleQuestFailure(Quest quest, Character character, ClanNotification notification) {
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[] {},
+        notificationService.addLocalizedTexts(notification.getText(), "character.quest.failure", new String[]{},
                 quest.getDetails().getName());
 
         // award experience
@@ -222,8 +226,35 @@ public class QuestServiceImpl implements QuestService {
     private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
-                new String[] {String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
+                new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
         return detail;
+    }
+
+    /**
+     * Checks the quest condition and throws an exception if it is not met.
+     */
+    private void checkQuestCondition(Character character, Quest quest) throws InvalidActionException {
+        QuestDetails.Condition condition = quest.getDetails().getCondition();
+        if (condition == null) {
+            return;
+        }
+
+        switch (condition) {
+            case FEMALE_CHARACTER:
+                if (!character.getGender().equals(Gender.FEMALE)) {
+                    throw new InvalidActionException("Character must be FEMALE to perform this action.");
+                }
+                break;
+            case HEALTHY_CHARACTER:
+                if (character.getHitpoints() < character.getMaxHitpoints()) {
+                    throw new InvalidActionException("Character must be healthy to perform this action.");
+                }
+                break;
+            default:
+                log.error("Unknown quest condition: {}.", condition);
+        }
+
+
     }
 
 }
