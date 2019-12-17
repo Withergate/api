@@ -13,7 +13,9 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails.ResearchName;
+import com.withergate.api.model.statistics.ClanTurnStatistics;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -42,6 +44,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
     private final BuildingService buildingService;
     private final TavernService tavernService;
     private final RandomService randomService;
+    private final ClanTurnStatisticsRepository statisticsRepository;
     private final GameProperties gameProperties;
 
     @Override
@@ -77,6 +80,9 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
         // probably redundant
         clanRepository.saveAndFlush(clan);
+
+        // prepare statistics
+        prepareStatistics(turnId, clan);
     }
 
     private void deleteDeadCharacters(Clan clan) {
@@ -312,6 +318,11 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             notificationService.addLocalizedTexts(detail.getText(), "detail.research.cultivation", new String[]{});
             notification.getDetails().add(detail);
         }
+    }
+
+    private void prepareStatistics(int turnId, Clan clan) {
+        ClanTurnStatistics statistics = new ClanTurnStatistics(clan, turnId);
+        statisticsRepository.save(statistics);
     }
 
 }

@@ -422,10 +422,25 @@ CREATE TABLE arena_stats (
 -- Global notification
 DROP TABLE IF EXISTS global_notification;
 CREATE TABLE global_notification (
-  single_id VARCHAR(8) NOT NULL,
-  message VARCHAR(1024),
-  active BIT DEFAULT 0,
-  PRIMARY KEY (single_id)
+    single_id VARCHAR(8) NOT NULL,
+    message VARCHAR(1024),
+    active BIT DEFAULT 0,
+    PRIMARY KEY (single_id)
 );
 
 INSERT INTO global_notification VALUES ('SINGLE', '', false);
+
+-- Statistics
+DROP TABLE IF EXISTS clan_turn_statistics;
+CREATE TABLE clan_turn_statistics (
+    statistics_id INT AUTO_INCREMENT,
+    clan_id INT NOT NULL,
+    turn_id INT NOT NULL,
+    fame INT,
+    food INT,
+    junk INT,
+    buildings INT,
+    research INT,
+    quests INT,
+    PRIMARY KEY (statistics_id)
+);

@@ -1,13 +1,18 @@
 package com.withergate.api.controller.clan;
 
+import java.security.Principal;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.model.statistics.ClanTurnStatistics;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -25,9 +30,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.List;
-
 /**
  * Clan controller.
  *
@@ -41,6 +43,7 @@ public class ClanController {
     private final ClanService clanService;
     private final TavernService tavernService;
     private final TurnRepository turnRepository;
+    private final ClanTurnStatisticsRepository statisticsRepository;
 
     /**
      * Retrieves the clan for the authenticated player.
@@ -121,6 +124,17 @@ public class ClanController {
     public ResponseEntity<Void> changeDefaultAction(Principal principal, @RequestBody DefaultActionRequest request) {
         clanService.changeDefaultAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves clan statistics..
+     *
+     * @return the list of clan turn statistics
+     */
+    @JsonView(Views.Public.class)
+    @GetMapping("/clan/statistics")
+    public ResponseEntity<List<ClanTurnStatistics>> getClanStatistics(Principal principal) {
+        return new ResponseEntity<>(statisticsRepository.findAllByClanIdOrderByTurnIdAsc(Integer.parseInt(principal.getName())), HttpStatus.OK);
     }
 
 }

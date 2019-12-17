@@ -134,6 +134,7 @@ public class Clan {
         buildings = new EnumMap<>(BuildingName.class);
         research = new EnumMap<>(ResearchName.class);
         items = new HashSet<>();
+        quests = new HashSet<>();
     }
 
     /**

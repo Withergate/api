@@ -14,6 +14,7 @@ import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.location.TavernService;
@@ -53,6 +54,9 @@ public class ClanTurnServiceTest {
     @Mock
     private RandomService randomService;
 
+    @Mock
+    private ClanTurnStatisticsRepository statisticsRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -64,7 +68,7 @@ public class ClanTurnServiceTest {
         properties.setStarvationFame(1);
 
         clanTurnService = new ClanTurnServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService, randomService, properties);
+                buildingService, tavernService, randomService, statisticsRepository, properties);
     }
 
     @Test
