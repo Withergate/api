@@ -5,6 +5,7 @@ import java.util.List;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
+import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
@@ -45,61 +46,66 @@ public class EncounterServiceImpl implements EncounterService {
 
         log.debug("Processing {} with {} at {}", encounter.getType(), character.getName(), location.name());
 
-        notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[]{});
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[] {});
 
+        boolean success = handleSolution(character, encounter.getType(), encounter.getDifficulty(), notification);
+
+        if (success) {
+            handleSuccess(encounter, character, notification);
+        } else {
+            handleFailure(encounter, character, notification);
+        }
+
+        return success;
+    }
+
+    @Override
+    public boolean handleSolution(Character character, SolutionType type, int difficulty, ClanNotification notification) {
         boolean success = false;
-        switch (encounter.getType()) {
+
+        int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
+        switch (type) {
+            case AUTOMATIC:
+                success = true;
+                break;
             case COMBAT:
                 // handle combat and check if character won, if yes, handle reward
-                if (combatService.handleSingleCombat(notification, encounter.getDifficulty(), character)) {
-                    handleSuccess(encounter, character, notification);
-                    success = true;
-                } else {
-                    handleFailure(encounter, character, notification);
-                }
+                success = combatService.handleSingleCombat(notification, difficulty, character);
                 break;
             case INTELLECT:
-                int totalIntellect = character.getIntellect() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                int totalIntellect = character.getIntellect() + diceRoll;
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
-                if (totalIntellect < encounter.getDifficulty()) {
-                    handleFailure(encounter, character, notification);
-                } else {
-                    handleSuccess(encounter, character, notification);
+                if (totalIntellect >= difficulty) {
                     success = true;
                 }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalIntellect));
                 break;
             case SCAVENGE:
-                int totalScavenge = character.getScavenge() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                int totalScavenge = character.getScavenge() + diceRoll;
                 log.debug("{} rolled dice and the total scavenge value is {}", character.getName(), totalScavenge);
-                if (totalScavenge < encounter.getDifficulty()) {
-                    handleFailure(encounter, character, notification);
-                } else {
-                    handleSuccess(encounter, character, notification);
+                if (totalScavenge >= difficulty) {
                     success = true;
                 }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalScavenge));
                 break;
             case CRAFTSMANSHIP:
-                int totalCraftsmanship = character.getCraftsmanship() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                int totalCraftsmanship = character.getCraftsmanship() + diceRoll;
                 log.debug("{} rolled dice and the total craftsmanship value is {}", character.getName(), totalCraftsmanship);
-                if (totalCraftsmanship < encounter.getDifficulty()) {
-                    handleFailure(encounter, character, notification);
-                } else {
-                    handleSuccess(encounter, character, notification);
+                if (totalCraftsmanship >= difficulty) {
                     success = true;
                 }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship));
                 break;
             case COMBAT_ROLL:
-                int totalCombat = character.getCombat() + randomService.getRandomInt(1, RandomServiceImpl.K6);
+                int totalCombat = character.getCombat() + diceRoll;
                 log.debug("{} rolled dice and the total combat value is {}", character.getName(), totalCombat);
-                if (totalCombat < encounter.getDifficulty()) {
-                    handleFailure(encounter, character, notification);
-                } else {
-                    handleSuccess(encounter, character, notification);
+                if (totalCombat >= difficulty) {
                     success = true;
                 }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat));
                 break;
             default:
-                log.error("Unknown encounter type triggered: {}!", encounter.getType());
+                log.error("Unknown solution type triggered: {}!", type);
                 break;
         }
 
@@ -110,7 +116,7 @@ public class EncounterServiceImpl implements EncounterService {
         log.debug("Computing reward for character {}", character.getId());
 
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[]{});
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getSuccessText(), new String[] {});
 
         Clan clan = character.getClan();
 
@@ -154,11 +160,7 @@ public class EncounterServiceImpl implements EncounterService {
         log.debug("Computing penalty for character {}", character.getId());
 
         // update notification
-        notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[]{});
-
-        // handle experience
-        character.changeExperience(1);
-        notification.changeExperience(1);
+        notificationService.addLocalizedTexts(notification.getText(), encounter.getFailureText(), new String[] {});
 
         Clan clan = character.getClan();
 
@@ -170,21 +172,21 @@ public class EncounterServiceImpl implements EncounterService {
                 int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
                 int caps = Math.min(clan.getCaps(), diceRoll);
 
-                clan.changeCaps(- caps);
+                clan.changeCaps(-caps);
 
                 // update notification
-                notification.changeCaps(- caps);
+                notification.changeCaps(-caps);
                 break;
             case INJURY:
                 int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
 
-                character.changeHitpoints(- injury);
+                character.changeHitpoints(-injury);
                 notification.changeInjury(injury);
 
                 if (character.getHitpoints() < 1) {
                     NotificationDetail detail = new NotificationDetail();
                     notificationService.addLocalizedTexts(detail.getText(), "detail.character.injurydeath",
-                            new String[]{character.getName()});
+                            new String[] {character.getName()});
                     notification.getDetails().add(detail);
                     notification.setDeath(true);
                 }
@@ -193,6 +195,13 @@ public class EncounterServiceImpl implements EncounterService {
                 log.error("Unknown type of penalty: {}!", encounter.getPenalty());
                 break;
         }
+    }
+
+    private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
+                new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
+        return detail;
     }
 
 }

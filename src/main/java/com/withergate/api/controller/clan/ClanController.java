@@ -134,7 +134,8 @@ public class ClanController {
     @JsonView(Views.Public.class)
     @GetMapping("/clan/statistics")
     public ResponseEntity<List<ClanTurnStatistics>> getClanStatistics(Principal principal) {
-        return new ResponseEntity<>(statisticsRepository.findAllByClanIdOrderByTurnIdAsc(Integer.parseInt(principal.getName())), HttpStatus.OK);
+        return new ResponseEntity<>(statisticsRepository.findAllByClanIdOrderByTurnIdAsc(Integer.parseInt(principal.getName())),
+                HttpStatus.OK);
     }
 
 }

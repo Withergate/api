@@ -1,5 +1,10 @@
 package com.withergate.api.service.quest;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
@@ -14,20 +19,14 @@ import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
-import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Quest service implementation.
@@ -42,9 +41,9 @@ public class QuestServiceImpl implements QuestService {
     private final QuestDetailsRepository questDetailsRepository;
     private final NotificationService notificationService;
     private final QuestActionRepository questActionRepository;
-    private final CombatService combatService;
     private final RandomService randomService;
     private final CharacterService characterService;
+    private final EncounterService encounterService;
 
     @Override
     public void assignQuests(Clan clan, ClanNotification notification) {
@@ -142,36 +141,8 @@ public class QuestServiceImpl implements QuestService {
         Character character = action.getCharacter();
         Quest quest = action.getQuest();
 
-        boolean success = false;
-        int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6);
-        switch (action.getQuest().getDetails().getType()) {
-            case COMBAT:
-                success = combatService.handleSingleCombat(notification, quest.getDetails().getDifficulty(), character);
-                break;
-            case INTELLECT:
-                int result = character.getIntellect() + diceRoll;
-                if (result >= quest.getDetails().getDifficulty()) {
-                    success = true;
-                }
-                notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
-                break;
-            case CRAFTSMANSHIP:
-                result = character.getCraftsmanship() + diceRoll;
-                if (result >= quest.getDetails().getDifficulty()) {
-                    success = true;
-                }
-                notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
-                break;
-            case SCAVENGE:
-                result = character.getScavenge() + diceRoll;
-                if (result >= quest.getDetails().getDifficulty()) {
-                    success = true;
-                }
-                notification.getDetails().add(getActionRollDetail(quest.getDetails().getDifficulty(), diceRoll, result));
-                break;
-            default:
-                log.warn("Unknown quest type: {}", action.getQuest().getDetails().getType());
-        }
+        boolean success = encounterService.handleSolution(character, quest.getDetails().getType(), quest.getDetails().getDifficulty(),
+                notification);
 
         if (success) {
             handleQuestSuccess(quest, character, notification);
@@ -221,13 +192,6 @@ public class QuestServiceImpl implements QuestService {
         // award experience
         character.setExperience(character.getExperience() + 1);
         notification.changeExperience(1);
-    }
-
-    private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
-        NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
-                new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
-        return detail;
     }
 
     /**

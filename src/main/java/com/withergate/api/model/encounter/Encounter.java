@@ -35,7 +35,7 @@ public class Encounter {
 
     @Column(name = "encounter_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private EncounterType type;
+    private SolutionType type;
 
     @Column(name = "reward_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)

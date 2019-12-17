@@ -1,9 +1,7 @@
 package com.withergate.api.model.disaster;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.withergate.api.model.notification.LocalizedText;
-
 import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.model.encounter.SolutionType;
+import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +40,7 @@ public class DisasterSolution {
 
     @Column(name = "solution_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type solutionType;
+    private SolutionType solutionType;
 
     @Column(name = "difficulty", updatable = false, nullable = false)
     private int difficulty;
@@ -69,12 +71,5 @@ public class DisasterSolution {
     @JoinColumn(name = "disaster")
     @JsonIgnore
     private DisasterDetails disaster;
-
-    /**
-     * Solution type.
-     */
-    public enum Type {
-        AUTOMATIC, COMBAT, CRAFTSMANSHIP, INTELLECT
-    }
 
 }

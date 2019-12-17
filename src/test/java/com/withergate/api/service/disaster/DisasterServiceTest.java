@@ -12,7 +12,7 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterSolution;
-import com.withergate.api.model.disaster.DisasterSolution.Type;
+import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.action.DisasterActionRepository;
@@ -23,7 +23,7 @@ import com.withergate.api.repository.disaster.DisasterSolutionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class DisasterServiceTest {
     private NotificationService notificationService;
 
     @Mock
-    private CombatService combatService;
+    private EncounterService encounterService;
 
     @Before
     public void setUp() {
@@ -81,7 +81,7 @@ public class DisasterServiceTest {
 
         disasterService = new DisasterServiceImpl(disasterRepository, disasterDetailsRepository, disasterSolutionRepository,
                 disasterActionRepository, disasterResolutionService, clanRepository, characterService, turnRepository, randomService,
-                notificationService, combatService, properties);
+                notificationService, encounterService, properties);
     }
 
     @Test
@@ -214,7 +214,7 @@ public class DisasterServiceTest {
 
         DisasterSolution solution = new DisasterSolution();
         solution.setIdentifier("solution");
-        solution.setSolutionType(Type.AUTOMATIC);
+        solution.setSolutionType(SolutionType.AUTOMATIC);
         solution.setBonus(5);
 
         DisasterAction action = new DisasterAction();
@@ -222,6 +222,9 @@ public class DisasterServiceTest {
         action.setCharacter(character);
         action.setSolution(solution);
         Mockito.when(disasterActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
+
+        Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.AUTOMATIC), Mockito.anyInt(),
+                Mockito.any())).thenReturn(true);
 
         // when processing actions
         disasterService.processDisasterActions(1);
@@ -248,7 +251,7 @@ public class DisasterServiceTest {
 
         DisasterSolution solution = new DisasterSolution();
         solution.setIdentifier("solution");
-        solution.setSolutionType(Type.INTELLECT);
+        solution.setSolutionType(SolutionType.INTELLECT);
         solution.setDifficulty(5);
         solution.setBonus(5);
 
@@ -285,7 +288,7 @@ public class DisasterServiceTest {
 
         DisasterSolution solution = new DisasterSolution();
         solution.setIdentifier("solution");
-        solution.setSolutionType(Type.INTELLECT);
+        solution.setSolutionType(SolutionType.INTELLECT);
         solution.setDifficulty(5);
         solution.setBonus(5);
 
@@ -295,7 +298,8 @@ public class DisasterServiceTest {
         action.setSolution(solution);
         Mockito.when(disasterActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(6); // high roll
+        Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.INTELLECT), Mockito.eq(5),
+                Mockito.any())).thenReturn(true);
 
         // when processing actions
         disasterService.processDisasterActions(1);
@@ -322,7 +326,7 @@ public class DisasterServiceTest {
 
         DisasterSolution solution = new DisasterSolution();
         solution.setIdentifier("solution");
-        solution.setSolutionType(Type.CRAFTSMANSHIP);
+        solution.setSolutionType(SolutionType.CRAFTSMANSHIP);
         solution.setDifficulty(5);
         solution.setBonus(5);
 
@@ -332,7 +336,8 @@ public class DisasterServiceTest {
         action.setSolution(solution);
         Mockito.when(disasterActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(6); // high roll
+        Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.CRAFTSMANSHIP), Mockito.eq(5),
+                Mockito.any())).thenReturn(true);
 
         // when processing actions
         disasterService.processDisasterActions(1);
@@ -359,11 +364,12 @@ public class DisasterServiceTest {
 
         DisasterSolution solution = new DisasterSolution();
         solution.setIdentifier("solution");
-        solution.setSolutionType(Type.COMBAT);
+        solution.setSolutionType(SolutionType.COMBAT);
         solution.setDifficulty(5);
         solution.setBonus(5);
 
-        Mockito.when(combatService.handleSingleCombat(Mockito.any(), Mockito.eq(5), Mockito.eq(character))).thenReturn(true);
+        Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.COMBAT), Mockito.eq(5),
+                Mockito.any())).thenReturn(true);
 
         DisasterAction action = new DisasterAction();
         action.setState(ActionState.PENDING);

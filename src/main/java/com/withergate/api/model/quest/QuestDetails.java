@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.withergate.api.model.notification.LocalizedText;
+import com.withergate.api.model.encounter.SolutionType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,7 +45,7 @@ public class QuestDetails {
 
     @Column(name = "quest_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private SolutionType type;
 
     @Column(name = "condition", updatable = false)
     @Enumerated(EnumType.STRING)
@@ -64,13 +65,6 @@ public class QuestDetails {
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
-
-    /**
-     * Quest type.
-     */
-    public enum Type {
-        COMBAT, INTELLECT, CRAFTSMANSHIP, SCAVENGE
-    }
 
     /**
      * Quest condition.

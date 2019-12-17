@@ -6,9 +6,9 @@ import java.util.List;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.encounter.Encounter;
-import com.withergate.api.model.encounter.EncounterType;
 import com.withergate.api.model.encounter.PenaltyType;
 import com.withergate.api.model.encounter.RewardType;
+import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.location.Location;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.EncounterRepository;
@@ -56,7 +56,7 @@ public class EncounterServiceTest {
         // given encounter
         Encounter encounter = new Encounter();
         encounter.setLocation(Location.CITY_CENTER);
-        encounter.setType(EncounterType.COMBAT);
+        encounter.setType(SolutionType.COMBAT);
         encounter.setReward(RewardType.ITEM);
         encounter.setPenalty(PenaltyType.NONE);
         encounter.setDescriptionText("Combat encounter.");
@@ -87,7 +87,7 @@ public class EncounterServiceTest {
         // given encounter
         Encounter encounter = new Encounter();
         encounter.setLocation(Location.CITY_CENTER);
-        encounter.setType(EncounterType.INTELLECT);
+        encounter.setType(SolutionType.INTELLECT);
         encounter.setReward(RewardType.CAPS);
         encounter.setPenalty(PenaltyType.NONE);
         encounter.setDescriptionText("Intellect encounter.");
@@ -126,7 +126,7 @@ public class EncounterServiceTest {
         // given encounter
         Encounter encounter = new Encounter();
         encounter.setLocation(Location.CITY_CENTER);
-        encounter.setType(EncounterType.INTELLECT);
+        encounter.setType(SolutionType.INTELLECT);
         encounter.setReward(RewardType.JUNK);
         encounter.setPenalty(PenaltyType.INJURY);
         encounter.setDescriptionText("Intellect encounter.");

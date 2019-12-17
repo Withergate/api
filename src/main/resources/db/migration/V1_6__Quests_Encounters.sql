@@ -48,7 +48,6 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.14', 'cs', 'Co nikdo nezná?'),
     ('quest.15', 'en', 'Experiments'),
     ('quest.15', 'cs', 'Experimenty'),
-    ('quest.14', 'cs', 'Co nikdo nezná?'),
     ('quest.16', 'en', 'Succubus'),
     ('quest.16', 'cs', 'Sukuba');
 

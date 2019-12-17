@@ -116,6 +116,9 @@ public class LocationServiceImpl implements LocationService {
             if (encounterSuccess) {
                 character.changeExperience(2);
                 notification.changeExperience(2);
+            } else {
+                character.changeExperience(1);
+                notification.changeExperience(1);
             }
         }
 

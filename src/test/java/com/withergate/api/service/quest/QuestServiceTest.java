@@ -10,17 +10,17 @@ import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.quest.QuestDetails;
-import com.withergate.api.model.quest.QuestDetails.Type;
 import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.combat.CombatService;
+import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
@@ -47,20 +47,20 @@ public class QuestServiceTest {
     private QuestActionRepository questActionRepository;
 
     @Mock
-    private CombatService combatService;
-
-    @Mock
     private RandomService randomService;
 
     @Mock
     private CharacterService characterService;
 
+    @Mock
+    private EncounterService encounterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository,
-                combatService, randomService, characterService);
+        questService = new QuestServiceImpl(questDetailsRepository, notificationService, questActionRepository, randomService,
+                characterService, encounterService);
     }
 
     @Test(expected = InvalidActionException.class)
@@ -166,7 +166,7 @@ public class QuestServiceTest {
         List<QuestDetails> detailsList = new ArrayList<>();
         QuestDetails details = new QuestDetails();
         details.setIdentifier("Quest");
-        details.setType(Type.COMBAT);
+        details.setType(SolutionType.COMBAT);
         detailsList.add(details);
         Mockito.when(questDetailsRepository.findAll()).thenReturn(detailsList);
 
@@ -192,7 +192,7 @@ public class QuestServiceTest {
         character.setClan(clan);
 
         QuestDetails details = new QuestDetails();
-        details.setType(Type.INTELLECT);
+        details.setType(SolutionType.INTELLECT);
         details.setDifficulty(1);
         details.setCompletion(4);
 
@@ -211,7 +211,8 @@ public class QuestServiceTest {
         Mockito.when(questActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when succeeding in quest action
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(6); // high roll
+        Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.INTELLECT), Mockito.eq(1),
+                Mockito.any())).thenReturn(true);
 
         questService.processQuestActions(1);
 
@@ -237,7 +238,7 @@ public class QuestServiceTest {
         character.setClan(clan);
 
         QuestDetails details = new QuestDetails();
-        details.setType(Type.CRAFTSMANSHIP);
+        details.setType(SolutionType.CRAFTSMANSHIP);
         details.setDifficulty(1);
         details.setCompletion(4);
         details.setFameReward(20);
@@ -258,7 +259,8 @@ public class QuestServiceTest {
         Mockito.when(questActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when succeeding in quest action
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(6); // high roll
+        Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.CRAFTSMANSHIP), Mockito.eq(1),
+                Mockito.any())).thenReturn(true);
 
         questService.processQuestActions(1);
 
@@ -284,7 +286,7 @@ public class QuestServiceTest {
         character.setClan(clan);
 
         QuestDetails details = new QuestDetails();
-        details.setType(Type.COMBAT);
+        details.setType(SolutionType.COMBAT);
         details.setDifficulty(1);
         details.setCompletion(4);
 
@@ -306,8 +308,7 @@ public class QuestServiceTest {
         questService.processQuestActions(1);
 
         // then verify combat service called
-        Mockito.verify(combatService).handleSingleCombat(Mockito.any(ClanNotification.class), Mockito.anyInt(),
-                Mockito.eq(character));
+        Mockito.verify(encounterService).handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.COMBAT), Mockito.eq(1), Mockito.any(ClanNotification.class));
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
     }
 
