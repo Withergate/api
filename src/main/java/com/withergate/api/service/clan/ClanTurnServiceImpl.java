@@ -37,6 +37,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClanTurnServiceImpl implements ClanTurnService {
 
+    private static final int FAME_CAP = 5;
+
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
     private final NotificationService notificationService;
@@ -230,6 +232,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         Research culinary = clan.getResearch().get(ResearchName.CULINARY);
         if (culinary != null && culinary.isCompleted()) {
             int fame = clan.getFood() / culinary.getDetails().getValue();
+            if (fame > FAME_CAP) fame = FAME_CAP;
             if (fame > 0) {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
@@ -245,6 +248,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         Research decoration = clan.getResearch().get(ResearchName.DECORATION);
         if (decoration != null && decoration.isCompleted()) {
             int fame = clan.getJunk() / decoration.getDetails().getValue();
+            if (fame > FAME_CAP) fame = FAME_CAP;
             if (fame > 0) {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());

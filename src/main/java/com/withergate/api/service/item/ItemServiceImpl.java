@@ -97,6 +97,10 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidActionException("Item with this ID is not equipped by the provided character!");
         }
 
+        if (character.getState() != CharacterState.READY) {
+            throw new InvalidActionException("Character must be READY to unequip item.");
+        }
+
         // process unequip action
         item.setCharacter(null);
         character.getItems().remove(item);

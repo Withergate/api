@@ -63,7 +63,10 @@ public class Building {
      */
     @JsonProperty("visitJunkCost")
     public int getVisitJunkCost() {
-        return details.getVisitJunkCost() - level + 1;
+        if (level <= 1) {
+            return details.getVisitJunkCost();
+        }
+        return details.getVisitJunkCost() - level * 2 + 2;
     }
 
 }
