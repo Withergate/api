@@ -1,6 +1,5 @@
 package com.withergate.api.service.research;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -38,7 +37,6 @@ public class ResearchServiceImpl implements ResearchService {
     private final ResearchDetailsRepository detailsRepository;
     private final ResearchActionRepository actionRepository;
     private final NotificationService notificationService;
-    private final GameProperties gameProperties;
     private final CharacterService characterService;
 
     @Transactional
@@ -132,8 +130,8 @@ public class ResearchServiceImpl implements ResearchService {
             notificationService.addLocalizedTexts(notification.getText(), "research.complete", new String[] {}, details.getName());
 
             // award fame
-            notification.changeFame(gameProperties.getResearchFame());
-            character.getClan().changeFame(gameProperties.getResearchFame());
+            notification.changeFame(research.getDetails().getFame());
+            character.getClan().changeFame(research.getDetails().getFame());
         }
     }
 

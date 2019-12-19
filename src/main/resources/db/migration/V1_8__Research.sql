@@ -1,13 +1,13 @@
 -- Research details
-INSERT INTO research_details(identifier, value, information_level, cost, image_url) VALUES
-    ('FORGERY', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/research/forgery.png'),
-    ('BEGGING', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/research/begging.png'),
-    ('CULTIVATION', 0, 0, 20, 'https://storage.googleapis.com/withergate-images/research/cultivation.png'),
-    ('PLENTIFUL', 15, 0, 20, 'https://storage.googleapis.com/withergate-images/research/plentiful.png'),
-    ('ARCHITECTURE', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
-    ('COLLECTING', 2, 2, 35, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
-    ('CULINARY', 30, 4, 50, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
-    ('DECORATION', 30, 4, 50, 'https://storage.googleapis.com/withergate-images/research/decoration.png');
+INSERT INTO research_details(identifier, value, information_level, cost, fame, image_url) VALUES
+    ('FORGERY', 0, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/forgery.png'),
+    ('BEGGING', 0, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/begging.png'),
+    ('CULTIVATION', 0, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/cultivation.png'),
+    ('PLENTIFUL', 15, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/plentiful.png'),
+    ('ARCHITECTURE', 2, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
+    ('COLLECTING', 2, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
+    ('CULINARY', 30, 4, 50, 5, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
+    ('DECORATION', 30, 4, 50, 5, 'https://storage.googleapis.com/withergate-images/research/decoration.png');
 
 INSERT INTO localized_texts(research_name, lang, text) VALUES
     ('FORGERY', 'en', 'Forgery'),

@@ -59,6 +59,9 @@ public class ResearchDetails {
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost;
 
+    @Column(name = "fame", updatable = false, nullable = false)
+    private int fame;
+
     /**
      * Research name. Declared as enum for easier code references and for restricting allowed database values.
      */

@@ -28,7 +28,6 @@ public class GameProperties {
     private int starvationInjury;
     private int starvationFame;
     private int buildingFame;
-    private int researchFame;
     private int tavernRefreshPrice;
     private int trainingPrice;
 

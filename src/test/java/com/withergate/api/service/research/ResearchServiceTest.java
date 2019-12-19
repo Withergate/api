@@ -3,7 +3,6 @@ package com.withergate.api.service.research;
 import java.util.HashMap;
 import java.util.List;
 
-import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
@@ -45,10 +44,7 @@ public class ResearchServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        GameProperties properties = new GameProperties();
-        properties.setResearchFame(5);
-
-        researchService = new ResearchServiceImpl(detailsRepository, actionRepository, notificationService, properties, characterService);
+        researchService = new ResearchServiceImpl(detailsRepository, actionRepository, notificationService, characterService);
     }
 
     @Test
@@ -150,11 +146,12 @@ public class ResearchServiceTest {
     }
 
     @Test
-    public void testGivenResearchActionWhenCompletingResearcgThenVerifyCompletionHandled() {
+    public void testGivenResearchActionWhenCompletingResearchThenVerifyCompletionHandled() {
         // given action
         ResearchDetails details = new ResearchDetails();
         details.setIdentifier(ResearchName.BEGGING);
         details.setCost(20);
+        details.setFame(5);
 
         Research research = new Research();
         research.setProgress(18);

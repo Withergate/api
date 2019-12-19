@@ -22,7 +22,6 @@ public class GamePropertiesDTO {
     private final int disasterFailureThreshold;
     private final int disasterPartialSuccessThreshold;
     private final int buildingFame;
-    private final int researchFame;
     private final int tavernRefreshPrice;
     private final int trainingPrice;
 
@@ -39,7 +38,6 @@ public class GamePropertiesDTO {
         this.disasterFailureThreshold = properties.getDisasterFailureThreshold();
         this.disasterPartialSuccessThreshold = properties.getDisasterPartialSuccessThreshold();
         this.buildingFame = properties.getBuildingFame();
-        this.researchFame = properties.getResearchFame();
         this.tavernRefreshPrice = properties.getTavernRefreshPrice();
         this.trainingPrice = properties.getTrainingPrice();
     }
