@@ -1,6 +1,10 @@
 package com.withergate.api.model.quest;
 
-import java.util.Map;
+import com.withergate.api.model.encounter.SolutionCondition;
+import com.withergate.api.model.encounter.SolutionType;
+import com.withergate.api.model.notification.LocalizedText;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,11 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.withergate.api.model.notification.LocalizedText;
-import com.withergate.api.model.encounter.SolutionType;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
 
 /**
  * Quest details.
@@ -49,7 +49,7 @@ public class QuestDetails {
 
     @Column(name = "condition", updatable = false)
     @Enumerated(EnumType.STRING)
-    private Condition condition;
+    private SolutionCondition condition;
 
     @Column(name = "completion", nullable = false)
     private int completion;
@@ -65,12 +65,5 @@ public class QuestDetails {
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
-
-    /**
-     * Quest condition.
-     */
-    public enum Condition {
-        HEALTHY_CHARACTER, FEMALE_CHARACTER
-    }
 
 }

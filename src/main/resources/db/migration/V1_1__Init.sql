@@ -276,11 +276,13 @@ CREATE TABLE disaster_solutions (
     identifier VARCHAR(32),
     basic BIT DEFAULT 0,
     solution_type VARCHAR(32) NOT NULL,
+    condition VARCHAR(32),
     difficulty INT NOT NULL DEFAULT 0,
     bonus INT NOT NULL DEFAULT 0,
     junk_cost INT NOT NULL DEFAULT 0,
     caps_cost INT NOT NULL DEFAULT 0,
     food_cost INT NOT NULL DEFAULT 0,
+    item_cost BIT DEFAULT 0,
     disaster VARCHAR(32) NOT NULL,
     PRIMARY KEY (identifier),
     CONSTRAINT disaster_disaster_solution_fk FOREIGN KEY (disaster) REFERENCES disaster_details (identifier)

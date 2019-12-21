@@ -15,6 +15,8 @@ import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.disaster.Disaster;
 import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterSolution;
+import com.withergate.api.model.encounter.ConditionValidator;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.DisasterRequest;
@@ -30,6 +32,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +60,7 @@ public class DisasterServiceImpl implements DisasterService {
     private final RandomService randomService;
     private final NotificationService notificationService;
     private final EncounterService encounterService;
+    private final ItemService itemService;
     private final GameProperties gameProperties;
 
     @Override
@@ -118,6 +122,9 @@ public class DisasterServiceImpl implements DisasterService {
             throw new InvalidActionException("This solution either doesn't exist or doesn't belong to the current disaster.");
         }
 
+        // check condition
+        ConditionValidator.checkQuestCondition(character, solution.getCondition());
+
         // check resources
         if (solution.getCapsCost() > clan.getCaps() || solution.getJunkCost() > clan.getJunk()
                 || solution.getFoodCost() > clan.getFood()) {
@@ -140,6 +147,14 @@ public class DisasterServiceImpl implements DisasterService {
         clan.changeCaps(- solution.getCapsCost());
         clan.changeJunk(- solution.getJunkCost());
         clan.changeFood(- solution.getFoodCost());
+        if (solution.isItemCost()) {
+            for (Item item : character.getItems()) {
+                character.getItems().remove(item);
+                item.setCharacter(null);
+                itemService.deleteItem(item);
+                break;
+            }
+        }
 
         // mark character as busy and save the clan
         character.setState(CharacterState.BUSY);

@@ -1,16 +1,11 @@
 package com.withergate.api.service.quest;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.encounter.ConditionValidator;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.quest.Quest;
@@ -27,6 +22,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Quest service implementation.
@@ -105,7 +105,7 @@ public class QuestServiceImpl implements QuestService {
         }
 
         // check condition
-        checkQuestCondition(character, quest);
+        ConditionValidator.checkQuestCondition(character, quest.getDetails().getCondition());
 
         // persist the action
         QuestAction action = new QuestAction();
@@ -192,33 +192,6 @@ public class QuestServiceImpl implements QuestService {
         // award experience
         character.setExperience(character.getExperience() + 1);
         notification.changeExperience(1);
-    }
-
-    /**
-     * Checks the quest condition and throws an exception if it is not met.
-     */
-    private void checkQuestCondition(Character character, Quest quest) throws InvalidActionException {
-        QuestDetails.Condition condition = quest.getDetails().getCondition();
-        if (condition == null) {
-            return;
-        }
-
-        switch (condition) {
-            case FEMALE_CHARACTER:
-                if (!character.getGender().equals(Gender.FEMALE)) {
-                    throw new InvalidActionException("Character must be FEMALE to perform this action.");
-                }
-                break;
-            case HEALTHY_CHARACTER:
-                if (character.getHitpoints() < character.getMaxHitpoints()) {
-                    throw new InvalidActionException("Character must be healthy to perform this action.");
-                }
-                break;
-            default:
-                log.error("Unknown quest condition: {}.", condition);
-        }
-
-
     }
 
 }

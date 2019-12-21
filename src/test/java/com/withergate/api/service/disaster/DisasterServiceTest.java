@@ -24,6 +24,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -70,6 +71,9 @@ public class DisasterServiceTest {
     @Mock
     private EncounterService encounterService;
 
+    @Mock
+    private ItemService itemService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -81,7 +85,7 @@ public class DisasterServiceTest {
 
         disasterService = new DisasterServiceImpl(disasterRepository, disasterDetailsRepository, disasterSolutionRepository,
                 disasterActionRepository, disasterResolutionService, clanRepository, characterService, turnRepository, randomService,
-                notificationService, encounterService, properties);
+                notificationService, encounterService, itemService, properties);
     }
 
     @Test

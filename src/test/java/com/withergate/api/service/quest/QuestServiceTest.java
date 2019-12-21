@@ -1,15 +1,12 @@
 package com.withergate.api.service.quest;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.QuestAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Gender;
+import com.withergate.api.model.encounter.SolutionCondition;
 import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.quest.Quest;
@@ -18,7 +15,6 @@ import com.withergate.api.model.request.QuestRequest;
 import com.withergate.api.repository.action.QuestActionRepository;
 import com.withergate.api.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
-import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -30,6 +26,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -329,7 +329,7 @@ public class QuestServiceTest {
         quest.setId(1);
         quest.setCompleted(false);
         QuestDetails details = new QuestDetails();
-        details.setCondition(QuestDetails.Condition.FEMALE_CHARACTER);
+        details.setCondition(SolutionCondition.FEMALE_CHARACTER);
         quest.setDetails(details);
         clan.getQuests().add(quest);
 

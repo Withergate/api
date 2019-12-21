@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.model.encounter.SolutionCondition;
 import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
@@ -42,6 +43,10 @@ public class DisasterSolution {
     @Enumerated(EnumType.STRING)
     private SolutionType solutionType;
 
+    @Column(name = "condition", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private SolutionCondition condition;
+
     @Column(name = "difficulty", updatable = false, nullable = false)
     private int difficulty;
 
@@ -56,6 +61,9 @@ public class DisasterSolution {
 
     @Column(name = "food_cost", updatable = false, nullable = false)
     private int foodCost;
+
+    @Column(name = "item_cost", updatable = false, nullable = false)
+    private boolean itemCost;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")

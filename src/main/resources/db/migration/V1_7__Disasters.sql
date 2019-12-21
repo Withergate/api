@@ -25,11 +25,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.mutants.failure', 'en', 'The mutants easily broke through our defenses and did huge amount of damage to our camp.'),
     ('d.mutants.failure', 'cs', 'Útočníci snadno pronikli do našeho úkrytu. Bez odporu loupili a škodili postavám i budovám. Ačkoliv odtáhli, z jejich nájezdu se budeme dlouho vzpamatovávat.');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.mutants.s1', true, 'd.mutants', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.mutants.s2', false, 'd.mutants', 'CRAFTSMANSHIP', 6, 10, 5, 0, 0),
-    ('d.mutants.s3', false, 'd.mutants', 'COMBAT', 5, 12, 0, 0, 0),
-    ('d.mutants.s4', false, 'd.mutants', 'AUTOMATIC', 0, 20, 0, 50, 0);
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.mutants.s1', true, 'd.mutants', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
+    ('d.mutants.s2', false, 'd.mutants', 'CRAFTSMANSHIP', null, 6, 10, 5, 0, 0, false),
+    ('d.mutants.s3', false, 'd.mutants', 'COMBAT', null, 5, 12, 0, 0, 0, false),
+    ('d.mutants.s4', false, 'd.mutants', 'AUTOMATIC', null, 0, 20, 0, 50, 0, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.mutants.s1', 'en', 'Building palisades'),
@@ -76,11 +76,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.inquisition.failure', 'en', 'Well, that was just bad. The priests did not find a sufficient zeal in out clan. Instead, they did find out that some of us are lying with the Devil. The priests launched inquisition and a painful interrogation. Nobody confessed, but they were satisfied that we are believing in Atom now. The priests confiscated some property and left our clan in order to spread their faith somewhere else.'),
     ('d.inquisition.failure', 'cs', 'To bylo horší, než jsme čekali. Nenašli u nás dostatečný zápal pro víru, zato zjistili, že někteří z nás obcují s Ďáblem. Zahájili vyšetřování a bolestivé výslechy. Nikdo se nepřiznal, ale stačilo jim, že někteří z nás raději přijali víru. Kněží pak zkonfiskovali trochu majetku a jeli šířit své bohulibé myšlenky jinam...');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.inquisition.s1', true, 'd.inquisition', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.inquisition.s2', false, 'd.inquisition', 'INTELLECT', 7, 10, 0, 0, 0),
-    ('d.inquisition.s3', false, 'd.inquisition', 'CRAFTSMANSHIP', 5, 12, 10, 0, 0),
-    ('d.inquisition.s4', false, 'd.inquisition', 'AUTOMATIC', 0, 20, 0, 50, 0);
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.inquisition.s1', true, 'd.inquisition', 'AUTOMATIC', null,  0, 5, 0, 0, 0, false),
+    ('d.inquisition.s2', false, 'd.inquisition', 'INTELLECT', null, 7, 10, 0, 0, 0, false),
+    ('d.inquisition.s3', false, 'd.inquisition', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
+    ('d.inquisition.s4', false, 'd.inquisition', 'AUTOMATIC', null, 0, 20, 0, 50, 0, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.inquisition.s1', 'en', 'Pray and labor'),
@@ -127,11 +127,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.refugees.failure', 'en', 'Our solution was not successful. The refugess went totally out of control and took everything they wanted. Despair because of their hunger, they fought with us and took everything they were able to carry - not even from our storage area, but from the whole neighbourhood.'),
     ('d.refugees.failure', 'cs', 'Naše řešení nezapůsobilo. Zcela se vymkli naší kontrole a brali si, co chtěli. Měli hlad, prali se s námi a pak vzali vše, na co přišli. Nejen z našich zásob, ale i z celého sousedství...');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.refugees.s1', true, 'd.refugees', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.refugees.s2', false, 'd.refugees', 'INTELLECT', 7, 10, 0, 0, 0),
-    ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', 0, 12, 0, 0, 30),
-    ('d.refugees.s4', false, 'd.refugees', 'COMBAT', 4, 10, 0, 0, 0);
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.refugees.s1', true, 'd.refugees', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
+    ('d.refugees.s2', false, 'd.refugees', 'INTELLECT', null, 7, 10, 0, 0, 0, false),
+    ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', null, 0, 12, 0, 0, 30, false),
+    ('d.refugees.s4', false, 'd.refugees', 'COMBAT', null, 4, 10, 0, 0, 0, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.refugees.s1', 'en', 'Let them in... but keep an eye on them!'),
@@ -178,11 +178,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.storm.failure', 'en', 'Several stormdays struck in a full force. The windstorm teared off the roofs from our houses. Falling trees and torrential waters made a terribly mess in our clan. The fight with raging elements was difficult for our health and property.'),
     ('d.storm.failure', 'cs', 'Několik bouřkových dní udeřilo v plné síle. Vichřice rvala střechy z našich domů a lámala stromy, které v našem klanu způsobily pořádnou spoušť. Trosky zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta a naše nyní již bývalé zásoby, plesnivé a zrezivělé… V panice při útěku před živly také došlo k několika zraněním.');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.storm.s1', true, 'd.storm', 'AUTOMATIC', 0, 5, 0, 0, 0),
-    ('d.storm.s2', false, 'd.storm', 'CRAFTSMANSHIP', 7, 10, 0, 0, 0),
-    ('d.storm.s3', false, 'd.storm', 'CRAFTSMANSHIP', 5, 12, 10, 0, 0),
-    ('d.storm.s4', false, 'd.storm', 'AUTOMATIC', 4, 20, 0, 50, 0);
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.storm.s1', true, 'd.storm', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
+    ('d.storm.s2', false, 'd.storm', 'CRAFTSMANSHIP', null, 7, 10, 0, 0, 0, false),
+    ('d.storm.s3', false, 'd.storm', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
+    ('d.storm.s4', false, 'd.storm', 'AUTOMATIC', null, 4, 20, 0, 50, 0, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.storm.s1', 'en', 'Hide everything we have'),
@@ -230,12 +230,12 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.clans.failure', 'en', 'Unfortunately, we have not managed to spread the fame of our clan at all. We are leaving for the assembly without any preparation. Will anybody support us or are we gonna leave as beggers?'),
     ('d.clans.failure', 'cs', 'Bohužel se nám vůbec nepodařilo rozšířit pověst našeho klanu. Na sněm odjíždíme bez jakékoliv přípravy, téměř s holým zadkem. Jsme tak dobří, že nám spadne vítězství samo do klína? Bude se s námi vůbec někdo bavit, když vypadáme jako žebráci?');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, difficulty, bonus, junk_cost, caps_cost, food_cost) VALUES
-    ('d.clans.s1', true, 'd.clans', 'AUTOMATIC', 0, 3, 0, 0, 0),
-    ('d.clans.s2', false, 'd.clans', 'INTELLECT', 8, 6, 0, 0, 0),
-    ('d.clans.s3', false, 'd.clans', 'CRAFTSMANSHIP', 6, 6, 10, 0, 0),
-    ('d.clans.s4', false, 'd.clans', 'COMBAT', 6, 8, 0, 0, 0),
-    ('d.clans.s5', false, 'd.clans', 'AUTOMATIC', 0, 15, 0, 150, 0);
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.clans.s1', true, 'd.clans', 'AUTOMATIC', null, 0, 3, 0, 0, 0, false),
+    ('d.clans.s2', false, 'd.clans', 'INTELLECT', null, 8, 6, 0, 0, 0, false),
+    ('d.clans.s3', false, 'd.clans', 'CRAFTSMANSHIP', null, 6, 6, 10, 0, 0, false),
+    ('d.clans.s4', false, 'd.clans', 'COMBAT', null, 6, 8, 0, 0, 0, false),
+    ('d.clans.s5', false, 'd.clans', 'AUTOMATIC', null, 0, 15, 0, 150, 0, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.clans.s1', 'en', 'Praise us'),
@@ -260,3 +260,59 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.clans.s4', 'cs', 'V Pustině se šíří řeči, že náš klan je neschopný. Malý ptáček nám naštěstí pověděl, kdo je zdrojem těchto lží a pomluv. Pojďme mu ukázat, kdo je tu pánem. Akce vyvolá boj s rizikem zranění či smrti a rovněž neúspěchu.'),
     ('d.clans.s5', 'en', 'Everything can be bought with caps. But we will need a lot of them since we are not the only ones paying.'),
     ('d.clans.s5', 'cs', 'Zátky řeší vše... bude jich ale potřeba opravdu hodně, protože nejsme jediní, kdo platí.');
+
+-- King beyond the Wasteland
+INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
+    ('d.king', true, 0, 'd.king.success', 'd.king.partialSuccess', 'd.king.failure', 'https://storage.googleapis.com/withergate-images/disasters/king.png');
+
+INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
+    ('d.king.p1', 'd.king', 'FAME_LOSS'),
+    ('d.king.p2', 'd.king', 'FAME_LOSS'),
+    ('d.king.p3', 'd.king', 'FAME_LOSS');
+
+INSERT INTO localized_texts(disaster_name, lang, text) VALUES
+    ('d.king', 'en', 'King beoyng the Wasteland'),
+    ('d.king', 'cs', 'Král za Pustinou');
+
+INSERT INTO localized_texts(disaster_description, lang, text) VALUES
+    ('d.king', 'en', 'Wasteland seems to be endless. Our scouts heard rumors about a land, far away across the desert, which used to be plentiful not more than a couple of months ago. But now, it is apparently arid and more devastated than our surroundings. People are uniting under the rule of so called King beyond the Wasteland. They are marching towards Withergate to settle there and take control of the city. That might not be a huge problem from us, but what is going to happen to the clans that happen to be in their way? Are we gonna take the King’s side or hide from him?'),
+    ('d.king', 'cs', 'Pustina se zdá být nekonečná. Naši zvědové ale hlásí potvrzené zvěsti o zemi za její hranicí, zemi ještě před pár měsíci úrodné, ale dnes již vyprahlé a ještě bídnější než naše okolí. A právě tamní lid se začíná sjednocovat pod Králem za Pustinou, aby se vydal na pochod a zmocnil se Withergate. To by nám ani tak nevadilo, ale otázkou je, co se stane s klany, které Králi stojí v cestě. Do pohybu se dává takové množství lidí, že tomu nelze vzdorovat. Několik klanů se již vlísalo do přízně Krále a zatím se zdá, že královské slovo platí. Umíme se také lísat? Budeme chtít zůstat zadobře s novým budoucím pánem celé oblasti, nebo se raději schováme a nebudeme na sebe nijak upozorňovat?');
+
+INSERT INTO placeholder_texts(code, lang, text) VALUES
+    ('d.king.success', 'en', 'The King beyond the Wasteland appreciates us as a strong partner. Surely, we are not the only clan enjoying his favor, but we are sure that our voice will be heard in the new era that awaits us. Long live the king!'),
+    ('d.king.success', 'cs', 'Král za Pustinou si nás váží jako silného partnera při svém tažení proti Withergate. Jistě nejsme jediný klan, který se může těšit jeho přízni, ale můžeme počítat s tím, že v novém uspořádání poměrů v Pustině budeme mít velice silné slovo. Ať žije Král Pustiny!'),
+    ('d.king.partialSuccess', 'en', 'The king and his envoys know who we are, where we are, and what to expect from us. We do not have to worry about the King being hostile to us - but who knows what will happen when Withergate takes control of the region? Other clans, who have bent the knee to the King beyond the Wasteland, will apparently do better during the new era...'),
+    ('d.king.partialSuccess', 'cs', 'Král a jeho vyslanci ví, kdo jsme, kde jsme a co od nás může čekat. Asi se nemusíme bát, že by se k nám choval otevřeně nepřátelsky - ale kdo ví, co se stane, až se zmocní Withergate a začne vládnout celé oblasti? Ostatní klany, které více pochlebovali Králi za Pustinou, zjevně čeká lepší zacházení v nové době… '),
+    ('d.king.failure', 'en', 'Unfortunately, neither the King nor his ambassadors are interested. He might crave our possessions, and nothing would stop him from taking it. He would rule the whole region including Withergate, together with those who bent the knee. Our participation in the new government is unlikely.'),
+    ('d.king.failure', 'cs', 'Bohužel Krále ani jeho vyslance vůbec nezajímáme. Možná jej bude zajímat náš majetek a nic mu nezabrání, aby nám jej vzal - stejně jako si brzy vezme Withergate a společně s těmi, kteří před ním poklekli, bude vládnout celé oblasti. Naše účast na nové vládě je nepravděpodobná.');
+
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.king.s1', true, 'd.king', 'AUTOMATIC', null, 0, 3, 0, 0, 0, false),
+    ('d.king.s2', false, 'd.king', 'SCAVENGE', null, 8, 6, 0, 0, 0, false),
+    ('d.king.s3', false, 'd.king', 'INTELLECT', 'ITEM_EQUIPPED', 6, 6, 0, 0, 0, true),
+    ('d.king.s4', false, 'd.king', 'CRAFTSMANSHIP', null, 6, 8, 15, 0, 0, false),
+    ('d.king.s5', false, 'd.king', 'AUTOMATIC', null, 0, 15, 50, 50, 50, false);
+
+INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
+    ('d.king.s1', 'en', 'Bend the knee'),
+    ('d.king.s1', 'cs', 'Slíbit se dá vše, stačí jen pokleknout'),
+    ('d.king.s2', 'en', 'Search the whole Wasteland'),
+    ('d.king.s2', 'cs', 'Prohledáme celou Pustinu'),
+    ('d.king.s3', 'en', 'Gifts from our storage'),
+    ('d.king.s3', 'cs', 'Podíváme se do skladu'),
+    ('d.king.s4', 'en', 'Hide behind a wall'),
+    ('d.king.s4', 'cs', 'Schováme se za zdí'),
+    ('d.king.s5', 'en', 'Provide resrouces for the march'),
+    ('d.king.s5', 'cs', 'Poskytneme suroviny na podporu');
+
+INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
+    ('d.king.s1', 'en', 'King`s envoys are all over the Wasteland. Let us send them our sincerest pledge of undying loyalty.'),
+    ('d.king.s1', 'cs', 'Vyslanci nového krále jsou všude v Pustině, i nedaleko našeho klanu. Pošleme napohled vážný, ale jinak jistě odvolatelný slib věčné věrnosti.'),
+    ('d.king.s2', 'en', 'We will search the whole Wasteland and bring the best pieces of junk to the king.'),
+    ('d.king.s2', 'cs', 'Prohledáme celou Pustinu a Králi darujeme ty nejlepší kusy šrotu z nejlepších materiálů a jídla z nejlepších zmutovaných krav.'),
+    ('d.king.s3', 'en', 'We might not need to search for an ideal gift for the king. Where is the chainsaw we had in our storage? The only thing left is to practice the correct etiquette for the official audience.'),
+    ('d.king.s3', 'cs', 'Možná nemusíme chodit daleko, abychom našli vhodný královský dar. Kam jsme to dali tu motorovu pilu? Teď si už jen nastudovat, jak se vlastně dle etikety vhodně předává dar králi.'),
+    ('d.king.s4', 'en', 'Why should the king waste his time with pillaging our clan if we are sufficiently defended? Let`s build a wall so high that we might as well call it... the Wall.'),
+    ('d.king.s4', 'cs', 'Proč by se hordy měly valit zrovna na náš klan, když bude dostatečně opevněný? Postavme vysokou zeď. Tak vysokou, že jí budeme říkat třeba… třeba Zeď.'),
+    ('d.king.s5', 'en', 'King will need a lot of resources for the march towards Withergate. If we provide him with sufficient amount of food, junk and caps, we might persuade them to leave our clan alone.'),
+    ('d.king.s5', 'cs', 'Královští vyslanci nejsou diplomaté, ale zvědi. Určitě mají za úkol najít nejjednodušší cestu pro vedení invaze. Poskytnutím dostatečného množství surovin zajistíme, že Král za Pustinou povede svůj lid přes území jiných klanů. My jen v klidu počkáme, až se vlna přežene…');
