@@ -1,16 +1,17 @@
 package com.withergate.api.service.building;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.EndBonusType;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.BuildingAction.Type;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.ItemType;
@@ -58,7 +59,7 @@ public class BuildingServiceImpl implements BuildingService {
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
 
         // check if action is applicable
-        Building building = character.getClan().getBuildings().get(request.getBuilding());
+        Building building = character.getClan().getBuilding(request.getBuilding());
         if (building == null) {
             throw new InvalidActionException("This building does not exist");
         }
@@ -137,63 +138,39 @@ public class BuildingServiceImpl implements BuildingService {
     public void processPassiveBuildingBonuses(int turnId, Clan clan) {
         log.debug("Processing passive building bonuses for clan {}.", clan.getId());
 
-        // monument
-        if (clan.getBuildings().get(BuildingName.MONUMENT).getLevel() > 0) {
-            Building building = clan.getBuildings().get(BuildingName.MONUMENT);
-            clan.changeFame(building.getLevel());
-
-            ClanNotification notification = new ClanNotification(turnId, clan.getId());
-            notification.setHeader(clan.getName());
-            notification.changeFame(building.getLevel());
-
-            notificationService.addLocalizedTexts(notification.getText(), "building.monument.income", new String[] {});
-            notificationService.save(notification);
+        // fame
+        ClanNotification notificationFame = new ClanNotification(turnId, clan.getId());
+        notificationFame.setHeader(clan.getName());
+        int fame = BonusUtils.getBuildingEndBonus(clan, EndBonusType.FAME_INCOME, notificationService, notificationFame);
+        if (fame > 0) {
+            clan.changeFame(fame);
+            notificationFame.changeFame(fame);
+            notificationService.save(notificationFame);
         }
 
-        // GMO farm
-        if (clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM).getLevel() > 0) {
-            Building building = clan.getBuildings().get(BuildingDetails.BuildingName.GMO_FARM);
-            clan.changeFood(building.getLevel() * 2);
-
-            ClanNotification notification = new ClanNotification(turnId, clan.getId());
-            notification.setHeader(clan.getName());
-            notification.changeFood(building.getLevel() * 2);
-            notificationService.addLocalizedTexts(notification.getText(), "building.gmofarm.income", new String[] {});
-            notificationService.save(notification);
+        // food
+        ClanNotification notificationFood = new ClanNotification(turnId, clan.getId());
+        notificationFood.setHeader(clan.getName());
+        int food = BonusUtils.getBuildingEndBonus(clan, EndBonusType.FOOD_INCOME, notificationService, notificationFood);
+        if (food > 0) {
+            clan.changeFood(food);
+            notificationFood.changeFood(food);
+            notificationService.save(notificationFood);
         }
 
-        // Training grounds
-        if (clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS).getLevel() > 0) {
-            Building building = clan.getBuildings().get(BuildingDetails.BuildingName.TRAINING_GROUNDS);
-            for (Character character : clan.getCharacters()) {
-                if (character.getState().equals(CharacterState.RESTING)) {
-                    character.changeExperience(building.getLevel());
-
-                    ClanNotification notification = new ClanNotification(turnId, clan.getId());
-                    notification.setHeader(character.getName());
-                    notification.setImageUrl(character.getImageUrl());
-                    notification.changeExperience(building.getLevel());
-                    notificationService.addLocalizedTexts(notification.getText(), "building.traininggrounds.income", new String[] {});
-                    notificationService.save(notification);
-                }
-            }
-        }
-
-        // Watchtower
-        if (clan.getBuildings().get(BuildingName.STUDY).getLevel() > 0) {
-            Building building = clan.getBuildings().get(BuildingName.STUDY);
-            clan.changeInformation(building.getLevel());
-
-            ClanNotification notification = new ClanNotification(turnId, clan.getId());
-            notification.setHeader(clan.getName());
-            notification.changeInformation(building.getLevel());
-            notificationService.addLocalizedTexts(notification.getText(), "building.study.income", new String[] {});
-            notificationService.save(notification);
+        // information
+        ClanNotification notificationInfo = new ClanNotification(turnId, clan.getId());
+        notificationInfo.setHeader(clan.getName());
+        int info = BonusUtils.getBuildingEndBonus(clan, EndBonusType.INFORMATION_INCOME, notificationService, notificationInfo);
+        if (info > 0) {
+            clan.changeInformation(info);
+            notificationInfo.changeInformation(info);
+            notificationService.save(notificationInfo);
         }
     }
 
     @Override
-    public BuildingDetails getBuildingDetails(BuildingDetails.BuildingName name) {
+    public BuildingDetails getBuildingDetails(String name) {
         return buildingDetailsRepository.getOne(name);
     }
 
@@ -213,7 +190,7 @@ public class BuildingServiceImpl implements BuildingService {
         notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[] {}, details.getName());
 
         // progress
-        Building building = clan.getBuildings().get(action.getBuilding());
+        Building building = clan.getBuilding(action.getBuilding());
         building.setProgress(building.getProgress() + progress);
         if (building.getProgress() >= building.getNextLevelWork()) {
             building.setProgress(building.getProgress() - building.getNextLevelWork());
@@ -229,26 +206,26 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     private void processVisitAction(BuildingAction action, Character character, Clan clan, ClanNotification notification) {
-        if (action.getBuilding().equals(BuildingName.FORGE)) {
+        Building building = clan.getBuilding(action.getBuilding());
+        if (building.getDetails().getItemType().equals(ItemType.WEAPON)) {
             log.debug("{} is crafting weapon.", character.getName());
             notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingDetails.BuildingName.FORGE).getLevel(),
-                    getBonus(character, notification, BonusType.CRAFTING), notification, ItemType.WEAPON);
-
+            itemService.generateCraftableItem(character, getBonus(character, notification, BonusType.CRAFTING), notification,
+                    ItemType.WEAPON);
         }
 
-        if (action.getBuilding().equals(BuildingName.RAGS_SHOP)) {
+        if (building.getDetails().getItemType().equals(ItemType.OUTFIT)) {
             log.debug("{} is crafting outfit.", character.getName());
             notificationService.addLocalizedTexts(notification.getText(), "building.crafting.outfit", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.RAGS_SHOP).getLevel(),
-                    getBonus(character, notification, BonusType.CRAFTING),notification, ItemType.OUTFIT);
+            itemService.generateCraftableItem(character, getBonus(character, notification, BonusType.CRAFTING),notification,
+                    ItemType.OUTFIT);
         }
 
-        if (action.getBuilding().equals(BuildingName.WORKSHOP)) {
+        if (building.getDetails().getItemType().equals(ItemType.GEAR)) {
             log.debug("{} is crafting gear.", character.getName());
             notificationService.addLocalizedTexts(notification.getText(), "building.crafting.gear", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, clan.getBuildings().get(BuildingName.WORKSHOP).getLevel(),
-                    getBonus(character, notification, BonusType.CRAFTING), notification, ItemType.GEAR);
+            itemService.generateCraftableItem(character, getBonus(character, notification, BonusType.CRAFTING), notification,
+                    ItemType.GEAR);
         }
     }
 
@@ -257,6 +234,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         bonus += BonusUtils.getTraitBonus(character, bonusType, notification, notificationService);
         bonus += BonusUtils.getItemBonus(character, bonusType, notification, notificationService);
+        bonus += BonusUtils.getBuildingBonus(character, bonusType, notification, notificationService);
 
         // research side effect
         if (bonusType.equals(BonusType.CRAFTING) && character.getClan().getResearch().containsKey(ResearchName.FORGERY)

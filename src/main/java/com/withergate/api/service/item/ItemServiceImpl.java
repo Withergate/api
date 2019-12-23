@@ -138,14 +138,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateCraftableItem(Character character, int buildingLevel, int bonus, ClanNotification notification, ItemType type) {
+    public void generateCraftableItem(Character character, int bonus, ClanNotification notification, ItemType type) {
         log.debug("Crafting weapon with {}", character.getName());
 
-        if (buildingLevel < 1) {
-            return;
-        }
-
-        ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), buildingLevel + bonus);
+        ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), bonus);
         ItemDetails details = getRandomItemDetails(type, rarity);
 
         // save item

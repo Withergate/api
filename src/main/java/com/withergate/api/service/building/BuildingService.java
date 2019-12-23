@@ -1,12 +1,11 @@
 package com.withergate.api.service.building;
 
+import java.util.List;
+
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.service.exception.InvalidActionException;
-
-import java.util.List;
 
 /**
  * Building service interface.
@@ -44,7 +43,7 @@ public interface BuildingService {
      * @param name the name of the building
      * @return the loaded building details
      */
-    BuildingDetails getBuildingDetails(BuildingDetails.BuildingName name);
+    BuildingDetails getBuildingDetails(String name);
 
     /**
      * Retrieves all buildings details from the database.

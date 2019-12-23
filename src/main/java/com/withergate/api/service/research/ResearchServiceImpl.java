@@ -4,12 +4,9 @@ import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResearchAction;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.ResearchRequest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails;
@@ -145,13 +142,7 @@ public class ResearchServiceImpl implements ResearchService {
         bonus += BonusUtils.getItemBonus(character, BonusType.RESEARCH, notification, notificationService);
 
         // building
-        Building study = character.getClan().getBuildings().get(BuildingName.STUDY);
-        if (study != null && study.getLevel() > 0) {
-            bonus += study.getLevel();
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.building.study", new String[] {}, study.getDetails().getName());
-            notification.getDetails().add(detail);
-        }
+        bonus += BonusUtils.getBuildingBonus(character, BonusType.RESEARCH, notification, notificationService);
 
         return bonus;
     }

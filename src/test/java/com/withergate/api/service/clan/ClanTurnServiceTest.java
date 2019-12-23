@@ -1,7 +1,6 @@
 package com.withergate.api.service.clan;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -178,7 +177,6 @@ public class ClanTurnServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setBuildings(new HashMap<>());
 
         Character character = new Character();
         character.setId(1);

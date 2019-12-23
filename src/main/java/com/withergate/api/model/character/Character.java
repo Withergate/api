@@ -23,10 +23,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BaseAction;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
+import com.withergate.api.model.building.Building;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemType;
 import com.withergate.api.service.clan.CharacterServiceImpl;
@@ -177,9 +178,14 @@ public class Character {
         if (clan == null) {
             return -1;
         }
+        int bonus = 0;
+        Optional<Building> building = clan.getBuildings().stream().filter(b -> b.getDetails().getBonusType() != null &&
+                b.getDetails().getBonusType().equals(BonusType.TRAINING)).findFirst();
+        if (building.isPresent()) {
+            bonus += building.get().getLevel();
+        }
 
-        return 1 + traits.stream().filter(Trait::isActive).count()
-                + clan.getBuildings().get(BuildingName.TRAINING_GROUNDS).getLevel();
+        return 1 + traits.stream().filter(Trait::isActive).count() + bonus;
     }
 
     /**

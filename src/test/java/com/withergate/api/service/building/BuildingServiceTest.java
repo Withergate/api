@@ -1,19 +1,18 @@
 package com.withergate.api.service.building;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.EndBonusType;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.BuildingAction.Type;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
@@ -78,13 +77,12 @@ public class BuildingServiceTest {
         // given building request
         BuildingRequest request = new BuildingRequest();
         request.setCharacterId(1);
-        request.setBuilding(BuildingName.FORGE);
+        request.setBuilding("Forge");
         request.setType(Type.VISIT);
 
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setBuildings(new HashMap<>());
         clan.setName("Dragons");
 
         Character character = new Character();
@@ -95,8 +93,9 @@ public class BuildingServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.FORGE);
-        Mockito.when(buildingService.getBuildingDetails(BuildingName.FORGE)).thenReturn(buildingDetails);
+        buildingDetails.setIdentifier("Forge");
+        buildingDetails.setBonusType(BonusType.CRAFTING);
+        Mockito.when(buildingService.getBuildingDetails("Forge")).thenReturn(buildingDetails);
 
         // when creating building action
         buildingService.saveBuildingAction(request, 1);
@@ -109,13 +108,12 @@ public class BuildingServiceTest {
         // given building request
         BuildingRequest request = new BuildingRequest();
         request.setCharacterId(1);
-        request.setBuilding(BuildingName.FORGE);
+        request.setBuilding("Forge");
         request.setType(Type.VISIT);
 
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(10);
-        clan.setBuildings(new HashMap<>());
         clan.setName("Dragons");
 
         Character character = new Character();
@@ -126,13 +124,13 @@ public class BuildingServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.FORGE);
-        Mockito.when(buildingService.getBuildingDetails(BuildingName.FORGE)).thenReturn(buildingDetails);
+        buildingDetails.setIdentifier("Forge");
+        Mockito.when(buildingService.getBuildingDetails("Forge")).thenReturn(buildingDetails);
 
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(0);
-        clan.getBuildings().put(BuildingName.FORGE, building);
+        clan.getBuildings().add(building);
 
         // when creating building action
         buildingService.saveBuildingAction(request, 1);
@@ -145,13 +143,12 @@ public class BuildingServiceTest {
         // given building request
         BuildingRequest request = new BuildingRequest();
         request.setCharacterId(1);
-        request.setBuilding(BuildingName.FORGE);
+        request.setBuilding("Forge");
         request.setType(Type.VISIT);
 
         Clan clan = new Clan();
         clan.setId(1);
         clan.setJunk(10);
-        clan.setBuildings(new HashMap<>());
         clan.setName("Dragons");
 
         Character character = new Character();
@@ -162,15 +159,15 @@ public class BuildingServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.FORGE);
+        buildingDetails.setIdentifier("Forge");
         buildingDetails.setVisitJunkCost(10);
         buildingDetails.setVisitable(true);
-        Mockito.when(buildingService.getBuildingDetails(BuildingName.FORGE)).thenReturn(buildingDetails);
+        Mockito.when(buildingService.getBuildingDetails("Forge")).thenReturn(buildingDetails);
 
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(1);
-        clan.getBuildings().put(BuildingName.FORGE, building);
+        clan.getBuildings().add(building);
 
         // when creating building action
         buildingService.saveBuildingAction(request, 1);
@@ -180,7 +177,7 @@ public class BuildingServiceTest {
         Mockito.verify(buildingActionRepository).save(captor.capture());
 
         assertEquals(character, captor.getValue().getCharacter());
-        assertEquals(BuildingName.FORGE, captor.getValue().getBuilding());
+        assertEquals("Forge", captor.getValue().getBuilding());
     }
 
     @Test
@@ -188,17 +185,17 @@ public class BuildingServiceTest {
         // given building action
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
-        details.setIdentifier(BuildingDetails.BuildingName.MONUMENT);
+        details.setIdentifier("MONUMENT");
+        details.setEndBonusType(EndBonusType.FAME_INCOME);
 
         Building building = new Building();
         building.setLevel(0);
         building.setProgress(0);
         building.setDetails(details);
-        clan.getBuildings().put(details.getIdentifier(), building);
+        clan.getBuildings().add(building);
 
         Character character = new Character();
         character.setId(1);
@@ -210,7 +207,7 @@ public class BuildingServiceTest {
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingDetails.BuildingName.MONUMENT);
+        action.setBuilding("MONUMENT");
         action.setType(BuildingAction.Type.CONSTRUCT);
 
         List<BuildingAction> actions = new ArrayList<>();
@@ -218,13 +215,12 @@ public class BuildingServiceTest {
         Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when constructing new building
-        Mockito.when(buildingDetailsRepository.getOne(BuildingName.MONUMENT)).thenReturn(details);
+        Mockito.when(buildingDetailsRepository.getOne("MONUMENT")).thenReturn(details);
 
         buildingService.processBuildingActions(1);
 
         // then verify progress saved
-        Assert.assertTrue(character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.MONUMENT));
-        Assert.assertEquals(4, character.getClan().getBuildings().get(BuildingDetails.BuildingName.MONUMENT).getProgress());
+        Assert.assertEquals(4, character.getClan().getBuilding("MONUMENT").getProgress());
 
         Assert.assertEquals(ActionState.COMPLETED, action.getState());
 
@@ -236,7 +232,6 @@ public class BuildingServiceTest {
         // given building action
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
 
         Character character = new Character();
         character.setId(1);
@@ -248,19 +243,19 @@ public class BuildingServiceTest {
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.FORGE);
+        action.setBuilding("FORGE");
         action.setType(BuildingAction.Type.CONSTRUCT);
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
-        details.setIdentifier(BuildingName.FORGE);
-        Mockito.when(buildingDetailsRepository.getOne(BuildingName.FORGE)).thenReturn(details);
+        details.setIdentifier("FORGE");
+        Mockito.when(buildingDetailsRepository.getOne("FORGE")).thenReturn(details);
 
         Building building = new Building();
         building.setDetails(details);
         building.setLevel(0);
         building.setProgress(6);
-        clan.getBuildings().put(BuildingName.FORGE, building);
+        clan.getBuildings().add(building);
 
         List<BuildingAction> actions = new ArrayList<>();
         actions.add(action);
@@ -270,8 +265,8 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify progress saved
-        Assert.assertEquals(0, character.getClan().getBuildings().get(BuildingName.FORGE).getProgress());
-        Assert.assertEquals(1, character.getClan().getBuildings().get(BuildingName.FORGE).getLevel());
+        Assert.assertEquals(0, character.getClan().getBuilding("FORGE").getProgress());
+        Assert.assertEquals(1, character.getClan().getBuilding("FORGE").getLevel());
     }
 
     @Test
@@ -279,7 +274,6 @@ public class BuildingServiceTest {
         // given building action
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
 
         Character character = new Character();
         character.setId(1);
@@ -300,19 +294,19 @@ public class BuildingServiceTest {
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.QUARTERS);
+        action.setBuilding("QUARTERS");
         action.setType(BuildingAction.Type.CONSTRUCT);
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
-        details.setIdentifier(BuildingName.QUARTERS);
-        Mockito.when(buildingDetailsRepository.getOne(BuildingName.QUARTERS)).thenReturn(details);
+        details.setIdentifier("QUARTERS");
+        Mockito.when(buildingDetailsRepository.getOne("QUARTERS")).thenReturn(details);
 
         Building building = new Building();
         building.setDetails(details);
         building.setLevel(0);
         building.setProgress(2);
-        clan.getBuildings().put(BuildingName.QUARTERS, building);
+        clan.getBuildings().add(building);
 
         List<BuildingAction> actions = new ArrayList<>();
         actions.add(action);
@@ -322,7 +316,7 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify progress saved
-        Assert.assertEquals(8, character.getClan().getBuildings().get(BuildingName.QUARTERS).getProgress());
+        Assert.assertEquals(8, character.getClan().getBuilding("QUARTERS").getProgress());
     }
 
     @Test
@@ -330,7 +324,6 @@ public class BuildingServiceTest {
         // given building action
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
 
         Character character = new Character();
         character.setId(1);
@@ -350,19 +343,19 @@ public class BuildingServiceTest {
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.QUARTERS);
+        action.setBuilding("QUARTERS");
         action.setType(BuildingAction.Type.CONSTRUCT);
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
-        details.setIdentifier(BuildingName.QUARTERS);
-        Mockito.when(buildingDetailsRepository.getOne(BuildingName.QUARTERS)).thenReturn(details);
+        details.setIdentifier("QUARTERS");
+        Mockito.when(buildingDetailsRepository.getOne("QUARTERS")).thenReturn(details);
 
         Building building = new Building();
         building.setDetails(details);
         building.setLevel(0);
         building.setProgress(2);
-        clan.getBuildings().put(BuildingName.QUARTERS, building);
+        clan.getBuildings().add(building);
 
         List<BuildingAction> actions = new ArrayList<>();
         actions.add(action);
@@ -372,17 +365,17 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify progress saved
-        Assert.assertEquals(9, character.getClan().getBuildings().get(BuildingName.QUARTERS).getProgress());
+        Assert.assertEquals(9, character.getClan().getBuilding("QUARTERS").getProgress());
     }
 
     @Test
     public void testGivenNameWhenGettingBuildingDetailsThenVerifyCorrectDetailsReturned() {
         // given name
-        BuildingName name = BuildingName.FORGE;
+        String name = "FORGE";
 
         // when getting building details
         BuildingDetails details = new BuildingDetails();
-        details.setIdentifier(BuildingName.FORGE);
+        details.setIdentifier("FORGE");
         details.setVisitable(true);
         Mockito.when(buildingDetailsRepository.getOne(name)).thenReturn(details);
 
@@ -396,8 +389,9 @@ public class BuildingServiceTest {
     public void testGiveServiceWhenGettingAllBuildingDetailsThenVerifyCorrectListReturned() {
         // given service when getting building details
         BuildingDetails details = new BuildingDetails();
-        details.setIdentifier(BuildingName.FORGE);
+        details.setIdentifier("FORGE");
         details.setVisitable(true);
+        details.setBonusType(BonusType.CRAFTING);
 
         List<BuildingDetails> detailsList = new ArrayList<>();
         detailsList.add(details);
@@ -418,20 +412,21 @@ public class BuildingServiceTest {
 
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
         character.setClan(clan);
 
         BuildingDetails details = new BuildingDetails();
-        details.setIdentifier(BuildingName.FORGE);
+        details.setIdentifier("FORGE");
+        details.setBonusType(BonusType.CRAFTING);
+        details.setItemType(ItemType.WEAPON);
         Building building = new Building();
         building.setLevel(1);
         building.setDetails(details);
-        clan.getBuildings().put(BuildingName.FORGE, building);
+        clan.getBuildings().add(building);
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.FORGE);
+        action.setBuilding("FORGE");
         action.setType(Type.VISIT);
 
         List<BuildingAction> actions = new ArrayList<>();
@@ -442,7 +437,7 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(0),
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(0),
                 Mockito.any(ClanNotification.class), Mockito.eq(ItemType.WEAPON));
     }
 
@@ -454,20 +449,21 @@ public class BuildingServiceTest {
 
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
         character.setClan(clan);
 
         BuildingDetails details = new BuildingDetails();
-        details.setIdentifier(BuildingName.RAGS_SHOP);
+        details.setIdentifier("RAGS_SHOP");
+        details.setBonusType(BonusType.CRAFTING);
+        details.setItemType(ItemType.OUTFIT);
         Building building = new Building();
         building.setLevel(1);
         building.setDetails(details);
-        clan.getBuildings().put(BuildingName.RAGS_SHOP, building);
+        clan.getBuildings().add(building);
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.RAGS_SHOP);
+        action.setBuilding("RAGS_SHOP");
         action.setType(Type.VISIT);
 
         List<BuildingAction> actions = new ArrayList<>();
@@ -478,7 +474,7 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(0),
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(0),
                 Mockito.any(ClanNotification.class), Mockito.eq(ItemType.OUTFIT));
     }
 
@@ -490,20 +486,21 @@ public class BuildingServiceTest {
 
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
         character.setClan(clan);
 
         BuildingDetails details = new BuildingDetails();
-        details.setIdentifier(BuildingName.WORKSHOP);
+        details.setIdentifier("WORKSHOP");
+        details.setBonusType(BonusType.CRAFTING);
+        details.setItemType(ItemType.GEAR);
         Building building = new Building();
         building.setLevel(1);
         building.setDetails(details);
-        clan.getBuildings().put(BuildingName.WORKSHOP, building);
+        clan.getBuildings().add(building);
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.WORKSHOP);
+        action.setBuilding("WORKSHOP");
         action.setType(Type.VISIT);
 
         List<BuildingAction> actions = new ArrayList<>();
@@ -514,7 +511,7 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(0),
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(0),
                 Mockito.any(ClanNotification.class), Mockito.eq(ItemType.GEAR));
     }
 
@@ -526,7 +523,6 @@ public class BuildingServiceTest {
 
         Clan clan = new Clan();
         clan.setId(1);
-        clan.setBuildings(new HashMap<>());
         character.setClan(clan);
 
         ItemDetails gearDetails = new ItemDetails();
@@ -538,16 +534,18 @@ public class BuildingServiceTest {
         character.getItems().add(gear);
 
         BuildingDetails details = new BuildingDetails();
-        details.setIdentifier(BuildingName.WORKSHOP);
+        details.setIdentifier("WORKSHOP");
+        details.setBonusType(BonusType.CRAFTING);
+        details.setItemType(ItemType.GEAR);
         Building building = new Building();
         building.setLevel(1);
         building.setDetails(details);
-        clan.getBuildings().put(BuildingName.WORKSHOP, building);
+        clan.getBuildings().add(building);
 
         BuildingAction action = new BuildingAction();
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
-        action.setBuilding(BuildingName.WORKSHOP);
+        action.setBuilding("WORKSHOP");
         action.setType(Type.VISIT);
 
         List<BuildingAction> actions = new ArrayList<>();
@@ -558,7 +556,7 @@ public class BuildingServiceTest {
         buildingService.processBuildingActions(1);
 
         // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1), Mockito.eq(1),
+        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1),
                 Mockito.any(ClanNotification.class), Mockito.eq(ItemType.GEAR));
     }
 
@@ -566,39 +564,37 @@ public class BuildingServiceTest {
     public void testGivenClanWhenProcessingPassiveActionsThenVerifyBonusesAwarded() {
         // given clan with monument
         Clan clan = new Clan();
-        clan.setBuildings(new HashMap<>());
         clan.setFame(10);
         clan.setFood(5);
         clan.setInformation(0);
         clan.setCharacters(new HashSet<>());
 
         BuildingDetails monumentDetails = new BuildingDetails();
-        monumentDetails.setIdentifier(BuildingName.MONUMENT);
+        monumentDetails.setIdentifier("MONUMENT");
+        monumentDetails.setEndBonusType(EndBonusType.FAME_INCOME);
+        monumentDetails.setEndBonus(1);
         Building monument = new Building();
         monument.setDetails(monumentDetails);
         monument.setLevel(2);
-        clan.getBuildings().put(BuildingName.MONUMENT, monument);
+        clan.getBuildings().add(monument);
 
         BuildingDetails gmoDetails = new BuildingDetails();
-        gmoDetails.setIdentifier(BuildingName.GMO_FARM);
+        gmoDetails.setIdentifier("GMO_FARM");
+        gmoDetails.setEndBonusType(EndBonusType.FOOD_INCOME);
+        gmoDetails.setEndBonus(2);
         Building farm = new Building();
-        farm.setDetails(monumentDetails);
+        farm.setDetails(gmoDetails);
         farm.setLevel(1);
-        clan.getBuildings().put(BuildingName.GMO_FARM, farm);
-
-        BuildingDetails groundsDetails = new BuildingDetails();
-        groundsDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
-        Building grounds = new Building();
-        grounds.setDetails(groundsDetails);
-        grounds.setLevel(0);
-        clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, grounds);
+        clan.getBuildings().add(farm);
 
         BuildingDetails studyDetails = new BuildingDetails();
-        studyDetails.setIdentifier(BuildingName.STUDY);
+        studyDetails.setIdentifier("STUDY");
+        studyDetails.setEndBonusType(EndBonusType.INFORMATION_INCOME);
+        studyDetails.setEndBonus(1);
         Building study = new Building();
         study.setDetails(studyDetails);
         study.setLevel(1);
-        clan.getBuildings().put(BuildingName.STUDY, study);
+        clan.getBuildings().add(study);
 
         // when processing passive acitons
         buildingService.processPassiveBuildingBonuses(1, clan);

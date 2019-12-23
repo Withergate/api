@@ -178,17 +178,15 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
             notification.setHeader(character.getName());
             notification.setImageUrl(character.getImageUrl());
+            notificationService.addLocalizedTexts(notification.getText(), "character.resting", new String[] {});
 
             // handle resting bonuses
             handleRestingBonuses(character, notification);
 
             handleHealing(character, notification);
 
-            // discard empty notification
-            if (notification.getDetails().size() > 0 || !notification.getText().isEmpty()) {
-                notificationService.save(notification);
-            }
-
+            // save notification
+            notificationService.save(notification);
         }
     }
 
@@ -288,30 +286,25 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
         // each character that is ready heals
         int points = gameProperties.getHealing();
-        if (character.getClan().getBuildings().containsKey(BuildingDetails.BuildingName.SICK_BAY)) {
-            Building building = character.getClan().getBuildings().get(BuildingDetails.BuildingName.SICK_BAY);
-            int bonus = building.getLevel() * gameProperties.getHealing();
-            points += bonus;
 
-            if (building.getLevel() > 0) {
-                NotificationDetail healingBuildingDetail = new NotificationDetail();
-                notificationService.addLocalizedTexts(healingBuildingDetail.getText(), "detail.healing.building",
-                        new String[] {String.valueOf(bonus)});
-                notification.getDetails().add(healingBuildingDetail);
-            }
-        }
-
-        // lizard trait
+        // trait
         points += BonusUtils.getTraitBonus(character, BonusType.HEALING, notification, notificationService);
+
+        // building
+        points += BonusUtils.getBuildingBonus(character, BonusType.HEALING, notification, notificationService);
 
         int healing = Math.min(points, hitpointsMissing);
         character.changeHitpoints(healing);
-
-        notificationService.addLocalizedTexts(notification.getText(), "character.healing", new String[] {});
         notification.changeHealing(healing);
     }
 
     private void handleRestingBonuses(Character character, ClanNotification notification) {
+        int exp = BonusUtils.getBuildingBonus(character, BonusType.TRAINING, notification, notificationService);
+        if (exp > 0) {
+            notification.changeExperience(exp);
+            character.changeExperience(exp);
+        }
+
         Research cultivation = character.getClan().getResearch().get(ResearchName.CULTIVATION);
         if (cultivation != null && cultivation.isCompleted()) {
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);

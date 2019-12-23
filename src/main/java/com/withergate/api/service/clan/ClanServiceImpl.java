@@ -1,7 +1,6 @@
 package com.withergate.api.service.clan;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -131,15 +130,13 @@ public class ClanServiceImpl implements ClanService {
         }
 
         // set buildings
-        clan.setBuildings(new HashMap<>());
-
         for (BuildingDetails details : buildingService.getAllBuildingDetails()) {
             Building building = new Building();
             building.setProgress(0);
             building.setLevel(0);
             building.setDetails(details);
             building.setClan(clan);
-            clan.getBuildings().put(details.getIdentifier(), building);
+            clan.getBuildings().add(building);
         }
 
         // assign research

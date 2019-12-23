@@ -5,7 +5,6 @@ import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.character.Trait;
@@ -52,11 +51,13 @@ public class TraitServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
+        buildingDetails.setIdentifier("TRAINING_GROUNDS");
+        buildingDetails.setBonusType(BonusType.TRAINING);
+        buildingDetails.setBonus(1);
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(0);
-        clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, building);
+        clan.getBuildings().add(building);
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
@@ -93,11 +94,13 @@ public class TraitServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
+        buildingDetails.setIdentifier("TRAINING_GROUNDS");
+        buildingDetails.setBonusType(BonusType.TRAINING);
+        buildingDetails.setBonus(1);
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(1);
-        clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, building);
+        clan.getBuildings().add(building);
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
@@ -131,11 +134,11 @@ public class TraitServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
+        buildingDetails.setIdentifier("Forge");
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(1);
-        clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, building);
+        clan.getBuildings().add(building);
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
@@ -170,11 +173,13 @@ public class TraitServiceTest {
         clan.setId(1);
         clan.setCaps(5);
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
+        buildingDetails.setIdentifier("TRAINING_GROUNDS");
+        buildingDetails.setBonusType(BonusType.TRAINING);
+        buildingDetails.setBonus(1);
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(0);
-        clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, building);
+        clan.getBuildings().add(building);
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();
@@ -212,11 +217,13 @@ public class TraitServiceTest {
         clan.setId(1);
         clan.setCaps(1);
         BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier(BuildingName.TRAINING_GROUNDS);
+        buildingDetails.setIdentifier("TRAINING_GROUNDS");
+        buildingDetails.setBonusType(BonusType.TRAINING);
+        buildingDetails.setBonus(1);
         Building building = new Building();
         building.setDetails(buildingDetails);
         building.setLevel(1);
-        clan.getBuildings().put(BuildingName.TRAINING_GROUNDS, building);
+        clan.getBuildings().add(building);
         character.setClan(clan);
 
         TraitDetails details = new TraitDetails();

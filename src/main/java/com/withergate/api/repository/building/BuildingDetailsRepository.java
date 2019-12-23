@@ -1,7 +1,6 @@
 package com.withergate.api.repository.building;
 
 import com.withergate.api.model.building.BuildingDetails;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @author Martin Myslik
  */
 @Repository
-public interface BuildingDetailsRepository extends JpaRepository<BuildingDetails, BuildingDetails.BuildingName> {
+public interface BuildingDetailsRepository extends JpaRepository<BuildingDetails, String> {
 
 }

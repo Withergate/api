@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,8 +24,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.building.BuildingDetails.BuildingName;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.quest.Quest;
@@ -100,11 +99,8 @@ public class Clan {
     private Set<Item> items;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @MapKeyColumn(name = "identifier")
-    @MapKeyClass(BuildingDetails.BuildingName.class)
-    @MapKeyEnumerated(EnumType.STRING)
     @JsonView(Views.Internal.class)
-    private Map<BuildingDetails.BuildingName, Building> buildings;
+    private Set<Building> buildings;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapKeyColumn(name = "identifier")
@@ -131,7 +127,7 @@ public class Clan {
      */
     public Clan() {
         characters = new HashSet<>();
-        buildings = new EnumMap<>(BuildingName.class);
+        buildings = new HashSet<>();
         research = new EnumMap<>(ResearchName.class);
         items = new HashSet<>();
         quests = new HashSet<>();
@@ -147,22 +143,13 @@ public class Clan {
     public int getPopulationLimit() {
         int limit = ClanServiceImpl.BASIC_POPULATION_LIMIT;
 
-        if (buildings.containsKey(BuildingDetails.BuildingName.QUARTERS)) {
-            limit += buildings.get(BuildingDetails.BuildingName.QUARTERS).getLevel();
+        Optional<Building> building = buildings.stream().filter(b -> b.getDetails().getEndBonusType() != null
+                && b.getDetails().getEndBonusType().equals(EndBonusType.POPULATION)).findFirst();
+        if (building.isPresent()) {
+            limit += building.get().getLevel();
         }
 
         return limit;
-    }
-
-    /**
-     * Returns the buildings as List.
-     *
-     * @return the list of buildings
-     */
-    @JsonProperty("buildings")
-    @JsonView(Views.Internal.class)
-    public Collection<Building> getBuildingsAsList() {
-        return buildings.values();
     }
 
     /**
@@ -230,6 +217,14 @@ public class Clan {
 
     public void changeDisasterProgress(int progress) {
         this.disasterProgress += progress;
+    }
+
+    /*
+     * Additional getters
+     */
+    public Building getBuilding(String identifier) {
+        return buildings.stream().filter(building -> building.getDetails().getIdentifier().equals(identifier))
+                .findFirst().orElse(null);
     }
 
 }

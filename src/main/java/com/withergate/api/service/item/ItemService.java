@@ -53,12 +53,11 @@ public interface ItemService {
      * Generates craftable item.
      *
      * @param character     the character performing the crafting
-     * @param buildingLevel the construction building level
      * @param bonus         additional bonus to crafting
      * @param notification  the crafted weapon
      * @param type          the item type
      */
-    void generateCraftableItem(Character character, int buildingLevel, int bonus, ClanNotification notification, ItemType type);
+    void generateCraftableItem(Character character, int bonus, ClanNotification notification, ItemType type);
 
     /**
      * Generates random item.

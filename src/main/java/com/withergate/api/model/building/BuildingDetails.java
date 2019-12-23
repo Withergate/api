@@ -1,8 +1,6 @@
 package com.withergate.api.model.building;
 
-import com.withergate.api.model.notification.LocalizedText;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Map;
+
+import com.withergate.api.model.BonusType;
+import com.withergate.api.model.EndBonusType;
+import com.withergate.api.model.item.ItemType;
+import com.withergate.api.model.notification.LocalizedText;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Building details.
@@ -28,9 +32,8 @@ import java.util.Map;
 public class BuildingDetails {
 
     @Id
-    @Enumerated(EnumType.STRING)
     @Column(name = "identifier", updatable = false, nullable = false)
-    private BuildingName identifier;
+    private String identifier;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
@@ -59,11 +62,28 @@ public class BuildingDetails {
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost; // cost per level
 
-    /**
-     * Building name. Declared as enum for easier code references and for restricting allowed database values.
-     */
-    public enum BuildingName {
-        SICK_BAY, GMO_FARM, TRAINING_GROUNDS, MONUMENT, FORGE, WORKSHOP, RAGS_SHOP, QUARTERS, STUDY
-    }
+    @Column(name = "bonus", updatable = false, nullable = false)
+    private int bonus;
+
+    @Column(name = "bonus_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private BonusType bonusType;
+
+    @Column(name = "bonus_text", updatable = false)
+    private String bonusText;
+
+    @Column(name = "item_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private ItemType itemType;
+
+    @Column(name = "end_bonus_type", updatable = false)
+    @Enumerated(EnumType.STRING)
+    private EndBonusType endBonusType;
+
+    @Column(name = "end_bonus_text", updatable = false)
+    private String endBonusText;
+
+    @Column(name = "end_bonus", updatable = false, nullable = false)
+    private int endBonus;
 
 }

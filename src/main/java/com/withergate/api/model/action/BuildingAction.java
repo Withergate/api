@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import com.withergate.api.model.building.BuildingDetails;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +18,8 @@ import lombok.Setter;
 @Setter
 public class BuildingAction extends BaseAction {
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "building", nullable = false)
-    private BuildingDetails.BuildingName building;
+    private String building;
 
     @Column(name = "action_type", nullable = false)
     @Enumerated(EnumType.STRING)

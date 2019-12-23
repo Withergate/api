@@ -177,7 +177,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
     }
 
     private void handleBuildingDestruction(Clan clan, ClanNotification notification) {
-        for (Building building : clan.getBuildings().values()) {
+        for (Building building : clan.getBuildings()) {
             if (building.getLevel() > 0 || building.getProgress() > 0) {
                 building.setProgress(building.getProgress() - gameProperties.getDisasterBuildingProgressLoss());
 
