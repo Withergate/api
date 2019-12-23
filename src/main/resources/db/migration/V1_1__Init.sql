@@ -12,6 +12,15 @@ CREATE TABLE avatars (
     PRIMARY KEY (avatar_id)
 );
 
+-- Factions
+DROP TABLE IF EXISTS factions;
+CREATE TABLE factions (
+    identifier VARCHAR(16),
+    image_url VARCHAR(256) NOT NULL,
+    icon_url VARCHAR(256) NOT NULL,
+    PRIMARY KEY (identifier)
+);
+
 DROP TABLE IF EXISTS clans;
 CREATE TABLE clans (
     clan_id INT,
@@ -26,6 +35,8 @@ CREATE TABLE clans (
     disaster_progress INT NOT NULL DEFAULT 0,
     default_action VARCHAR(32) NOT NULL,
     prefer_disaster BIT default 1,
+    faction VARCHAR(16),
+    CONSTRAINT clan_faction_fk FOREIGN KEY (faction) REFERENCES factions (identifier),
     PRIMARY KEY (clan_id)
 );
 
@@ -334,6 +345,8 @@ CREATE TABLE localized_texts (
     disaster_description VARCHAR(16),
     disaster_solution_name VARCHAR(16),
     disaster_solution_description VARCHAR(16),
+    faction_name VARCHAR(16),
+    faction_description VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -355,7 +368,9 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_disaster_name_fk FOREIGN KEY (disaster_name) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_description_fk FOREIGN KEY (disaster_description) REFERENCES disaster_details (identifier),
     CONSTRAINT localized_text_disaster_solution_name_fk FOREIGN KEY (disaster_solution_name) REFERENCES disaster_solutions (identifier),
-    CONSTRAINT localized_text_disaster_solution_description_fk FOREIGN KEY (disaster_solution_description) REFERENCES disaster_solutions (identifier)
+    CONSTRAINT localized_text_disaster_solution_description_fk FOREIGN KEY (disaster_solution_description) REFERENCES disaster_solutions (identifier),
+    CONSTRAINT localized_text_faction_name_fk FOREIGN KEY (faction_name) REFERENCES factions (identifier),
+    CONSTRAINT localized_text_faction_description_fk FOREIGN KEY (faction_description) REFERENCES factions (identifier),
 );
 
 -- Market offers

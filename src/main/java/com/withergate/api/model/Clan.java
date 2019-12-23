@@ -10,8 +10,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.faction.Faction;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.research.Research;
@@ -90,15 +92,15 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private Set<Item> items;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private Set<Building> buildings;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private Set<Research> research;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
     @JsonView(Views.Internal.class)
     private Set<Quest> quests;
 
@@ -169,6 +171,14 @@ public class Clan {
     public enum DefaultAction {
         REST, EXPLORE_NEIGHBORHOOD
     }
+
+    /**
+     * Faction.
+     */
+    @ManyToOne
+    @JsonView(Views.Public.class)
+    @JoinColumn(name = "faction")
+    private Faction faction;
 
     /*
      * Setters.
