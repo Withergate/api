@@ -36,7 +36,7 @@ public class BonusUtils {
                                     NotificationService notificationService) {
         // find relevant trait, update notification and compute bonus
         for (Trait trait : character.getActiveTraits()) {
-            if (trait.getDetails().getBonusType().equals(bonusType)) {
+            if (trait.getDetails().getBonusType() != null && trait.getDetails().getBonusType().equals(bonusType)) {
                 if (!trait.getDetails().isOptional() || Math.random() < 0.5) {
                     NotificationDetail detail = new NotificationDetail();
                     notificationService.addLocalizedTexts(detail.getText(), trait.getDetails().getBonusText(),
@@ -65,7 +65,7 @@ public class BonusUtils {
                                     NotificationService notificationService) {
         // find relevant item
         for (Item item : character.getItems()) {
-            if (item.getDetails().getBonusType().equals(bonusType)) {
+            if (item.getDetails().getBonusType() != null && item.getDetails().getBonusType().equals(bonusType)) {
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
                         item.getDetails().getName());
@@ -108,8 +108,8 @@ public class BonusUtils {
     }
 
     /**
-     * Gets end turn bonus for given building and bonus type. Uses injected notification service to add relevant notification detail to the provided
-     * notification.
+     * Gets end turn bonus for given building and bonus type. Uses injected notification service to add relevant notification detail to
+     * the provided notification.
      *
      * @param clan clan
      * @param bonusType bonus type to be handled

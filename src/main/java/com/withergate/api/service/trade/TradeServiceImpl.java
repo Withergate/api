@@ -3,19 +3,18 @@ package com.withergate.api.service.trade;
 import java.util.Optional;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.ResearchBonusType;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ResourceTradeAction;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.item.Item;
-import com.withergate.api.model.item.ItemType;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.MarketTradeRequest;
 import com.withergate.api.model.request.PublishOfferRequest;
 import com.withergate.api.model.request.ResourceTradeRequest;
 import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.trade.MarketOffer;
 import com.withergate.api.model.trade.MarketOffer.State;
 import com.withergate.api.model.trade.TradeType;
@@ -326,18 +325,18 @@ public class TradeServiceImpl implements TradeService {
     }
 
     private void handleBonuses(Clan buyer, ClanNotification buyerNotification) {
-        Research collecting = buyer.getResearch().get(ResearchName.COLLECTING);
-        if (collecting != null && collecting.isCompleted() && buyer.getCaps() >= 10) {
+        Research research = buyer.getResearch(ResearchBonusType.TRADE_FAME);
+        if (research != null && research.isCompleted() && buyer.getCaps() >= 10) {
             // pay caps
             buyer.changeCaps(- 10);
             buyerNotification.changeCaps(- 10);
 
             // award fame
-            buyer.changeFame(collecting.getDetails().getValue());
-            buyerNotification.changeFame(collecting.getDetails().getValue());
+            buyer.changeFame(research.getDetails().getValue());
+            buyerNotification.changeFame(research.getDetails().getValue());
 
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.research.collecting", new String[]{});
+            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             buyerNotification.getDetails().add(detail);
         }
     }

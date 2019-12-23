@@ -1,5 +1,6 @@
 package com.withergate.api.model.research;
 
+import com.withergate.api.model.ResearchBonusType;
 import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,9 +29,15 @@ import java.util.Map;
 public class ResearchDetails {
 
     @Id
-    @Enumerated(EnumType.STRING)
     @Column(name = "identifier", updatable = false, nullable = false)
-    private ResearchName identifier;
+    private String identifier;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "bonus_type", updatable = false, nullable = false)
+    private ResearchBonusType bonusType;
+
+    @Column(name = "bonus_text", updatable = false)
+    private String bonusText;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
@@ -61,12 +68,5 @@ public class ResearchDetails {
 
     @Column(name = "fame", updatable = false, nullable = false)
     private int fame;
-
-    /**
-     * Research name. Declared as enum for easier code references and for restricting allowed database values.
-     */
-    public enum ResearchName {
-        FORGERY, BEGGING, CULTIVATION, PLENTIFUL, ARCHITECTURE, COLLECTING, CULINARY, DECORATION
-    }
 
 }

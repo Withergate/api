@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @author Martin Myslik
  */
 @Repository
-public interface ResearchDetailsRepository extends JpaRepository<ResearchDetails, ResearchDetails.ResearchName> {
+public interface ResearchDetailsRepository extends JpaRepository<ResearchDetails, String> {
 
 }

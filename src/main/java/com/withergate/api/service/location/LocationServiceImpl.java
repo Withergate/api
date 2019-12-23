@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.ResearchBonusType;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.LocationAction;
 import com.withergate.api.model.character.Character;
@@ -14,7 +15,6 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.LocationDescriptionRepository;
 import com.withergate.api.repository.action.LocationActionRepository;
 import com.withergate.api.service.BonusUtils;
@@ -102,11 +102,11 @@ public class LocationServiceImpl implements LocationService {
         // handle random encounter first
         boolean encounter = false;
         boolean encounterSuccess = false;
-        int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100) - character.getIntellect();
+        int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100) + character.getIntellect();
         if (description.getEncounterChance() > 0) {
-            encounterRoll -= BonusUtils.getItemBonus(character, BonusType.CAMOUFLAGE, notification, notificationService);
+            encounterRoll += BonusUtils.getItemBonus(character, BonusType.CAMOUFLAGE, notification, notificationService);
         }
-        if (encounterRoll <= description.getEncounterChance()) {
+        if (description.getEncounterChance() > 0 && encounterRoll <= description.getEncounterChance()) {
             log.debug("Random encounter triggered!");
 
             // handle encounter, experience is handled by encounter service
@@ -220,15 +220,16 @@ public class LocationServiceImpl implements LocationService {
         bonus += BonusUtils.getItemBonus(character, BonusType.SCOUTING, notification, notificationService);
 
         // research side effect
-        if (!encounter && character.getClan().getResearch().containsKey(ResearchName.BEGGING)
-                && character.getClan().getResearch().get(ResearchName.BEGGING).isCompleted()) {
+        Research research = character.getClan().getResearch(ResearchBonusType.SCOUT_FOOD);
+        if (!encounter && research != null
+                && research.isCompleted()) {
             // add food to clan for begging
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
             character.getClan().changeFood(food);
             notification.changeFood(food);
 
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.research.begging", new String[]{});
+            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);
         }
 
@@ -237,9 +238,9 @@ public class LocationServiceImpl implements LocationService {
     }
 
     private int getLootBonus(Character character, ClanNotification notification, Location location) {
-        Research plentiful = character.getClan().getResearch().get(ResearchName.PLENTIFUL);
-        if (plentiful != null && plentiful.isCompleted() && location.equals(Location.NEIGHBORHOOD)) {
-            return plentiful.getDetails().getValue();
+        Research research = character.getClan().getResearch(ResearchBonusType.NEIGHBORHOOD_LOOT);
+        if (research != null && research.isCompleted() && location.equals(Location.NEIGHBORHOOD)) {
+            return research.getDetails().getValue();
         }
 
         return 0;

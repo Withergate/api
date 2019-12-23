@@ -5,14 +5,12 @@ import java.util.Iterator;
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.building.BuildingDetails;
+import com.withergate.api.model.ResearchBonusType;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.statistics.ClanTurnStatistics;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
@@ -75,7 +73,8 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         checkInformationLevel(turnId, clan);
 
         // perform end-turn research updates
-        performResearchEndTurnUpdates(turnId, clan);
+        performResearchEndTurnUpdates(turnId, clan, ResearchBonusType.FOOD_FAME, clan.getFood());
+        performResearchEndTurnUpdates(turnId, clan, ResearchBonusType.JUNK_FAME, clan.getJunk());
 
         // mark characters as ready
         markCharactersReady(clan);
@@ -224,12 +223,12 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         }
     }
 
-    private void performResearchEndTurnUpdates(int turnId, Clan clan) {
+    private void performResearchEndTurnUpdates(int turnId, Clan clan, ResearchBonusType bonusType, int resources) {
         log.debug("Performing end turn research updates");
 
-        Research culinary = clan.getResearch().get(ResearchName.CULINARY);
-        if (culinary != null && culinary.isCompleted()) {
-            int fame = clan.getFood() / culinary.getDetails().getValue();
+        Research research = clan.getResearch(bonusType);
+        if (research != null && research.isCompleted()) {
+            int fame = resources / research.getDetails().getValue();
             if (fame > FAME_CAP) fame = FAME_CAP;
             if (fame > 0) {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
@@ -238,30 +237,14 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 clan.changeFame(fame);
                 notification.changeFame(fame);
 
-                notificationService.addLocalizedTexts(notification.getText(), "research.culinary", new String[]{});
-                notificationService.save(notification);
-            }
-        }
-
-        Research decoration = clan.getResearch().get(ResearchName.DECORATION);
-        if (decoration != null && decoration.isCompleted()) {
-            int fame = clan.getJunk() / decoration.getDetails().getValue();
-            if (fame > FAME_CAP) fame = FAME_CAP;
-            if (fame > 0) {
-                ClanNotification notification = new ClanNotification(turnId, clan.getId());
-                notification.setHeader(clan.getName());
-
-                clan.changeFame(fame);
-                notification.changeFame(fame);
-
-                notificationService.addLocalizedTexts(notification.getText(), "research.decoration", new String[]{});
+                notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
                 notificationService.save(notification);
             }
         }
     }
 
     private void notifyAvailableResearch(Clan clan, ClanNotification notification) {
-        for (Research research : clan.getResearch().values()) {
+        for (Research research : clan.getResearch()) {
             if (research.getDetails().getInformationLevel() == clan.getInformationLevel()) {
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "research.new", new String[]{},
@@ -305,14 +288,14 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             character.changeExperience(exp);
         }
 
-        Research cultivation = character.getClan().getResearch().get(ResearchName.CULTIVATION);
-        if (cultivation != null && cultivation.isCompleted()) {
+        Research research = character.getClan().getResearch(ResearchBonusType.REST_FOOD);
+        if (research != null && research.isCompleted()) {
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
             character.getClan().changeFood(food);
 
             notification.changeFood(food);
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.research.cultivation", new String[]{});
+            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);
         }
     }

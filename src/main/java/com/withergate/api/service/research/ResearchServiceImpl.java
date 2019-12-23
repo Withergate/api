@@ -42,18 +42,18 @@ public class ResearchServiceImpl implements ResearchService {
         log.debug("Submitting research action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
+        Research research = clan.getResearch(request.getResearch());
 
         // check if research is available
-        if (!clan.getResearch().containsKey(request.getResearch())) {
+        if (research == null) {
             throw new InvalidActionException("The specified research is not available to your clan.");
         }
 
         // check requirements
-        if (clan.getResearch().get(request.getResearch()).getDetails().getInformationLevel() > clan.getInformationLevel()) {
+        if (research.getDetails().getInformationLevel() > clan.getInformationLevel()) {
             throw new InvalidActionException("You need higher information level to perform this action.");
         }
 
-        Research research = clan.getResearch().get(request.getResearch());
         if (research.isCompleted()) {
             throw new InvalidActionException("This research has been completed already.");
         }
@@ -104,13 +104,13 @@ public class ResearchServiceImpl implements ResearchService {
             research.setProgress(0);
             research.setCompleted(false);
 
-            clan.getResearch().put(details.getIdentifier(), research);
+            clan.getResearch().add(research);
         }
     }
 
     private void processResearchAction(ResearchAction action, ClanNotification notification) {
         Character character = action.getCharacter();
-        Research research = character.getClan().getResearch().get(action.getResearch());
+        Research research = character.getClan().getResearch(action.getResearch());
         ResearchDetails details = research.getDetails();
 
         // compute progress
