@@ -1,10 +1,7 @@
 package com.withergate.api.model;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,9 +12,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.MapKeyClass;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -28,8 +22,6 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import lombok.Getter;
@@ -103,11 +95,8 @@ public class Clan {
     private Set<Building> buildings;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @MapKeyColumn(name = "identifier")
-    @MapKeyClass(ResearchDetails.ResearchName.class)
-    @MapKeyEnumerated(EnumType.STRING)
     @JsonView(Views.Internal.class)
-    private Map<ResearchDetails.ResearchName, Research> research;
+    private Set<Research> research;
 
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
@@ -128,7 +117,7 @@ public class Clan {
     public Clan() {
         characters = new HashSet<>();
         buildings = new HashSet<>();
-        research = new EnumMap<>(ResearchName.class);
+        research = new HashSet<>();
         items = new HashSet<>();
         quests = new HashSet<>();
     }
@@ -150,17 +139,6 @@ public class Clan {
         }
 
         return limit;
-    }
-
-    /**
-     * Returns the research as List.
-     *
-     * @return the list of research records
-     */
-    @JsonProperty("research")
-    @JsonView(Views.Internal.class)
-    public Collection<Research> getResearchAsList() {
-        return research.values();
     }
 
     /**
@@ -224,6 +202,16 @@ public class Clan {
      */
     public Building getBuilding(String identifier) {
         return buildings.stream().filter(building -> building.getDetails().getIdentifier().equals(identifier))
+                .findFirst().orElse(null);
+    }
+
+    public Research getResearch(ResearchBonusType bonusType) {
+        return research.stream().filter(r -> r.getDetails().getBonusType().equals(bonusType))
+                .findFirst().orElse(null);
+    }
+
+    public Research getResearch(String identifier) {
+        return research.stream().filter(r -> r.getDetails().getIdentifier().equals(identifier))
                 .findFirst().orElse(null);
     }
 

@@ -1,13 +1,10 @@
 package com.withergate.api.model.action;
 
-import com.withergate.api.model.research.ResearchDetails;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Research action. Used for sending a character to a perform research task.
@@ -19,9 +16,8 @@ import javax.persistence.Enumerated;
 @Setter
 public class ResearchAction extends BaseAction {
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "research", nullable = false)
-    private ResearchDetails.ResearchName research;
+    private String research;
 
     @Override
     public String getDescriptor() {

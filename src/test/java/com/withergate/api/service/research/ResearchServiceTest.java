@@ -1,6 +1,5 @@
 package com.withergate.api.service.research;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.withergate.api.model.BonusType;
@@ -12,7 +11,6 @@ import com.withergate.api.model.character.Trait;
 import com.withergate.api.model.character.TraitDetails;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.research.ResearchDetails;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.ResearchActionRepository;
 import com.withergate.api.repository.research.ResearchDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
@@ -54,9 +52,9 @@ public class ResearchServiceTest {
         clan.setId(1);
 
         ResearchDetails details1 = new ResearchDetails();
-        details1.setIdentifier(ResearchName.BEGGING);
+        details1.setIdentifier("BEGGING");
         ResearchDetails details2 = new ResearchDetails();
-        details2.setIdentifier(ResearchName.ARCHITECTURE);
+        details2.setIdentifier("ARCHITECTURE");
         List<ResearchDetails> details = List.of(details1, details2);
         Mockito.when(detailsRepository.findAll()).thenReturn(details);
 
@@ -64,15 +62,15 @@ public class ResearchServiceTest {
         researchService.assignResearch(clan);
 
         // then verify research assigned
-        Assert.assertTrue(clan.getResearch().containsKey(ResearchName.BEGGING));
-        Assert.assertTrue(clan.getResearch().containsKey(ResearchName.ARCHITECTURE));
+        Assert.assertNotNull(clan.getResearch("BEGGING"));
+        Assert.assertNotNull(clan.getResearch("ARCHITECTURE"));
     }
 
     @Test
     public void testGivenResearchActionWhenProcessingActionsThenVerifyProgressIncreased() {
         // given action
         ResearchDetails details = new ResearchDetails();
-        details.setIdentifier(ResearchName.BEGGING);
+        details.setIdentifier("BEGGING");
         details.setCost(20);
 
         Research research = new Research();
@@ -80,14 +78,14 @@ public class ResearchServiceTest {
         research.setDetails(details);
 
         Clan clan = new Clan();
-        clan.getResearch().put(ResearchName.BEGGING, research);
+        clan.getResearch().add(research);
 
         Character character = new Character();
         character.setIntellect(5);
         character.setClan(clan);
 
         ResearchAction action = new ResearchAction();
-        action.setResearch(ResearchName.BEGGING);
+        action.setResearch("BEGGING");
         action.setCharacter(character);
         action.setState(ActionState.PENDING);
 
@@ -105,7 +103,7 @@ public class ResearchServiceTest {
     public void testGivenResearchActionWhenProcessingActionsWithTraitThenVerifyProgressIncreased() {
         // given action
         ResearchDetails details = new ResearchDetails();
-        details.setIdentifier(ResearchName.BEGGING);
+        details.setIdentifier("BEGGING");
         details.setCost(20);
 
         Research research = new Research();
@@ -113,9 +111,7 @@ public class ResearchServiceTest {
         research.setDetails(details);
 
         Clan clan = new Clan();
-        HashMap<ResearchName, Research> clanResearch = new HashMap<>();
-        clanResearch.put(ResearchName.BEGGING, research);
-        clan.setResearch(clanResearch);
+        clan.getResearch().add(research);
 
         Character character = new Character();
         character.setIntellect(5);
@@ -131,7 +127,7 @@ public class ResearchServiceTest {
         character.getTraits().add(trait);
 
         ResearchAction action = new ResearchAction();
-        action.setResearch(ResearchName.BEGGING);
+        action.setResearch("BEGGING");
         action.setCharacter(character);
         action.setState(ActionState.PENDING);
 
@@ -149,7 +145,7 @@ public class ResearchServiceTest {
     public void testGivenResearchActionWhenCompletingResearchThenVerifyCompletionHandled() {
         // given action
         ResearchDetails details = new ResearchDetails();
-        details.setIdentifier(ResearchName.BEGGING);
+        details.setIdentifier("BEGGING");
         details.setCost(20);
         details.setFame(5);
 
@@ -159,14 +155,14 @@ public class ResearchServiceTest {
 
         Clan clan = new Clan();
         clan.setFame(5);
-        clan.getResearch().put(ResearchName.BEGGING, research);
+        clan.getResearch().add(research);
 
         Character character = new Character();
         character.setIntellect(5);
         character.setClan(clan);
 
         ResearchAction action = new ResearchAction();
-        action.setResearch(ResearchName.BEGGING);
+        action.setResearch("BEGGING");
         action.setCharacter(character);
         action.setState(ActionState.PENDING);
 

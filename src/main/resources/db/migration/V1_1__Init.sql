@@ -63,6 +63,8 @@ CREATE TABLE buildings (
 DROP TABLE IF EXISTS research_details;
 CREATE TABLE research_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
+    bonus_type VARCHAR(32),
+    bonus_text VARCHAR(32),
     image_url VARCHAR(256) NOT NULL,
     value INT NOT NULL,
     information_level INT NOT NULL,

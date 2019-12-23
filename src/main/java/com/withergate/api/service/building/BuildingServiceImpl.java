@@ -1,12 +1,12 @@
 package com.withergate.api.service.building;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.EndBonusType;
+import com.withergate.api.model.ResearchBonusType;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.BuildingAction.Type;
@@ -19,7 +19,6 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.BuildingRequest;
 import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails.ResearchName;
 import com.withergate.api.repository.action.BuildingActionRepository;
 import com.withergate.api.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.BonusUtils;
@@ -237,15 +236,15 @@ public class BuildingServiceImpl implements BuildingService {
         bonus += BonusUtils.getBuildingBonus(character, bonusType, notification, notificationService);
 
         // research side effect
-        if (bonusType.equals(BonusType.CRAFTING) && character.getClan().getResearch().containsKey(ResearchName.FORGERY)
-                && character.getClan().getResearch().get(ResearchName.FORGERY).isCompleted()) {
+        Research research = character.getClan().getResearch(ResearchBonusType.CRAFTING_CAPS);
+        if (bonusType.equals(BonusType.CRAFTING) && research != null && research.isCompleted()) {
             // add caps to clan for forgery
             int caps = randomService.getRandomInt(1, RandomServiceImpl.K4);
             character.getClan().changeCaps(caps);
             notification.changeCaps(caps);
 
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.research.forgery", new String[]{});
+            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);
         }
 
@@ -258,14 +257,14 @@ public class BuildingServiceImpl implements BuildingService {
         notification.changeFame(fame);
         clan.changeFame(fame);
 
-        Research architecture = clan.getResearch().get(ResearchName.ARCHITECTURE);
-        if (architecture != null && architecture.isCompleted()) {
+        Research research = clan.getResearch(ResearchBonusType.BUILDING_FAME);
+        if (research != null && research.isCompleted()) {
             // add fame to clan for architecture
-            notification.changeFame(architecture.getDetails().getValue());
-            clan.changeFame(architecture.getDetails().getValue());
+            notification.changeFame(research.getDetails().getValue());
+            clan.changeFame(research.getDetails().getValue());
 
             NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.research.architecture", new String[]{});
+            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);
         }
     }

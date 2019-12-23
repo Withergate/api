@@ -1,6 +1,5 @@
 package com.withergate.api.model.request;
 
-import com.withergate.api.model.research.ResearchDetails;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,6 +15,6 @@ import lombok.ToString;
 public class ResearchRequest {
 
     private int characterId;
-    private ResearchDetails.ResearchName research;
+    private String research;
 
 }

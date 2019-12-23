@@ -1,7 +1,7 @@
 package com.withergate.api.model;
 
 /**
- * EndBonusType enum. Used for end turn bonuses
+ * EndBonusType enum. Used for end turn bonuses.
  *
  * @author Martin Myslik
  */

@@ -179,8 +179,8 @@ public class Character {
             return -1;
         }
         int bonus = 0;
-        Optional<Building> building = clan.getBuildings().stream().filter(b -> b.getDetails().getBonusType() != null &&
-                b.getDetails().getBonusType().equals(BonusType.TRAINING)).findFirst();
+        Optional<Building> building = clan.getBuildings().stream().filter(b -> b.getDetails().getBonusType() != null
+                && b.getDetails().getBonusType().equals(BonusType.TRAINING)).findFirst();
         if (building.isPresent()) {
             bonus += building.get().getLevel();
         }

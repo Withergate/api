@@ -108,8 +108,8 @@ public class BonusUtils {
     }
 
     /**
-     * Gets end turn bonus for given building and bonus type. Uses injected notification service to add relevant notification detail to the provided
-     * notification.
+     * Gets end turn bonus for given building and bonus type. Uses injected notification service to add relevant notification detail to
+     * the provided notification.
      *
      * @param clan clan
      * @param bonusType bonus type to be handled
