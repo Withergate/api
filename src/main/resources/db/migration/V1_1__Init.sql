@@ -419,6 +419,7 @@ CREATE TABLE actions (
     food INT DEFAULT 0,
     junk INT DEFAULT 0,
     identifier VARCHAR(32),
+    faction VARCHAR(16),
     PRIMARY KEY (action_id)
 );
 

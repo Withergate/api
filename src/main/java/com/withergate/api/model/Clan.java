@@ -16,10 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.building.Building;
 import com.withergate.api.model.character.Character;
+import com.withergate.api.model.dto.FactionDTO;
 import com.withergate.api.model.faction.Faction;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.quest.Quest;
@@ -176,9 +178,20 @@ public class Clan {
      * Faction.
      */
     @ManyToOne
-    @JsonView(Views.Public.class)
+    @JsonIgnore
     @JoinColumn(name = "faction")
     private Faction faction;
+
+    /**
+     * Gets faction as DTO.
+     *
+     * @return faction DTO
+     */
+    @JsonProperty("faction")
+    @JsonView(Views.Public.class)
+    public FactionDTO getFactionDTO() {
+        return faction == null ? null : new FactionDTO(faction);
+    }
 
     /*
      * Setters.

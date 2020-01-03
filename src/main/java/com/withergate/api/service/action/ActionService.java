@@ -50,6 +50,13 @@ public interface ActionService {
     void processDisaster(int turnId);
 
     /**
+     * Executes all pending faction actions.
+     *
+     * @param turnId turn ID
+     */
+    void processFactionActions(int turnId);
+
+    /**
      * Assign default actions to all characters.
      */
     void assignDefaultActions();

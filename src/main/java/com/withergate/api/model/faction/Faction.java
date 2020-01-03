@@ -1,12 +1,7 @@
 package com.withergate.api.model.faction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.notification.LocalizedText;
-import com.withergate.api.model.view.Views;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Map;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.model.Clan;
+import com.withergate.api.model.notification.LocalizedText;
+import com.withergate.api.model.view.Views;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Faction entity.
