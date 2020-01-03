@@ -1,5 +1,5 @@
 -- Quests
-INSERT INTO quest_details (identifier, quest_type, condition, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
+INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
     ('quest.1', 'COMBAT', null, 2, 4, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
     ('quest.2', 'INTELLECT', null, 8, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
     ('quest.3', 'CRAFTSMANSHIP', null, 7, 3, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),

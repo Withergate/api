@@ -237,7 +237,7 @@ DROP TABLE IF EXISTS quest_details;
 CREATE TABLE quest_details (
     identifier VARCHAR(16),
     quest_type VARCHAR(32) NOT NULL,
-    condition VARCHAR(32),
+    quest_condition VARCHAR(32),
     difficulty INT NOT NULL,
     completion INT NOT NULL,
     caps_reward INT NOT NULL,
@@ -285,7 +285,7 @@ CREATE TABLE disaster_solutions (
     identifier VARCHAR(32),
     basic BIT DEFAULT 0,
     solution_type VARCHAR(32) NOT NULL,
-    condition VARCHAR(32),
+    disaster_condition VARCHAR(32),
     difficulty INT NOT NULL DEFAULT 0,
     bonus INT NOT NULL DEFAULT 0,
     junk_cost INT NOT NULL DEFAULT 0,

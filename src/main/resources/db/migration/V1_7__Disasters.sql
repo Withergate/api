@@ -25,7 +25,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.mutants.failure', 'en', 'The mutants easily broke through our defenses and did huge amount of damage to our camp.'),
     ('d.mutants.failure', 'cs', 'Útočníci snadno pronikli do našeho úkrytu. Bez odporu loupili a škodili postavám i budovám. Ačkoliv odtáhli, z jejich nájezdu se budeme dlouho vzpamatovávat.');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.mutants.s1', true, 'd.mutants', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
     ('d.mutants.s2', false, 'd.mutants', 'CRAFTSMANSHIP', null, 6, 10, 5, 0, 0, false),
     ('d.mutants.s3', false, 'd.mutants', 'COMBAT', null, 5, 12, 0, 0, 0, false),
@@ -76,7 +76,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.inquisition.failure', 'en', 'Well, that was just bad. The priests did not find a sufficient zeal in out clan. Instead, they did find out that some of us are lying with the Devil. The priests launched inquisition and a painful interrogation. Nobody confessed, but they were satisfied that we are believing in Atom now. The priests confiscated some property and left our clan in order to spread their faith somewhere else.'),
     ('d.inquisition.failure', 'cs', 'To bylo horší, než jsme čekali. Nenašli u nás dostatečný zápal pro víru, zato zjistili, že někteří z nás obcují s Ďáblem. Zahájili vyšetřování a bolestivé výslechy. Nikdo se nepřiznal, ale stačilo jim, že někteří z nás raději přijali víru. Kněží pak zkonfiskovali trochu majetku a jeli šířit své bohulibé myšlenky jinam...');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.inquisition.s1', true, 'd.inquisition', 'AUTOMATIC', null,  0, 5, 0, 0, 0, false),
     ('d.inquisition.s2', false, 'd.inquisition', 'INTELLECT', null, 7, 10, 0, 0, 0, false),
     ('d.inquisition.s3', false, 'd.inquisition', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
@@ -127,7 +127,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.refugees.failure', 'en', 'Our solution was not successful. The refugess went totally out of control and took everything they wanted. Despair because of their hunger, they fought with us and took everything they were able to carry - not even from our storage area, but from the whole neighbourhood.'),
     ('d.refugees.failure', 'cs', 'Naše řešení nezapůsobilo. Zcela se vymkli naší kontrole a brali si, co chtěli. Měli hlad, prali se s námi a pak vzali vše, na co přišli. Nejen z našich zásob, ale i z celého sousedství...');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.refugees.s1', true, 'd.refugees', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
     ('d.refugees.s2', false, 'd.refugees', 'INTELLECT', null, 7, 10, 0, 0, 0, false),
     ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', null, 0, 12, 0, 0, 30, false),
@@ -178,7 +178,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.storm.failure', 'en', 'Several stormdays struck in a full force. The windstorm teared off the roofs from our houses. Falling trees and torrential waters made a terribly mess in our clan. The fight with raging elements was difficult for our health and property.'),
     ('d.storm.failure', 'cs', 'Několik bouřkových dní udeřilo v plné síle. Vichřice rvala střechy z našich domů a lámala stromy, které v našem klanu způsobily pořádnou spoušť. Trosky zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta a naše nyní již bývalé zásoby, plesnivé a zrezivělé… V panice při útěku před živly také došlo k několika zraněním.');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.storm.s1', true, 'd.storm', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
     ('d.storm.s2', false, 'd.storm', 'CRAFTSMANSHIP', null, 7, 10, 0, 0, 0, false),
     ('d.storm.s3', false, 'd.storm', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
@@ -230,7 +230,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.clans.failure', 'en', 'Unfortunately, we have not managed to spread the fame of our clan at all. We are leaving for the assembly without any preparation. Will anybody support us or are we gonna leave as beggers?'),
     ('d.clans.failure', 'cs', 'Bohužel se nám vůbec nepodařilo rozšířit pověst našeho klanu. Na sněm odjíždíme bez jakékoliv přípravy, téměř s holým zadkem. Jsme tak dobří, že nám spadne vítězství samo do klína? Bude se s námi vůbec někdo bavit, když vypadáme jako žebráci?');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.clans.s1', true, 'd.clans', 'AUTOMATIC', null, 0, 3, 0, 0, 0, false),
     ('d.clans.s2', false, 'd.clans', 'INTELLECT', null, 8, 6, 0, 0, 0, false),
     ('d.clans.s3', false, 'd.clans', 'CRAFTSMANSHIP', null, 6, 6, 10, 0, 0, false),
@@ -286,7 +286,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.king.failure', 'en', 'Unfortunately, neither the King nor his ambassadors are interested. He might crave our possessions, and nothing would stop him from taking it. He would rule the whole region including Withergate, together with those who bent the knee. Our participation in the new government is unlikely.'),
     ('d.king.failure', 'cs', 'Bohužel Krále ani jeho vyslance vůbec nezajímáme. Možná jej bude zajímat náš majetek a nic mu nezabrání, aby nám jej vzal - stejně jako si brzy vezme Withergate a společně s těmi, kteří před ním poklekli, bude vládnout celé oblasti. Naše účast na nové vládě je nepravděpodobná.');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.king.s1', true, 'd.king', 'AUTOMATIC', null, 0, 3, 0, 0, 0, false),
     ('d.king.s2', false, 'd.king', 'SCAVENGE', null, 8, 6, 0, 0, 0, false),
     ('d.king.s3', false, 'd.king', 'INTELLECT', 'ITEM_EQUIPPED', 6, 6, 0, 0, 0, true),

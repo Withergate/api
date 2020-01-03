@@ -47,7 +47,7 @@ public class QuestDetails {
     @Enumerated(EnumType.STRING)
     private SolutionType type;
 
-    @Column(name = "condition", updatable = false)
+    @Column(name = "quest_condition", updatable = false)
     @Enumerated(EnumType.STRING)
     private SolutionCondition condition;
 

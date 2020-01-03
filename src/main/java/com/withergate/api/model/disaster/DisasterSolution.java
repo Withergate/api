@@ -43,7 +43,7 @@ public class DisasterSolution {
     @Enumerated(EnumType.STRING)
     private SolutionType solutionType;
 
-    @Column(name = "condition", updatable = false)
+    @Column(name = "disaster_condition", updatable = false)
     @Enumerated(EnumType.STRING)
     private SolutionCondition condition;
 
