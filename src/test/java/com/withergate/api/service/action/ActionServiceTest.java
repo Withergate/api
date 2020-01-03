@@ -3,6 +3,7 @@ package com.withergate.api.service.action;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.disaster.DisasterService;
+import com.withergate.api.service.faction.FactionService;
 import com.withergate.api.service.location.ArenaService;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.location.TavernService;
@@ -46,12 +47,15 @@ public class ActionServiceTest {
     @Mock
     private DisasterService disasterService;
 
+    @Mock
+    private FactionService factionService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         actionService = new ActionServiceImpl(characterService, locationService, buildingService, researchService,
-                questService, tradeService, arenaService, tavernService, disasterService);
+                questService, tradeService, arenaService, tavernService, disasterService, factionService);
     }
 
     @Test

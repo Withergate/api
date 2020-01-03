@@ -24,6 +24,7 @@ public class GamePropertiesDTO {
     private final int buildingFame;
     private final int tavernRefreshPrice;
     private final int trainingPrice;
+    private final int factionEntryFame;
 
     /**
      * Constructor.
@@ -40,6 +41,7 @@ public class GamePropertiesDTO {
         this.buildingFame = properties.getBuildingFame();
         this.tavernRefreshPrice = properties.getTavernRefreshPrice();
         this.trainingPrice = properties.getTrainingPrice();
+        this.factionEntryFame = properties.getFactionEntryFame();
     }
 
 }
