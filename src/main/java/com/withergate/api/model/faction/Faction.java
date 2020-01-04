@@ -1,5 +1,6 @@
 package com.withergate.api.model.faction;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,8 +14,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.disaster.DisasterSolution;
 import com.withergate.api.model.notification.LocalizedText;
 import com.withergate.api.model.view.Views;
 import lombok.Getter;
@@ -34,6 +37,9 @@ public class Faction {
     @Id
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
+
+    @Column(name = "faction_points", nullable = false)
+    private int points;
 
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
@@ -55,5 +61,13 @@ public class Faction {
     @JsonIgnore
     @JsonView(Views.Internal.class)
     private Set<Clan> clans;
+
+    @OneToMany(mappedBy = "faction", cascade = CascadeType.ALL)
+    private List<FactionAid> factionAids;
+
+    @JsonProperty("numClans")
+    private int getNumClans() {
+        return clans.size();
+    }
 
 }

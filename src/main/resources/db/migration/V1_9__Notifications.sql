@@ -77,7 +77,9 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('disaster.action.failure', 'en', 'Unfortunately, the action failed.'),
     ('disaster.action.failure', 'cs', 'Bohužel se akci nepodařilo úspěšně dokončit.'),
     ('faction.join', 'en', 'Your character went as an envoy to the [] faction and your clan was accepted as a member.'),
-    ('faction.join', 'cs', 'Tvá postava byla vyslána do frakce [] a tvůj klan se stal jejím členem.');
+    ('faction.join', 'cs', 'Tvá postava byla vyslána do frakce [] a tvůj klan se stal jejím členem.'),
+    ('faction.aid', 'en', 'Your character supported your faction [].'),
+    ('faction.aid', 'cs', 'Postava podpořila naší frakci [].');
 
 -- Placeholder texts detail
 INSERT INTO placeholder_texts(code, lang, text) VALUES

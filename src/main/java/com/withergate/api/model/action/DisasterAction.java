@@ -24,7 +24,7 @@ public class DisasterAction extends BaseAction {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "identifier", nullable = false, updatable = false)
+    @JoinColumn(name = "disaster_solution", nullable = false, updatable = false)
     private DisasterSolution solution;
 
     @Override

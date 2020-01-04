@@ -16,11 +16,28 @@ CREATE TABLE avatars (
 DROP TABLE IF EXISTS factions;
 CREATE TABLE factions (
     identifier VARCHAR(16),
+    faction_points INT DEFAULT 0,
     image_url VARCHAR(256) NOT NULL,
     icon_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (identifier)
 );
 
+DROP TABLE IF EXISTS faction_aids;
+CREATE TABLE faction_aids (
+    aid_id INT AUTO_INCREMENT,
+    aid_type VARCHAR(32) NOT NULL,
+    fame INT NOT NULL DEFAULT 0,
+    faction_points INT NOT NULL DEFAULT 0,
+    caps_cost INT NOT NULL DEFAULT 0,
+    food_cost INT NOT NULL DEFAULT 0,
+    junk_cost INT NOT NULL DEFAULT 0,
+    health_cost BIT DEFAULT 0,
+    faction VARCHAR(16) NOT NULL,
+    PRIMARY KEY (aid_id),
+    CONSTRAINT faction_faction_solution_fk FOREIGN KEY (faction) REFERENCES factions (identifier)
+);
+
+-- Clans
 DROP TABLE IF EXISTS clans;
 CREATE TABLE clans (
     clan_id INT,
@@ -34,8 +51,9 @@ CREATE TABLE clans (
     information_level INT NOT NULL,
     disaster_progress INT NOT NULL DEFAULT 0,
     default_action VARCHAR(32) NOT NULL,
-    prefer_disaster BIT default 1,
+    prefer_disaster BIT DEFAULT 1,
     faction VARCHAR(16),
+    faction_points INT DEFAULT 0,
     CONSTRAINT clan_faction_fk FOREIGN KEY (faction) REFERENCES factions (identifier),
     PRIMARY KEY (clan_id)
 );
@@ -213,6 +231,7 @@ CREATE TABLE clan_notifications (
     experience INT,
     information INT,
     item BIT DEFAULT 0,
+    faction_points INT,
     death BIT DEFAULT 0,
     image_url VARCHAR(256) DEFAULT NULL,
     PRIMARY KEY (notification_id),
@@ -418,8 +437,9 @@ CREATE TABLE actions (
     trade_type VARCHAR(16),
     food INT DEFAULT 0,
     junk INT DEFAULT 0,
-    identifier VARCHAR(32),
+    disaster_solution VARCHAR(32),
     faction VARCHAR(16),
+    faction_aid INT,
     PRIMARY KEY (action_id)
 );
 

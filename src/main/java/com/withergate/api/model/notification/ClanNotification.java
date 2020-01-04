@@ -80,6 +80,9 @@ public class ClanNotification {
     @Column(name = "item")
     private boolean item;
 
+    @Column(name = "factionPoints")
+    private int factionPoints;
+
     @Column(name = "death")
     private boolean death;
 
@@ -137,6 +140,10 @@ public class ClanNotification {
 
     public void changeHealing(int healing) {
         this.healing += healing;
+    }
+
+    public void changeFactionPoints(int factionPoints) {
+        this.factionPoints += factionPoints;
     }
 
 }
