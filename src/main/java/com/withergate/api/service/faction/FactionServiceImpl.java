@@ -10,10 +10,13 @@ import com.withergate.api.model.action.FactionAction.Type;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
 import com.withergate.api.model.faction.Faction;
+import com.withergate.api.model.faction.FactionAid;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.FactionRequest;
 import com.withergate.api.repository.action.FactionActionRepository;
 import com.withergate.api.repository.faction.FactionRepository;
+import com.withergate.api.service.RandomService;
+import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
@@ -38,6 +41,7 @@ public class FactionServiceImpl implements FactionService {
     private final CharacterService characterService;
     private final FactionActionRepository factionActionRepository;
     private final NotificationService notificationService;
+    private final RandomService randomService;
     private final GameProperties properties;
 
     @Transactional
@@ -70,6 +74,27 @@ public class FactionServiceImpl implements FactionService {
             action.setFaction(faction.getIdentifier());
         }
 
+        Clan clan = character.getClan();
+        if (request.getType().equals(Type.SUPPORT)) {
+            if (clan.getFaction() == null) {
+                throw new InvalidActionException("Clan must be in a faction to perform this action.");
+            }
+
+            FactionAid aid = getFactionAid(request.getFactionAid(), character.getClan().getFaction());
+            // check cost
+            if (clan.getCaps() < aid.getCapsCost() || clan.getFood() < aid.getFoodCost()
+                    || clan.getJunk() < aid.getJunkCost()) {
+                throw new InvalidActionException("Not enough resources to perform this action");
+            }
+
+            // pay resources
+            clan.changeCaps(-aid.getCapsCost());
+            clan.changeFood(-aid.getFoodCost());
+            clan.changeJunk(-aid.getJunkCost());
+
+            action.setFactionAid(aid);
+        }
+
         // mark character as busy
         character.setState(CharacterState.BUSY);
 
@@ -98,15 +123,14 @@ public class FactionServiceImpl implements FactionService {
                     Faction faction = factionRepository.getOne(action.getFaction());
                     joinFaction(faction, character, notification);
                     break;
+                case SUPPORT:
+                    handleSupportAction(action, character, notification);
                 default:
                     log.error("Unknown action type: {}.", action.getType());
             }
 
             // save notification
             notificationService.save(notification);
-
-            // mark character ready
-            character.setState(CharacterState.READY);
 
             // mark action processed
             action.setState(ActionState.COMPLETED);
@@ -120,5 +144,46 @@ public class FactionServiceImpl implements FactionService {
 
         // update notification
         notificationService.addLocalizedTexts(notification.getText(), "faction.join", new String[]{}, faction.getName());
+    }
+
+    private void handleSupportAction(FactionAction action, Character character, ClanNotification notification) {
+        FactionAid aid = action.getFactionAid();
+
+        notificationService.addLocalizedTexts(notification.getText(), "faction.aid", new String[]{},
+                character.getClan().getFaction().getName());
+
+        switch (aid.getAidType()) {
+            case SUPPORT:
+                // no effect
+                break;
+            case SACRIFICE:
+                int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
+                character.changeHitpoints(-injury);
+                notification.changeInjury(injury);
+                if (character.getHitpoints() < 1) {
+                    notification.setDeath(true);
+                }
+                break;
+            default:
+                log.error("Unknown aid type: {}", aid.getAidType());
+        }
+
+        character.getClan().changeFactionPoints(aid.getFactionPoints());
+        notification.changeFactionPoints(aid.getFactionPoints());
+        character.getClan().changeFame(aid.getFame());
+        notification.changeFame(aid.getFame());
+
+        // increase factions points
+        Faction faction = character.getClan().getFaction();
+        faction.setPoints(faction.getPoints() + aid.getFactionPoints());
+    }
+
+    private FactionAid getFactionAid(int aidId, Faction faction) throws InvalidActionException {
+        for (FactionAid aid : faction.getFactionAids()) {
+            if (aid.getId() == aidId) {
+                return aid;
+            }
+        }
+        throw new InvalidActionException("This action was not found.");
     }
 }

@@ -182,6 +182,9 @@ public class Clan {
     @JoinColumn(name = "faction")
     private Faction faction;
 
+    @Column(name = "faction_points", nullable = false)
+    private int factionPoints;
+
     /**
      * Gets faction as DTO.
      *
@@ -218,6 +221,10 @@ public class Clan {
 
     public void changeDisasterProgress(int progress) {
         this.disasterProgress += progress;
+    }
+
+    public void changeFactionPoints(int factionPoints) {
+        this.factionPoints += factionPoints;
     }
 
     /*
