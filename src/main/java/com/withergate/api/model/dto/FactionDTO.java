@@ -27,6 +27,11 @@ public class FactionDTO {
     private final int points;
     private List<FactionAid> factionAids;
 
+    /**
+     * Constructor.
+     *
+     * @param faction faction
+     */
     public FactionDTO(Faction faction) {
         this.identifier = faction.getIdentifier();
         this.imageUrl = faction.getImageUrl();
