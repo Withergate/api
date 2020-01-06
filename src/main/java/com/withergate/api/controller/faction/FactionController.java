@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.withergate.api.model.faction.Faction;
+import com.withergate.api.model.faction.FactionsOverview;
 import com.withergate.api.model.request.FactionRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.faction.FactionService;
@@ -51,6 +52,16 @@ public class FactionController {
 
         factionService.saveFactionAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves overview of factions.
+     *
+     * @return factions overview
+     */
+    @GetMapping("/factions/overview")
+    public ResponseEntity<FactionsOverview> getFactionsOverview(Principal principal) {
+        return new ResponseEntity<>(factionService.getOverview(Integer.parseInt(principal.getName())), HttpStatus.OK);
     }
 
 }

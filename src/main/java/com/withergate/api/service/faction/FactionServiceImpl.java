@@ -9,11 +9,15 @@ import com.withergate.api.model.action.FactionAction;
 import com.withergate.api.model.action.FactionAction.Type;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterState;
+import com.withergate.api.model.faction.ClanFactionOverview;
 import com.withergate.api.model.faction.Faction;
 import com.withergate.api.model.faction.FactionAid;
+import com.withergate.api.model.faction.FactionPointsOverview;
+import com.withergate.api.model.faction.FactionsOverview;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.FactionRequest;
 import com.withergate.api.repository.action.FactionActionRepository;
+import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.faction.FactionRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -25,7 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Faction service implementation.
@@ -37,11 +44,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FactionServiceImpl implements FactionService {
 
+    private static final int FAME_PER_CLAN = 10;
+    private static final int LEADERBOARD_SIZE = 5;
+
     private final FactionRepository factionRepository;
     private final CharacterService characterService;
     private final FactionActionRepository factionActionRepository;
     private final NotificationService notificationService;
     private final RandomService randomService;
+    private final ClanRepository clanRepository;
     private final GameProperties properties;
 
     @Transactional
@@ -125,6 +136,7 @@ public class FactionServiceImpl implements FactionService {
                     break;
                 case SUPPORT:
                     handleSupportAction(action, character, notification);
+                    break;
                 default:
                     log.error("Unknown action type: {}.", action.getType());
             }
@@ -135,6 +147,39 @@ public class FactionServiceImpl implements FactionService {
             // mark action processed
             action.setState(ActionState.COMPLETED);
         }
+    }
+
+    @Override
+    public FactionsOverview getOverview(int clanId) {
+        Clan clan = clanRepository.getOne(clanId);
+        if (clan.getFaction() == null) return null;
+
+        List<Faction> factions = factionRepository.findAll();
+        int clanCount = (int) clanRepository.count();
+        int totalFame = FAME_PER_CLAN * clanCount; // total fame to be redistributed
+        int totalPoints = factions.stream().mapToInt(Faction::getPoints).sum(); // total points
+
+        FactionsOverview overview = new FactionsOverview();
+        overview.setFactions(new ArrayList<>());
+        for (Faction faction : factions) {
+            double ratio = (double) faction.getPoints() / totalPoints;
+            FactionPointsOverview fpo = new FactionPointsOverview();
+            fpo.setIdentifier(faction.getIdentifier());
+            fpo.setIconUrl(faction.getIconUrl());
+            fpo.setName(faction.getName());
+            fpo.setPoints(faction.getPoints());
+            fpo.setFame(FAME_PER_CLAN * clanCount + (int) (totalFame * ratio));
+            overview.getFactions().add(fpo);
+
+            // compute expected clan fame
+            if (faction.getIdentifier().equals(clan.getFaction().getIdentifier())) {
+                overview.setClanPoints(clan.getFactionPoints());
+                overview.setClanFame(getClanFame(clan, faction, fpo.getFame()));
+                overview.setClans(getLeaderboard(faction, fpo.getFame()));
+            }
+        }
+
+        return overview;
     }
 
     private void joinFaction(Faction faction, Character character, ClanNotification notification) {
@@ -185,5 +230,28 @@ public class FactionServiceImpl implements FactionService {
             }
         }
         throw new InvalidActionException("This action was not found.");
+    }
+
+    private int getClanFame(Clan clan, Faction faction, int factionFame) {
+        double clanRatio = (double) clan.getFactionPoints() / faction.getPoints();
+        return (int) (factionFame * clanRatio);
+    }
+
+    private List<ClanFactionOverview> getLeaderboard(Faction faction, int factionFame) {
+        // get faction clans sorted by faction points
+        List<Clan> clans = faction.getClans().stream().sorted(Comparator.comparingInt(Clan::getFactionPoints).reversed())
+                .collect(Collectors.toList());
+
+        List<ClanFactionOverview> overviews = new ArrayList<>();
+        int i = 0;
+        for (Clan clan : clans) {
+            if (i >= LEADERBOARD_SIZE) break;
+            ClanFactionOverview overview = new ClanFactionOverview(clan.getName(), clan.getFactionPoints(),
+                    getClanFame(clan, faction, factionFame));
+            overviews.add(overview);
+            i++;
+        }
+
+        return overviews;
     }
 }
