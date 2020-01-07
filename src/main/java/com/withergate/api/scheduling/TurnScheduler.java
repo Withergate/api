@@ -69,6 +69,11 @@ public class TurnScheduler {
         // perform clan turn updates
         clanService.performClanTurnUpdates(currentTurn.getTurnId());
 
+        // perform end game actions
+        if (currentTurn.getTurnId() == gameProperties.getMaxTurns()) {
+            actionService.performEndGameActions(currentTurn.getTurnId());
+        }
+
         // prepare next turn
         log.info(" === Finished processing turn: {} ===", currentTurn.getTurnId());
 

@@ -163,7 +163,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('LEATHER_CLOTHES', 'en', 'Standard clothing providing a basic defense.'),
     ('LEATHER_CLOTHES', 'cs', 'Standardní oděv poskytující základní ochranu.'),
     ('LAB_COAT', 'en', 'Torn lab coat. Does not offer any protection but looks incredibly smart. Increases research speed.'),
-    ('LAB_COAT', 'cs', 'Potrhaný laboratorní plášť. Neposkytuje žádnou ochranu, ale vypadá zatraceně chytře. Zvyšuje rychlost vázkumu.'),
+    ('LAB_COAT', 'cs', 'Potrhaný laboratorní plášť. Neposkytuje žádnou ochranu, ale vypadá zatraceně chytře. Zvyšuje rychlost výzkumu.'),
     ('LEATHER_COVERED', 'en', 'Clothing made of leather covered with nails and other metal junk. Unattractive, yes, but it protects every important parts of the body.'),
     ('LEATHER_COVERED', 'cs', 'Oděv z kůže pobité hřeby a dalšími kovovými zbytky. Nevzhledně vypadající, leč dostatečně chránící všechny důležité části těla.'),
     ('CAMO_SUIT', 'en', 'Camouflage clothing designed to resemble the background environment. It provides basic defense and also decreases chances for random encounters.'),

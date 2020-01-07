@@ -21,7 +21,7 @@ INSERT INTO localized_texts(research_name, lang, text) VALUES
     ('ARCHITECTURE', 'en', 'Wasteland architecture'),
     ('ARCHITECTURE', 'cs', 'Architektura Pustiny'),
     ('COLLECTING', 'en', 'Collecting'),
-    ('COLLECTING', 'cs', 'Collecting'),
+    ('COLLECTING', 'cs', 'Sběratelství'),
     ('CULINARY', 'en', 'Culinary'),
     ('CULINARY', 'cs', 'Kulinářství'),
     ('DECORATION', 'en', 'Decoration'),
