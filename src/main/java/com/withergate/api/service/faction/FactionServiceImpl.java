@@ -1,10 +1,14 @@
 package com.withergate.api.service.faction;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionDescriptor;
 import com.withergate.api.model.action.ActionState;
-import com.withergate.api.model.action.BuildingAction;
 import com.withergate.api.model.action.FactionAction;
 import com.withergate.api.model.action.FactionAction.Type;
 import com.withergate.api.model.character.Character;
@@ -28,11 +32,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Faction service implementation.
@@ -155,31 +154,51 @@ public class FactionServiceImpl implements FactionService {
         if (clan.getFaction() == null) return null;
 
         List<Faction> factions = factionRepository.findAll();
-        int clanCount = (int) clanRepository.count();
-        int totalFame = FAME_PER_CLAN * clanCount; // total fame to be redistributed
-        int totalPoints = factions.stream().mapToInt(Faction::getPoints).sum(); // total points
 
         FactionsOverview overview = new FactionsOverview();
         overview.setFactions(new ArrayList<>());
         for (Faction faction : factions) {
-            double ratio = (double) faction.getPoints() / totalPoints;
             FactionPointsOverview fpo = new FactionPointsOverview();
             fpo.setIdentifier(faction.getIdentifier());
             fpo.setIconUrl(faction.getIconUrl());
             fpo.setName(faction.getName());
             fpo.setPoints(faction.getPoints());
-            fpo.setFame(FAME_PER_CLAN * clanCount + (int) (totalFame * ratio));
+            fpo.setFame(getFactionFame(faction, factions));
             overview.getFactions().add(fpo);
 
             // compute expected clan fame
             if (faction.getIdentifier().equals(clan.getFaction().getIdentifier())) {
                 overview.setClanPoints(clan.getFactionPoints());
-                overview.setClanFame(getClanFame(clan, faction, fpo.getFame()));
+                overview.setClanFame(getClanFame(clan, fpo.getFame()));
                 overview.setClans(getLeaderboard(faction, fpo.getFame()));
             }
         }
 
         return overview;
+    }
+
+    @Override
+    public void handleFameDistribution(int turnId) {
+        log.debug("Distributing faction fame.");
+
+        List<Faction> factions = factionRepository.findAll();
+        for (Clan clan : clanRepository.findAll()) {
+            if (clan.getFaction() == null) continue;
+
+            int fame = getClanFame(clan, getFactionFame(clan.getFaction(), factions));
+            if (fame < 1) continue;
+            clan.changeFame(fame);
+
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notification.setImageUrl(clan.getFaction().getImageUrl());
+            notification.changeFame(fame);
+            notificationService.addLocalizedTexts(notification.getText(), "faction.fame", new String[]{},
+                    clan.getFaction().getName());
+
+            // save notification
+            notificationService.save(notification);
+        }
     }
 
     private void joinFaction(Faction faction, Character character, ClanNotification notification) {
@@ -232,8 +251,17 @@ public class FactionServiceImpl implements FactionService {
         throw new InvalidActionException("This action was not found.");
     }
 
-    private int getClanFame(Clan clan, Faction faction, int factionFame) {
-        double clanRatio = (double) clan.getFactionPoints() / faction.getPoints();
+    private int getFactionFame(Faction faction, List<Faction> factions) {
+        int clanCount = (int) clanRepository.count();
+        int totalFame = FAME_PER_CLAN * clanCount; // total fame to be redistributed
+        int totalPoints = factions.stream().mapToInt(Faction::getPoints).sum(); // total points
+        double ratio = (double) faction.getPoints() / totalPoints;
+
+        return FAME_PER_CLAN * clanCount + (int) (totalFame * ratio);
+    }
+
+    private int getClanFame(Clan clan, int factionFame) {
+        double clanRatio = (double) clan.getFactionPoints() / clan.getFaction().getPoints();
         return (int) (factionFame * clanRatio);
     }
 
@@ -247,7 +275,7 @@ public class FactionServiceImpl implements FactionService {
         for (Clan clan : clans) {
             if (i >= LEADERBOARD_SIZE) break;
             ClanFactionOverview overview = new ClanFactionOverview(clan.getName(), clan.getFactionPoints(),
-                    getClanFame(clan, faction, factionFame));
+                    getClanFame(clan, factionFame));
             overviews.add(overview);
             i++;
         }

@@ -44,4 +44,9 @@ public interface FactionService {
      */
     FactionsOverview getOverview(int clanId);
 
+    /**
+     * Handles fame distribution at the end of the game.
+     */
+    void handleFameDistribution(int turnId);
+
 }

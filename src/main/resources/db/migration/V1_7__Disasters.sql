@@ -98,7 +98,7 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.inquisition.s2', 'en', 'There is everything in order in our clan, but they should inspect our neighbours. We will spread a perfect lie about a devils living nearby. About a rich devils, whose property can be easily confiscated. This action depends on an intellect of a character.'),
     ('d.inquisition.s2', 'cs', 'U nás je všechno v pořádku, ať jdou radši k sousedům. Než přijdou, rozšíříme v našem klanu dokonalou lež o ďáblech žijících poblíž. O bohatých ďáblech, jejichž majetek lze snadno zkonfiskovat a nikdo proti tomu neřekne ani “popel z hranice”. Výsledek této akce je ovlivněn intelektem postavy.'),
     ('d.inquisition.s3', 'en', 'Bones of Atom is a gift which sais that no devil can live among us. Let’s find a pile of old bones and a proper tools. This action depends on a craftsmanship of a character.'),
-    ('d.inquisition.s3', 'cs', 'Podstrčíme jim padělek svatých ostatků, kostí samotného Atoma. Po takovém daru je jasné, že mezi námi Ďábel žít nemůže. Výsledek této ake je ovlivněn zručností postavy.'),
+    ('d.inquisition.s3', 'cs', 'Podstrčíme jim padělek svatých ostatků, kostí samotného Atoma. Po takovém daru je jasné, že mezi námi Ďábel žít nemůže. Výsledek této akce je ovlivněn zručností postavy.'),
     ('d.inquisition.s4', 'en', 'Even the faith can be bought.'),
     ('d.inquisition.s4', 'cs', 'I víra se dá koupit.');
 

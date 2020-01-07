@@ -57,6 +57,13 @@ public interface ActionService {
     void processFactionActions(int turnId);
 
     /**
+     * Performs all actions reserved for the end of the game.
+     *
+     * @param turnId turn ID
+     */
+    void performEndGameActions(int turnId);
+
+    /**
      * Assign default actions to all characters.
      */
     void assignDefaultActions();

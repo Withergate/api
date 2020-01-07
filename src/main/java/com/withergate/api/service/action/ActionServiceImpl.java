@@ -141,6 +141,16 @@ public class ActionServiceImpl implements ActionService {
         factionService.processFactionActions(turnId);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+    @Retryable
+    @Override
+    public void performEndGameActions(int turnId) {
+        log.debug("-> Processing end game actions...");
+
+        // factions fame distribution
+        factionService.handleFameDistribution(turnId);
+    }
+
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Retryable
     @Override

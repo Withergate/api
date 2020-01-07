@@ -49,7 +49,7 @@ jacocoTestReport {
 check.dependsOn jacocoTestReport
 
 group = 'com.withergate'
-version = '0.2.1'
+version = '0.3.0'
 sourceCompatibility = 11
 targetCompatibility = 11
 
