@@ -92,7 +92,8 @@ public class TradeServiceTest {
 
         List<MarketOffer> offers = new ArrayList<>();
         offers.add(offer);
-        Mockito.when(marketOfferRepository.findAllByState(Mockito.eq(State.PUBLISHED), Mockito.any())).thenReturn(new PageImpl<>(offers));
+        Mockito.when(marketOfferRepository.findAllByStateOrderByPriceAsc(Mockito.eq(State.PUBLISHED), Mockito.any()))
+                .thenReturn(new PageImpl<>(offers));
 
         // given state when loading offers
         Page<MarketOffer> result = tradeService.getMarketOffersByState(State.PUBLISHED, PageRequest.of(0, 20));
