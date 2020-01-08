@@ -220,7 +220,7 @@ public class TradeServiceImpl implements TradeService {
 
     @Override
     public Page<MarketOffer> getMarketOffersByState(State state, Pageable pageable) {
-        return marketOfferRepository.findAllByState(state, pageable);
+        return marketOfferRepository.findAllByStateOrderByPriceAsc(state, pageable);
     }
 
     @Override

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MarketOfferRepository extends JpaRepository<MarketOffer, Integer> {
 
-    Page<MarketOffer> findAllByState(State state, Pageable pageable);
+    Page<MarketOffer> findAllByStateOrderByPriceAsc(State state, Pageable pageable);
     List<MarketOffer> findAllByState(State state);
 
 }
