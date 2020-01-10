@@ -52,12 +52,16 @@ public class CombatRoundServiceImpl implements CombatRoundService {
 
         // handle draw
         if (combat1 == combat2) {
+            NotificationDetail detailDraw = new NotificationDetail();
             // one of the characters gets random bonus
             if (randomService.getRandomInt(1, RandomServiceImpl.K100) <= 50) {
+                notificationService.addLocalizedTexts(detailDraw.getText(), "detail.combat.draw", new String[]{character1.getName()});
                 combat1++;
             } else {
+                notificationService.addLocalizedTexts(detailDraw.getText(), "detail.combat.draw", new String[]{character2.getName()});
                 combat2++;
             }
+            details.add(detailDraw);
         }
 
         // select winner and loser
