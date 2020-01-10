@@ -15,8 +15,7 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('CULT', 'en', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin in tellus sit amet nibh dignissim sagittis. Aliquam erat volutpat. Duis pulvinar. Donec vitae arcu.'),
     ('CULT', 'cs', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin in tellus sit amet nibh dignissim sagittis. Aliquam erat volutpat. Duis pulvinar. Donec vitae arcu.');
 
-INSERT INTO faction_aids (faction, aid_type, caps_cost, food_cost, junk_cost, health_cost, faction_points, fame) VALUES
-    ('REVOLUTION', 'SUPPORT', 5, 0, 0, false, 5, 1),
-    ('REVOLUTION', 'SUPPORT', 0, 0, 10, false, 10, 1),
+INSERT INTO faction_aids (faction, aid_type, cost, aid, num_aid, health_cost, faction_points, fame) VALUES
+    ('REVOLUTION', 'RESOURCES', 10, 2, 3, false, 10, 1),
     ('CULT', 'SACRIFICE', 0, 0, 0, true, 5, 1),
-    ('CULT', 'SUPPORT', 0, 10, 0, false, 10, 1);
+    ('CULT', 'RESOURCES', 10, 2, 3, false, 10, 1);

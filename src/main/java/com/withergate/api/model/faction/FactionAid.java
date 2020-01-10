@@ -41,14 +41,14 @@ public class FactionAid {
     @Column(name = "faction_points", updatable = false, nullable = false)
     private int factionPoints;
 
-    @Column(name = "caps_cost", updatable = false, nullable = false)
-    private int capsCost;
+    @Column(name = "cost", updatable = false, nullable = false)
+    private int cost;
 
-    @Column(name = "food_cost", updatable = false, nullable = false)
-    private int foodCost;
+    @Column(name = "aid", updatable = false, nullable = false)
+    private int aid;
 
-    @Column(name = "junk_cost", updatable = false, nullable = false)
-    private int junkCost;
+    @Column(name = "num_aid", updatable = false, nullable = false)
+    private int numAid;
 
     @Column(name = "health_cost", updatable = false, nullable = false)
     private boolean healthCost;
@@ -62,7 +62,7 @@ public class FactionAid {
      * Aid type.
      */
     public enum Type {
-        SUPPORT, SACRIFICE
+        RESOURCES, SACRIFICE
     }
 
 }
