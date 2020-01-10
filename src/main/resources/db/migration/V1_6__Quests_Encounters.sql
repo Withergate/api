@@ -105,6 +105,7 @@ INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, diff
     ('WASTELAND', 'SCAVENGE', 'INFORMATION', 'NONE', 8, 'encounter.w.16.desc', 'encounter.w.16.succ', 'encounter.w.16.fail'),
     ('WASTELAND', 'CRAFTSMANSHIP', 'FOOD', 'CAPS', 5, 'encounter.w.17.desc', 'encounter.w.17.succ', 'encounter.w.17.fail'),
     ('WASTELAND', 'INTELLECT', 'FOOD', 'CAPS', 6, 'encounter.w.18.desc', 'encounter.w.18.succ', 'encounter.w.18.fail'),
+    ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 5, 'encounter.w.19.desc', 'encounter.w.19.succ', 'encounter.w.19.fail'),
     ('CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 5, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
     ('CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 5, 'encounter.c.2.desc', 'encounter.c.2.succ', 'encounter.c.2.fail'),
     ('CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 6, 'encounter.c.3.desc', 'encounter.c.3.succ', 'encounter.c.3.fail'),
@@ -118,7 +119,8 @@ INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, diff
     ('CITY_CENTER', 'COMBAT', 'CAPS', 'NONE', 6, 'encounter.c.11.desc', 'encounter.c.11.succ', 'encounter.c.11.fail'),
     ('CITY_CENTER', 'SCAVENGE', 'ITEM', 'INJURY', 8, 'encounter.c.12.desc', 'encounter.c.12.succ', 'encounter.c.12.fail'),
     ('CITY_CENTER', 'CRAFTSMANSHIP', 'CAPS', 'NONE', 6, 'encounter.c.13.desc', 'encounter.c.13.succ', 'encounter.c.13.fail'),
-    ('CITY_CENTER', 'INTELLECT', 'INFORMATION', 'INJURY', 7, 'encounter.c.14.desc', 'encounter.c.14.succ', 'encounter.c.14.fail');
+    ('CITY_CENTER', 'INTELLECT', 'INFORMATION', 'INJURY', 7, 'encounter.c.14.desc', 'encounter.c.14.succ', 'encounter.c.14.fail'),
+    ('CITY_CENTER', 'COMBAT', 'INFORMATION', 'NONE', 6, 'encounter.c.15.desc', 'encounter.c.15.succ', 'encounter.c.15.fail');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.w.1.desc', 'en', 'Character was attacked by mutants while scavenging in the ruins of a wasteland village.'),
@@ -228,6 +230,12 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.w.18.succ', 'cs', 'Postava zmařila podvodníkův prodej roku tím, že oběti poradila kouzelnou formuli, která ji původně ani nenapadla - “Nechci, nechci.” Naštvaný obchodník se svou károu zbytečností odtáhl dál, vděčná oběť se podělila o trochu jídla, které původně měla v úmyslu zaplatit prodavači.'),
     ('encounter.w.18.fail', 'en', 'Our character spent some caps for a collection of jugs what broke couple of minutes after the salesman left to seek another victim. But it is nothing compared to the other "happy" customer who gave the scammer all his food for a bag of comestics and overpriced soap.'),
     ('encounter.w.18.fail', 'cs', 'Postava utratila několik zátek za sadu zbytných hrnců, které však při prvním použití praskly. Ale pořád je na tom lépe než ten druhý vandrák, který žádné zátky neměl a tak za sadu zázračné kosmetiky utratil všechno své jídlo. Kvůli tomu se navíc zadlužil, a aby nezemřel hlady, snědl veškeré zásoby svého předraženého mýdla. Prý okamžitě zemřel na otravu.'),
+    ('encounter.w.19.desc', 'en', 'The character was attacked by a group of hungry cannibals from the Wasteland. They had only one decent fighter. Defeat this one and the others will surely flee.'),
+    ('encounter.w.19.desc', 'cs', 'Postavu si jako chutné sousto vyhlédlo několik podvyživených kanibalů z Pustiny. Solidního bojovníka mezi sebou měli jen jednoho. Stačí vyřadit toho jediného z boje a ostatní se jistě dají na útěk.'),
+    ('encounter.w.19.succ', 'en', 'The character defeated the strongest enemy and frightened the others away. They even left some useful treasure behind.'),
+    ('encounter.w.19.succ', 'cs', 'Postava přesně podle plánu porazila nejnebezpečnějšího soupeře a ostatní se rozprchli po okolí. Musí své zvrácené hladové žaludky nakrmit jiným způsobem. Postava cestou domů narazila na jejich opuštěný tábor. Veškeré jídlo tam raději nechala, ale našla užitečný předmět.'),
+    ('encounter.w.19.fail', 'en', 'They were really meagre, nevertheless dangerous. The character lost the fight, but at least wasn’t taken captive.'),
+    ('encounter.w.19.fail', 'cs', 'Byli vyhublí, ale přesto nebezpeční. V nerovném boji postava prohrála, naštěstí se kanibalům nepodařilo postavu zajmout.'),
     ('encounter.c.1.desc', 'en', 'Character was attacked by a mutated cat while roaming through the abandoned streets of the city ruins.'),
     ('encounter.c.1.desc', 'cs', 'Postavu při toulkách opuštěnými ulicemi napadla zmutovaná kočka. Vřískající a škrábající sakra rychlé malé černé cosi.'),
     ('encounter.c.1.succ', 'en', 'Character managed to kill the feline and collected some junk on the way back home.'),
@@ -310,4 +318,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.c.14.succ', 'en', 'Finally! Our character found someone on the same spiritual level - intellectuals! Just one evening was enough to gain some deep knowledge. It is unfortunate and others from our clan will probably not understand any of it and will be only interested in the news about life in Withergate.'),
     ('encounter.c.14.succ', 'cs', 'Postava se zaradovala, protože konečně našla tvory sobě podobné - intelektuály. Doposud se zdálo, že je to pouhý mýtus. Nyní však postava získala jediným rozhovorem o dialektice obrovského vědění. Škoda, že pro ostatní z klanu, kteří nedosáhli takové intelektuální výše, se toto poznání zdá jen jako jen pár informací o životě ve Withergate...'),
     ('encounter.c.14.fail', 'en', 'Oh no! Intellectuals! Our character panicked and started running recklessly towards the camp. The feeling of being pursued lasted for another hour and our hero suffered couple of injuries during the stampede.'),
-    ('encounter.c.14.fail', 'cs', 'No doprdele - intelektuálové. Postava v panické hrůze prchala hlava nehlava. Měla pocit, že ji pronásledovali až domů. Tam se dostala za cenu bolestivých zranění. Fyzických i duševních. Už nikdy nepůjde v noci ven sama.');
+    ('encounter.c.14.fail', 'cs', 'No doprdele - intelektuálové. Postava v panické hrůze prchala hlava nehlava. Měla pocit, že ji pronásledovali až domů. Tam se dostala za cenu bolestivých zranění. Fyzických i duševních. Už nikdy nepůjde v noci ven sama.'),
+    ('encounter.c.15.desc', 'en', 'A group of slavetraders tried to capture the character.'),
+    ('encounter.c.15.desc', 'cs', 'Postavu si jako vhodné zboží vyhlédla skupinka otrokářů. Už si vedli jiné nešťastníky, které nejspíš čeká zářivá kariéra v hutnickém průmyslu.'),
+    ('encounter.c.15.succ', 'en', 'The character wounded several enemies in the fight. This helped the slavetrader’s captives to liberate themselves. The misfortunate slavers quickly ran. The liberated slaves shared interesting news about the city with the character.'),
+    ('encounter.c.15.succ', 'cs', 'V souboji s nepříjemnou přesilou se postavě podařilo zranit několik nepřátel, čehož využili jejich dřívější zajatci. Otrokáři, neschopni uhasit nově zažehnutou pochodeň svobody, se dali na rychlý útěk. Osvobození otroci u sebe nic neměli, ale podělili se o několik zajímavých informací o situaci ve městě.'),
+    ('encounter.c.15.fail', 'en', 'The character lost the fight, but at least wasn’t taken captive.'),
+    ('encounter.c.15.fail', 'cs', 'Bylo jich příliš mnoho. Naštěstí se postava nedostala do zajetí.');
