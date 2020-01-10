@@ -1,6 +1,9 @@
 package com.withergate.api.repository.clan;
 
+import java.util.List;
+
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.faction.Faction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +22,5 @@ public interface ClanRepository extends JpaRepository<Clan, Integer> {
     Page<Clan> findAll(Pageable pageable);
 
     long count();
+
 }

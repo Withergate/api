@@ -1,6 +1,7 @@
 package com.withergate.api.service.faction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,15 +93,12 @@ public class FactionServiceImpl implements FactionService {
 
             FactionAid aid = getFactionAid(request.getFactionAid(), character.getClan().getFaction());
             // check cost
-            if (clan.getCaps() < aid.getCapsCost() || clan.getFood() < aid.getFoodCost()
-                    || clan.getJunk() < aid.getJunkCost()) {
+            if (clan.getCaps() < aid.getCost()) {
                 throw new InvalidActionException("Not enough resources to perform this action");
             }
 
             // pay resources
-            clan.changeCaps(-aid.getCapsCost());
-            clan.changeFood(-aid.getFoodCost());
-            clan.changeJunk(-aid.getJunkCost());
+            clan.changeCaps(-aid.getCost());
 
             action.setFactionAid(aid);
         }
@@ -134,7 +132,7 @@ public class FactionServiceImpl implements FactionService {
                     joinFaction(faction, character, notification);
                     break;
                 case SUPPORT:
-                    handleSupportAction(action, character, notification);
+                    handleSupportAction(action, character, notification, turnId);
                     break;
                 default:
                     log.error("Unknown action type: {}.", action.getType());
@@ -210,15 +208,15 @@ public class FactionServiceImpl implements FactionService {
         notificationService.addLocalizedTexts(notification.getText(), "faction.join", new String[]{}, faction.getName());
     }
 
-    private void handleSupportAction(FactionAction action, Character character, ClanNotification notification) {
+    private void handleSupportAction(FactionAction action, Character character, ClanNotification notification, int turnId) {
         FactionAid aid = action.getFactionAid();
 
         notificationService.addLocalizedTexts(notification.getText(), "faction.aid", new String[]{},
                 character.getClan().getFaction().getName());
 
         switch (aid.getAidType()) {
-            case SUPPORT:
-                // no effect
+            case RESOURCES:
+                distributeResources(character.getClan(), aid, turnId);
                 break;
             case SACRIFICE:
                 int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
@@ -240,6 +238,30 @@ public class FactionServiceImpl implements FactionService {
         // increase factions points
         Faction faction = character.getClan().getFaction();
         faction.setPoints(faction.getPoints() + aid.getFactionPoints());
+    }
+
+    private void distributeResources(Clan clan, FactionAid aid, int turnId) {
+        List<Clan> clans = clan.getFaction().getClans().stream().filter(c -> c.getFactionPoints() < clan.getFactionPoints())
+                .collect(Collectors.toList());
+        Collections.shuffle(clans);
+
+        int i = 0;
+        for (Clan receiver : clans) {
+            if (i >= aid.getNumAid()) break;
+
+            ClanNotification notification = new ClanNotification(turnId, receiver.getId());
+            notification.setHeader(receiver.getName());
+            notificationService.addLocalizedTexts(notification.getText(), "faction.aid.receive", new String[]{clan.getName()});
+
+            receiver.changeFood(aid.getAid());
+            notification.changeFood(aid.getAid());
+            receiver.changeJunk(aid.getAid());
+            notification.changeJunk(aid.getAid());
+
+            notificationService.save(notification);
+
+            i++;
+        }
     }
 
     private FactionAid getFactionAid(int aidId, Faction faction) throws InvalidActionException {
