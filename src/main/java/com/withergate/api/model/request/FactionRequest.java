@@ -18,6 +18,6 @@ public class FactionRequest {
     private int characterId;
     private FactionAction.Type type;
     private String faction;
-    private int factionAid;
+    private String factionAid;
 
 }

@@ -19,6 +19,7 @@ import com.withergate.api.model.faction.Faction;
 import com.withergate.api.model.faction.FactionAid;
 import com.withergate.api.model.faction.FactionPointsOverview;
 import com.withergate.api.model.faction.FactionsOverview;
+import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.request.FactionRequest;
 import com.withergate.api.repository.action.FactionActionRepository;
@@ -28,6 +29,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +55,7 @@ public class FactionServiceImpl implements FactionService {
     private final NotificationService notificationService;
     private final RandomService randomService;
     private final ClanRepository clanRepository;
+    private final ItemService itemService;
     private final GameProperties properties;
 
     @Transactional
@@ -94,7 +97,14 @@ public class FactionServiceImpl implements FactionService {
             FactionAid aid = getFactionAid(request.getFactionAid(), character.getClan().getFaction());
             // check cost
             if (clan.getCaps() < aid.getCost()) {
-                throw new InvalidActionException("Not enough resources to perform this action");
+                throw new InvalidActionException("Not enough resources to perform this action.");
+            }
+            if (aid.isItemCost()) {
+                if (character.getItems().isEmpty()) {
+                    throw new InvalidActionException("Character must carry an item to perform this action.");
+                }
+                Item item = character.getItems().iterator().next();
+                itemService.deleteItem(item);
             }
 
             // pay resources
@@ -215,15 +225,18 @@ public class FactionServiceImpl implements FactionService {
                 character.getClan().getFaction().getName());
 
         switch (aid.getAidType()) {
-            case RESOURCES:
+            case RESOURCE_SUPPORT:
                 distributeResources(character.getClan(), aid, turnId);
                 break;
-            case SACRIFICE:
-                int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                character.changeHitpoints(-injury);
-                notification.changeInjury(injury);
-                if (character.getHitpoints() < 1) {
-                    notification.setDeath(true);
+            case FACTION_SUPPORT:
+                // pay cost
+                if (aid.isHealthCost()) {
+                    int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
+                    character.changeHitpoints(-injury);
+                    notification.changeInjury(injury);
+                    if (character.getHitpoints() < 1) {
+                        notification.setDeath(true);
+                    }
                 }
                 break;
             default:
@@ -264,9 +277,9 @@ public class FactionServiceImpl implements FactionService {
         }
     }
 
-    private FactionAid getFactionAid(int aidId, Faction faction) throws InvalidActionException {
+    private FactionAid getFactionAid(String identifier, Faction faction) throws InvalidActionException {
         for (FactionAid aid : faction.getFactionAids()) {
-            if (aid.getId() == aidId) {
+            if (aid.getIdentifier().equals(identifier)) {
                 return aid;
             }
         }

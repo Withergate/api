@@ -24,7 +24,7 @@ CREATE TABLE factions (
 
 DROP TABLE IF EXISTS faction_aids;
 CREATE TABLE faction_aids (
-    aid_id INT AUTO_INCREMENT,
+    identifier VARCHAR(16) NOT NULL,
     aid_type VARCHAR(32) NOT NULL,
     fame INT NOT NULL DEFAULT 0,
     faction_points INT NOT NULL DEFAULT 0,
@@ -32,8 +32,9 @@ CREATE TABLE faction_aids (
     aid INT NOT NULL DEFAULT 0,
     num_aid INT NOT NULL DEFAULT 0,
     health_cost BIT DEFAULT 0,
+    item_cost BIT DEFAULT 0,
     faction VARCHAR(16) NOT NULL,
-    PRIMARY KEY (aid_id),
+    PRIMARY KEY (identifier),
     CONSTRAINT faction_faction_solution_fk FOREIGN KEY (faction) REFERENCES factions (identifier)
 );
 
@@ -366,6 +367,7 @@ CREATE TABLE localized_texts (
     disaster_solution_description VARCHAR(16),
     faction_name VARCHAR(16),
     faction_description VARCHAR(16),
+    faction_aid VARCHAR(16),
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
@@ -390,6 +392,7 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_disaster_solution_description_fk FOREIGN KEY (disaster_solution_description) REFERENCES disaster_solutions (identifier),
     CONSTRAINT localized_text_faction_name_fk FOREIGN KEY (faction_name) REFERENCES factions (identifier),
     CONSTRAINT localized_text_faction_description_fk FOREIGN KEY (faction_description) REFERENCES factions (identifier),
+    CONSTRAINT localized_text_faction_aid_fk FOREIGN KEY (faction_aid) REFERENCES faction_aids (identifier)
 );
 
 -- Market offers
@@ -439,7 +442,7 @@ CREATE TABLE actions (
     junk INT DEFAULT 0,
     disaster_solution VARCHAR(32),
     faction VARCHAR(16),
-    faction_aid INT,
+    faction_aid VARCHAR(16),
     PRIMARY KEY (action_id)
 );
 
