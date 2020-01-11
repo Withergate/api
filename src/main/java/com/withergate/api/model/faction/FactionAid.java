@@ -1,19 +1,22 @@
 package com.withergate.api.model.faction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Map;
 
 /**
  * Faction aid entity.
@@ -27,9 +30,13 @@ import javax.persistence.Table;
 public class FactionAid {
 
     @Id
-    @Column(name = "aid_id", updatable = false, nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "identifier", updatable = false, nullable = false)
+    private String identifier;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "faction_aid")
+    private Map<String, LocalizedText> description;
 
     @Column(name = "aid_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,6 +60,9 @@ public class FactionAid {
     @Column(name = "health_cost", updatable = false, nullable = false)
     private boolean healthCost;
 
+    @Column(name = "item_cost", updatable = false, nullable = false)
+    private boolean itemCost;
+
     @ManyToOne
     @JoinColumn(name = "faction")
     @JsonIgnore
@@ -62,7 +72,7 @@ public class FactionAid {
      * Aid type.
      */
     public enum Type {
-        RESOURCES, SACRIFICE
+        RESOURCE_SUPPORT, FACTION_SUPPORT
     }
 
 }
