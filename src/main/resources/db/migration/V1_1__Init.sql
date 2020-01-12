@@ -271,8 +271,16 @@ CREATE TABLE quest_details (
     quest_condition VARCHAR(32),
     difficulty INT NOT NULL,
     completion INT NOT NULL,
-    caps_reward INT NOT NULL,
+    caps_reward INT DEFAULT 0,
     fame_reward INT NOT NULL,
+    faction_reward INT DEFAULT 0,
+    food_cost INT DEFAULT 0,
+    junk_cost INT DEFAULT 0,
+    item_cost BIT DEFAULT 0,
+    health_cost BIT DEFAULT 0,
+    progressive BIT DEFAULT 0,
+    follow_up VARCHAR(32),
+    faction VARCHAR(16),
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (identifier)
 );

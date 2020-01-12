@@ -22,6 +22,14 @@ public interface QuestService {
     void assignQuests(Clan clan, ClanNotification notification);
 
     /**
+     * Assign new quests to the provided clan based on its faction.
+     *
+     * @param clan             the clan
+     * @param notification     the notification to be updated
+     */
+    void assignFactionQuests(Clan clan, ClanNotification notification);
+
+    /**
      * Validates and saves the provided action.
      *
      * @param request the action to be saved

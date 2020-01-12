@@ -6,5 +6,5 @@ package com.withergate.api.model.encounter;
  * @author Martin Myslik
  */
 public enum SolutionType {
-    AUTOMATIC, COMBAT, COMBAT_ROLL, SCAVENGE, CRAFTSMANSHIP, INTELLECT
+    AUTOMATIC, COMBAT, COMBAT_ROLL, SCAVENGE, CRAFTSMANSHIP, INTELLECT, INTELLECT_LOW, CRAFTSMANSHIP_LOW
 }

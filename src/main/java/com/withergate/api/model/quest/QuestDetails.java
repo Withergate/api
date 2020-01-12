@@ -60,8 +60,32 @@ public class QuestDetails {
     @Column(name = "fame_reward", nullable = false)
     private int fameReward;
 
+    @Column(name = "faction_reward", nullable = false)
+    private int factionReward;
+
     @Column(name = "difficulty", nullable = false)
     private int difficulty;
+
+    @Column(name = "food_cost", nullable = false)
+    private int foodCost;
+
+    @Column(name = "junk_cost", nullable = false)
+    private int junkCost;
+
+    @Column(name = "item_cost", nullable = false)
+    private boolean itemCost;
+
+    @Column(name = "health_cost", nullable = false)
+    private boolean healthCost;
+
+    @Column(name = "progressive", nullable = false)
+    private boolean progressive;
+
+    @Column(name = "follow_up", updatable = false, nullable = false)
+    private String followUp;
+
+    @Column(name = "faction", updatable = false, nullable = false)
+    private String faction;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
