@@ -150,6 +150,10 @@ public class FactionServiceImpl implements FactionService {
                     log.error("Unknown action type: {}.", action.getType());
             }
 
+            // award experience
+            character.changeExperience(1);
+            notification.changeExperience(1);
+
             // save notification
             notificationService.save(notification);
 
@@ -250,10 +254,6 @@ public class FactionServiceImpl implements FactionService {
         notification.changeFactionPoints(aid.getFactionPoints());
         character.getClan().changeFame(aid.getFame());
         notification.changeFame(aid.getFame());
-
-        // increase factions points
-        Faction faction = character.getClan().getFaction();
-        faction.setPoints(faction.getPoints() + aid.getFactionPoints());
     }
 
     private void distributeResources(Clan clan, FactionAid aid, int turnId) {

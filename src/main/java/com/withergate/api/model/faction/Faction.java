@@ -38,6 +38,7 @@ public class Faction {
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
+    @JsonIgnore
     @Column(name = "faction_points", nullable = false)
     private int points;
 
@@ -68,6 +69,11 @@ public class Faction {
     @JsonProperty("numClans")
     private int getNumClans() {
         return clans.size();
+    }
+
+    @JsonProperty("points")
+    public int getPoints() {
+        return clans.stream().mapToInt(Clan::getFactionPoints).sum();
     }
 
 }
