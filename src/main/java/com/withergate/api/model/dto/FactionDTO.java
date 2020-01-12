@@ -43,5 +43,4 @@ public class FactionDTO {
         this.factionAids = faction.getFactionAids();
     }
 
-
 }
