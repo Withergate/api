@@ -31,6 +31,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.quest.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,7 @@ public class FactionServiceImpl implements FactionService {
     private final RandomService randomService;
     private final ClanRepository clanRepository;
     private final ItemService itemService;
+    private final QuestService questService;
     private final GameProperties properties;
 
     @Transactional
@@ -213,6 +215,7 @@ public class FactionServiceImpl implements FactionService {
         Clan clan = character.getClan();
 
         clan.setFaction(faction);
+        questService.assignFactionQuests(clan, notification);
 
         // update notification
         notificationService.addLocalizedTexts(notification.getText(), "faction.join", new String[]{}, faction.getName());

@@ -4,6 +4,8 @@ import com.withergate.api.model.quest.QuestDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * QuestDetails repository.
  *
@@ -11,5 +13,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface QuestDetailsRepository extends JpaRepository<QuestDetails, String> {
-
+    List<QuestDetails> findAllByFaction(String faction);
 }

@@ -104,6 +104,22 @@ public class EncounterServiceImpl implements EncounterService {
                 }
                 notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat));
                 break;
+            case INTELLECT_LOW:
+                totalIntellect = character.getIntellect() + diceRoll;
+                log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);
+                if (totalIntellect <= difficulty) {
+                    success = true;
+                }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalIntellect));
+                break;
+            case CRAFTSMANSHIP_LOW:
+                totalCraftsmanship = character.getCraftsmanship() + diceRoll;
+                log.debug("{} rolled dice and the total craftsmanship value is {}", character.getName(), totalCraftsmanship);
+                if (totalCraftsmanship <= difficulty) {
+                    success = true;
+                }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship));
+                break;
             default:
                 log.error("Unknown solution type triggered: {}!", type);
                 break;
