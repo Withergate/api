@@ -126,6 +126,10 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_RANGED, notification, notificationService);
         }
 
+        if (character.getWeapon() == null && character.getOutfit() == null) {
+            bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_UNARMED, notification, notificationService);
+        }
+
         return bonus;
     }
 

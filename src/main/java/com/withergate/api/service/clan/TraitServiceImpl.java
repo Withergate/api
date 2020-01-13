@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class TraitServiceImpl implements TraitService {
 
+    private static final int TRAIT_LIMIT = 10;
+
     private final TraitDetailsRepository traitDetailsRepository;
     private final CharacterRepository characterRepository;
     private final GameProperties properties;
@@ -36,7 +38,7 @@ public class TraitServiceImpl implements TraitService {
         List<TraitDetails> detailsList = traitDetailsRepository.findAll();
         Collections.shuffle(detailsList);
 
-        for (int i = 0; i < detailsList.size(); i++) {
+        for (int i = 0; i < Math.min(detailsList.size(), TRAIT_LIMIT); i++) {
             Trait trait = new Trait();
             trait.setDetails(detailsList.get(i));
             trait.setOrder(i);
