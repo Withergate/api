@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.action.ActionDescriptor;
 import com.withergate.api.model.action.ActionState;
@@ -25,6 +26,7 @@ import com.withergate.api.model.request.FactionRequest;
 import com.withergate.api.repository.action.FactionActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.faction.FactionRepository;
+import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
@@ -250,8 +252,13 @@ public class FactionServiceImpl implements FactionService {
                 log.error("Unknown aid type: {}", aid.getAidType());
         }
 
-        character.getClan().changeFactionPoints(aid.getFactionPoints());
-        notification.changeFactionPoints(aid.getFactionPoints());
+        // increase faction points
+        int factionPoints = aid.getFactionPoints();
+        factionPoints += BonusUtils.getTraitBonus(action.getCharacter(), BonusType.FACTION_POINTS, notification, notificationService);
+        character.getClan().changeFactionPoints(factionPoints);
+        notification.changeFactionPoints(factionPoints);
+
+        // award fame
         character.getClan().changeFame(aid.getFame());
         notification.changeFame(aid.getFame());
     }

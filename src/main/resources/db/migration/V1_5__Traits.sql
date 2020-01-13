@@ -2,6 +2,7 @@
 INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, image_url) VALUES
     ('FIGHTER', 1, 'COMBAT_MELEE', 'detail.trait.combat', true, 'https://storage.googleapis.com/withergate-images/traits/fighter-trait.png'),
     ('SHARPSHOOTER', 1, 'COMBAT_RANGED', 'detail.trait.combat', true, 'https://storage.googleapis.com/withergate-images/traits/sharpshooter-trait.png'),
+    ('WRESTLER', 1, 'COMBAT_UNARMED', 'detail.trait.combat', true, 'https://storage.googleapis.com/withergate-images/traits/wrestler-trait.png'),
     ('ASCETIC', 1, 'FOOD_CONSUMPTION', 'detail.trait.ascetic', false, 'https://storage.googleapis.com/withergate-images/traits/ascetic-trait.png'),
     ('HUNTER', 2, 'SCAVENGE_FOOD', 'detail.trait.scavenge', false, 'https://storage.googleapis.com/withergate-images/traits/hunter-trait.png'),
     ('HOARDER', 2, 'SCAVENGE_JUNK', 'detail.trait.scavenge', false, 'https://storage.googleapis.com/withergate-images/traits/hoarder-trait.png'),
@@ -9,13 +10,16 @@ INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, i
     ('LIZARD', 2, 'HEALING', 'detail.trait.healing', false, 'https://storage.googleapis.com/withergate-images/traits/lizard-trait.png'),
     ('CONTACTS', 2, 'SCOUTING', 'detail.trait.scouting', false, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
     ('BOFFIN', 2, 'RESEARCH', 'detail.trait.research', false, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png'),
-    ('SPARTA', 2, 'DISASTER', 'detail.trait.disaster', false, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png');
+    ('SPARTA', 2, 'DISASTER', 'detail.trait.disaster', false, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png'),
+    ('PATRIOT', 2, 'FACTION_POINTS', 'detail.trait.factionPoints', false, 'https://storage.googleapis.com/withergate-images/traits/patriot-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
     ('FIGHTER', 'cs', 'Rváč'),
     ('SHARPSHOOTER', 'en', 'Sharpshooter'),
     ('SHARPSHOOTER', 'cs', 'Trefa do černého'),
+    ('WRESTLER', 'en', 'Wrestler'),
+    ('WRESTLER', 'cs', 'Zápasník'),
     ('ASCETIC', 'en', 'Ascetic'),
     ('ASCETIC', 'cs', 'Asketa'),
     ('HUNTER', 'en', 'Hunter'),
@@ -31,13 +35,17 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('BOFFIN', 'en', 'Boffin'),
     ('BOFFIN', 'cs', 'Vědátor'),
     ('SPARTA', 'en', 'This is Sparta!'),
-    ('SPARTA', 'cs', 'This is Sparta!');
+    ('SPARTA', 'cs', 'This is Sparta!'),
+    ('PATRIOT', 'en', 'Patriot'),
+    ('PATRIOT', 'cs', 'Vlastenec');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
     ('FIGHTER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji se zbraní nablízko.'),
     ('SHARPSHOOTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a ranged weapon.'),
     ('SHARPSHOOTER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji se střelnou zbraní.'),
+    ('WRESTLER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting without weapon or armor.'),
+    ('WRESTLER', 'cs', 'Postava s touto schopností má šanci získat bonus k bojové síle při souboji beze zbraně a zbroje.'),
     ('ASCETIC', 'en', 'Character with this trait consumes less food at the end of each turn.'),
     ('ASCETIC', 'cs', 'Postava s touto schopností konzumuje méně jídla na konci kola.'),
     ('HUNTER', 'en', 'Character with this trait will get bonus food when scavenging.'),
@@ -53,4 +61,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('BOFFIN', 'en', 'Character with this trait will receive a bonus when researching.'),
     ('BOFFIN', 'cs', 'Postava s touto schopností dostane bonus při výzkumu'),
     ('SPARTA', 'en', 'Character with this trait will receive bonus progress when successfully averting disaster.'),
-    ('SPARTA', 'cs', 'Postava s touto schopností navýší postup odvrácení pohromy po úspěšné akci řešení pohromy.');
+    ('SPARTA', 'cs', 'Postava s touto schopností navýší postup odvrácení pohromy po úspěšné akci řešení pohromy.'),
+    ('PATRIOT', 'en', 'Character with this trait will receive bonus influence when supporting your faction.'),
+    ('PATRIOT', 'cs', 'Postava s touto schopností navýší zisk vlivu při podpoře tvé frakce.');
