@@ -20,11 +20,11 @@ INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('r.resources', 'en', 'Support out faction members with resources'),
     ('r.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
-INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, progressive, follow_up, faction, image_url) VALUES
-    ('quest.r1', 'AUTOMATIC', null, 0, 6, 5, 10, 0, 0, false, false, false, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
-    ('quest.r2', 'INTELLECT_LOW', null, 5, 2, 10, 15, 0, 0, false, false, false, 'quest.r3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r2.png'),
-    ('quest.r3', 'CRAFTSMANSHIP', null, 6, 3, 15, 20, 0, 5, false, false, false, 'quest.r4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r3.png'),
-    ('quest.r4', 'INTELLECT', null, 8, 6, 20, 25, 0, 0, false, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-r4.png');
+INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, progressive, follow_up, faction, image_url) VALUES
+    ('quest.r1', 'AUTOMATIC', null, 0, 6, 10, 5, 3, 0, 0, false, false, false, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
+    ('quest.r2', 'INTELLECT_LOW', null, 5, 2, 20, 10, 6, 0, 0, false, false, false, 'quest.r3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r2.png'),
+    ('quest.r3', 'CRAFTSMANSHIP', null, 6, 3, 30, 15, 9, 0, 5, false, false, false, 'quest.r4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r3.png'),
+    ('quest.r4', 'INTELLECT', null, 8, 6, 40, 20, 12, 0, 0, false, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-r4.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.r1', 'en', 'The voice of a crowd'),
@@ -68,11 +68,11 @@ INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('c.resources', 'en', 'Support out faction members with resources'),
     ('c.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
-INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, progressive, follow_up, faction, image_url) VALUES
-    ('quest.c1', 'AUTOMATIC', null, 0, 3, 5, 10, 0, 0, false, true, false, 'quest.c2', 'CULT', 'https://storage.googleapis.com/withergate-images/quests/quest-c1.png'),
-    ('quest.c2', 'AUTOMATIC', 'ITEM_EQUIPPED', 0, 2, 10, 15, 0, 0, true, false, false, 'quest.c3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c2.png'),
-    ('quest.c3', 'INTELLECT', null, 6, 3, 15, 20, 5, 0, false, false, false, 'quest.c4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c3.png'),
-    ('quest.c4', 'CRAFTSMANSHIP_LOW', null, 5, 3, 20, 25, 0, 0, false, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-c4.png');
+INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, progressive, follow_up, faction, image_url) VALUES
+    ('quest.c1', 'AUTOMATIC', null, 0, 3, 10, 5, 3, 0, 0, false, true, false, 'quest.c2', 'CULT', 'https://storage.googleapis.com/withergate-images/quests/quest-c1.png'),
+    ('quest.c2', 'AUTOMATIC', 'ITEM_EQUIPPED', 0, 2, 20, 10, 6, 0, 0, true, false, false, 'quest.c3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c2.png'),
+    ('quest.c3', 'INTELLECT', null, 6, 3, 30, 15, 9, 5, 0, false, false, false, 'quest.c4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c3.png'),
+    ('quest.c4', 'CRAFTSMANSHIP_LOW', null, 5, 3, 40, 20, 12, 0, 0, false, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-c4.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.c1', 'en', 'Trial of flesh'),
@@ -89,7 +89,7 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.c1', 'cs', '"Není jiného boha než Rarraq a Boblig je jeho prorok..." Opravdu tomu věříš? Silná slova, ale pořád jen slova. Opravdová víra se dokazuje krví. Tak do toho, tady máš nůž!'),
     ('quest.c2', 'en', 'You have stumbled upon a sanctuary of Rarraq. You have noticed some pretty rare weapons and gear among the body parts and blood splotches on the altar. Only by offering something yourself can you reach a higher level of initiation, riches and glory of the heavenly Kingdom of Rarraq.'),
     ('quest.c2', 'cs', 'Narazil jsi na svatyni Rarraqa..na oltáři se vyjma částí těl a cákanců krve nachází i množství obětovaných předmětů. Jen poskytnutím oběti se ti otevře cesta k vyššímu zasvěcení, bohatství a slávě nebeského království Rarraqova.'),
-    ('quest.c3', 'en', 'Let`s preach to the beggars and save their souls. With the help of Atom and our eloquence, success is a sure thing. And if that is not enough a full belly would sway them no doubt. I can just see our ranks expanding...'),
-    ('quest.c3', 'cs', 'Což takhle poučit nějaké chudáky o víře a spasit jejich duši? S pomocí Atomovou a trochou výmluvnosti se to podaří. A když jim nabídneme jídlo, brzy nás budou zástupy...'),
+    ('quest.c3', 'en', 'Let`s preach to the beggars and save their souls. With the help of Rarraq and our eloquence, success is a sure thing. And if that is not enough a full belly would sway them no doubt. I can just see our ranks expanding...'),
+    ('quest.c3', 'cs', 'Což takhle poučit nějaké chudáky o víře a spasit jejich duši? S pomocí Rarraqa a trochou výmluvnosti se to podaří. A když jim nabídneme jídlo, brzy nás budou zástupy...'),
     ('quest.c4', 'en', 'Even destruction can be beautiful. And a masterfully performed obliteration is an art of sorts. Especially if it is those heretic contraptions that are being shattered. They have got us here, to the very bottom of humanity...every sprocket flying from the  device is an ode to Rarraq and a victory for mankind.'),
     ('quest.c4', 'cs', 'I v destrukci je krása. A ničit je vlastně umění. Zvlášť, když se jedná o heretické vynálezy, které nás dostaly až na samé dno. Na čím víc ozubených koleček se tohle zařízení rozletí, tím větší slávu prokážeme Rarraqovi a lidstvu...');
