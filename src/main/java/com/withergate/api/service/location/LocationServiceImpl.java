@@ -221,20 +221,22 @@ public class LocationServiceImpl implements LocationService {
 
         // research side effect
         Research research = character.getClan().getResearch(ResearchBonusType.SCOUT_FOOD);
-        if (!encounter && research != null
-                && research.isCompleted()) {
-            // add food to clan for begging
+        if (research != null && research.isCompleted()) {
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
-            character.getClan().changeFood(food);
-            notification.changeFood(food);
+            if (encounter) {
+                food = food /2;
+            }
+            if (food > 0) {
+                character.getClan().changeFood(food);
+                notification.changeFood(food);
 
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
-            notification.getDetails().add(detail);
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
+                notification.getDetails().add(detail);
+            }
         }
 
         return bonus;
-
     }
 
     private int getLootBonus(Character character, ClanNotification notification, Location location) {

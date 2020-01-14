@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 public class CombatServiceImpl implements CombatService {
 
     private static final int ARENA_CAPS = 15;
+    private static final int ARENA_CAPS_LOSER = 5;
     private static final int ARENA_FAME = 5;
     private static final String NPC = "NPC";
 
@@ -143,7 +144,6 @@ public class CombatServiceImpl implements CombatService {
 
         character.getClan().changeCaps(ARENA_CAPS); // add caps to the winner
         character.getClan().changeFame(ARENA_FAME); // add fame to the winner
-
         notification.changeCaps(ARENA_CAPS);
         notification.changeFame(ARENA_FAME);
 
@@ -173,6 +173,9 @@ public class CombatServiceImpl implements CombatService {
                         opponent.getName(), opponent.getClan() != null ? opponent.getClan().getName() : NPC});
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
+
+        character.getClan().changeCaps(ARENA_CAPS_LOSER); // add caps to the loser
+        notification.changeCaps(ARENA_CAPS_LOSER);
 
         // handle experience
         character.changeExperience(1);
