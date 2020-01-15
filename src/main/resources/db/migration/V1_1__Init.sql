@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS turns;
 CREATE TABLE turns (
     turn_id INT,
+    start_date DATE DEFAULT NULL,
     PRIMARY KEY (turn_id)
 );
 

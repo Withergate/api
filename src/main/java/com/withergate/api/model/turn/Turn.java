@@ -1,5 +1,7 @@
 package com.withergate.api.model.turn;
 
+import java.time.LocalDate;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,4 +27,7 @@ public class Turn {
     @Id
     @Column(name = "turn_id")
     private int turnId;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
 }

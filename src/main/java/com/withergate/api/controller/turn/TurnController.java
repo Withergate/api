@@ -2,6 +2,7 @@ package com.withergate.api.controller.turn;
 
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TurnController {
 
-    private final TurnRepository turnRepository;
+    private final TurnService turnService;
 
     /**
      * Retrieves the current turn's data.
@@ -28,6 +29,6 @@ public class TurnController {
      */
     @GetMapping("/turn")
     public ResponseEntity<Turn> getTurn() {
-        return new ResponseEntity<>(turnRepository.findFirstByOrderByTurnIdDesc(), HttpStatus.OK);
+        return new ResponseEntity<>(turnService.getCurrentTurn(), HttpStatus.OK);
     }
 }

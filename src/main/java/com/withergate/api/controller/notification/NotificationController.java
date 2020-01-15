@@ -6,6 +6,7 @@ import java.util.List;
 import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.notification.ClanNotificationRepository;
+import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotificationController {
 
     private final ClanNotificationRepository clanNotificationRepository;
-    private final TurnRepository turnRepository;
+    private final TurnService turnService;
 
     /**
      * Retrieves all notifications for the specified player.
@@ -37,7 +38,7 @@ public class NotificationController {
 
         if (turn == null) {
             // default to last turn
-            turn = turnRepository.findFirstByOrderByTurnIdDesc().getTurnId() - 1;
+            turn = turnService.getCurrentTurn().getTurnId() - 1;
         }
 
         int playerId = Integer.parseInt(principal.getName());
