@@ -2,11 +2,10 @@ package com.withergate.api.scheduler;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.scheduling.TurnScheduler;
 import com.withergate.api.service.action.ActionService;
-import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.turn.TurnService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -21,7 +20,7 @@ public class TurnSchedulerTest {
     private TurnScheduler scheduler;
 
     @Mock
-    private TurnRepository turnRepository;
+    private TurnService turnService;
 
     @Mock
     private ActionService actionService;
@@ -36,7 +35,7 @@ public class TurnSchedulerTest {
         GameProperties properties = new GameProperties();
         properties.setMaxTurns(45);
 
-        scheduler = new TurnScheduler(turnRepository, actionService, clanService, properties);
+        scheduler = new TurnScheduler(turnService, actionService, clanService, properties);
     }
 
     @Test
@@ -45,7 +44,7 @@ public class TurnSchedulerTest {
         Turn turn = new Turn();
         turn.setTurnId(1);
 
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+        Mockito.when(turnService.getCurrentTurn()).thenReturn(turn);
 
         // when processing current turn
         scheduler.processTurn();
@@ -53,7 +52,7 @@ public class TurnSchedulerTest {
         // then verify new turn saved
         ArgumentCaptor<Turn> captor = ArgumentCaptor.forClass(Turn.class);
 
-        Mockito.verify(turnRepository).save(captor.capture());
+        Mockito.verify(turnService).saveTurn(captor.capture());
         assertEquals(2, captor.getValue().getTurnId());
     }
 
@@ -63,7 +62,7 @@ public class TurnSchedulerTest {
         Turn turn = new Turn();
         turn.setTurnId(1);
 
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+        Mockito.when(turnService.getCurrentTurn()).thenReturn(turn);
 
         // when processing current turn
         scheduler.processTurn();
@@ -85,7 +84,7 @@ public class TurnSchedulerTest {
         Turn turn = new Turn();
         turn.setTurnId(46);
 
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+        Mockito.when(turnService.getCurrentTurn()).thenReturn(turn);
 
         // when processing current turn
         scheduler.processTurn();
@@ -99,7 +98,7 @@ public class TurnSchedulerTest {
         Mockito.verify(actionService, Mockito.never()).processTradeActions(1);
         Mockito.verify(actionService, Mockito.never()).processDisaster(1);
         Mockito.verify(clanService, Mockito.never()).performClanTurnUpdates(1);
-        Mockito.verify(turnRepository, Mockito.never()).save(Mockito.any());
+        Mockito.verify(turnService, Mockito.never()).saveTurn(Mockito.any());
     }
 
 }

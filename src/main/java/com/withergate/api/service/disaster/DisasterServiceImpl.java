@@ -21,7 +21,6 @@ import com.withergate.api.model.notification.ClanNotification;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.action.DisasterActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
@@ -34,6 +33,7 @@ import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class DisasterServiceImpl implements DisasterService {
     private final DisasterResolutionService disasterResolutionService;
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
-    private final TurnRepository turnRepository;
+    private final TurnService turnService;
     private final RandomService randomService;
     private final NotificationService notificationService;
     private final EncounterService encounterService;
@@ -71,7 +71,7 @@ public class DisasterServiceImpl implements DisasterService {
         Disaster disaster = disasterRepository.findFirstByCompleted(false);
 
         // get current turn
-        Turn turn = turnRepository.findFirstByOrderByTurnIdDesc();
+        Turn turn = turnService.getCurrentTurn();
 
         // no disaster to show
         if (disaster == null) {

@@ -4,6 +4,7 @@ import com.withergate.api.GameProperties;
 import com.withergate.api.model.dto.GamePropertiesDTO;
 import com.withergate.api.model.notification.GlobalNotification;
 import com.withergate.api.model.request.GlobalNotificationRequest;
+import com.withergate.api.model.request.TurnRequest;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.service.AdminService;
 import lombok.AllArgsConstructor;
@@ -79,7 +80,7 @@ public class ApplicationController {
     }
 
     /**
-     * Updates global notificaiton. Only accessible by admins.
+     * Updates global notification. Only accessible by admins.
      *
      * @return ok status if applied
      */
@@ -99,4 +100,17 @@ public class ApplicationController {
     public ResponseEntity<GlobalNotification> getGlobalNotification() {
         return new ResponseEntity<>(globalNotificationRepository.getOne(GlobalNotification.Singleton.SINGLE), HttpStatus.OK);
     }
+
+    /**
+     * Updates current turn's start date. Only accessible by admins.
+     *
+     * @return ok status if applied
+     */
+    @PutMapping("/turn/update")
+    public ResponseEntity<Void> setTurnStart(@RequestBody TurnRequest request) {
+        adminService.setTurnStartDate(request.getStartDate());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

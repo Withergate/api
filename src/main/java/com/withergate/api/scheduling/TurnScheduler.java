@@ -1,11 +1,14 @@
 package com.withergate.api.scheduling;
 
+import java.time.LocalDate;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TurnScheduler {
 
-    private final TurnRepository turnRepository;
+    private final TurnService turnService;
     private final ActionService actionService;
     private final ClanService clanService;
     private final GameProperties gameProperties;
@@ -33,13 +36,27 @@ public class TurnScheduler {
     public void processTurn() {
 
         // process current turn
-        Turn currentTurn = turnRepository.findFirstByOrderByTurnIdDesc();
+        Turn currentTurn = turnService.getCurrentTurn();
 
         if (currentTurn.getTurnId() > gameProperties.getMaxTurns()) {
             log.info("The game has already ended.");
             return;
         }
+        LocalDate currentDate = LocalDate.now();
+        if (currentTurn.getStartDate() != null && currentDate.isBefore(currentTurn.getStartDate())) {
+            log.info("Current turn has not started yet.");
+            return;
+        }
 
+        // process turn
+        processTurn(currentTurn);
+
+        Turn nextTurn = new Turn();
+        nextTurn.setTurnId(currentTurn.getTurnId() + 1);
+        turnService.saveTurn(nextTurn);
+    }
+
+    private void processTurn(Turn currentTurn) {
         log.info(" === Processing turn: {} ===", currentTurn.getTurnId());
 
         // assign default actions
@@ -76,10 +93,6 @@ public class TurnScheduler {
 
         // prepare next turn
         log.info(" === Finished processing turn: {} ===", currentTurn.getTurnId());
-
-        Turn nextTurn = new Turn();
-        nextTurn.setTurnId(currentTurn.getTurnId() + 1);
-        turnRepository.save(nextTurn);
     }
 
 }

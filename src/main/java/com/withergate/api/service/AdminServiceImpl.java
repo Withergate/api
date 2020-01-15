@@ -1,11 +1,13 @@
 package com.withergate.api.service;
 
+import java.time.LocalDate;
+
 import com.withergate.api.model.notification.GlobalNotification;
 import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.scheduling.TurnScheduler;
+import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminServiceImpl implements AdminService {
 
     private final Flyway flyway;
-    private final TurnRepository turnRepository;
+    private final TurnService turnService;
     private final TurnScheduler turnScheduler;
     private final GlobalNotificationRepository globalNotificationRepository;
 
@@ -38,7 +40,7 @@ public class AdminServiceImpl implements AdminService {
         // create first turn
         Turn turn = new Turn();
         turn.setTurnId(1);
-        turnRepository.save(turn);
+        turnService.saveTurn(turn);
 
         log.info("Game restarted.");
     }
@@ -56,5 +58,12 @@ public class AdminServiceImpl implements AdminService {
         GlobalNotification notification = globalNotificationRepository.getOne(GlobalNotification.Singleton.SINGLE);
         notification.setActive(request.isActive());
         notification.setMessage(request.getMessage());
+    }
+
+    @Transactional
+    @Override
+    public void setTurnStartDate(LocalDate date) {
+        Turn turn = turnService.getCurrentTurn();
+        turn.setStartDate(date);
     }
 }

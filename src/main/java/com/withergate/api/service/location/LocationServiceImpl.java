@@ -224,7 +224,7 @@ public class LocationServiceImpl implements LocationService {
         if (research != null && research.isCompleted()) {
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
             if (encounter) {
-                food = food /2;
+                food = food / 2;
             }
             if (food > 0) {
                 character.getClan().changeFood(food);

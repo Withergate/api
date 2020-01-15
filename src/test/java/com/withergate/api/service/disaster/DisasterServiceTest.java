@@ -14,7 +14,6 @@ import com.withergate.api.model.disaster.DisasterDetails;
 import com.withergate.api.model.disaster.DisasterSolution;
 import com.withergate.api.model.encounter.SolutionType;
 import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
 import com.withergate.api.repository.action.DisasterActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
 import com.withergate.api.repository.disaster.DisasterDetailsRepository;
@@ -26,6 +25,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.turn.TurnService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class DisasterServiceTest {
     private CharacterService characterService;
 
     @Mock
-    private TurnRepository turnRepository;
+    private TurnService turnService;
 
     @Mock
     private RandomService randomService;
@@ -84,7 +84,7 @@ public class DisasterServiceTest {
         properties.setDisasterTurns(List.of(15, 30, 45));
 
         disasterService = new DisasterServiceImpl(disasterRepository, disasterDetailsRepository, disasterSolutionRepository,
-                disasterActionRepository, disasterResolutionService, clanRepository, characterService, turnRepository, randomService,
+                disasterActionRepository, disasterResolutionService, clanRepository, characterService, turnService, randomService,
                 notificationService, encounterService, itemService, properties);
     }
 
@@ -104,7 +104,7 @@ public class DisasterServiceTest {
 
         Turn turn = new Turn();
         turn.setTurnId(5);
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+        Mockito.when(turnService.getCurrentTurn()).thenReturn(turn);
 
         // when getting current disaster
         Disaster result = disasterService.getDisasterForClan(1);
@@ -129,7 +129,7 @@ public class DisasterServiceTest {
 
         Turn turn = new Turn();
         turn.setTurnId(5);
-        Mockito.when(turnRepository.findFirstByOrderByTurnIdDesc()).thenReturn(turn);
+        Mockito.when(turnService.getCurrentTurn()).thenReturn(turn);
 
         // when getting current disaster
         Disaster result = disasterService.getDisasterForClan(1);

@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import java.time.LocalDate;
+
 import com.withergate.api.model.request.GlobalNotificationRequest;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,5 +32,13 @@ public interface AdminService {
      */
     @PreAuthorize("hasRole('ADMIN')")
     void updateGlobalNotification(GlobalNotificationRequest request);
+
+    /**
+     * Sets a start date for the current turn.
+     *
+     * @param date start date
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    void setTurnStartDate(LocalDate date);
 
 }
