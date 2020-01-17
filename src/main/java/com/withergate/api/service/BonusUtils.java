@@ -63,6 +63,8 @@ public class BonusUtils {
      */
     public static int getItemBonus(Character character, BonusType bonusType, ClanNotification notification,
                                     NotificationService notificationService) {
+        int bonus = 0;
+
         // find relevant item
         for (Item item : character.getItems()) {
             if (item.getDetails().getBonusType() != null && item.getDetails().getBonusType().equals(bonusType)) {
@@ -71,11 +73,11 @@ public class BonusUtils {
                         item.getDetails().getName());
                 notification.getDetails().add(detail);
 
-                return item.getDetails().getBonus();
+                bonus += item.getDetails().getBonus();
             }
         }
 
-        return 0;
+        return bonus;
     }
 
     /**
