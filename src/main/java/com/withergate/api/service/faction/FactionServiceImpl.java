@@ -22,6 +22,7 @@ import com.withergate.api.model.faction.FactionPointsOverview;
 import com.withergate.api.model.faction.FactionsOverview;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.model.request.FactionRequest;
 import com.withergate.api.repository.action.FactionActionRepository;
 import com.withergate.api.repository.clan.ClanRepository;
@@ -235,7 +236,7 @@ public class FactionServiceImpl implements FactionService {
 
         switch (aid.getAidType()) {
             case RESOURCE_SUPPORT:
-                distributeResources(character.getClan(), aid, turnId);
+                distributeResources(character.getClan(), aid, turnId, notification);
                 break;
             case FACTION_SUPPORT:
                 // pay cost
@@ -263,7 +264,7 @@ public class FactionServiceImpl implements FactionService {
         notification.changeFame(aid.getFame());
     }
 
-    private void distributeResources(Clan clan, FactionAid aid, int turnId) {
+    private void distributeResources(Clan clan, FactionAid aid, int turnId, ClanNotification notification) {
         List<Clan> clans = clan.getFaction().getClans().stream().filter(c -> c.getFactionPoints() < clan.getFactionPoints())
                 .collect(Collectors.toList());
         Collections.shuffle(clans);
@@ -272,16 +273,21 @@ public class FactionServiceImpl implements FactionService {
         for (Clan receiver : clans) {
             if (i >= aid.getNumAid()) break;
 
-            ClanNotification notification = new ClanNotification(turnId, receiver.getId());
-            notification.setHeader(receiver.getName());
-            notificationService.addLocalizedTexts(notification.getText(), "faction.aid.receive", new String[]{clan.getName()});
+            ClanNotification receiverNotification = new ClanNotification(turnId, receiver.getId());
+            receiverNotification.setHeader(receiver.getName());
+            notificationService.addLocalizedTexts(receiverNotification.getText(), "faction.aid.receive", new String[]{clan.getName()});
 
             receiver.changeFood(aid.getAid());
-            notification.changeFood(aid.getAid());
+            receiverNotification.changeFood(aid.getAid());
             receiver.changeJunk(aid.getAid());
-            notification.changeJunk(aid.getAid());
+            receiverNotification.changeJunk(aid.getAid());
 
-            notificationService.save(notification);
+            notificationService.save(receiverNotification);
+
+            // donor detail
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), "detail.faction.aid", new String[]{receiver.getName()});
+            notification.getDetails().add(detail);
 
             i++;
         }
