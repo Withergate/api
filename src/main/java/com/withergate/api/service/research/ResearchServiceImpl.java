@@ -114,7 +114,7 @@ public class ResearchServiceImpl implements ResearchService {
         ResearchDetails details = research.getDetails();
 
         // compute progress
-        int progress = character.getIntellect() + getResearchBonus(character, notification);
+        int progress = character.getIntellect() + BonusUtils.getBonus(character, BonusType.RESEARCH, notification, notificationService);
 
         research.setProgress(research.getProgress() + progress);
 
@@ -132,18 +132,4 @@ public class ResearchServiceImpl implements ResearchService {
         }
     }
 
-    private int getResearchBonus(Character character, ClanNotification notification) {
-        int bonus = 0;
-
-        // trait
-        bonus += BonusUtils.getTraitBonus(character, BonusType.RESEARCH, notification, notificationService);
-
-        // item
-        bonus += BonusUtils.getItemBonus(character, BonusType.RESEARCH, notification, notificationService);
-
-        // building
-        bonus += BonusUtils.getBuildingBonus(character, BonusType.RESEARCH, notification, notificationService);
-
-        return bonus;
-    }
 }

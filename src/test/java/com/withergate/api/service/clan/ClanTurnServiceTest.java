@@ -224,11 +224,11 @@ public class ClanTurnServiceTest {
         Clan clan = new Clan();
         clan.setId(1);
         clan.setFood(0);
-        clan.setCharacters(new HashSet<>());
 
         Character character = new Character();
         character.setId(1);
         character.setHitpoints(1);
+        character.setClan(clan);
         clan.getCharacters().add(character);
 
         // when performing turn updates
@@ -246,11 +246,11 @@ public class ClanTurnServiceTest {
         clan.setId(1);
         clan.setFood(0);
         clan.setFame(2);
-        clan.setCharacters(new HashSet<>());
 
         Character character = new Character();
         character.setId(1);
         character.setHitpoints(5);
+        character.setClan(clan);
         clan.getCharacters().add(character);
 
         // when performing turn updates

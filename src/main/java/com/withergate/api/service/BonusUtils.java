@@ -23,8 +23,8 @@ public class BonusUtils {
     }
 
     /**
-     * Gets bonus for given trait and bonus type. Uses injected notification service to add relevant notification detail to the provided
-     * notification.
+     * Gets bonus for given character and bonus type. Uses injected notification service to add relevant notification
+     * detail to the provide notification.
      *
      * @param character character
      * @param bonusType bonus type to be handled
@@ -32,81 +32,13 @@ public class BonusUtils {
      * @param notificationService notification service
      * @return bonus
      */
-    public static int getTraitBonus(Character character, BonusType bonusType, ClanNotification notification,
+    public static int getBonus(Character character, BonusType bonusType, ClanNotification notification,
                                     NotificationService notificationService) {
-        // find relevant trait, update notification and compute bonus
-        for (Trait trait : character.getActiveTraits()) {
-            if (trait.getDetails().getBonusType() != null && trait.getDetails().getBonusType().equals(bonusType)) {
-                if (!trait.getDetails().isOptional() || Math.random() < 0.5) {
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), trait.getDetails().getBonusText(),
-                            new String[] {character.getName()}, trait.getDetails().getName());
-                    notification.getDetails().add(detail);
+        int traitBonus = getTraitBonus(character, bonusType, notification, notificationService);
+        int itemBonus = getItemBonus(character, bonusType, notification, notificationService);
+        int buildingBonus = getBuildingBonus(character, bonusType, notification, notificationService);
 
-                    return trait.getDetails().getBonus();
-                }
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Gets bonus for given item and bonus type. Uses injected notification service to add relevant notification detail to the provided
-     * notification.
-     *
-     * @param character character
-     * @param bonusType bonus type to be handled
-     * @param notification notification
-     * @param notificationService notification service
-     * @return bonus
-     */
-    public static int getItemBonus(Character character, BonusType bonusType, ClanNotification notification,
-                                    NotificationService notificationService) {
-        int bonus = 0;
-
-        // find relevant item
-        for (Item item : character.getItems()) {
-            if (item.getDetails().getBonusType() != null && item.getDetails().getBonusType().equals(bonusType)) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
-                        item.getDetails().getName());
-                notification.getDetails().add(detail);
-
-                bonus += item.getDetails().getBonus();
-            }
-        }
-
-        return bonus;
-    }
-
-    /**
-     * Gets bonus for given building and bonus type. Uses injected notification service to add relevant notification detail to the provided
-     * notification.
-     *
-     * @param character character
-     * @param bonusType bonus type to be handled
-     * @param notification notification
-     * @param notificationService notification service
-     * @return bonus
-     */
-    public static int getBuildingBonus(Character character, BonusType bonusType, ClanNotification notification,
-                                    NotificationService notificationService) {
-        // find relevant building, update notification and compute bonus
-        for (Building building : character.getClan().getBuildings()) {
-            if (building.getDetails().getBonusType() != null && building.getDetails().getBonusType().equals(bonusType)
-                    && building.getLevel() > 0) {
-                if (building.getDetails().getBonusText() != null) {
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), building.getDetails().getBonusText(),
-                            new String[] {character.getName()}, building.getDetails().getName());
-                    notification.getDetails().add(detail);
-                }
-                return building.getDetails().getBonus() * building.getLevel();
-            }
-        }
-
-        return 0;
+        return traitBonus + itemBonus + buildingBonus;
     }
 
     /**
@@ -130,6 +62,67 @@ public class BonusUtils {
                             building.getDetails().getName());
                 }
                 return building.getDetails().getEndBonus() * building.getLevel();
+            }
+        }
+
+        return 0;
+    }
+
+    private static int getTraitBonus(Character character, BonusType bonusType, ClanNotification notification,
+                                    NotificationService notificationService) {
+        // find relevant trait, update notification and compute bonus
+        for (Trait trait : character.getActiveTraits()) {
+            if (trait.getDetails().getBonusType() != null && trait.getDetails().getBonusType().equals(bonusType)) {
+                if (!trait.getDetails().isOptional() || Math.random() < 0.5) {
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), trait.getDetails().getBonusText(),
+                            new String[] {character.getName()}, trait.getDetails().getName());
+                    notification.getDetails().add(detail);
+
+                    return trait.getDetails().getBonus();
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private static int getItemBonus(Character character, BonusType bonusType, ClanNotification notification,
+                                    NotificationService notificationService) {
+        int bonus = 0;
+
+        // find relevant item
+        for (Item item : character.getItems()) {
+            if (item.getDetails().getBonusType() != null && item.getDetails().getBonusType().equals(bonusType)) {
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
+                        item.getDetails().getName());
+                notification.getDetails().add(detail);
+
+                bonus += item.getDetails().getBonus();
+            }
+        }
+
+        return bonus;
+    }
+
+    private static int getBuildingBonus(Character character, BonusType bonusType, ClanNotification notification,
+                                    NotificationService notificationService) {
+        if (character.getClan() == null) {
+            return 0;
+        }
+
+        // find relevant building, update notification and compute bonus
+        for (Building building : character.getClan().getBuildings()) {
+            if (building.getDetails().getBonusType() != null && building.getDetails().getBonusType().equals(bonusType)
+                    && building.getLevel() > 0) {
+                if (building.getDetails().getBonusText() != null) {
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), building.getDetails().getBonusText(),
+                            new String[] {character.getName()}, building.getDetails().getName());
+                    notification.getDetails().add(detail);
+                }
+                return building.getDetails().getBonus() * building.getLevel();
             }
         }
 

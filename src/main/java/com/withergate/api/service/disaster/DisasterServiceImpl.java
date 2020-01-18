@@ -273,9 +273,7 @@ public class DisasterServiceImpl implements DisasterService {
         notification.changeExperience(2);
 
         int progress = action.getSolution().getBonus();
-
-        // trait bonus
-        progress += BonusUtils.getTraitBonus(action.getCharacter(), BonusType.DISASTER, notification, notificationService);
+        progress += BonusUtils.getBonus(action.getCharacter(), BonusType.DISASTER, notification, notificationService);
 
         // increase clan progress
         Clan clan = action.getCharacter().getClan();
