@@ -117,7 +117,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             int consumption = gameProperties.getFoodConsumption();
 
             // ascetic
-            consumption -= BonusUtils.getTraitBonus(character, BonusType.FOOD_CONSUMPTION, notification, notificationService);
+            consumption -= BonusUtils.getBonus(character, BonusType.FOOD_CONSUMPTION, notification, notificationService);
 
             if (clan.getFood() >= consumption) {
                 clan.setFood(clan.getFood() - consumption);
@@ -271,10 +271,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         int points = gameProperties.getHealing();
 
         // trait
-        points += BonusUtils.getTraitBonus(character, BonusType.HEALING, notification, notificationService);
-
-        // building
-        points += BonusUtils.getBuildingBonus(character, BonusType.HEALING, notification, notificationService);
+        points += BonusUtils.getBonus(character, BonusType.HEALING, notification, notificationService);
 
         int healing = Math.min(points, hitpointsMissing);
         character.changeHitpoints(healing);
@@ -282,7 +279,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
     }
 
     private void handleRestingBonuses(Character character, ClanNotification notification) {
-        int exp = BonusUtils.getBuildingBonus(character, BonusType.TRAINING, notification, notificationService);
+        int exp = BonusUtils.getBonus(character, BonusType.TRAINING, notification, notificationService);
         if (exp > 0) {
             notification.changeExperience(exp);
             character.changeExperience(exp);

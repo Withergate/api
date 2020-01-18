@@ -254,7 +254,7 @@ public class FactionServiceImpl implements FactionService {
 
         // increase faction points
         int factionPoints = aid.getFactionPoints();
-        factionPoints += BonusUtils.getTraitBonus(action.getCharacter(), BonusType.FACTION_POINTS, notification, notificationService);
+        factionPoints += BonusUtils.getBonus(action.getCharacter(), BonusType.FACTION_POINTS, notification, notificationService);
         character.getClan().changeFactionPoints(factionPoints);
         notification.changeFactionPoints(factionPoints);
 

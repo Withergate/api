@@ -1,8 +1,5 @@
 package com.withergate.api.service.combat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.combat.CombatResult;
@@ -17,6 +14,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Combat round service implementation. Used for detail combat mechanics.
@@ -119,15 +119,15 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         int bonus = 0;
 
         if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.MELEE)) {
-            bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_MELEE, notification, notificationService);
+            bonus += BonusUtils.getBonus(character, BonusType.COMBAT_MELEE, notification, notificationService);
         }
 
         if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
-            bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_RANGED, notification, notificationService);
+            bonus += BonusUtils.getBonus(character, BonusType.COMBAT_RANGED, notification, notificationService);
         }
 
         if (character.getWeapon() == null && character.getOutfit() == null) {
-            bonus += BonusUtils.getTraitBonus(character, BonusType.COMBAT_UNARMED, notification, notificationService);
+            bonus += BonusUtils.getBonus(character, BonusType.COMBAT_UNARMED, notification, notificationService);
         }
 
         return bonus;

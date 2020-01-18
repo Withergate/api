@@ -1,7 +1,5 @@
 package com.withergate.api.service.building;
 
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
@@ -32,6 +30,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Building service implementation.
@@ -231,9 +231,7 @@ public class BuildingServiceImpl implements BuildingService {
     private int getBonus(Character character, ClanNotification notification, BonusType bonusType) {
         int bonus = 0;
 
-        bonus += BonusUtils.getTraitBonus(character, bonusType, notification, notificationService);
-        bonus += BonusUtils.getItemBonus(character, bonusType, notification, notificationService);
-        bonus += BonusUtils.getBuildingBonus(character, bonusType, notification, notificationService);
+        bonus += BonusUtils.getBonus(character, bonusType, notification, notificationService);
 
         // research side effect
         Research research = character.getClan().getResearch(ResearchBonusType.CRAFTING_CAPS);

@@ -1,5 +1,6 @@
 package com.withergate.api.service.combat;
 
+import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.notification.ClanNotification;
@@ -93,12 +94,14 @@ public class CombatRoundServiceTest {
         character1.setHitpoints(1);
         character1.setMaxHitpoints(10);
         character1.setCombat(1);
+        character1.setClan(new Clan());
 
         Character character2 = new Character();
         character2.setName("Mike");
         character2.setHitpoints(10);
         character2.setMaxHitpoints(10);
         character2.setCombat(5);
+        character2.setClan(new Clan());
 
         // when handling combat
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(4, 4); // combat rolls

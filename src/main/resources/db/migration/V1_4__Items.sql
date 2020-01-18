@@ -101,6 +101,7 @@ INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type
     ('NOTEBOOK', 'GEAR', 'COMMON', 12, 1, 'SCOUTING', 'detail.gear.bonus.information', 'https://storage.googleapis.com/withergate-images/items/notebook.png'),
     ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'detail.gear.bonus.work', 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
     ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
+    ('BANNER', 'GEAR', 'RARE', 20, 2, 'FACTION_POINTS', 'detail.gear.bonus.factionPoints', 'https://storage.googleapis.com/withergate-images/items/banner.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
@@ -118,6 +119,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SHOVEL', 'cs', 'Lopata'),
     ('BINOCULARS', 'en', 'Binoculars'),
     ('BINOCULARS', 'cs', 'Dalekohled'),
+    ('BANNER', 'en', 'Banner'),
+    ('BANNER', 'cs', 'Standarta'),
     ('DETECTOR', 'en', 'Detector'),
     ('DETECTOR', 'cs', 'Detektor');
 
@@ -136,6 +139,8 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('SHOVEL', 'cs', 'Konečně něco, o co se mohu při práci opřít. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
     ('BINOCULARS', 'en', 'If I see it, I can hit it. Improves the chance of finding food.'),
     ('BINOCULARS', 'cs', 'Když to uvidím, tak to zabiju. Zvýší šanci na nalezení jídla.'),
+    ('BANNER', 'en', 'What better way of showing devotion for your faction than carrying a giant-ass banner with you all the time. Grant bonus influence when performing faction support actions.'),
+    ('BANNER', 'cs', 'Není lepší způsob, jak vyjádřit zápal pro vlastní frakci, než s sebou všude tahat obří standartu. Předmět dává bonus k zisku vlivu k akcím podporujícím frakci.'),
     ('DETECTOR', 'en', 'A few decades old, so it doesn’t work really well. Improves the chance of finding junk.'),
     ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
 

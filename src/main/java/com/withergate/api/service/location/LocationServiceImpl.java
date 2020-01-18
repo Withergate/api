@@ -1,7 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.List;
-
 import com.withergate.api.model.BonusType;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.ResearchBonusType;
@@ -29,6 +27,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Location service implementation.
@@ -104,7 +104,7 @@ public class LocationServiceImpl implements LocationService {
         boolean encounterSuccess = false;
         int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100) + character.getIntellect();
         if (description.getEncounterChance() > 0) {
-            encounterRoll += BonusUtils.getItemBonus(character, BonusType.CAMOUFLAGE, notification, notificationService);
+            encounterRoll += BonusUtils.getBonus(character, BonusType.CAMOUFLAGE, notification, notificationService);
         }
         if (description.getEncounterChance() > 0 && encounterRoll <= description.getEncounterChance()) {
             log.debug("Random encounter triggered!");
@@ -149,7 +149,7 @@ public class LocationServiceImpl implements LocationService {
                                     boolean encounter) {
         // loot
         int lootProbability = description.getItemChance() + character.getScavenge()
-                + getLootBonus(character, notification, description.getLocation());
+                + getLootBonus(character, description.getLocation());
         int lootRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (lootRoll <= lootProbability) {
             notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[] {});
@@ -160,8 +160,8 @@ public class LocationServiceImpl implements LocationService {
         Clan clan = character.getClan();
         notificationService.addLocalizedTexts(notification.getText(), "location.resources", new String[] {});
 
-        int junk = character.getScavenge() + description.getJunkBonus() + getIncomeBonus(character, notification,
-                BonusType.SCAVENGE_JUNK);
+        int junk = character.getScavenge() + description.getJunkBonus()
+                + BonusUtils.getBonus(character, BonusType.SCAVENGE_JUNK, notification, notificationService);
 
         // decrease junk when encounter triggered
         if (encounter) {
@@ -171,8 +171,8 @@ public class LocationServiceImpl implements LocationService {
         clan.changeJunk(junk);
         notification.changeJunk(junk);
 
-        int food = character.getScavenge() + description.getFoodBonus() + getIncomeBonus(character, notification,
-                BonusType.SCAVENGE_FOOD);
+        int food = character.getScavenge() + description.getFoodBonus()
+                + BonusUtils.getBonus(character, BonusType.SCAVENGE_FOOD, notification, notificationService);
 
         // decrease food when encounter triggered
         if (encounter) {
@@ -201,23 +201,11 @@ public class LocationServiceImpl implements LocationService {
         notification.changeInformation(information);
     }
 
-    private int getIncomeBonus(Character character, ClanNotification notification, BonusType bonusType) {
-        int bonus = 0;
-
-        bonus += BonusUtils.getTraitBonus(character, bonusType, notification, notificationService);
-        bonus += BonusUtils.getItemBonus(character, bonusType, notification, notificationService);
-
-        return bonus;
-    }
-
     private int getScoutingBonus(Character character, ClanNotification notification, boolean encounter) {
         int bonus = 0;
 
         // trait
-        bonus += BonusUtils.getTraitBonus(character, BonusType.SCOUTING, notification, notificationService);
-
-        // item
-        bonus += BonusUtils.getItemBonus(character, BonusType.SCOUTING, notification, notificationService);
+        bonus += BonusUtils.getBonus(character, BonusType.SCOUTING, notification, notificationService);
 
         // research side effect
         Research research = character.getClan().getResearch(ResearchBonusType.SCOUT_FOOD);
@@ -239,7 +227,7 @@ public class LocationServiceImpl implements LocationService {
         return bonus;
     }
 
-    private int getLootBonus(Character character, ClanNotification notification, Location location) {
+    private int getLootBonus(Character character, Location location) {
         Research research = character.getClan().getResearch(ResearchBonusType.NEIGHBORHOOD_LOOT);
         if (research != null && research.isCompleted() && location.equals(Location.NEIGHBORHOOD)) {
             return research.getDetails().getValue();
