@@ -180,15 +180,15 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.storm.s1', true, 'd.storm', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
-    ('d.storm.s2', false, 'd.storm', 'CRAFTSMANSHIP', null, 7, 10, 0, 0, 0, false),
+    ('d.storm.s2', false, 'd.storm', 'INTELLECT', null, 7, 10, 2, 0, 0, false),
     ('d.storm.s3', false, 'd.storm', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
     ('d.storm.s4', false, 'd.storm', 'AUTOMATIC', null, 4, 20, 0, 50, 0, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.storm.s1', 'en', 'Hide everything we have'),
     ('d.storm.s1', 'cs', 'Všechno schovat'),
-    ('d.storm.s2', 'en', 'Anti-flood barriers'),
-    ('d.storm.s2', 'cs', 'Protipovodňové zábrany'),
+    ('d.storm.s2', 'en', 'Eureca! The lightning conductor!'),
+    ('d.storm.s2', 'cs', 'Vymyslet hromosvody a další udělátka'),
     ('d.storm.s3', 'en', 'Use some junk and fortify everything'),
     ('d.storm.s3', 'cs', 'Použít šrot a vše zpevnit'),
     ('d.storm.s4', 'en', 'Hire external workforce'),
@@ -197,8 +197,8 @@ INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.storm.s1', 'en', 'Our belongings and provisions are scattered all around, in fragile shelters, where they can be hit by a raging element. Let’s hide it below the ground, and hammer it down.'),
     ('d.storm.s1', 'cs', 'Naše vybavení a zásoby se válí všude okolo, v křehkých přístřešcích, kde je může zasypat běsnící živel... Pojďme vše uschovat pod zem a daleko od vody, a ideálně ještě přibít. Jakkoliv.'),
-    ('d.storm.s2', 'en', 'Even such a lovely stream which is right near us can flood everything. With a small practice with a shovel we can make it flood everything somewhere else.'),
-    ('d.storm.s2', 'cs', 'I takový potůček, jaký teče hned u nás, se může vylít z břehů a všechno spláchnout. Po troše zápolení s lopatou a hlínou zajistíme, aby se z břehu vylil někde jinde. Úspěch akce závisí na zručnosti postavy.'),
+    ('d.storm.s2', 'en', 'Let’s hope that we are smart enough to install the lighting conductors to correct places.'),
+    ('d.storm.s2', 'cs', 'Možná by bylo dobré naše budovy upravit tak, aby výše položené místo nebyla hořlavá střecha domu, ale třeba… kovový vodič, po kterém se blesky svezou na bezpečné místo a nezpůsobí žádnou škodu. Bohužel pouze ti nejchytřejší z nás vědí, jak a kam takové hromosvody nainstalovat.'),
     ('d.storm.s3', 'en', 'Some of our shelters are somewhat fragile. They can be damaged in a storm and hurt us inside. Provided that we know, we can fix them with a proper material. The success of this action depends on the character`s craftsmanship.'),
     ('d.storm.s3', 'cs', 'Některá naše stavení jsou spíše chatrná. Hrozí jejich zřícení či poškození a ztráty na majetku i na zdraví. Pokud víme, jak na to, můžeme je s použitím vhodného materiálu trochu vyspravit. Úspěch akce závisí na zručnosti postavy.'),
     ('d.storm.s4', 'en', 'Some enterprising persons from the vicinity are claiming they exactly know what do, and for a few caps they can help us. Afterwards, they will go with their stormcraft elsewhere.'),
