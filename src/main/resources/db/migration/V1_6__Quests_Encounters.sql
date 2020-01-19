@@ -15,7 +15,8 @@ INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, 
     ('quest.13', 'COMBAT', null, 4, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
     ('quest.14', 'INTELLECT', null, 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png'),
     ('quest.15', 'SCAVENGE', 'HEALTHY_CHARACTER', 6, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest15.png'),
-    ('quest.16', 'INTELLECT', 'FEMALE_CHARACTER', 8, 1, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest16.png');
+    ('quest.16', 'INTELLECT', 'FEMALE_CHARACTER', 8, 1, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest16.png'),
+    ('quest.17', 'COMBAT', null, 7, 1, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest17.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.1', 'en', 'Deratization'),
@@ -49,7 +50,9 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.15', 'en', 'Experiments'),
     ('quest.15', 'cs', 'Experimenty'),
     ('quest.16', 'en', 'Succubus'),
-    ('quest.16', 'cs', 'Sukuba');
+    ('quest.16', 'cs', 'Sukuba'),
+    ('quest.17', 'en', 'Bad motherfucker'),
+    ('quest.17', 'cs', 'Lvi žerou první');
 
 INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours! This action will trigger a combat.'),
@@ -83,7 +86,9 @@ INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.15', 'en', 'If you find me a bunch of screws, bearings and wires I will be able to make you a sixth finger...and you will get paid for that! Well, I haven`t actually tried it on anyone but the more famous you`re about to get when I finish the procedure!'),
     ('quest.15', 'cs', 'Když mi doneseš pár šroubků, ložisek a drátků, dokážu ti vyrobit šestý prst...a ještě ti zaplatím! No, na nikom jsem to sice ještě nezkoušel, ale o to víc tě to proslaví po celé pustině!'),
     ('quest.16', 'en', 'Coaxing this information out of this guy should be a piece of cake for someone with your looks. I know, he stinks, is a bit overweight and a tad old but maybe an innocent flirt would be enough for him to talk. And if not, I am always willing to pay more for the added effort.'),
-    ('quest.16', 'cs', 'Vytáhnout informaci z tohohle chlapíka by nemuselo být těžké pro někoho, kdo vypadá jako ty. Jasně, trochu smrdí, má nějaké to kilo navíc a není nejmladší, ale kdo říká, že se nerozpovídá už po nevinném flirtování...a kdyby ne, dám ti potom prostě víc peněz, ne?');
+    ('quest.16', 'cs', 'Vytáhnout informaci z tohohle chlapíka by nemuselo být těžké pro někoho, kdo vypadá jako ty. Jasně, trochu smrdí, má nějaké to kilo navíc a není nejmladší, ale kdo říká, že se nerozpovídá už po nevinném flirtování...a kdyby ne, dám ti potom prostě víc peněz, ne?'),
+    ('quest.17', 'en', 'Looking for a well paid bloody job? I’m going to tell you a little story. Butch was a long-standing champion of the arena before, so I’ve bet a lot of caps on his opponent and offered Butch a great bribe. He gladly took it, because he is not getting any younger and arena fighters do not have an old-timers` day... The only task of this old gladiator was to feign defeat in the middle of the arena fight, leave the arena forever and enjoy incredible amount of caps for the rest of his life. But instead, that motherfucker bet on himself, won the fight and also all the caps I’ve bet! I am prepared to scour the Wasteland for that motherfucker. Find him and kill him. But beware, Butch is the best fighter I know.'),
+    ('quest.17', 'cs', 'Ztratil jsem hodně zátek při sázce na posledního šampiona arény. Měl to být zápas století, ale šel hned v prvních pár vteřinách dolů... Jestli si chceš vydělat špinavou prací, běž a sundej ho ještě jednou. Ale pozor, neznám nebezpečnějšího soupeře než je tenhle Karlos! Ne nadarmo se mu říká Terminátor.');
 
 -- Random encounters
 INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, difficulty, description_text, success_text, failure_text) VALUES
