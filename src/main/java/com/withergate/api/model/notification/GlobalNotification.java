@@ -1,13 +1,18 @@
 package com.withergate.api.model.notification;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +33,10 @@ public class GlobalNotification {
     @Column(name = "single_id")
     private Singleton id;
 
-    @Column(name = "message")
-    private String message;
+    @OneToMany
+    @MapKeyColumn(name = "lang")
+    @JoinColumn(name = "global_notification")
+    private Map<String, LocalizedText> message;
 
     @Column(name = "active")
     private boolean active;
