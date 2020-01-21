@@ -347,6 +347,14 @@ CREATE TABLE disasters (
     CONSTRAINT disaster_disaster_details_fk FOREIGN KEY (identifier) REFERENCES disaster_details (identifier)
 );
 
+-- Global notification
+DROP TABLE IF EXISTS global_notification;
+CREATE TABLE global_notification (
+    single_id VARCHAR(8) NOT NULL,
+    active BIT DEFAULT 0,
+    PRIMARY KEY (single_id)
+);
+
 -- Localized texts
 DROP TABLE IF EXISTS localized_texts;
 CREATE TABLE localized_texts (
@@ -355,6 +363,7 @@ CREATE TABLE localized_texts (
     text VARCHAR(2048) NOT NULL,
     notification_id BIGINT,
     notification_detail_id BIGINT,
+    global_notification VARCHAR(16),
     location_name VARCHAR(16),
     location_description VARCHAR(16),
     location_info VARCHAR(16),
@@ -380,6 +389,7 @@ CREATE TABLE localized_texts (
     PRIMARY KEY (text_id),
     CONSTRAINT localized_text_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id),
     CONSTRAINT localized_text_notification_detail_fk FOREIGN KEY (notification_detail_id) REFERENCES notification_details (detail_id),
+    CONSTRAINT localized_text_global_notification_fk FOREIGN KEY (global_notification) REFERENCES global_notification (single_id),
     CONSTRAINT localized_text_location_name_fk FOREIGN KEY (location_name) REFERENCES location_descriptions (location),
     CONSTRAINT localized_text_location_description_fk FOREIGN KEY (location_description) REFERENCES location_descriptions (location),
     CONSTRAINT localized_text_location_info_fk FOREIGN KEY (location_info) REFERENCES location_descriptions (location),
@@ -403,6 +413,12 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_faction_description_fk FOREIGN KEY (faction_description) REFERENCES factions (identifier),
     CONSTRAINT localized_text_faction_aid_fk FOREIGN KEY (faction_aid) REFERENCES faction_aids (identifier)
 );
+
+-- Notification bootstrap
+INSERT INTO global_notification VALUES ('SINGLE', false);
+INSERT INTO localized_texts (global_notification, lang, text) VALUES
+    ('SINGLE', 'en', ''),
+    ('SINGLE', 'cs', '');
 
 -- Market offers
 DROP TABLE IF EXISTS market_offers;
@@ -478,17 +494,6 @@ CREATE TABLE arena_stats (
     clan_name VARCHAR(32) NOT NULL,
     PRIMARY KEY (stats_id)
 );
-
--- Global notification
-DROP TABLE IF EXISTS global_notification;
-CREATE TABLE global_notification (
-    single_id VARCHAR(8) NOT NULL,
-    message VARCHAR(1024),
-    active BIT DEFAULT 0,
-    PRIMARY KEY (single_id)
-);
-
-INSERT INTO global_notification VALUES ('SINGLE', '', false);
 
 -- Statistics
 DROP TABLE IF EXISTS clan_turn_statistics;

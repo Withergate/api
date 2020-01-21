@@ -1,5 +1,8 @@
 package com.withergate.api.model.request;
 
+import java.util.Map;
+
+import com.withergate.api.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +15,7 @@ import lombok.Setter;
 @Setter
 public class GlobalNotificationRequest {
 
-    private String message;
+    private Map<String, LocalizedText> message;
     private boolean active;
 
 }

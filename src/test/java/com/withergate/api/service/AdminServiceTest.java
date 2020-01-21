@@ -1,7 +1,11 @@
 package com.withergate.api.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.withergate.api.model.notification.GlobalNotification;
 import com.withergate.api.model.notification.GlobalNotification.Singleton;
+import com.withergate.api.model.notification.LocalizedText;
 import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.scheduling.TurnScheduler;
@@ -51,18 +55,29 @@ public class AdminServiceTest {
         // given request
         GlobalNotificationRequest request = new GlobalNotificationRequest();
         request.setActive(true);
-        request.setMessage("Test");
+
+        Map<String, LocalizedText> messageRequest = new HashMap<>();
+        LocalizedText text = new LocalizedText();
+        text.setText("Test");
+        text.setLang("en");
+        messageRequest.put("en", text);
+        request.setMessage(messageRequest);
 
         GlobalNotification notification = new GlobalNotification();
         notification.setActive(false);
-        notification.setMessage("");
+        Map<String, LocalizedText> messageNotification = new HashMap<>();
+        LocalizedText text2 = new LocalizedText();
+        text2.setText("");
+        text2.setLang("en");
+        messageNotification.put("en", text2);
+        notification.setMessage(messageNotification);
         Mockito.when(globalNotificationRepository.getOne(Singleton.SINGLE)).thenReturn(notification);
 
         // when updating
         adminService.updateGlobalNotification(request);
 
         // then verify entity updated
-        Assert.assertEquals("Test", notification.getMessage());
+        Assert.assertEquals("Test", notification.getMessage().get("en").getText());
         Assert.assertTrue(notification.isActive());
     }
 

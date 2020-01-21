@@ -3,6 +3,7 @@ package com.withergate.api.service;
 import java.time.LocalDate;
 
 import com.withergate.api.model.notification.GlobalNotification;
+import com.withergate.api.model.notification.LocalizedText;
 import com.withergate.api.model.request.GlobalNotificationRequest;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.repository.notification.GlobalNotificationRepository;
@@ -57,7 +58,11 @@ public class AdminServiceImpl implements AdminService {
     public void updateGlobalNotification(GlobalNotificationRequest request) {
         GlobalNotification notification = globalNotificationRepository.getOne(GlobalNotification.Singleton.SINGLE);
         notification.setActive(request.isActive());
-        notification.setMessage(request.getMessage());
+
+        for (String lang : request.getMessage().keySet()) {
+            if (!notification.getMessage().containsKey(lang)) continue;
+            notification.getMessage().get(lang).setText(request.getMessage().get(lang).getText());
+        }
     }
 
     @Transactional
