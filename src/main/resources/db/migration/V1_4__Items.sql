@@ -142,7 +142,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('SHOVEL', 'cs', 'Konečně něco, o co se mohu při práci opřít. Zvýší zručnost při stavbě budov, aniž by bylo nutné platit materiál navíc.'),
     ('BINOCULARS', 'en', 'If I see it, I can hit it. Improves the chance of finding food.'),
     ('BINOCULARS', 'cs', 'Když to uvidím, tak to zabiju. Zvýší šanci na nalezení jídla.'),
-    ('BANNER', 'en', 'What better way of showing devotion for your faction than carrying a giant-ass banner with you all the time. Grant bonus influence when performing faction support actions.'),
+    ('BANNER', 'en', 'What better way of showing devotion for your faction than carrying a giant-ass banner with you all the time. Grants bonus influence when performing faction support actions.'),
     ('BANNER', 'cs', 'Není lepší způsob, jak vyjádřit zápal pro vlastní frakci, než s sebou všude tahat obří standartu. Předmět dává bonus k zisku vlivu k akcím podporujícím frakci.'),
     ('TRINKETS', 'en', 'Collection of small shiny trinkets that could be used as bribes for locals. Increases the information gained from scouting.'),
     ('TRINKETS', 'cs', 'Kolekce třpytivé veteše, která se dá použít jako úplatky pro místní. Zvýší počet získaných informací při průzkumu.'),
