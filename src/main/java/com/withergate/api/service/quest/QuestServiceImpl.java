@@ -58,7 +58,7 @@ public class QuestServiceImpl implements QuestService {
         // load details and filter existing/completed quests
         List<QuestDetails> questDetails = questDetailsRepository.findAll()
                 .stream()
-                .filter(details -> !identifiers.contains(details.getIdentifier()))
+                .filter(details -> !identifiers.contains(details.getIdentifier()) && details.getFaction() == null)
                 .collect(Collectors.toList());
 
         if (questDetails.isEmpty()) {
