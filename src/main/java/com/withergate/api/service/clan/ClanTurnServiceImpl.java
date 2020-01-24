@@ -51,9 +51,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
     public void performClanTurnUpdates(Clan clan, int turnId) {
         log.debug("-> Performing turn updates for clan {}.", clan.getId());
 
-        // delete dead characters
-        deleteDeadCharacters(clan);
-
         // passive buildings
         buildingService.processPassiveBuildingBonuses(turnId, clan);
 
@@ -84,20 +81,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
         // prepare statistics
         prepareStatistics(turnId, clan);
-    }
-
-    private void deleteDeadCharacters(Clan clan) {
-        Iterator<Character> iterator = clan.getCharacters().iterator();
-        while (iterator.hasNext()) {
-            Character character = iterator.next();
-            if (character.getHitpoints() < 1) {
-                log.debug("Deleting character {}.", character.getName());
-                iterator.remove();
-                character.getClan().getCharacters().remove(character);
-
-                characterService.delete(character);
-            }
-        }
     }
 
     private void performFoodConsumption(int turnId, Clan clan) {

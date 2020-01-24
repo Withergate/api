@@ -54,6 +54,11 @@ public interface CharacterService {
     void delete(Character character);
 
     /**
+     * Deletes all dead characters.
+     */
+    void deleteDeadCharacters();
+
+    /**
      * Generates random character.
      *
      * @param filter filter
