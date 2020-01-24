@@ -13,7 +13,9 @@ import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.model.statistics.ClanTurnStatistics;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -60,6 +62,7 @@ public class ClanServiceImpl implements ClanService {
     private final TavernService tavernService;
     private final ClanTurnService clanTurnService;
     private final RandomService randomService;
+    private final ClanTurnStatisticsRepository statisticsRepository;
 
     @Override
     public Clan getClan(int clanId) {
@@ -171,6 +174,15 @@ public class ClanServiceImpl implements ClanService {
     public List<TavernOffer> loadTavernOffers(int clanId) {
         Clan clan = clanRepository.getOne(clanId);
         return tavernService.loadTavernOffers(TavernOffer.State.AVAILABLE, clan);
+    }
+
+    @Override
+    public void prepareStatistics(int turnId) {
+        log.debug("--> Preparing turn statistics");
+        for (Clan clan : getAllClans()) {
+            ClanTurnStatistics statistics = new ClanTurnStatistics(clan, turnId);
+            statisticsRepository.save(statistics);
+        }
     }
 
     /*

@@ -503,6 +503,7 @@ CREATE TABLE clan_turn_statistics (
     turn_id INT NOT NULL,
     fame INT,
     food INT,
+    caps INT,
     junk INT,
     buildings INT,
     research INT,
