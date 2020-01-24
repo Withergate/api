@@ -1,7 +1,6 @@
 package com.withergate.api.service.clan;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
@@ -131,44 +130,6 @@ public class ClanTurnServiceTest {
         // then verify food consumed and buildings triggered
         Assert.assertEquals(5, clan.getFood());
         Mockito.verify(buildingService).processPassiveBuildingBonuses(1, clan);
-    }
-
-    @Test
-    public void testGivenCharactersWhenDeletingDeadThenVerifyCorrectCharactersDeleted() {
-        // given characters
-        List<Character> characters = new ArrayList<>();
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setFood(10);
-        clan.setCharacters(new HashSet<>());
-
-        Character character1 = new Character();
-        character1.setId(1);
-        character1.setName("John");
-        character1.setLevel(1);
-        character1.setExperience(0);
-        character1.setHitpoints(10);
-        characters.add(character1);
-        character1.setClan(clan);
-        clan.getCharacters().add(character1);
-
-        Character character2 = new Character();
-        character2.setId(2);
-        character2.setName("Jane");
-        character2.setLevel(1);
-        character2.setExperience(0);
-        character2.setHitpoints(0);
-        characters.add(character2);
-        character2.setClan(clan);
-        clan.getCharacters().add(character2);
-
-        // when deleting dead
-        clanTurnService.performClanTurnUpdates(clan,1);
-
-        // then verify correct characters deleted
-        Mockito.verify(characterService, Mockito.never()).delete(character1);
-        Mockito.verify(characterService).delete(character2);
     }
 
     @Test

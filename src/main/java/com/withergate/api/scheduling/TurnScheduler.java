@@ -27,6 +27,7 @@ public class TurnScheduler {
     private final TurnService turnService;
     private final ActionService actionService;
     private final ClanService clanService;
+    private final CharacterService characterService;
     private final GameProperties gameProperties;
 
     /**
@@ -82,6 +83,9 @@ public class TurnScheduler {
 
         // handle disaster
         actionService.processDisaster(currentTurn.getTurnId());
+
+        // delete dead characters
+        characterService.deleteDeadCharacters();
 
         // perform clan turn updates
         clanService.performClanTurnUpdates(currentTurn.getTurnId());

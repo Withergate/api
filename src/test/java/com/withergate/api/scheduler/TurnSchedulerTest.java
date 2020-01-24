@@ -4,6 +4,7 @@ import com.withergate.api.GameProperties;
 import com.withergate.api.model.turn.Turn;
 import com.withergate.api.scheduling.TurnScheduler;
 import com.withergate.api.service.action.ActionService;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.turn.TurnService;
 import org.junit.Before;
@@ -28,6 +29,9 @@ public class TurnSchedulerTest {
     @Mock
     private ClanService clanService;
 
+    @Mock
+    private CharacterService characterService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -35,7 +39,7 @@ public class TurnSchedulerTest {
         GameProperties properties = new GameProperties();
         properties.setMaxTurns(45);
 
-        scheduler = new TurnScheduler(turnService, actionService, clanService, properties);
+        scheduler = new TurnScheduler(turnService, actionService, clanService, characterService, properties);
     }
 
     @Test

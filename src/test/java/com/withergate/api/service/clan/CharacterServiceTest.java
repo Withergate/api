@@ -107,6 +107,7 @@ public class CharacterServiceTest {
         // when deleting character
         Character character = new Character();
         character.setId(1);
+        character.setClan(new Clan());
         character.setName("Rusty Nick");
 
         characterService.delete(character);

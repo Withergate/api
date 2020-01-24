@@ -17,6 +17,7 @@ import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Character service.
@@ -65,7 +66,18 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public void delete(Character character) {
+        character.getClan().getCharacters().remove(character);
+        character.setClan(null);
         characterRepository.delete(character);
+    }
+
+    @Override
+    public void deleteDeadCharacters() {
+        for (Character character : loadAll()) {
+            if (character.getHitpoints() < 1) {
+                delete(character);
+            }
+        }
     }
 
     @Override
