@@ -20,10 +20,10 @@ INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('r.resources', 'en', 'Support out faction members with resources'),
     ('r.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
-INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, progressive, follow_up, faction, image_url) VALUES
-    ('quest.r1', 'AUTOMATIC', null, 0, 6, 10, 5, 3, 0, 0, false, false, false, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
-    ('quest.r2', 'INTELLECT_LOW', null, 5, 2, 20, 10, 6, 0, 0, false, false, false, 'quest.r3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r2.png'),
-    ('quest.r3', 'CRAFTSMANSHIP', null, 6, 3, 30, 15, 9, 0, 5, false, false, false, 'quest.r4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r3.png'),
+INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
+    ('quest.r1', 'AUTOMATIC', null, 0, 6, 10, 5, 3, 0, 0, false, false, true, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
+    ('quest.r2', 'INTELLECT_LOW', null, 5, 2, 20, 10, 6, 0, 0, false, false, true, 'quest.r3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r2.png'),
+    ('quest.r3', 'CRAFTSMANSHIP', null, 6, 3, 30, 15, 9, 0, 5, false, false, true, 'quest.r4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r3.png'),
     ('quest.r4', 'INTELLECT', null, 8, 6, 40, 20, 12, 0, 0, false, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-r4.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
@@ -68,10 +68,10 @@ INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('c.resources', 'en', 'Support out faction members with resources'),
     ('c.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
-INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, progressive, follow_up, faction, image_url) VALUES
-    ('quest.c1', 'AUTOMATIC', null, 0, 3, 10, 5, 3, 0, 0, false, true, false, 'quest.c2', 'CULT', 'https://storage.googleapis.com/withergate-images/quests/quest-c1.png'),
-    ('quest.c2', 'AUTOMATIC', 'ITEM_EQUIPPED', 0, 2, 20, 10, 6, 0, 0, true, false, false, 'quest.c3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c2.png'),
-    ('quest.c3', 'INTELLECT', null, 6, 3, 30, 15, 9, 5, 0, false, false, false, 'quest.c4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c3.png'),
+INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
+    ('quest.c1', 'AUTOMATIC', null, 0, 3, 10, 5, 3, 0, 0, false, true, true, 'quest.c2', 'CULT', 'https://storage.googleapis.com/withergate-images/quests/quest-c1.png'),
+    ('quest.c2', 'AUTOMATIC', 'ITEM_EQUIPPED', 0, 2, 20, 10, 6, 0, 0, true, false, true, 'quest.c3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c2.png'),
+    ('quest.c3', 'INTELLECT', null, 6, 3, 30, 15, 9, 5, 0, false, false, true, 'quest.c4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-c3.png'),
     ('quest.c4', 'CRAFTSMANSHIP_LOW', null, 5, 3, 40, 20, 12, 0, 0, false, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-c4.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
