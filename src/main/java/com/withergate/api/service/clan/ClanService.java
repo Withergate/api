@@ -84,4 +84,11 @@ public interface ClanService {
      */
     List<TavernOffer> loadTavernOffers(int clanId);
 
+    /**
+     * Prepares and saves statistics for every clan.
+     *
+     * @param turnId turn ID
+     */
+    void prepareStatistics(int turnId);
+
 }

@@ -12,6 +12,7 @@ import com.withergate.api.model.character.TavernOffer.State;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
+import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
@@ -53,12 +54,15 @@ public class ClanServiceTest {
     @Mock
     private RandomService randomService;
 
+    @Mock
+    private ClanTurnStatisticsRepository statisticsRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, buildingService, researchService, tavernService,
-                clanTurnService, randomService);
+                clanTurnService, randomService, statisticsRepository);
     }
 
     @Test(expected = EntityConflictException.class)

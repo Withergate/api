@@ -95,6 +95,9 @@ public class TurnScheduler {
             actionService.performEndGameActions(currentTurn.getTurnId());
         }
 
+        // prepare statistics
+        clanService.prepareStatistics(currentTurn.getTurnId());
+
         // prepare next turn
         log.info(" === Finished processing turn: {} ===", currentTurn.getTurnId());
     }

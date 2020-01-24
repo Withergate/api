@@ -47,6 +47,9 @@ public class ClanTurnStatistics {
     @Column(name = "junk")
     private int junk;
 
+    @Column(name = "caps")
+    private int caps;
+
     @Column(name = "buildings")
     private int buildings;
 
@@ -66,6 +69,7 @@ public class ClanTurnStatistics {
         this.fame = clan.getFame();
         this.food = clan.getFood();
         this.junk = clan.getJunk();
+        this.caps = clan.getCaps();
         this.buildings = clan.getBuildings().stream().mapToInt(Building::getLevel).sum();
         this.research = (int) clan.getResearch().stream().filter(Research::isCompleted).count();
         this.quests = (int) clan.getQuests().stream().filter(Quest::isCompleted).count();
