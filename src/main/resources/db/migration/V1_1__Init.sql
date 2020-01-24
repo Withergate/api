@@ -279,9 +279,9 @@ CREATE TABLE quest_details (
     junk_cost INT DEFAULT 0,
     item_cost BIT DEFAULT 0,
     health_cost BIT DEFAULT 0,
-    progressive BIT DEFAULT 0,
     follow_up VARCHAR(32),
     faction VARCHAR(16),
+    faction_specific BIT DEFAULT 0,
     image_url VARCHAR(256) NOT NULL,
     PRIMARY KEY (identifier)
 );

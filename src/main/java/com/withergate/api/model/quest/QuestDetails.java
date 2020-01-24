@@ -78,11 +78,11 @@ public class QuestDetails {
     @Column(name = "health_cost", nullable = false)
     private boolean healthCost;
 
-    @Column(name = "progressive", nullable = false)
-    private boolean progressive;
-
     @Column(name = "follow_up", updatable = false, nullable = false)
     private String followUp;
+
+    @Column(name = "faction_specific", nullable = false)
+    private boolean factionSpecific;
 
     @Column(name = "faction", updatable = false, nullable = false)
     private String faction;
