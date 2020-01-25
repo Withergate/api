@@ -3,8 +3,8 @@ INSERT INTO factions (identifier, image_url, icon_url) VALUES
     ('REVOLUTION', 'https://storage.googleapis.com/withergate-images/factions/revolution.png', 'https://storage.googleapis.com/withergate-images/factions/revolution-icon.png');
 
 INSERT INTO localized_texts (faction_name, lang, text) VALUES
-    ('REVOLUTION', 'en', 'Viva la Revolution'),
-    ('REVOLUTION', 'cs', 'Viva la Revolution');
+    ('REVOLUTION', 'en', 'De Fenestra'),
+    ('REVOLUTION', 'cs', 'De Fenestra');
 
 INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('REVOLUTION', 'en', 'Some people do not believe in progress. Those are the exact people that were afraid of big inventions and were not able to control them. They were the real cause of the end of our civilization. They still walk amongst us - ruling the city, pacting with Atomists... We have to take them down. There is no time for talking at the Clan Assembly or waiting for King beyond the Wasteland to come and rescue us. Let us overthrow the corrupt honoration and create a true democracy, like the one from before the collapse.'),
@@ -51,8 +51,8 @@ INSERT INTO factions (identifier, image_url, icon_url) VALUES
     ('CULT', 'https://storage.googleapis.com/withergate-images/factions/cult.png', 'https://storage.googleapis.com/withergate-images/factions/cult-icon.png');
 
 INSERT INTO localized_texts (faction_name, lang, text) VALUES
-    ('CULT', 'en', 'Cult of Rarraq'),
-    ('CULT', 'cs', 'Rarraqův kult');
+    ('CULT', 'en', 'Deus Vault'),
+    ('CULT', 'cs', 'Deus Vault');
 
 INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('CULT', 'en', 'We have to stop the ongoing mechanization and stay strong in our faith that unites us. That is the only way of restoring the world order. Atom and his priests are trying to hide the truth - the truth of our only Lord, Rarraq. His word is as old as humanity itself. The language might sound like gibberish but it surely carries big ideas.'),
