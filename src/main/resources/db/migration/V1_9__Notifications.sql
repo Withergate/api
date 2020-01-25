@@ -79,7 +79,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('faction.join', 'en', 'Your character went as an envoy to the [] faction and your clan was accepted as a member.'),
     ('faction.join', 'cs', 'Tvá postava byla vyslána do frakce [] a tvůj klan se stal jejím členem.'),
     ('faction.aid', 'en', 'Your character supported your faction [].'),
-    ('faction.aid', 'cs', 'Postava podpořila naší frakci [].'),
+    ('faction.aid', 'cs', 'Postava podpořila naši frakci [].'),
     ('faction.aid.receive', 'en', 'Your clan received a material support from your faction ally: {}.'),
     ('faction.aid.receive', 'cs', 'Tvůj klan obdržel materiální podporu od tvého frakčního spojence: {}.'),
     ('faction.fame', 'en', 'Your clan gained some fame from supporting faction [].'),
