@@ -7,6 +7,6 @@ package com.withergate.api.model;
  */
 public enum EndBonusType {
 
-    FOOD_INCOME, FAME_INCOME, INFORMATION_INCOME, POPULATION
+    FOOD_INCOME, FAME_INCOME, INFORMATION_INCOME, POPULATION, CLAN_DEFENSE
 
 }

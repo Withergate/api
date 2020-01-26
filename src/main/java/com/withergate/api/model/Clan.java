@@ -29,6 +29,7 @@ import com.withergate.api.model.quest.Quest;
 import com.withergate.api.model.research.Research;
 import com.withergate.api.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
+import com.withergate.api.service.combat.ClanDefenseUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -185,6 +186,12 @@ public class Clan {
 
     @Column(name = "faction_points", nullable = false)
     private int factionPoints;
+
+    @JsonProperty("defender")
+    @JsonView(Views.Internal.class)
+    public Character getDefender() {
+        return ClanDefenseUtils.getDefender(this);
+    }
 
     /**
      * Gets faction as DTO.
