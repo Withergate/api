@@ -8,7 +8,8 @@ INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, bonus
     ('WORKSHOP', 12, true, 10, 'CRAFTING', null, 5, 'GEAR', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
     ('RAGS_SHOP', 12, true, 10, 'CRAFTING', null, 5, 'OUTFIT', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
     ('QUARTERS', 16, false, 0, null, null, 0, null, 'POPULATION', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
-    ('STUDY', 16, false, 0, 'RESEARCH', 'detail.building.study', 1, null, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png');
+    ('STUDY', 16, false, 0, 'RESEARCH', 'detail.building.study', 1, null, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
+    ('KENNELS', 12, false, 0, null, null, 0, null, 'CLAN_DEFENSE', 2, null, 'https://storage.googleapis.com/withergate-images/buildings/kennels.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -28,7 +29,9 @@ INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('QUARTERS', 'en', 'Quarters'),
     ('QUARTERS', 'cs', 'Ubikace'),
     ('STUDY', 'en', 'Study'),
-    ('STUDY', 'cs', 'Studovna');
+    ('STUDY', 'cs', 'Studovna'),
+    ('KENNELS', 'en', 'Dog kennels'),
+    ('KENNELS', 'cs', 'Psí kotce');
 
 INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('SICK_BAY', 'en', 'Feeling under the weather? Grab a bed and pull yourself together!'),
@@ -48,7 +51,9 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('QUARTERS', 'en', 'No place to put your head down? We have a room for you! Dont mind the roaches.'),
     ('QUARTERS', 'cs', 'Nemáš, kde složit hlavu? Máme pro tebe fajnovej pokoj. Pokud ti teda nevadí pár švábů.'),
     ('STUDY', 'en', 'I have 100 ideas every day. 99 of them are bad and the remaining one is brilliant. The problem is finding which one is that.'),
-    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.');
+    ('STUDY', 'cs', 'Každý den mám 100 nápadů. 99 stojí za prd a ten zbývající bývá geniální. Problém je zjistit, který z nich to je.'),
+    ('KENNELS', 'en', 'This is Hutch. Hutch likes to cuddle, aport and shred. Hutch is a good boy.'),
+    ('KENNELS', 'cs', 'Tohle je Alík. Alík se rád mazlí, aportuje a trhá.');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
@@ -68,4 +73,6 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
     ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.'),
     ('STUDY', 'en', 'Each level of this building increases the speed of research and grants free information point every turn..'),
-    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu a poskytuje informaci zdarma každé kolo.');
+    ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu a poskytuje informaci zdarma každé kolo.'),
+    ('KENNELS', 'en', 'Each level of this building increases your clan defense against attacks from other players.'),
+    ('KENNELS', 'cs', 'Každá úroveň této budovy zvyšuje obranischopnost tvého klanu proti útokům od ostatních hráčů.');
