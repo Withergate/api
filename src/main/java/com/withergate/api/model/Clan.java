@@ -159,17 +159,6 @@ public class Clan {
     }
 
     /**
-     * Gets the total number of characters in clan. Used for public information.
-     *
-     * @return the total number of characters
-     */
-    @JsonProperty("numCharacters")
-    @JsonView(Views.Public.class)
-    public int getNumberOfCharacters() {
-        return characters.size();
-    }
-
-    /**
      * Clan's default action.
      */
     public enum DefaultAction {

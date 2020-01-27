@@ -2,6 +2,7 @@ package com.withergate.api.service.combat;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.EndBonusType;
+import com.withergate.api.model.building.Building;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.item.Item;
 import com.withergate.api.model.item.ItemDetails;
@@ -30,10 +31,12 @@ public class ClanDefenseUtils {
      * @return defender
      */
     public static Character getDefender(Clan clan) {
-        int buildingLevel = clan.getBuildings().stream().filter(building ->
-                building.getDetails().getEndBonusType() != null
-                        && building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE))
-                .findFirst().get().getLevel();
+        Building building = clan.getBuildings().stream().filter(b ->
+                b.getDetails().getEndBonusType() != null
+                        && b.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE))
+                .findFirst().orElse(null);
+
+        int buildingLevel = building != null ? building.getLevel() : 0;
 
         Character character = new Character();
         character.setName("Doggo");
