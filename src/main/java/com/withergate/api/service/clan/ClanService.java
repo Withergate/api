@@ -2,9 +2,11 @@ package com.withergate.api.service.clan;
 
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.dto.ClanIntelDTO;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -90,5 +92,15 @@ public interface ClanService {
      * @param turnId turn ID
      */
     void prepareStatistics(int turnId);
+
+    /**
+     * Reveals clan intel about the target based on spy's information level.
+     *
+     * @param targetId target clan ID
+     * @param spyId spy clan ID
+     * @return clan intel
+     * @throws InvalidActionException if clans don't exist
+     */
+    ClanIntelDTO getClanIntel(int targetId, int spyId) throws InvalidActionException;
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.model.Clan;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.dto.ClanIntelDTO;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.model.statistics.ClanTurnStatistics;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,6 +63,18 @@ public class ClanController {
         }
 
         return new ResponseEntity<>(clan, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves intel about the specified clan.
+     *
+     * @param principal the principal
+     * @param targetId target clan's ID
+     * @return the clan matching the id of the authenticated user
+     */
+    @GetMapping("/clan/{id}")
+    public ResponseEntity<ClanIntelDTO> getClanIntel(Principal principal, @PathVariable("id") int targetId) throws InvalidActionException {
+        return new ResponseEntity<>(clanService.getClanIntel(targetId, Integer.parseInt(principal.getName())), HttpStatus.OK);
     }
 
     /**

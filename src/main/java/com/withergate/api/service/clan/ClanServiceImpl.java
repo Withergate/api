@@ -11,6 +11,7 @@ import com.withergate.api.model.building.BuildingDetails;
 import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
+import com.withergate.api.model.dto.ClanIntelDTO;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.model.statistics.ClanTurnStatistics;
@@ -19,6 +20,7 @@ import com.withergate.api.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.research.ResearchService;
@@ -184,6 +186,17 @@ public class ClanServiceImpl implements ClanService {
             ClanTurnStatistics statistics = new ClanTurnStatistics(clan, turnId);
             statisticsRepository.save(statistics);
         }
+    }
+
+    @Override
+    public ClanIntelDTO getClanIntel(int targetId, int spyId) throws InvalidActionException {
+        Clan target = getClan(targetId);
+        Clan spy = getClan(spyId);
+        if (target == null || spy == null) {
+            throw new InvalidActionException("One or both of provided clans do not exist!");
+        }
+
+        return new ClanIntelDTO(target, spy);
     }
 
     /*

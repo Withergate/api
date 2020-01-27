@@ -9,6 +9,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.character.CharacterFilter;
 import com.withergate.api.model.character.TavernOffer;
 import com.withergate.api.model.character.TavernOffer.State;
+import com.withergate.api.model.dto.ClanIntelDTO;
 import com.withergate.api.model.request.ClanRequest;
 import com.withergate.api.model.request.DefaultActionRequest;
 import com.withergate.api.repository.clan.ClanRepository;
@@ -261,6 +262,37 @@ public class ClanServiceTest {
 
         // then verify offers returned
         Assert.assertEquals(offers, result);
+    }
+
+    @Test
+    public void testGivenTwoClansWhenGettingIntelThenVerifyInformationUsed() throws Exception {
+        // given two clans
+        Clan target = new Clan();
+        target.setId(1);
+        target.setCaps(50);
+        target.setFood(20);
+        target.setJunk(10);
+        target.setFame(100);
+        target.setDisasterProgress(40);
+        Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(target));
+
+        Clan spy = new Clan();
+        spy.setId(2);
+        spy.setInformationLevel(5);
+        Mockito.when(clanRepository.findById(2)).thenReturn(Optional.of(spy));
+
+        // when getting intel
+        ClanIntelDTO result = clanService.getClanIntel(1, 2);
+
+        // then verify correct values returned
+        Assert.assertEquals(Integer.valueOf(100), result.getFame());
+        Assert.assertEquals(Integer.valueOf(0), result.getCharacters());
+        Assert.assertEquals(Integer.valueOf(2), result.getDefense());
+        Assert.assertEquals(Integer.valueOf(0), result.getBuildings());
+        Assert.assertEquals(Integer.valueOf(0), result.getResearch());
+        Assert.assertNull(result.getDisasterProgress());
+        Assert.assertNull(result.getFood());
+        Assert.assertNull(result.getJunk());
     }
 
 }
