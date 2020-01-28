@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -94,15 +95,15 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private Set<Item> items;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
     private Set<Building> buildings;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
     private Set<Research> research;
 
-    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonView(Views.Internal.class)
     private Set<Quest> quests;
 

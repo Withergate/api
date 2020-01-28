@@ -176,6 +176,7 @@ public class ClanServiceImpl implements ClanService {
         return tavernService.loadTavernOffers(TavernOffer.State.AVAILABLE, clan);
     }
 
+    @Retryable
     @Override
     public void prepareStatistics(int turnId) {
         log.debug("--> Preparing turn statistics");

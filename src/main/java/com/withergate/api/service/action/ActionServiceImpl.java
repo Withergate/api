@@ -54,7 +54,7 @@ public class ActionServiceImpl implements ActionService {
     private final FactionService factionService;
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-    @Retryable(maxAttempts = 2)
+    @Retryable
     @Override
     public void processLocationActions(int turnId) {
         log.debug("-> Processing location actions...");
