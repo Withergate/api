@@ -117,6 +117,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
             // increase experience
             attacker.changeExperience(2);
+            attackerNotification.changeExperience(2);
 
             // add reward
             try {
@@ -124,13 +125,14 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
                 int fame = intel.getFameReward();
                 int factionPoints = intel.getFactionReward();
+                attacker.getClan().changeFame(fame);
+                attackerNotification.changeFame(fame);
+                attacker.getClan().changeFactionPoints(factionPoints);
+                attackerNotification.changeFactionPoints(factionPoints);
 
                 int food = Math.min(defender.getClan().getFood(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 int junk = Math.min(defender.getClan().getJunk(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 int caps = Math.min(defender.getClan().getCaps(), randomService.getRandomInt(1, RandomServiceImpl.K4));
-                attackerNotification.changeFame(fame);
-                attackerNotification.changeFactionPoints(factionPoints);
-
                 attackerNotification.changeFood(food);
                 defenderNotification.changeFood(- food);
                 attackerNotification.changeJunk(junk);
@@ -147,6 +149,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
             // increase experience
             attacker.changeExperience(1);
+            attackerNotification.changeExperience(1);
         }
     }
 }
