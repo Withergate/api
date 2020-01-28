@@ -50,7 +50,8 @@ public class CombatRoundServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(4, 2); // combat rolls
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(99); // flee roll
 
-        CombatResult result = combatRoundService.handleCombatRound(character1, new ClanNotification(), character2, new ClanNotification());
+        CombatResult result = combatRoundService.handleCombatRound(character1, new ClanNotification(), character2,
+                new ClanNotification(), 0);
 
         // then verify loser lost hitpoints
         Assert.assertEquals(character1, result.getWinner());
@@ -78,7 +79,8 @@ public class CombatRoundServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(4, 2); // combat rolls
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(1); // flee roll
 
-        CombatResult result = combatRoundService.handleCombatRound(character1, new ClanNotification(), character2, new ClanNotification());
+        CombatResult result = combatRoundService.handleCombatRound(character1, new ClanNotification(), character2,
+                new ClanNotification(), 0);
 
         // then verify loser fleed
         Assert.assertEquals(character1, result.getWinner());
@@ -106,7 +108,8 @@ public class CombatRoundServiceTest {
         // when handling combat
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(4, 4); // combat rolls
 
-        CombatResult result = combatRoundService.handleCombatRound(character1, new ClanNotification(), character2, new ClanNotification());
+        CombatResult result = combatRoundService.handleCombatRound(character1, new ClanNotification(), character2,
+                new ClanNotification(), 0);
 
         // then verify loser died
         Assert.assertEquals(character2, result.getWinner());

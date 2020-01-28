@@ -122,8 +122,10 @@ public class CombatServiceImpl implements CombatService {
 
     private CombatResult handleCombat(Character character1, ClanNotification notification1, Character character2,
                                       ClanNotification notification2) {
+
+        int round = 1;
         while (true) {
-            CombatResult result = combatRoundService.handleCombatRound(character1, notification1, character2, notification2);
+            CombatResult result = combatRoundService.handleCombatRound(character1, notification1, character2, notification2, round);
 
             // add details to both players
             for (NotificationDetail detail : result.getDetails()) {
@@ -134,6 +136,8 @@ public class CombatServiceImpl implements CombatService {
             if (result.isFinished()) {
                 return result;
             }
+
+            round++;
         }
     }
 

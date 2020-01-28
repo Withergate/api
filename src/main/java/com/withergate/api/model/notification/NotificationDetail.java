@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,9 @@ public class NotificationDetail {
     @JoinColumn(name = "notification_detail_id")
     private Map<String, LocalizedText> text;
 
+    @OneToOne(mappedBy = "detail", cascade = CascadeType.ALL)
+    private NotificationCombatRound combatRound;
+
     /**
      * Default constructor.
      */
@@ -57,6 +61,10 @@ public class NotificationDetail {
             loc.setText(entry.getValue().getText());
             loc.setLang(entry.getValue().getLang());
             text.put(entry.getKey(), loc);
+        }
+
+        if (detail.getCombatRound() != null) {
+            combatRound = new NotificationCombatRound(detail.getCombatRound(), this);
         }
     }
 

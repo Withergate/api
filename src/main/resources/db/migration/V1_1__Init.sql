@@ -249,6 +249,26 @@ CREATE TABLE notification_details (
     CONSTRAINT detail_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id)
 );
 
+DROP TABLE IF EXISTS notification_combat_rounds;
+CREATE TABLE notification_combat_rounds (
+    detail_combat_id BIGINT AUTO_INCREMENT,
+    detail_detail_id BIGINT,
+    round INT,
+    name_1 VARCHAR(32) NOT NULL,
+    name_2 VARCHAR(32) NOT NULL,
+    name_loser VARCHAR(32) NOT NULL,
+    combat_1 INT,
+    combat_2 INT,
+    health_1 INT,
+    health_2 INT,
+    armor INT,
+    roll_1 INT,
+    roll_2 INT,
+    injury INT,
+    PRIMARY KEY (detail_combat_id),
+    CONSTRAINT detail_notification_combat_fk FOREIGN KEY (detail_detail_id) REFERENCES notification_details (detail_id)
+);
+
 -- Encounters
 DROP TABLE IF EXISTS encounters;
 CREATE TABLE encounters (
