@@ -8,6 +8,13 @@ package com.withergate.api.service.action;
 public interface ActionService {
 
     /**
+     * Executes all pending clan combat actions.
+     *
+     * @param turnId turn ID
+     */
+    void processClanCombatActions(int turnId);
+
+    /**
      * Executes all pending location actions.
      *
      * @param turnId turn ID

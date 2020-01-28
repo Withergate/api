@@ -15,6 +15,7 @@ import com.withergate.api.model.request.DisasterRequest;
 import com.withergate.api.model.request.LocationRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.combat.ClanCombatService;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.faction.FactionService;
@@ -52,6 +53,16 @@ public class ActionServiceImpl implements ActionService {
     private final TavernService tavernService;
     private final DisasterService disasterService;
     private final FactionService factionService;
+    private final ClanCombatService clanCombatService;
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
+    @Override
+    public void processClanCombatActions(int turnId) {
+        log.debug("-> Processing clan combat actions...");
+
+        clanCombatService.processClanCombatActions(turnId);
+    }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Retryable

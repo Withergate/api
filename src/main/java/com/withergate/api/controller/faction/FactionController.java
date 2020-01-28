@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.withergate.api.model.faction.Faction;
 import com.withergate.api.model.faction.FactionsOverview;
+import com.withergate.api.model.request.ClanCombatRequest;
 import com.withergate.api.model.request.FactionRequest;
+import com.withergate.api.service.combat.ClanCombatService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.faction.FactionService;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FactionController {
 
     private final FactionService factionService;
+    private final ClanCombatService clanCombatService;
 
     /**
      * Retrieves all factions.
@@ -62,6 +65,21 @@ public class FactionController {
     @GetMapping("/factions/overview")
     public ResponseEntity<FactionsOverview> getFactionsOverview(Principal principal) {
         return new ResponseEntity<>(factionService.getOverview(Integer.parseInt(principal.getName())), HttpStatus.OK);
+    }
+
+    /**
+     * Submits a new combat action and checks if this action is applicable. Throws an exception if not.
+     *
+     * @param principal the principal
+     * @param request   the clan combat action request
+     * @throws InvalidActionException invalid action
+     */
+    @PostMapping("/factions/action/combat")
+    public ResponseEntity<Void> submitClanCombatAction(Principal principal, @RequestBody ClanCombatRequest request)
+            throws InvalidActionException {
+
+        clanCombatService.saveClanCombatAction(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

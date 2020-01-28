@@ -83,7 +83,15 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('faction.aid.receive', 'en', 'Your clan received a material support from your faction ally: {}.'),
     ('faction.aid.receive', 'cs', 'Tvůj klan obdržel materiální podporu od tvého frakčního spojence: {}.'),
     ('faction.fame', 'en', 'Your clan gained some fame from supporting faction [].'),
-    ('faction.fame', 'cs', 'Klan získal slávu díky podpoře frakce [].');
+    ('faction.fame', 'cs', 'Klan získal slávu díky podpoře frakce [].'),
+    ('clan.combat.attack', 'en', 'We attacked clan {}.'),
+    ('clan.combat.attack', 'cs', 'Zaútočili jsme na klan {}.'),
+    ('clan.combat.defense', 'en', 'We were attacked by clan {}.'),
+    ('clan.combat.defense', 'cs', 'Stali jsme se terčem útoku klanu {}.'),
+    ('clan.combat.victory', 'en', 'We managed to win the combat.'),
+    ('clan.combat.victory', 'cs', 'Podařilo se nám v souboji zvítězit.'),
+    ('clan.combat.failure', 'en', 'Unfortunately, we lost the fight.'),
+    ('clan.combat.failure', 'cs', 'Bohužel jsme neuspěli v souboji..');
 
 -- Placeholder texts detail
 INSERT INTO placeholder_texts(code, lang, text) VALUES
