@@ -468,6 +468,7 @@ CREATE TABLE actions (
     disaster_solution VARCHAR(32),
     faction VARCHAR(16),
     faction_aid VARCHAR(16),
+    clan_id INT,
     PRIMARY KEY (action_id)
 );
 

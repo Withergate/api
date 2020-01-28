@@ -62,6 +62,16 @@ public class CombatServiceImpl implements CombatService {
     }
 
     @Override
+    public boolean handleClanCombat(ClanNotification attackerNotification, ClanNotification defenderNotification,
+                                    Character attacker, Character defender) {
+        CombatResult result  = handleCombat(attacker, attackerNotification, defender, defenderNotification);
+        if (result.getWinner().getId() == attacker.getId()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public List<ArenaResult> handleArenaFights(List<Character> characters) {
         List<ArenaResult> results = new ArrayList<>(characters.size());
 

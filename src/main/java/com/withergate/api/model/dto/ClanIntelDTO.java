@@ -15,9 +15,14 @@ import lombok.Setter;
 @Setter
 public class ClanIntelDTO {
 
+    private static final int FAME_COEFFICIENT = 3;
+    private static final int FACTION_COEFFICIENT = 5;
+
+    private int clanId;
     private String name;
     private String faction;
     private Integer fame;
+
     private Integer characters;
     private Integer defense;
     private Integer caps;
@@ -27,6 +32,10 @@ public class ClanIntelDTO {
     private Integer food;
     private Integer junk;
 
+    // dynamic statistics
+    private int fameReward;
+    private int factionReward;
+
     /**
      * Constructor. Assigns information about the target based on the spy's information level.
      *
@@ -34,9 +43,12 @@ public class ClanIntelDTO {
      * @param spy spy clan
      */
     public ClanIntelDTO(Clan target, Clan spy) {
+        clanId = target.getId();
         name = target.getName();
         faction = target.getFaction() != null ? target.getFaction().getIdentifier() : null;
         fame = target.getFame();
+        fameReward = computeReward(target, spy,FAME_COEFFICIENT);
+        factionReward = computeReward(target, spy, FACTION_COEFFICIENT);
 
         if (spy.getInformationLevel() >= 1) {
             characters = target.getCharacters().size();
@@ -60,6 +72,14 @@ public class ClanIntelDTO {
             food = target.getFood();
             junk = target.getJunk();
         }
+    }
+
+    private int computeReward(Clan target, Clan spy, int coefficient) {
+        // set min fame to 1
+        int spyFame = spy.getFame() < 1 ? 1 : spy.getFame();
+
+        double ratio = (double) (target.getFame()) / spyFame;
+        return (int) (coefficient * ratio);
     }
 
 }

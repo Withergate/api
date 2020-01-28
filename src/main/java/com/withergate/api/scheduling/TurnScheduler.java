@@ -63,6 +63,9 @@ public class TurnScheduler {
         // assign default actions
         actionService.assignDefaultActions();
 
+        // process clan combat actions
+        actionService.processClanCombatActions(currentTurn.getTurnId());
+
         // process research actions
         actionService.processResearchActions(currentTurn.getTurnId());
 

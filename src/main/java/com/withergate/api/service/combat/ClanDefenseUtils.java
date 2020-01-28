@@ -40,6 +40,7 @@ public class ClanDefenseUtils {
 
         Character character = new Character();
         character.setName("Doggo");
+        character.setClan(clan);
         character.setCombat(BASE_COMBAT + COMBAT_PER_LEVEL * buildingLevel);
         character.setMaxHitpoints(BASE_HEALTH + HEALTH_PER_LEVEL * buildingLevel);
         character.setHitpoints(character.getMaxHitpoints());
