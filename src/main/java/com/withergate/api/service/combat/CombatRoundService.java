@@ -12,6 +12,6 @@ import com.withergate.api.model.notification.ClanNotification;
 public interface CombatRoundService {
 
     CombatResult handleCombatRound(Character character1, ClanNotification notification1, Character character2,
-                                   ClanNotification notification2);
+                                   ClanNotification notification2, int round);
 
 }

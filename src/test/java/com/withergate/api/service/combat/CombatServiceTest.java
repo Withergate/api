@@ -57,7 +57,8 @@ public class CombatServiceTest {
         combatResult.setLoser(new Character());
         combatResult.setFinished(true);
         combatResult.setDetails(new ArrayList<>());
-        Mockito.when(combatRoundService.handleCombatRound(Mockito.eq(character), Mockito.any(), Mockito.any(), Mockito.any()))
+        Mockito.when(combatRoundService.handleCombatRound(Mockito.eq(character), Mockito.any(), Mockito.any(), Mockito.any(),
+                Mockito.anyInt()))
                 .thenReturn(combatResult);
 
         // when handling single combat
@@ -91,7 +92,8 @@ public class CombatServiceTest {
         combatResult.setLoser(character2);
         combatResult.setFinished(true);
         combatResult.setDetails(new ArrayList<>());
-        Mockito.when(combatRoundService.handleCombatRound(Mockito.eq(character1), Mockito.any(), Mockito.eq(character2), Mockito.any()))
+        Mockito.when(combatRoundService.handleCombatRound(Mockito.eq(character1), Mockito.any(), Mockito.eq(character2), Mockito.any(),
+                Mockito.anyInt()))
                 .thenReturn(combatResult);
 
         // when handling arena fights

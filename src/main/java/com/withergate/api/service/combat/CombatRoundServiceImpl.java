@@ -5,6 +5,7 @@ import com.withergate.api.model.character.Character;
 import com.withergate.api.model.combat.CombatResult;
 import com.withergate.api.model.item.ItemDetails.WeaponType;
 import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.model.notification.NotificationCombatRound;
 import com.withergate.api.model.notification.NotificationDetail;
 import com.withergate.api.service.BonusUtils;
 import com.withergate.api.service.RandomService;
@@ -34,17 +35,22 @@ public class CombatRoundServiceImpl implements CombatRoundService {
     @Override
     public CombatResult handleCombatRound(
             Character character1, ClanNotification notification1, Character character2,
-            ClanNotification notification2) {
+            ClanNotification notification2, int round) {
         List<NotificationDetail> details = new ArrayList<>();
         boolean finished = false;
 
+        NotificationCombatRound notificationCombat = new NotificationCombatRound();
+        notificationCombat.setRound(round);
+        notificationCombat.setName1(character1.getName());
+        notificationCombat.setName2(character2.getName());
+        notificationCombat.setHealth1(character1.getHitpoints());
+        notificationCombat.setHealth2(character2.getHitpoints());
+
         // initial dice rolls
         int roll1 = randomService.getRandomInt(1, RandomServiceImpl.K6);
+        notificationCombat.setRoll1(roll1);
         int roll2 = randomService.getRandomInt(1, RandomServiceImpl.K6);
-        NotificationDetail detailRoll = new NotificationDetail();
-        notificationService.addLocalizedTexts(detailRoll.getText(), "detail.combat.rolls",
-                new String[]{character1.getName(), String.valueOf(roll1), character2.getName(), String.valueOf(roll2)});
-        details.add(detailRoll);
+        notificationCombat.setRoll2(roll2);
 
         // compare combat values
         int combat1 = character1.getTotalCombat() + roll1 + getCombatBonus(character1, notification1);
@@ -63,22 +69,21 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             }
             details.add(detailDraw);
         }
+        notificationCombat.setCombat1(combat1);
+        notificationCombat.setCombat2(combat2);
 
         // select winner and loser
         RoundOutcome outcome = new RoundOutcome(character1, character2, combat1, combat2, notification1, notification2);
 
         // compute injury
-        int injury = outcome.getCombatWinner() - outcome.getCombatLoser() - getArmor(outcome.getLoser());
+        int armor = getArmor(outcome.getLoser());
+        notificationCombat.setArmor(armor);
+        int injury = outcome.getCombatWinner() - outcome.getCombatLoser() - armor;
         if (injury < 1) injury = 1;
         outcome.getLoser().changeHitpoints(- injury);
         outcome.getLoserNotification().changeInjury(injury);
-
-        // update notification
-        NotificationDetail detailCombat = new NotificationDetail();
-        notificationService.addLocalizedTexts(detailCombat.getText(), "detail.combat.roundresult",
-                new String[]{outcome.getWinner().getName(), String.valueOf(outcome.getCombatWinner()), outcome.getLoser().getName(),
-                        String.valueOf(outcome.getCombatLoser()), outcome.getLoser().getName(), String.valueOf(injury)});
-        details.add(detailCombat);
+        notificationCombat.setInjury(injury);
+        notificationCombat.setLoser(outcome.getLoser().getName());
 
         // check death
         if (outcome.getLoser().getHitpoints() < 1) {
@@ -110,6 +115,12 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         result.setWinner(outcome.getWinner());
         result.setLoser(outcome.getLoser());
         result.setDetails(details);
+
+        // save combat results
+        NotificationDetail detailSummary = new NotificationDetail();
+        notificationService.addLocalizedTexts(detailSummary.getText(), "detail.combat.summary", new String[]{String.valueOf(round)});
+        detailSummary.setCombatRound(notificationCombat);
+        details.add(detailSummary);
 
         return result;
     }
