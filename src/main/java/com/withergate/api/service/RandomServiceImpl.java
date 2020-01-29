@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Random;
 
 import com.google.common.primitives.Ints;
-import com.withergate.api.model.character.Gender;
-import com.withergate.api.model.item.ItemType;
+import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.item.ItemType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

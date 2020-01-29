@@ -2,8 +2,8 @@ package com.withergate.api.controller.disaster;
 
 import java.security.Principal;
 
-import com.withergate.api.model.disaster.Disaster;
-import com.withergate.api.model.request.DisasterRequest;
+import com.withergate.api.game.model.disaster.Disaster;
+import com.withergate.api.game.model.request.DisasterRequest;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.AllArgsConstructor;

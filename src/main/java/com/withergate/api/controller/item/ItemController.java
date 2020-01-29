@@ -1,6 +1,6 @@
 package com.withergate.api.controller.item;
 
-import com.withergate.api.model.request.EquipRequest;
+import com.withergate.api.game.model.request.EquipRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import lombok.AllArgsConstructor;

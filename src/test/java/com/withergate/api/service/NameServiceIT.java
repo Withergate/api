@@ -2,7 +2,7 @@ package com.withergate.api.service;
 
 import java.util.HashSet;
 
-import com.withergate.api.model.character.Gender;
+import com.withergate.api.game.model.character.Gender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

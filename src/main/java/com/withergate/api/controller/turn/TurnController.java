@@ -1,7 +1,6 @@
 package com.withergate.api.controller.turn;
 
-import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

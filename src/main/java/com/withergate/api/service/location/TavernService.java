@@ -2,9 +2,9 @@ package com.withergate.api.service.location;
 
 import java.util.List;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.model.request.TavernRequest;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.character.TavernOffer;
+import com.withergate.api.game.model.request.TavernRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

@@ -1,8 +1,8 @@
 package com.withergate.api.service.combat;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.combat.CombatResult;
+import com.withergate.api.game.model.notification.ClanNotification;
 
 /**
  * CombatRound service interface.

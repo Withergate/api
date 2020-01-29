@@ -1,9 +1,9 @@
 package com.withergate.api.service.item;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Item;
-import com.withergate.api.model.item.ItemType;
-import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.item.Item;
+import com.withergate.api.game.model.item.ItemType;
+import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

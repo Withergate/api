@@ -3,12 +3,12 @@ package com.withergate.api.controller.trade;
 import java.security.Principal;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.withergate.api.model.request.MarketTradeRequest;
-import com.withergate.api.model.request.PublishOfferRequest;
-import com.withergate.api.model.request.ResourceTradeRequest;
-import com.withergate.api.model.trade.MarketOffer;
-import com.withergate.api.model.trade.MarketOffer.State;
-import com.withergate.api.model.view.Views;
+import com.withergate.api.game.model.request.MarketTradeRequest;
+import com.withergate.api.game.model.request.PublishOfferRequest;
+import com.withergate.api.game.model.request.ResourceTradeRequest;
+import com.withergate.api.game.model.trade.MarketOffer;
+import com.withergate.api.game.model.trade.MarketOffer.State;
+import com.withergate.api.game.model.view.Views;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.trade.TradeService;
 import lombok.AllArgsConstructor;

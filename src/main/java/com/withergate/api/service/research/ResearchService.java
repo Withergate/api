@@ -1,7 +1,7 @@
 package com.withergate.api.service.research;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.request.ResearchRequest;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.request.ResearchRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

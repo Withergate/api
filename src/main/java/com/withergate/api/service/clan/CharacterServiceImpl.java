@@ -2,13 +2,13 @@ package com.withergate.api.service.clan;
 
 import java.util.List;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterFilter;
-import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.character.Gender;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.notification.NotificationDetail;
-import com.withergate.api.repository.clan.CharacterRepository;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.character.CharacterFilter;
+import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -17,7 +17,6 @@ import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Character service.

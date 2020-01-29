@@ -2,17 +2,17 @@ package com.withergate.api.service.research;
 
 import java.util.List;
 
-import com.withergate.api.model.BonusType;
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.ActionState;
-import com.withergate.api.model.action.ResearchAction;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.Trait;
-import com.withergate.api.model.character.TraitDetails;
-import com.withergate.api.model.research.Research;
-import com.withergate.api.model.research.ResearchDetails;
-import com.withergate.api.repository.action.ResearchActionRepository;
-import com.withergate.api.repository.research.ResearchDetailsRepository;
+import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.action.ActionState;
+import com.withergate.api.game.model.action.ResearchAction;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.character.Trait;
+import com.withergate.api.game.model.character.TraitDetails;
+import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.research.ResearchDetails;
+import com.withergate.api.game.repository.action.ResearchActionRepository;
+import com.withergate.api.game.repository.research.ResearchDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;

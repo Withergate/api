@@ -1,9 +1,8 @@
 package com.withergate.api.service.quest;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.QuestAction;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.request.QuestRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

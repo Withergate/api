@@ -2,17 +2,15 @@ package com.withergate.api.service.action;
 
 import java.util.Optional;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.ActionState;
-import com.withergate.api.model.action.DisasterAction;
-import com.withergate.api.model.action.LocationAction.LocationActionType;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterState;
-import com.withergate.api.model.disaster.Disaster;
-import com.withergate.api.model.disaster.DisasterSolution;
-import com.withergate.api.model.location.Location;
-import com.withergate.api.model.request.DisasterRequest;
-import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.action.LocationAction.LocationActionType;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.game.model.disaster.Disaster;
+import com.withergate.api.game.model.disaster.DisasterSolution;
+import com.withergate.api.game.model.location.Location;
+import com.withergate.api.game.model.request.DisasterRequest;
+import com.withergate.api.game.model.request.LocationRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.ClanCombatService;

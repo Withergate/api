@@ -1,7 +1,7 @@
 package com.withergate.api.service.disaster;
 
-import com.withergate.api.model.disaster.Disaster;
-import com.withergate.api.model.request.DisasterRequest;
+import com.withergate.api.game.model.disaster.Disaster;
+import com.withergate.api.game.model.request.DisasterRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
