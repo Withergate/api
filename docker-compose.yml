@@ -19,3 +19,12 @@ services:
       - "AUTH_URL=http://localhost:9000/"
       - "REDIRECT_URL=http://localhost:3000"
       - "CLIENT_ID=withergate-local"
+
+  # Database instance
+  database:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=password"
+      - "MYSQL_DATABASE=game"
