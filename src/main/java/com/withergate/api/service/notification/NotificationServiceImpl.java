@@ -1,10 +1,10 @@
 package com.withergate.api.service.notification;
 
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.notification.LocalizedText;
-import com.withergate.api.model.notification.PlaceholderText;
-import com.withergate.api.repository.notification.ClanNotificationRepository;
-import com.withergate.api.repository.notification.PlaceholderTextRepository;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.notification.LocalizedText;
+import com.withergate.api.game.model.notification.PlaceholderText;
+import com.withergate.api.game.repository.notification.ClanNotificationRepository;
+import com.withergate.api.game.repository.notification.PlaceholderTextRepository;
 
 import java.util.HashMap;
 import java.util.List;

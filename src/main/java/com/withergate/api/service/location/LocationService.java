@@ -1,6 +1,6 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.model.request.LocationRequest;
+import com.withergate.api.game.model.request.LocationRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

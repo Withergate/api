@@ -2,14 +2,14 @@ package com.withergate.api.service.encounter;
 
 import java.util.List;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.encounter.Encounter;
-import com.withergate.api.model.encounter.SolutionType;
-import com.withergate.api.model.location.Location;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.notification.NotificationDetail;
-import com.withergate.api.repository.EncounterRepository;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.encounter.Encounter;
+import com.withergate.api.game.model.encounter.SolutionType;
+import com.withergate.api.game.model.location.Location;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.repository.EncounterRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.combat.CombatService;

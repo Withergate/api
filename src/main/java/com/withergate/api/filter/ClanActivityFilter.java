@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.withergate.api.model.Clan;
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.service.clan.ClanService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

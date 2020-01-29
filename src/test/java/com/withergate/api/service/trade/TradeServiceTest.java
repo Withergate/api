@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.action.ActionState;
-import com.withergate.api.model.action.ResourceTradeAction;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Item;
-import com.withergate.api.model.item.ItemDetails;
-import com.withergate.api.model.item.ItemType;
-import com.withergate.api.model.request.PublishOfferRequest;
-import com.withergate.api.model.trade.MarketOffer;
-import com.withergate.api.model.trade.MarketOffer.State;
-import com.withergate.api.model.trade.TradeType;
-import com.withergate.api.repository.action.ResourceTradeActionRepository;
-import com.withergate.api.repository.clan.ClanRepository;
-import com.withergate.api.repository.trade.MarketOfferRepository;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.action.ActionState;
+import com.withergate.api.game.model.action.ResourceTradeAction;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.item.Item;
+import com.withergate.api.game.model.item.ItemDetails;
+import com.withergate.api.game.model.item.ItemType;
+import com.withergate.api.game.model.request.PublishOfferRequest;
+import com.withergate.api.game.model.trade.MarketOffer;
+import com.withergate.api.game.model.trade.MarketOffer.State;
+import com.withergate.api.game.model.trade.TradeType;
+import com.withergate.api.game.repository.action.ResourceTradeActionRepository;
+import com.withergate.api.game.repository.clan.ClanRepository;
+import com.withergate.api.game.repository.trade.MarketOfferRepository;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
@@ -33,7 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import static com.withergate.api.model.trade.MarketOffer.State.SOLD;
+import static com.withergate.api.game.model.trade.MarketOffer.State.SOLD;
 
 public class TradeServiceTest {
 

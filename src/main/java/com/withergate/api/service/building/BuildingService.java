@@ -2,9 +2,9 @@ package com.withergate.api.service.building;
 
 import java.util.List;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.building.BuildingDetails;
-import com.withergate.api.model.request.BuildingRequest;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.building.BuildingDetails;
+import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

@@ -2,8 +2,8 @@ package com.withergate.api.controller.clan;
 
 import java.security.Principal;
 
-import com.withergate.api.model.request.CharacterRestRequest;
-import com.withergate.api.model.request.TraitRequest;
+import com.withergate.api.game.model.request.CharacterRestRequest;
+import com.withergate.api.game.model.request.TraitRequest;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.TraitService;
 import com.withergate.api.service.exception.InvalidActionException;

@@ -2,9 +2,8 @@ package com.withergate.api.service.clan;
 
 import java.util.List;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.character.CharacterFilter;
-import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

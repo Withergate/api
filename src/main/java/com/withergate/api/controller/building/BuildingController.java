@@ -2,7 +2,7 @@ package com.withergate.api.controller.building;
 
 import java.security.Principal;
 
-import com.withergate.api.model.request.BuildingRequest;
+import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.AllArgsConstructor;

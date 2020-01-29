@@ -1,11 +1,11 @@
 package com.withergate.api.controller;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.model.dto.GamePropertiesDTO;
-import com.withergate.api.model.notification.GlobalNotification;
-import com.withergate.api.model.request.GlobalNotificationRequest;
-import com.withergate.api.model.request.TurnRequest;
-import com.withergate.api.repository.notification.GlobalNotificationRepository;
+import com.withergate.api.game.model.dto.GamePropertiesDTO;
+import com.withergate.api.game.model.notification.GlobalNotification;
+import com.withergate.api.game.model.request.GlobalNotificationRequest;
+import com.withergate.api.game.model.request.TurnRequest;
+import com.withergate.api.game.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.service.AdminService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

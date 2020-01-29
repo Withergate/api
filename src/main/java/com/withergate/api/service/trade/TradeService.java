@@ -1,10 +1,10 @@
 package com.withergate.api.service.trade;
 
-import com.withergate.api.model.request.MarketTradeRequest;
-import com.withergate.api.model.request.PublishOfferRequest;
-import com.withergate.api.model.request.ResourceTradeRequest;
-import com.withergate.api.model.trade.MarketOffer;
-import com.withergate.api.model.trade.MarketOffer.State;
+import com.withergate.api.game.model.request.MarketTradeRequest;
+import com.withergate.api.game.model.request.PublishOfferRequest;
+import com.withergate.api.game.model.request.ResourceTradeRequest;
+import com.withergate.api.game.model.trade.MarketOffer;
+import com.withergate.api.game.model.trade.MarketOffer.State;
 import com.withergate.api.service.exception.InvalidActionException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

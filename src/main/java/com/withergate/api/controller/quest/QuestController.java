@@ -2,7 +2,7 @@ package com.withergate.api.controller.quest;
 
 import java.security.Principal;
 
-import com.withergate.api.model.request.QuestRequest;
+import com.withergate.api.game.model.request.QuestRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.quest.QuestService;
 import lombok.AllArgsConstructor;

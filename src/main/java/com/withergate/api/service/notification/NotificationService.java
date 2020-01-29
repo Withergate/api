@@ -2,8 +2,8 @@ package com.withergate.api.service.notification;
 
 import java.util.Map;
 
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.notification.LocalizedText;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.notification.LocalizedText;
 
 /**
  * Notification service interface.

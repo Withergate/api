@@ -1,12 +1,12 @@
 package com.withergate.api.service.combat;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.EndBonusType;
-import com.withergate.api.model.building.Building;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.item.Item;
-import com.withergate.api.model.item.ItemDetails;
-import com.withergate.api.model.item.ItemType;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.building.Building;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.item.Item;
+import com.withergate.api.game.model.item.ItemDetails;
+import com.withergate.api.game.model.item.ItemType;
 
 /**
  * Utils class used for computing default clan defense.

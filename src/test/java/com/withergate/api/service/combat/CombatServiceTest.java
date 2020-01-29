@@ -3,11 +3,11 @@ package com.withergate.api.service.combat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.location.ArenaResult;
-import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.combat.CombatResult;
+import com.withergate.api.game.model.location.ArenaResult;
+import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.item.ItemService;

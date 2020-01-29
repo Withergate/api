@@ -1,6 +1,6 @@
 package com.withergate.api.service.combat;
 
-import com.withergate.api.model.request.ClanCombatRequest;
+import com.withergate.api.game.model.request.ClanCombatRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

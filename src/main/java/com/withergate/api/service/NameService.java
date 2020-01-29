@@ -2,7 +2,7 @@ package com.withergate.api.service;
 
 import java.util.Set;
 
-import com.withergate.api.model.character.Gender;
+import com.withergate.api.game.model.character.Gender;
 
 /**
  * Name service interface.

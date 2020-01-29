@@ -2,7 +2,7 @@ package com.withergate.api.service;
 
 import java.time.LocalDate;
 
-import com.withergate.api.model.request.GlobalNotificationRequest;
+import com.withergate.api.game.model.request.GlobalNotificationRequest;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
