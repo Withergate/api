@@ -3,6 +3,7 @@ package com.withergate.api.service.combat;
 import java.util.List;
 
 import com.withergate.api.model.Clan;
+import com.withergate.api.model.action.ActionDescriptor;
 import com.withergate.api.model.action.ActionState;
 import com.withergate.api.model.action.ClanCombatAction;
 import com.withergate.api.model.character.Character;
@@ -58,6 +59,14 @@ public class ClanCombatServiceImpl implements ClanCombatService {
         }
         if (character.getClan().getFaction().getIdentifier().equals(target.getFaction().getIdentifier())) {
             throw new InvalidActionException("Your target must be in a different faction than you.");
+        }
+
+        // only one attack action per clan is permitted
+        for (Character ch : character.getClan().getCharacters()) {
+            if (ch.getCurrentAction().isPresent()
+                    && ch.getCurrentAction().get().getDescriptor().equals(ActionDescriptor.CLAN_COMBAT.name())) {
+                throw new InvalidActionException("Only one attack action per turn is permitted!");
+            }
         }
 
         // save action
@@ -151,5 +160,9 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             attacker.changeExperience(1);
             attackerNotification.changeExperience(1);
         }
+
+        // remove injury from defender notification - not needed for generated defender
+        defenderNotification.setInjury(0);
+        defenderNotification.setDeath(false);
     }
 }
