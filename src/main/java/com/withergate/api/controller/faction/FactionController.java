@@ -3,10 +3,10 @@ package com.withergate.api.controller.faction;
 import java.security.Principal;
 import java.util.List;
 
-import com.withergate.api.model.faction.Faction;
-import com.withergate.api.model.faction.FactionsOverview;
-import com.withergate.api.model.request.ClanCombatRequest;
-import com.withergate.api.model.request.FactionRequest;
+import com.withergate.api.game.model.faction.Faction;
+import com.withergate.api.game.model.faction.FactionsOverview;
+import com.withergate.api.game.model.request.ClanCombatRequest;
+import com.withergate.api.game.model.request.FactionRequest;
 import com.withergate.api.service.combat.ClanCombatService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.faction.FactionService;

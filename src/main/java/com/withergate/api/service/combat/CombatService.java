@@ -2,9 +2,9 @@ package com.withergate.api.service.combat;
 
 import java.util.List;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.location.ArenaResult;
-import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.location.ArenaResult;
+import com.withergate.api.game.model.notification.ClanNotification;
 
 /**
  * CombatService interface.

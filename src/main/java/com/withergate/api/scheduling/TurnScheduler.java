@@ -3,8 +3,7 @@ package com.withergate.api.scheduling;
 import java.time.LocalDate;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;

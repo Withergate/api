@@ -1,9 +1,9 @@
 package com.withergate.api.service.combat;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.combat.CombatResult;
-import com.withergate.api.model.notification.ClanNotification;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.combat.CombatResult;
+import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.notification.NotificationService;

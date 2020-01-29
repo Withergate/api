@@ -1,9 +1,9 @@
 package com.withergate.api.service.encounter;
 
-import com.withergate.api.model.encounter.SolutionType;
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.model.location.Location;
-import com.withergate.api.model.character.Character;
+import com.withergate.api.game.model.encounter.SolutionType;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.location.Location;
+import com.withergate.api.game.model.character.Character;
 
 /**
  * EncounterService interface.

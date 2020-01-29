@@ -3,9 +3,9 @@ package com.withergate.api.controller.arena;
 import java.security.Principal;
 import java.util.List;
 
-import com.withergate.api.model.arena.ArenaStats;
-import com.withergate.api.model.request.ArenaRequest;
-import com.withergate.api.repository.arena.ArenaStatsRepository;
+import com.withergate.api.game.model.arena.ArenaStats;
+import com.withergate.api.game.model.request.ArenaRequest;
+import com.withergate.api.game.repository.arena.ArenaStatsRepository;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.ArenaService;
 import lombok.AllArgsConstructor;

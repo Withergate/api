@@ -1,7 +1,7 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.model.character.Character;
-import com.withergate.api.model.request.TraitRequest;
+import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.request.TraitRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**

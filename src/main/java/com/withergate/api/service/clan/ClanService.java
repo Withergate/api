@@ -1,10 +1,10 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.model.Clan;
-import com.withergate.api.model.character.TavernOffer;
-import com.withergate.api.model.dto.ClanIntelDTO;
-import com.withergate.api.model.request.ClanRequest;
-import com.withergate.api.model.request.DefaultActionRequest;
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.character.TavernOffer;
+import com.withergate.api.game.model.dto.ClanIntelDTO;
+import com.withergate.api.game.model.request.ClanRequest;
+import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;

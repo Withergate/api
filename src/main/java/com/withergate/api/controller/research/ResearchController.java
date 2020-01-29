@@ -2,7 +2,7 @@ package com.withergate.api.controller.research;
 
 import java.security.Principal;
 
-import com.withergate.api.model.request.ResearchRequest;
+import com.withergate.api.game.model.request.ResearchRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.research.ResearchService;
 import lombok.AllArgsConstructor;

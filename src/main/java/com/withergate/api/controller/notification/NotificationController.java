@@ -3,9 +3,8 @@ package com.withergate.api.controller.notification;
 import java.security.Principal;
 import java.util.List;
 
-import com.withergate.api.model.notification.ClanNotification;
-import com.withergate.api.repository.TurnRepository;
-import com.withergate.api.repository.notification.ClanNotificationRepository;
+import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.repository.notification.ClanNotificationRepository;
 import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

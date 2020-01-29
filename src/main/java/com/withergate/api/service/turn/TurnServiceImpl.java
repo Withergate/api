@@ -1,7 +1,7 @@
 package com.withergate.api.service.turn;
 
-import com.withergate.api.model.turn.Turn;
-import com.withergate.api.repository.TurnRepository;
+import com.withergate.api.game.model.turn.Turn;
+import com.withergate.api.game.repository.TurnRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

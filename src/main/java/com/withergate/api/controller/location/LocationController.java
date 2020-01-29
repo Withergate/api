@@ -3,10 +3,10 @@ package com.withergate.api.controller.location;
 import java.security.Principal;
 import java.util.List;
 
-import com.withergate.api.model.location.LocationDescription;
-import com.withergate.api.model.request.LocationRequest;
-import com.withergate.api.model.request.TavernRequest;
-import com.withergate.api.repository.LocationDescriptionRepository;
+import com.withergate.api.game.model.location.LocationDescription;
+import com.withergate.api.game.model.request.LocationRequest;
+import com.withergate.api.game.model.request.TavernRequest;
+import com.withergate.api.game.repository.LocationDescriptionRepository;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.location.LocationService;
 import com.withergate.api.service.location.TavernService;

@@ -1,6 +1,6 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.model.Clan;
+import com.withergate.api.game.model.Clan;
 
 /**
  * Clan turn service. Responsible for performing all clan end-turn updates.

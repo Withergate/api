@@ -1,7 +1,7 @@
 package com.withergate.api.service;
 
-import com.withergate.api.model.character.Gender;
-import com.withergate.api.model.item.ItemType;
+import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.item.ItemType;
 
 /**
  * RandomService interface. Used for generating random entities and numbers.

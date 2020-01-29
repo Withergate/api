@@ -3,11 +3,11 @@ package com.withergate.api.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.withergate.api.model.notification.GlobalNotification;
-import com.withergate.api.model.notification.GlobalNotification.Singleton;
-import com.withergate.api.model.notification.LocalizedText;
-import com.withergate.api.model.request.GlobalNotificationRequest;
-import com.withergate.api.repository.notification.GlobalNotificationRepository;
+import com.withergate.api.game.model.notification.GlobalNotification;
+import com.withergate.api.game.model.notification.GlobalNotification.Singleton;
+import com.withergate.api.game.model.notification.LocalizedText;
+import com.withergate.api.game.model.request.GlobalNotificationRequest;
+import com.withergate.api.game.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.scheduling.TurnScheduler;
 import com.withergate.api.service.turn.TurnService;
 import org.flywaydb.core.Flyway;
