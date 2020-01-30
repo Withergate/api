@@ -139,12 +139,12 @@ public class ClanCombatServiceImpl implements ClanCombatService {
                 attackerNotification.changeFactionPoints(factionPoints);
 
                 int food = Math.min(defender.getClan().getFood(), randomService.getRandomInt(1, RandomServiceImpl.K4));
-                int junk = Math.min(defender.getClan().getJunk(), randomService.getRandomInt(1, RandomServiceImpl.K4));
-                int caps = Math.min(defender.getClan().getCaps(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 attackerNotification.changeFood(food);
                 defenderNotification.changeFood(- food);
+                int junk = Math.min(defender.getClan().getJunk(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 attackerNotification.changeJunk(junk);
                 defenderNotification.changeJunk(- junk);
+                int caps = Math.min(defender.getClan().getCaps(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 attackerNotification.changeCaps(caps);
                 defenderNotification.changeCaps(- caps);
             } catch (InvalidActionException e) {

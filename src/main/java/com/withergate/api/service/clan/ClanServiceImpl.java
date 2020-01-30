@@ -77,6 +77,11 @@ public class ClanServiceImpl implements ClanService {
     }
 
     @Override
+    public List<Clan> getAllClansByFame() {
+        return clanRepository.findAllByOrderByFameDesc();
+    }
+
+    @Override
     public Page<Clan> getClans(Pageable pageable) {
         return clanRepository.findAll(pageable);
     }
