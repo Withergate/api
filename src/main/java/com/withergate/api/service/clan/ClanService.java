@@ -36,6 +36,13 @@ public interface ClanService {
     List<Clan> getAllClans();
 
     /**
+     * Retrieves all clans sorted by fame.
+     *
+     * @return all clans in a list
+     */
+    List<Clan> getAllClansByFame();
+
+    /**
      * Retrieves the list of clans. Supports paging and sorting.
      *
      * @param pageable pagination and sorting

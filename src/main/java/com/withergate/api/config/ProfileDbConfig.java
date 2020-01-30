@@ -23,17 +23,27 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactory",
+        entityManagerFactoryRef = "profileEntityManagerFactory",
         basePackages = { "com.withergate.api.profile.repository" }
 )
 public class ProfileDbConfig {
 
+    /**
+     * Profile datasource. Used for the profile database.
+     *
+     * @return datasource
+     */
     @Bean(name = "profileDataSource")
     @ConfigurationProperties(prefix = "profile.datasource")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
+    /**
+     * Profile entity manager factory. Used for the profile database.
+     *
+     * @return entity manager factory
+     */
     @Bean(name = "profileEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
             @Qualifier("profileDataSource") DataSource dataSource) {
@@ -44,6 +54,11 @@ public class ProfileDbConfig {
                 .build();
     }
 
+    /**
+     * Profile transaction manager. Used for the profile database.
+     *
+     * @return transaction manager
+     */
     @Bean(name = "profileTransactionManager")
     public PlatformTransactionManager transactionManager(
             @Qualifier("profileEntityManagerFactory") EntityManagerFactory entityManagerFactory) {

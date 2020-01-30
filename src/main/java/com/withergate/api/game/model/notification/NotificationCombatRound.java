@@ -72,6 +72,9 @@ public class NotificationCombatRound {
     @MapsId
     private NotificationDetail detail;
 
+    /**
+     * Constructor.
+     */
     public NotificationCombatRound(NotificationCombatRound other, NotificationDetail targetDetail) {
         this.setRound(other.getRound());
         this.setName1(other.getName1());

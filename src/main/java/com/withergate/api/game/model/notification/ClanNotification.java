@@ -62,7 +62,7 @@ public class ClanNotification {
     @Column(name = "caps_income")
     private int capsIncome;
 
-    @Column(name = "fameIncome")
+    @Column(name = "fame_income")
     private int fameIncome;
 
     @Column(name = "injury")
@@ -80,7 +80,7 @@ public class ClanNotification {
     @Column(name = "item")
     private boolean item;
 
-    @Column(name = "factionPoints")
+    @Column(name = "faction_points")
     private int factionPoints;
 
     @Column(name = "death")
