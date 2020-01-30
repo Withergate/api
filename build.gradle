@@ -74,7 +74,8 @@ dependencies {
 	compile('org.flywaydb:flyway-core')
 
 	// Cloud SQL
-	compile('org.springframework.cloud:spring-cloud-gcp-starter-sql-mysql:1.1.2.RELEASE')
+	compile ('com.google.cloud.sql:mysql-socket-factory:1.0.15')
+	compile group: 'mysql', name: 'mysql-connector-java'
 
 	// Lombok
 	compileOnly('org.projectlombok:lombok')
