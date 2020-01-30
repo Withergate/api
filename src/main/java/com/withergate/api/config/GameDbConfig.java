@@ -24,11 +24,15 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactory",
         basePackages = { "com.withergate.api.game.repository" }
 )
 public class GameDbConfig {
 
+    /**
+     * Primary datasource. Used for the game database.
+     *
+     * @return datasource
+     */
     @Primary
     @Bean(name = "dataSource")
     @ConfigurationProperties(prefix = "game.datasource")
@@ -36,6 +40,11 @@ public class GameDbConfig {
         return DataSourceBuilder.create().build();
     }
 
+    /**
+     * Primary entity manager factory. Used for the game database.
+     *
+     * @return entity manager factory
+     */
     @Primary
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
@@ -47,6 +56,11 @@ public class GameDbConfig {
                 .build();
     }
 
+    /**
+     * Primary transaction manager. Used for the game database.
+     *
+     * @return transaction manager
+     */
     @Primary
     @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager(

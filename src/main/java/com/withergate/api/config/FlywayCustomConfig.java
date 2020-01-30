@@ -31,6 +31,11 @@ public class FlywayCustomConfig {
     @Resource(name = "profileDataSource")
     private final DataSource profileDataSource;
 
+    /**
+     * Primary Flyway bean. Used for the game database. This database is being wiped clean after every game.
+     *
+     * @return Flyway bean
+     */
     @Primary
     @Bean(name = "flyway")
     @ConfigurationProperties(prefix = "flyway.game")
@@ -42,6 +47,11 @@ public class FlywayCustomConfig {
         return flyway;
     }
 
+    /**
+     * Profile Flyway bean. Used for the profile database. This database is persistent and should not change.
+     *
+     * @return Flyway bean
+     */
     @Bean(name = "flywayProfile")
     @ConfigurationProperties(prefix = "flyway.profile")
     public Flyway flywayProfile() {

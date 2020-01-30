@@ -7,6 +7,7 @@ import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.profile.HistoricalResultsService;
 import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class TurnScheduler {
     private final ActionService actionService;
     private final ClanService clanService;
     private final CharacterService characterService;
+    private final HistoricalResultsService resultsService;
     private final GameProperties gameProperties;
 
     /**
@@ -95,6 +97,9 @@ public class TurnScheduler {
         // perform end game actions
         if (currentTurn.getTurnId() == gameProperties.getMaxTurns()) {
             actionService.performEndGameActions(currentTurn.getTurnId());
+
+            // save historical results
+            resultsService.saveResults(clanService.getAllClansByFame());
         }
 
         // prepare statistics

@@ -9,6 +9,7 @@ import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+    @Qualifier("flyway")
     private final Flyway flyway;
     private final TurnService turnService;
     private final TurnScheduler turnScheduler;
