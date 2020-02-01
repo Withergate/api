@@ -11,7 +11,8 @@ INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, i
     ('CONTACTS', 2, 'SCOUTING', 'detail.trait.scouting', false, 'https://storage.googleapis.com/withergate-images/traits/contacts-trait.png'),
     ('BOFFIN', 2, 'RESEARCH', 'detail.trait.research', false, 'https://storage.googleapis.com/withergate-images/traits/boffin-trait.png'),
     ('SPARTA', 2, 'DISASTER', 'detail.trait.disaster', false, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png'),
-    ('PATRIOT', 2, 'FACTION_POINTS', 'detail.trait.factionPoints', false, 'https://storage.googleapis.com/withergate-images/traits/patriot-trait.png');
+    ('PATRIOT', 2, 'FACTION_POINTS', 'detail.trait.factionPoints', false, 'https://storage.googleapis.com/withergate-images/traits/patriot-trait.png'),
+    ('GHOST', 10, 'CAMOUFLAGE', 'detail.trait.camouflage', false, 'https://storage.googleapis.com/withergate-images/traits/ghost-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -37,7 +38,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('SPARTA', 'en', 'This is Sparta!'),
     ('SPARTA', 'cs', 'This is Sparta!'),
     ('PATRIOT', 'en', 'Patriot'),
-    ('PATRIOT', 'cs', 'Vlastenec');
+    ('PATRIOT', 'cs', 'Vlastenec'),
+    ('GHOST', 'en', 'Ghost'),
+    ('GHOST', 'cs', 'Duch');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -63,4 +66,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('SPARTA', 'en', 'Character with this trait will receive bonus progress when successfully averting disaster.'),
     ('SPARTA', 'cs', 'Postava s touto schopností navýší postup odvrácení pohromy po úspěšné akci řešení pohromy.'),
     ('PATRIOT', 'en', 'Character with this trait will receive bonus influence when supporting your faction.'),
-    ('PATRIOT', 'cs', 'Postava s touto schopností navýší zisk vlivu při podpoře tvé frakce.');
+    ('PATRIOT', 'cs', 'Postava s touto schopností navýší zisk vlivu při podpoře tvé frakce.'),
+    ('GHOST', 'en', 'Character with this trait has lower chance for random encounters when searching for resources or scouting.'),
+    ('GHOST', 'cs', 'Postava s touto schopností má nižší šanci na náhodnou události při hledání surovin nebo pátrání.');

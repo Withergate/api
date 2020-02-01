@@ -104,6 +104,14 @@ public class EncounterServiceImpl implements EncounterService {
                 }
                 notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat));
                 break;
+            case WEAPON_ROLL:
+                totalCombat = character.getTotalCombat() + diceRoll;
+                log.debug("{} rolled dice and the total combat value with weapon is {}", character.getName(), totalCombat);
+                if (totalCombat >= difficulty) {
+                    success = true;
+                }
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat));
+                break;
             case INTELLECT_LOW:
                 totalIntellect = character.getIntellect() + diceRoll;
                 log.debug("{} rolled dice and the total intellect value is {}", character.getName(), totalIntellect);

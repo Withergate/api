@@ -111,6 +111,7 @@ INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, diff
     ('WASTELAND', 'CRAFTSMANSHIP', 'FOOD', 'CAPS', 5, 'encounter.w.17.desc', 'encounter.w.17.succ', 'encounter.w.17.fail'),
     ('WASTELAND', 'INTELLECT', 'FOOD', 'CAPS', 6, 'encounter.w.18.desc', 'encounter.w.18.succ', 'encounter.w.18.fail'),
     ('WASTELAND', 'COMBAT', 'ITEM', 'NONE', 5, 'encounter.w.19.desc', 'encounter.w.19.succ', 'encounter.w.19.fail'),
+    ('WASTELAND', 'WEAPON_ROLL', 'CAPS', 'NONE', 8, 'encounter.w.20.desc', 'encounter.w.20.succ', 'encounter.w.20.fail'),
     ('CITY_CENTER', 'COMBAT', 'JUNK', 'CAPS', 5, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
     ('CITY_CENTER', 'COMBAT', 'CAPS', 'CAPS', 5, 'encounter.c.2.desc', 'encounter.c.2.succ', 'encounter.c.2.fail'),
     ('CITY_CENTER', 'COMBAT', 'ITEM', 'CAPS', 6, 'encounter.c.3.desc', 'encounter.c.3.succ', 'encounter.c.3.fail'),
@@ -125,7 +126,8 @@ INSERT INTO encounters(location, encounter_type, reward_type, penalty_type, diff
     ('CITY_CENTER', 'SCAVENGE', 'ITEM', 'INJURY', 8, 'encounter.c.12.desc', 'encounter.c.12.succ', 'encounter.c.12.fail'),
     ('CITY_CENTER', 'CRAFTSMANSHIP', 'CAPS', 'NONE', 6, 'encounter.c.13.desc', 'encounter.c.13.succ', 'encounter.c.13.fail'),
     ('CITY_CENTER', 'INTELLECT', 'INFORMATION', 'INJURY', 7, 'encounter.c.14.desc', 'encounter.c.14.succ', 'encounter.c.14.fail'),
-    ('CITY_CENTER', 'COMBAT', 'INFORMATION', 'NONE', 6, 'encounter.c.15.desc', 'encounter.c.15.succ', 'encounter.c.15.fail');
+    ('CITY_CENTER', 'COMBAT', 'INFORMATION', 'NONE', 6, 'encounter.c.15.desc', 'encounter.c.15.succ', 'encounter.c.15.fail'),
+    ('CITY_CENTER', 'WEAPON_ROLL', 'CAPS', 'NONE', 9, 'encounter.c.16.desc', 'encounter.c.16.succ', 'encounter.c.16.fail');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.w.1.desc', 'en', 'Character was attacked by mutants while scavenging in the ruins of a wasteland village.'),
@@ -242,6 +244,12 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.w.19.succ', 'cs', 'Postava přesně podle plánu porazila nejnebezpečnějšího soupeře a ostatní se rozprchli po okolí. Musí své zvrácené hladové žaludky nakrmit jiným způsobem. Postava cestou domů narazila na jejich opuštěný tábor. Veškeré jídlo tam raději nechala, ale našla užitečný předmět.'),
     ('encounter.w.19.fail', 'en', 'They were really meagre, nevertheless dangerous. The character lost the fight, but at least wasn’t taken captive.'),
     ('encounter.w.19.fail', 'cs', 'Byli vyhublí, ale přesto nebezpeční. V nerovném boji postava prohrála, naštěstí se kanibalům nepodařilo postavu zajmout.'),
+    ('encounter.w.20.desc', 'en', 'There was a cruel fight between two bands of scoundrels in the Wasteland. Members of  one of the groups had outfits decorated with bones. Our character accidently appeared just in time of the brawl. One of the scoundrels spotted the character: “Help us, we will pay.”'),
+    ('encounter.w.20.desc', 'cs', 'Postava se v Pustině nepozorovaně připletla k pranici, zrovna mezi sebou na život a na smrt zápasily dvě několikačlenné bandy. Oblečení jedné ze skupin bylo ozdobeno doplňky z kostí. Velitel druhé skupiny si postavy všiml: “Pomož nám, zaplatíme!” Ostatní postavě nevěnují pozornost. Náhle jeden z bojujících soupeřů - muž s obrovským mrožím knírem - zakopl a padl na zem. Toho využil jakýsi fešák s helmou vyrobenou z lebky nějakého děsivého mutanta. Pozvedl svou sekeru, knírač stihl jen dát ruku před obličej… '),
+    ('encounter.w.20.succ', 'en', 'The character successfully backstabbed one of the bony strangers and easily decided the battle. The leader of the winning side gladly payed the character some caps.'),
+    ('encounter.w.20.succ', 'cs', 'Postava okamžitě vpadla do zad kostlivému sekerníkovi a vyřadila jej jediným úderem z boje. Jeho spolubojovníci byli krátce na to rovněž poraženi. Velitel skupiny postavě poděkoval: “Zachránil jsi tady Satinskýho. Za to máš náš vděk. Tu sekeru si nechám já, odpornou helmu spálíme jako úlitbu Atomovi, a tobě za pomoc samozřejmě zaplatíme.”'),
+    ('encounter.w.20.fail', 'en', 'We were not able to help anyone in the brawl. The skeletal group started to tak over so our character ran away.'),
+    ('encounter.w.20.fail', 'cs', 'Postava nedokázala nijak zabránit přesně provedené dekapitaci. Krátce na to začali kostliví válečníci drtivě vítězit. Nevypadali zrovna jako sympaťáci dne, proto postavě raději zvolila bezhlavý útěk až domů.'),
     ('encounter.c.1.desc', 'en', 'Character was attacked by a mutated cat while roaming through the abandoned streets of the city ruins.'),
     ('encounter.c.1.desc', 'cs', 'Postavu při toulkách opuštěnými ulicemi napadla zmutovaná kočka. Vřískající a škrábající sakra rychlé malé černé cosi.'),
     ('encounter.c.1.succ', 'en', 'Character managed to kill the feline and collected some junk on the way back home.'),
@@ -330,4 +338,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.c.15.succ', 'en', 'The character wounded several enemies in the fight. This helped the slavetrader’s captives to liberate themselves. The misfortunate slavers quickly ran. The liberated slaves shared interesting news about the city with the character.'),
     ('encounter.c.15.succ', 'cs', 'V souboji s nepříjemnou přesilou se postavě podařilo zranit několik nepřátel, čehož využili jejich dřívější zajatci. Otrokáři, neschopni uhasit nově zažehnutou pochodeň svobody, se dali na rychlý útěk. Osvobození otroci u sebe nic neměli, ale podělili se o několik zajímavých informací o situaci ve městě.'),
     ('encounter.c.15.fail', 'en', 'The character lost the fight, but at least wasn’t taken captive.'),
-    ('encounter.c.15.fail', 'cs', 'Bylo jich příliš mnoho. Naštěstí se postava nedostala do zajetí.');
+    ('encounter.c.15.fail', 'cs', 'Bylo jich příliš mnoho. Naštěstí se postava nedostala do zajetí.'),
+    ('encounter.c.16.desc', 'en', 'There was a cruel fight between two bands of scoundrels in the Withergate. The outfit of all members of one group was decorated with a worn sash. The character was nearby just in the time of the battle. Only the leader of the decorated group spotted the character: “Help us, we will pay.”'),
+    ('encounter.c.16.desc', 'cs', 'Postava se připletla do ulice, kde se zrovna rvaly dvě místní bandy. Otrhaní byli všichni, ale členové jedné skupiny byly ověnčeni nějakou šerpou. Kdoví, co to znamenalo. Bitva byla poměrně vyrovnaná. Velitel skupiny se šerpou se dostal do úzkých, když na něj nebezpečně dotírali dva soupeři. Rychle zvolal na postavu “Pomož mi, zaplatím!”'),
+    ('encounter.c.16.succ', 'en', 'The character successfully backstabbed one of the enemies of the sash-decorated ones and easily decided the battle. The leader of the winning side gladly paid couple of caps to our hero..'),
+    ('encounter.c.16.succ', 'cs', 'Postava okamžitě a nečekaně vpadla do zad bojovníkovi, který se před chvílí snažil vpadnout do zad veliteli šerpistů, a silným úderem jej vyřadila z boje. To bitvu rozhodlo a okamžitě skončila. Velitel šerpistů poté skutečně postavě zaplatil několik zátek jako odměnu.'),
+    ('encounter.c.16.fail', 'en', 'Our character was not able to successfully intervene in the brawl. The sash-less group started to win decisively. The character rather quickly ran away.'),
+    ('encounter.c.16.fail', 'cs', 'Postava nedokázala včas reagovat a jen se dívala, jak se velitel skupiny klátí pod úderem sekery nějakého otrhance. Během pár vteřin byli všichni se šerpou mrtví. No co, alespoň si intervencí postava neudělala zbytečné nepřátele. Přesto postava raději v obavách o svůj život rychle opustila město a do klanu nepřinesla vůbec nic cenného.');
+
