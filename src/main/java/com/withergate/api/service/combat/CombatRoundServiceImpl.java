@@ -76,7 +76,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         RoundOutcome outcome = new RoundOutcome(character1, character2, combat1, combat2, notification1, notification2);
 
         // compute injury
-        int armor = getArmor(outcome.getLoser());
+        int armor = getArmor(outcome.getLoser(), outcome.getLoserNotification(), outcome.getWinner(), outcome.getWinnerNotification());
         notificationCombat.setArmor(armor);
         int injury = outcome.getCombatWinner() - outcome.getCombatLoser() - armor;
         if (injury < 1) injury = 1;
@@ -144,12 +144,24 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         return bonus;
     }
 
-    private int getArmor(Character character) {
-        if (character.getOutfit() != null) {
-            return character.getOutfit().getDetails().getCombat();
+    private int getArmor(Character defender, ClanNotification defenderNotification,
+                         Character attacker, ClanNotification attackerNotification) {
+        int armor = 0;
+
+        if (defender.getOutfit() != null) {
+            armor += defender.getOutfit().getDetails().getCombat();
         }
 
-        return 0;
+        if (armor > 0) {
+            armor -= BonusUtils.getBonus(attacker, BonusType.PIERCING, attackerNotification, notificationService);
+            // update notification for defender as well
+            BonusUtils.getBonus(attacker, BonusType.PIERCING, defenderNotification, notificationService);
+            if (armor < 0) {
+                armor = 0;
+            }
+        }
+
+        return armor;
     }
 
     @Getter
@@ -159,6 +171,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         private final int combatWinner;
         private final int combatLoser;
         private final ClanNotification loserNotification;
+        private final ClanNotification winnerNotification;
 
         RoundOutcome(Character character1, Character character2, int combat1, int combat2,
                             ClanNotification notification1, ClanNotification notification2) {
@@ -168,12 +181,14 @@ public class CombatRoundServiceImpl implements CombatRoundService {
                 combatWinner = combat1;
                 combatLoser = combat2;
                 loserNotification = notification2;
+                winnerNotification = notification1;
             } else {
                 winner = character2;
                 loser = character1;
                 combatWinner = combat2;
                 combatLoser = combat1;
                 loserNotification = notification1;
+                winnerNotification = notification2;
             }
         }
     }

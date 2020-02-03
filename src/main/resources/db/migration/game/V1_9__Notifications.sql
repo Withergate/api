@@ -161,6 +161,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.trait.factionPoints', 'cs', '{} získal/a vliv navíc díky schopnosti [].'),
     ('detail.trait.camouflage', 'en', '{} decreased encounter chance thanks to trait: [].'),
     ('detail.trait.camouflage', 'cs', '{} snížil/a pravděpodobnost náhodné údálosti díky schopnosti: [].'),
+    ('detail.trait.piercing', 'en', '{} decreased enemy`s armor thanks to the trait: [].'),
+    ('detail.trait.piercing', 'cs', '{} snížil/a soupeřovu zbroj díky schopnosti: [].'),
     ('detail.gear.bonus.junk', 'en', 'Character found more junk thanks to the quipped gear: [].'),
     ('detail.gear.bonus.junk', 'cs', 'Postava našla více šrotu díky předmětu: [].'),
     ('detail.gear.bonus.food', 'en', 'Character found more food thanks to the quipped gear: [].'),
