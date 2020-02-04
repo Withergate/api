@@ -5,6 +5,7 @@ import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.item.EffectType;
 import com.withergate.api.game.model.item.Item;
+import com.withergate.api.game.model.item.ItemCost;
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.item.ItemType;
@@ -234,6 +235,38 @@ public class ItemServiceImpl implements ItemService {
         item.setClan(null);
         item.setCharacter(null);
         itemRepository.delete(item);
+    }
+
+    @Override
+    public void deleteItem(Character character, ItemCost itemCost, ClanNotification notification) {
+        Item item = null;
+        switch (itemCost) {
+            case ANY:
+                item = character.getItems().iterator().next();
+                break;
+            case WEAPON:
+                item = character.getWeapon();
+                break;
+            case OUTFIT:
+                item = character.getOutfit();
+                break;
+            case GEAR:
+                item = character.getGear();
+                break;
+        }
+
+        if (item == null) {
+            log.error("Attempting to delete null item!");
+            return;
+        }
+
+        // update notification
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.deleted", new String[]{}, item.getDetails().getName());
+        notification.getDetails().add(detail);
+
+        // delete item
+        deleteItem(item);
     }
 
     private ItemDetails.Rarity getRandomRarity() {

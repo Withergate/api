@@ -2,6 +2,7 @@ package com.withergate.api.service.item;
 
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.item.Item;
+import com.withergate.api.game.model.item.ItemCost;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -72,5 +73,14 @@ public interface ItemService {
      * @param item the item to be deleted
      */
     void deleteItem(Item item);
+
+    /**
+     * Deletes the item matching the item cost for given character. Updates the notification.
+     *
+     * @param character character
+     * @param itemCost  item cost type
+     * @param notification notification
+     */
+    void deleteItem(Character character, ItemCost itemCost, ClanNotification notification);
 
 }

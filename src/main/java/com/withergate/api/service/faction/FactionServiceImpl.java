@@ -15,6 +15,7 @@ import com.withergate.api.game.model.action.FactionAction;
 import com.withergate.api.game.model.action.FactionAction.Type;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.game.model.encounter.ConditionValidator;
 import com.withergate.api.game.model.faction.ClanFactionOverview;
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.faction.FactionAid;
@@ -104,13 +105,8 @@ public class FactionServiceImpl implements FactionService {
             if (clan.getCaps() < aid.getCost()) {
                 throw new InvalidActionException("Not enough resources to perform this action.");
             }
-            if (aid.isItemCost()) {
-                if (character.getItems().isEmpty()) {
-                    throw new InvalidActionException("Character must carry an item to perform this action.");
-                }
-                Item item = character.getItems().iterator().next();
-                itemService.deleteItem(item);
-            }
+            // check item cost
+            ConditionValidator.checkActionCondition(character, null, aid.getItemCost());
 
             // pay resources
             clan.changeCaps(-aid.getCost());
@@ -247,6 +243,9 @@ public class FactionServiceImpl implements FactionService {
                     if (character.getHitpoints() < 1) {
                         notification.setDeath(true);
                     }
+                }
+                if (aid.getItemCost() != null) {
+                    itemService.deleteItem(character, aid.getItemCost(), notification);
                 }
                 break;
             default:

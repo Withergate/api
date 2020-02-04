@@ -125,6 +125,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.item.found.storage', 'cs', '{} nalezl/a [] a vzal/a tento úlovek do klanového skladu.'),
     ('detail.item.bought', 'en', '[] was added to your clan storage.'),
     ('detail.item.bought', 'cs', 'Předmět [] byl přidán do klanového skladu.'),
+    ('detail.item.deleted', 'en', 'Character handed over the item [].'),
+    ('detail.item.deleted', 'cs', 'Postava odevzdala předmět [].'),
     ('detail.building.levelup', 'en', '[] advanced to the next level.'),
     ('detail.building.levelup', 'cs', 'Tvé budově [] se zvýšila úroveň.'),
     ('detail.building.study', 'en', 'The building [] increased your research speed.'),

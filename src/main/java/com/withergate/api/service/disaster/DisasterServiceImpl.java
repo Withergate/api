@@ -16,7 +16,6 @@ import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.disaster.DisasterDetails;
 import com.withergate.api.game.model.disaster.DisasterSolution;
 import com.withergate.api.game.model.encounter.ConditionValidator;
-import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.DisasterRequest;
@@ -123,7 +122,7 @@ public class DisasterServiceImpl implements DisasterService {
         }
 
         // check condition
-        ConditionValidator.checkQuestCondition(character, solution.getCondition());
+        ConditionValidator.checkActionCondition(character, solution.getCondition(), solution.getItemCost());
 
         // check resources
         if (solution.getCapsCost() > clan.getCaps() || solution.getJunkCost() > clan.getJunk()
@@ -147,14 +146,6 @@ public class DisasterServiceImpl implements DisasterService {
         clan.changeCaps(- solution.getCapsCost());
         clan.changeJunk(- solution.getJunkCost());
         clan.changeFood(- solution.getFoodCost());
-        if (solution.isItemCost()) {
-            for (Item item : character.getItems()) {
-                character.getItems().remove(item);
-                item.setCharacter(null);
-                itemService.deleteItem(item);
-                break;
-            }
-        }
 
         // mark character as busy and save the clan
         character.setState(CharacterState.BUSY);
@@ -255,6 +246,10 @@ public class DisasterServiceImpl implements DisasterService {
 
         notificationService.addLocalizedTexts(notification.getText(), "disaster.action", new String[]{},
                 action.getSolution().getName());
+
+        if (action.getSolution().getItemCost() != null) {
+            itemService.deleteItem(action.getCharacter(), action.getSolution().getItemCost(), notification);
+        }
 
         Character character = action.getCharacter();
         boolean success = encounterService.handleSolution(character, action.getSolution().getSolutionType(),
