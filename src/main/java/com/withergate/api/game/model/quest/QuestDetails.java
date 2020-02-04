@@ -1,10 +1,6 @@
 package com.withergate.api.game.model.quest;
 
-import com.withergate.api.game.model.encounter.SolutionCondition;
-import com.withergate.api.game.model.encounter.SolutionType;
-import com.withergate.api.game.model.notification.LocalizedText;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Map;
+
+import com.withergate.api.game.model.encounter.SolutionCondition;
+import com.withergate.api.game.model.encounter.SolutionType;
+import com.withergate.api.game.model.item.ItemCost;
+import com.withergate.api.game.model.notification.LocalizedText;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Quest details.
@@ -72,8 +74,9 @@ public class QuestDetails {
     @Column(name = "junk_cost", nullable = false)
     private int junkCost;
 
-    @Column(name = "item_cost", nullable = false)
-    private boolean itemCost;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_cost", updatable = false, nullable = false)
+    private ItemCost itemCost;
 
     @Column(name = "health_cost", nullable = false)
     private boolean healthCost;

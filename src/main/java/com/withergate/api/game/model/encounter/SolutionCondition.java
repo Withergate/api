@@ -6,5 +6,5 @@ package com.withergate.api.game.model.encounter;
  * @author Martin Myslik
  */
 public enum SolutionCondition {
-    HEALTHY_CHARACTER, FEMALE_CHARACTER, ITEM_EQUIPPED
+    HEALTHY_CHARACTER, FEMALE_CHARACTER
 }

@@ -1,6 +1,7 @@
 package com.withergate.api.game.model.faction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.game.model.item.ItemCost;
 import com.withergate.api.game.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,8 +61,9 @@ public class FactionAid {
     @Column(name = "health_cost", updatable = false, nullable = false)
     private boolean healthCost;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_cost", updatable = false, nullable = false)
-    private boolean itemCost;
+    private ItemCost itemCost;
 
     @ManyToOne
     @JoinColumn(name = "faction")

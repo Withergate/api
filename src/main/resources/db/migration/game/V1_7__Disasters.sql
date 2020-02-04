@@ -26,10 +26,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.mutants.failure', 'cs', 'Útočníci snadno pronikli do našeho úkrytu. Bez odporu loupili a škodili postavám i budovám. Ačkoliv odtáhli, z jejich nájezdu se budeme dlouho vzpamatovávat.');
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.mutants.s1', true, 'd.mutants', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
-    ('d.mutants.s2', false, 'd.mutants', 'CRAFTSMANSHIP', null, 6, 10, 5, 0, 0, false),
-    ('d.mutants.s3', false, 'd.mutants', 'COMBAT', null, 5, 12, 0, 0, 0, false),
-    ('d.mutants.s4', false, 'd.mutants', 'AUTOMATIC', null, 0, 20, 0, 50, 0, false);
+    ('d.mutants.s1', true, 'd.mutants', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
+    ('d.mutants.s2', false, 'd.mutants', 'CRAFTSMANSHIP', null, 6, 10, 5, 0, 0, null),
+    ('d.mutants.s3', false, 'd.mutants', 'COMBAT', null, 5, 12, 0, 0, 0, null),
+    ('d.mutants.s4', false, 'd.mutants', 'AUTOMATIC', null, 0, 20, 0, 50, 0, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.mutants.s1', 'en', 'Building palisades'),
@@ -77,10 +77,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.inquisition.failure', 'cs', 'To bylo horší, než jsme čekali. Nenašli u nás dostatečný zápal pro víru, zato zjistili, že někteří z nás obcují s Ďáblem. Zahájili vyšetřování a bolestivé výslechy. Nikdo se nepřiznal, ale stačilo jim, že někteří z nás raději přijali víru. Kněží pak zkonfiskovali trochu majetku a jeli šířit své bohulibé myšlenky jinam...');
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.inquisition.s1', true, 'd.inquisition', 'AUTOMATIC', null,  0, 5, 0, 0, 0, false),
-    ('d.inquisition.s2', false, 'd.inquisition', 'INTELLECT', null, 7, 10, 0, 0, 0, false),
-    ('d.inquisition.s3', false, 'd.inquisition', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
-    ('d.inquisition.s4', false, 'd.inquisition', 'AUTOMATIC', null, 0, 20, 0, 50, 0, false);
+    ('d.inquisition.s1', true, 'd.inquisition', 'AUTOMATIC', null,  0, 5, 0, 0, 0, null),
+    ('d.inquisition.s2', false, 'd.inquisition', 'INTELLECT', null, 7, 10, 0, 0, 0, null),
+    ('d.inquisition.s3', false, 'd.inquisition', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, null),
+    ('d.inquisition.s4', false, 'd.inquisition', 'AUTOMATIC', null, 0, 20, 0, 50, 0, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.inquisition.s1', 'en', 'Pray and labor'),
@@ -128,10 +128,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.refugees.failure', 'cs', 'Naše řešení nezapůsobilo. Zcela se vymkli naší kontrole a brali si, co chtěli. Měli hlad, prali se s námi a pak vzali vše, na co přišli. Nejen z našich zásob, ale i z celého sousedství...');
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.refugees.s1', true, 'd.refugees', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
-    ('d.refugees.s2', false, 'd.refugees', 'INTELLECT', null, 7, 10, 0, 0, 0, false),
-    ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', null, 0, 12, 0, 0, 30, false),
-    ('d.refugees.s4', false, 'd.refugees', 'COMBAT', null, 4, 10, 0, 0, 0, false);
+    ('d.refugees.s1', true, 'd.refugees', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
+    ('d.refugees.s2', false, 'd.refugees', 'INTELLECT', null, 7, 10, 0, 0, 0, null),
+    ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', null, 0, 12, 0, 0, 30, null),
+    ('d.refugees.s4', false, 'd.refugees', 'COMBAT', null, 4, 10, 0, 0, 0, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.refugees.s1', 'en', 'Let them in... but keep an eye on them!'),
@@ -179,10 +179,10 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.storm.failure', 'cs', 'Několik bouřkových dní udeřilo v plné síle. Vichřice rvala střechy z našich domů a lámala stromy, které v našem klanu způsobily pořádnou spoušť. Trosky zaplavila přívalová voda. Když opadla, nechala po sobě nánosy bláta a naše nyní již bývalé zásoby, plesnivé a zrezivělé… V panice při útěku před živly také došlo k několika zraněním.');
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.storm.s1', true, 'd.storm', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
-    ('d.storm.s2', false, 'd.storm', 'INTELLECT', null, 7, 10, 2, 0, 0, false),
-    ('d.storm.s3', false, 'd.storm', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, false),
-    ('d.storm.s4', false, 'd.storm', 'AUTOMATIC', null, 4, 20, 0, 50, 0, false);
+    ('d.storm.s1', true, 'd.storm', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
+    ('d.storm.s2', false, 'd.storm', 'INTELLECT', null, 7, 10, 2, 0, 0, null),
+    ('d.storm.s3', false, 'd.storm', 'CRAFTSMANSHIP', null, 5, 12, 10, 0, 0, null),
+    ('d.storm.s4', false, 'd.storm', 'AUTOMATIC', null, 4, 20, 0, 50, 0, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.storm.s1', 'en', 'Hide everything we have'),
@@ -231,11 +231,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.clans.failure', 'cs', 'Bohužel se nám vůbec nepodařilo rozšířit pověst našeho klanu. Na sněm odjíždíme bez jakékoliv přípravy, téměř s holým zadkem. Jsme tak dobří, že nám spadne vítězství samo do klína? Bude se s námi vůbec někdo bavit, když vypadáme jako žebráci?');
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.clans.s1', true, 'd.clans', 'AUTOMATIC', null, 0, 3, 0, 0, 0, false),
-    ('d.clans.s2', false, 'd.clans', 'INTELLECT', null, 8, 6, 0, 0, 0, false),
-    ('d.clans.s3', false, 'd.clans', 'CRAFTSMANSHIP', null, 6, 6, 10, 0, 0, false),
-    ('d.clans.s4', false, 'd.clans', 'COMBAT', null, 6, 8, 0, 0, 0, false),
-    ('d.clans.s5', false, 'd.clans', 'AUTOMATIC', null, 0, 15, 0, 150, 0, false);
+    ('d.clans.s1', true, 'd.clans', 'AUTOMATIC', null, 0, 3, 0, 0, 0, null),
+    ('d.clans.s2', false, 'd.clans', 'INTELLECT', null, 8, 6, 0, 0, 0, null),
+    ('d.clans.s3', false, 'd.clans', 'CRAFTSMANSHIP', null, 6, 6, 10, 0, 0, null),
+    ('d.clans.s4', false, 'd.clans', 'COMBAT', null, 6, 8, 0, 0, 0, null),
+    ('d.clans.s5', false, 'd.clans', 'AUTOMATIC', null, 0, 15, 0, 150, 0, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.clans.s1', 'en', 'Praise us'),
@@ -287,11 +287,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.king.failure', 'cs', 'Bohužel Krále ani jeho vyslance vůbec nezajímáme. Možná jej bude zajímat náš majetek a nic mu nezabrání, aby nám jej vzal - stejně jako si brzy vezme Withergate a společně s těmi, kteří před ním poklekli, bude vládnout celé oblasti. Naše účast na nové vládě je nepravděpodobná.');
 
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.king.s1', true, 'd.king', 'AUTOMATIC', null, 0, 3, 0, 0, 0, false),
-    ('d.king.s2', false, 'd.king', 'SCAVENGE', null, 8, 6, 0, 0, 0, false),
-    ('d.king.s3', false, 'd.king', 'INTELLECT', 'ITEM_EQUIPPED', 6, 6, 0, 0, 0, true),
-    ('d.king.s4', false, 'd.king', 'CRAFTSMANSHIP', null, 6, 8, 15, 0, 0, false),
-    ('d.king.s5', false, 'd.king', 'AUTOMATIC', null, 0, 15, 50, 50, 50, false);
+    ('d.king.s1', true, 'd.king', 'AUTOMATIC', null, 0, 3, 0, 0, 0, null),
+    ('d.king.s2', false, 'd.king', 'SCAVENGE', null, 8, 6, 0, 0, 0, null),
+    ('d.king.s3', false, 'd.king', 'INTELLECT', null, 6, 6, 0, 0, 0, 'ANY'),
+    ('d.king.s4', false, 'd.king', 'CRAFTSMANSHIP', null, 6, 8, 15, 0, 0, null),
+    ('d.king.s5', false, 'd.king', 'AUTOMATIC', null, 0, 15, 50, 50, 50, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.king.s1', 'en', 'Bend the knee'),

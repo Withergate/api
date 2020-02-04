@@ -1,5 +1,10 @@
 package com.withergate.api.service.quest;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.QuestAction;
@@ -24,11 +29,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Quest service implementation.
@@ -108,7 +108,7 @@ public class QuestServiceImpl implements QuestService {
         }
 
         // check condition
-        ConditionValidator.checkQuestCondition(character, quest.getDetails().getCondition());
+        ConditionValidator.checkActionCondition(character, quest.getDetails().getCondition(), quest.getDetails().getItemCost());
 
         // check price
         QuestDetails details = quest.getDetails();
@@ -117,9 +117,6 @@ public class QuestServiceImpl implements QuestService {
         }
         clan.changeFood(-details.getFoodCost());
         clan.changeJunk(-details.getJunkCost());
-        if (details.isItemCost()) {
-            itemService.deleteItem(character.getItems().iterator().next());
-        }
 
         // persist the action
         QuestAction action = new QuestAction();
@@ -174,6 +171,10 @@ public class QuestServiceImpl implements QuestService {
             character.changeHitpoints(-injury);
             notification.changeInjury(injury);
             if (character.getHitpoints() < 1) notification.setDeath(true);
+        }
+
+        if (quest.getDetails().getItemCost() != null) {
+            itemService.deleteItem(character, quest.getDetails().getItemCost(), notification);
         }
 
         boolean success = encounterService.handleSolution(character, quest.getDetails().getType(), quest.getDetails().getDifficulty(),
