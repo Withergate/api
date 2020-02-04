@@ -41,7 +41,7 @@ public class DisasterPenalty {
      * Penalty type.
      */
     public enum Type {
-        RESOURCES_LOSS, CHARACTER_INJURY, BUILDING_DESTRUCTION, ITEM_LOSS, FAME_LOSS
+        RESOURCES_LOSS, CHARACTER_INJURY, BUILDING_DESTRUCTION, ITEM_LOSS, FAME_LOSS, INFORMATION_LOSS
     }
 
 }

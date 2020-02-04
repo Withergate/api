@@ -1,7 +1,8 @@
-package com.withergate.api.game.model.encounter;
+package com.withergate.api.service.encounter;
 
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.encounter.SolutionCondition;
 import com.withergate.api.game.model.item.ItemCost;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.extern.slf4j.Slf4j;

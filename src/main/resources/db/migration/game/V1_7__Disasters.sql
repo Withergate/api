@@ -204,6 +204,57 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.storm.s4', 'en', 'Some enterprising persons from the vicinity are claiming they exactly know what do, and for a few caps they can help us. Afterwards, they will go with their stormcraft elsewhere.'),
     ('d.storm.s4', 'cs', 'Někteří podnikavci z okolí tvrdí, že přesně ví, co máme udělat, a za pár zátek to pro nás i provedou. Mohli by pro nás být užiteční, než půjdou se svým bouřným uměním zase o dům dál...');
 
+-- Bandits
+INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
+    ('d.bandits', false, 15, 'd.bandits.success', 'd.bandits.partialSuccess', 'd.bandits.failure', 'https://storage.googleapis.com/withergate-images/disasters/bandits.png');
+
+INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
+    ('d.bandits.p1', 'd.bandits', 'INFORMATION_LOSS'),
+    ('d.bandits.p2', 'd.bandits', 'CHARACTER_INJURY'),
+    ('d.bandits.p3', 'd.bandits', 'BUILDING_DESTRUCTION');
+
+INSERT INTO localized_texts(disaster_name, lang, text) VALUES
+    ('d.bandits', 'en', 'Raiding scoundrels'),
+    ('d.bandits', 'cs', 'Loupeživé bandy');
+
+INSERT INTO localized_texts(disaster_description, lang, text) VALUES
+    ('d.bandits', 'en', 'People living in the Wasteland are getting wider lately. One of the neighbouring clans was raided three times by various bandits just last week. It was fine till this madness was happening far away from us but we should do something before we meet the same destiny. These looting troops are hiding somewhere in the Wasteland. How do we locate them?'),
+    ('d.bandits', 'cs', 'Lidé v Pustině jsou v poslední době stále divočejší. Jeden blízký klan prý bývá za týden znásilňován až sedmi různými loupeživými bandami. To u nás nehrozí, ale bandy v okolí nás odřízly od světa a samozřejmě nás v potyčce s námi mohou zranit nebo podpálit část našeho klanu. To prý jim jde nejlépe. Hlavně se ale umí výborně ukrývat v Pustině, jak je vůbec najdeme?');
+
+INSERT INTO placeholder_texts(code, lang, text) VALUES
+    ('d.bandits.success', 'en', 'We successfully scared all the scoundrels away. They will surely avoid our neighborhood for a long time. And who knows, perhaps they will abandon their lifestyle and start a new honest one like us - searching the Wasteland and plundering the remnants.'),
+    ('d.bandits.success', 'cs', 'S agresory jsme si poradili a zahnali je daleko do Pustiny. Našemu okolí se budou ještě dlouhá léta vyhýbat - a kdo ví, třeba zanechají svého řemesla a začnou se živit poctivě jako my, prohledáváním Pustiny a loupením zbytků. '),
+    ('d.bandits.partialSuccess', 'en', 'We managed to scare some of the bandits but it was not without a fight. Our clan was completely cut off for a while, without any access to the information about Withergate. Is there still Withergate, after all?'),
+    ('d.bandits.partialSuccess', 'cs', 'Snažili jsme se improvizovaně válčit, ale nakonec plenili i u nás. Po dlouhém boji jsme je zahnali, bohužel způsobili hodně škody. Navíc nás na několik dní zcela odřízli od okolí, takže vůbec nemáme aktuální informace o dění ve větě. Je tam vůbec ještě Withergate? '),
+    ('d.bandits.failure', 'en', 'Our neighborhood got overwhelmed by bandits. We were not able to defend ourselves properly and they keps ambushing us on the roads, pillaging our base and raping our women. Our clan was completely cut off for a while, without any access to the information about Withergate. Is there still Withergate, after all?'),
+    ('d.bandits.failure', 'cs', 'V našem okolí se jich nakonec objevilo mnohem víc, než jsme byli schopni zvládnout. Nejprve nás přepadávali jen na cestách, ale nakonec došlo k velkému nájezdu na náš klan. Po dlouhém boji jsme je zahnali, ale stálo nás to mnoho krve. I tak poškodili několik budov a na několik dní nás zcela odřízli od okolí, takže vůbec nemáme aktuální informace o dění ve světě. Je tam vůbec ještě Withergate?');
+
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.bandits.s1', true, 'd.bandits', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
+    ('d.bandits.s2', false, 'd.bandits', 'AUTOMATIC', null, 0, 10, 0, 0, 0, 'WEAPON'),
+    ('d.bandits.s3', false, 'd.bandits', 'INTELLECT', null, 5, 10, 0, 10, 0, null),
+    ('d.bandits.s4', false, 'd.bandits', 'COMBAT', null, 6, 20, 0, 0, 0, null);
+
+INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
+    ('d.bandits.s1', 'en', 'Search and report'),
+    ('d.bandits.s1', 'cs', 'Pátrat a bonzovat'),
+    ('d.bandits.s2', 'en', 'Help and defend'),
+    ('d.bandits.s2', 'cs', 'Pomáhat a chránit'),
+    ('d.bandits.s3', 'en', 'Promise and pay'),
+    ('d.bandits.s3', 'cs', 'Slibovat a platit'),
+    ('d.bandits.s4', 'en', 'Search and destroy'),
+    ('d.bandits.s4', 'cs', 'Najít a zničit');
+
+INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
+    ('d.bandits.s1', 'en', 'Let’s send our people looking for the bandits. We should take notes of everyone looking suspicious so we can describe them to the bounty hunters from Withergate.'),
+    ('d.bandits.s1', 'cs', 'Pošleme své lidi po okolí a jakmile si všimneme podezřelých individuií, místo si zapamatujeme a přesně popíšeme lovcům odměn ve Withergate.'),
+    ('d.bandits.s2', 'en', 'Let’s get everyone in our neighborhood heavily armed. That should keep those bastards away. We should distribute weapons to everyone passing by our base. Hopefully, we won’t arm the bandits.'),
+    ('d.bandits.s2', 'cs', 'Pokud nejen my, ale všichni v okolí budou chodit ozbrojeni, bandity to z našeho území zažene. Každého, kdo půjde okolo, ozbrojíme. Snad neozbrojíme i ty bandity. Brzy se i k banditům donese informace o tom, jak již víme o jejich úkrytu a již organizujeme mohutný nájezd.Pokud nejen my, ale všichni v okolí budou chodit ozbrojeni, bandity to z našeho území zažene. Každého, kdo půjde okolo, ozbrojíme. Snad neozbrojíme i ty bandity. Brzy se i k banditům donese informace o tom, jak již víme o jejich úkrytu a již organizujeme mohutný nájezd.'),
+    ('d.bandits.s3', 'en', 'We should spread gossip about our undying determination to eliminate all scoundrels in our surroundings. Furthermore, we will pay caps to everyone who brings us a bandit scalp. Sooner or later, these looting bands will fear us. Or perhaps, they will eliminate each other and collect the reward.'),
+    ('d.bandits.s3', 'cs', 'Kudy půjdeme, tam budeme vykládat o našem bohulibém přesvědčení vyhnat všechny neřády z kraje. Také začneme vyplácet odměny za každý bandití skalp, aby lovci hlav hledali svou kořist blíže u nás. Navíc se třeba ta bandití verbež pomlátí navzájem s vidinou kořisti, akorát jim budeme muset zaplatit… Musíme být zkrátka jen dostatečně přesvědčiví, nebo alespoň hodně platit za skalpy.'),
+    ('d.bandits.s4', 'en', 'The most vicious bandits are not hiding. I heard one of them boasting about his latest raid in the tavern. We should go after them and defeat them in combat.'),
+    ('d.bandits.s4', 'cs', 'Ti největší hrdlořezové o sobě dávají vědět a proto nebude těžké je najít. Pokud je porazíme v boji a všichni uvidí jejich smutný osud, může to snížit počet banditů v okolí.');
+
 -- Clans assembly
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
     ('d.clans', true, 0, 'd.clans.success', 'd.clans.partialSuccess', 'd.clans.failure', 'https://storage.googleapis.com/withergate-images/disasters/clans.png');

@@ -15,7 +15,7 @@ import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.disaster.DisasterDetails;
 import com.withergate.api.game.model.disaster.DisasterSolution;
-import com.withergate.api.game.model.encounter.ConditionValidator;
+import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.DisasterRequest;
