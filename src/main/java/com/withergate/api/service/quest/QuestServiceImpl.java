@@ -10,7 +10,7 @@ import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.QuestAction;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
-import com.withergate.api.game.model.encounter.ConditionValidator;
+import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.quest.Quest;

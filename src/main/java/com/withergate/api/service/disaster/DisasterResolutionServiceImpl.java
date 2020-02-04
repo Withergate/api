@@ -93,6 +93,9 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
             case FAME_LOSS:
                 handleFameLoss(clan, notification);
                 break;
+            case INFORMATION_LOSS:
+                handleInformationLoss(clan, notification);
+                break;
             default: log.error("Unknown penalty type: {}", penalty.getPenaltyType());
         }
     }
@@ -151,6 +154,15 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.fame.loss", new String[]{});
+        notification.getDetails().add(detail);
+    }
+
+    private void handleInformationLoss(Clan clan, ClanNotification notification) {
+        clan.changeInformation(- gameProperties.getDisasterInformationLoss());
+        notification.changeInformation(- gameProperties.getDisasterInformationLoss());
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.information.loss", new String[]{});
         notification.getDetails().add(detail);
     }
 
