@@ -118,6 +118,7 @@ public class ClanServiceImpl implements ClanService {
         clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn));
         clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn));
         clan.setFood(INITIAL_FOOD + getStartingResourceBonus(turn));
+        clan.setDisasterProgress(turn - 1);
         clan.setInformation(0);
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
