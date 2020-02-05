@@ -1,6 +1,5 @@
 package com.withergate.api.game.model;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -55,10 +54,6 @@ public class Clan {
     @Column(name = "clan_name", nullable = false)
     @JsonView(Views.Public.class)
     private String name;
-
-    @Column(name = "last_activity", nullable = false)
-    @JsonView(Views.Public.class)
-    private LocalDateTime lastActivity;
 
     @Column(name = "fame", nullable = false)
     @JsonView(Views.Public.class)

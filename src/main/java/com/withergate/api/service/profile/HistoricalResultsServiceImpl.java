@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class HistoricalResultsServiceImpl implements HistoricalResultsService {
 
     private final HistoricalResultRepository resultRepository;
+    private final ProfileService profileService;
     private final BuildProperties buildProperties;
     private final GameProperties gameProperties;
 
@@ -42,7 +43,7 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
                 result.setGameEnded(LocalDate.now());
                 result.setPlace(i + 1);
                 result.setNumClans(clans.size());
-                result.setPlayerId(clan.getId());
+                result.setProfile(profileService.getProfile(clan.getId()));
                 result.setNumTurns(gameProperties.getMaxTurns());
                 result.setFame(clan.getFame());
                 result.setClanName(clan.getName());
@@ -55,7 +56,7 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
     }
 
     @Override
-    public List<HistoricalResult> loadResults(int playerId) {
-        return resultRepository.findAllByPlayerId(playerId);
+    public List<HistoricalResult> loadResults(int profileId) {
+        return resultRepository.findAllByProfileId(profileId);
     }
 }

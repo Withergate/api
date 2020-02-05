@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HistoricalResultRepository extends JpaRepository<HistoricalResult, Long> {
 
-    List<HistoricalResult> findAllByPlayerId(int playerId);
+    List<HistoricalResult> findAllByProfileId(int profileId);
 
 }

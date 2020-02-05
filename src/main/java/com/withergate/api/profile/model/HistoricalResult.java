@@ -7,8 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +31,10 @@ public class HistoricalResult {
     @Column(name = "result_id")
     private long id;
 
-    @Column(name = "player_id")
-    private int playerId;
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    @JsonIgnore
+    private Profile profile;
 
     // CLAN INFO
 
