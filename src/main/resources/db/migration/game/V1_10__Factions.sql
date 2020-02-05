@@ -18,7 +18,7 @@ INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, hea
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('r.item', 'en', 'Revolution support - hando ver an item for the Revolution'),
     ('r.item', 'cs', 'Podpora revoluce - odevzdat předmět do skladu'),
-    ('r.resources', 'en', 'Support out faction members with resources'),
+    ('r.resources', 'en', 'Support our faction members with resources'),
     ('r.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
@@ -66,7 +66,7 @@ INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, hea
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('c.sacrifice', 'en', 'Flagellum dei - Spend the day with a fruitful flagellation'),
     ('c.sacrifice', 'cs', 'Flagellum dei - strávit den plodným sebemrskačstvím'),
-    ('c.resources', 'en', 'Support out faction members with resources'),
+    ('c.resources', 'en', 'Support our faction members with resources'),
     ('c.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES

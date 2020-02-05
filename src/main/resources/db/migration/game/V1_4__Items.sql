@@ -2,12 +2,15 @@
 INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, image_url) VALUES
     ('KNIFE', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 'https://storage.googleapis.com/withergate-images/items/knife.png'),
     ('AXE', 'WEAPON', 'RARE', 'MELEE', 25, 2, 'https://storage.googleapis.com/withergate-images/items/axe.png'),
-    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
     ('CHAINSAW', 'WEAPON', 'EPIC', 'MELEE', 45, 3, 'https://storage.googleapis.com/withergate-images/items/chainsaw.png'),
     ('BOOMERANG', 'WEAPON', 'COMMON', 'RANGED', 12, 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.png'),
-    ('THROWING_KNIVES', 'WEAPON', 'COMMON', 'RANGED', 20, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png'),
     ('CROSSBOW', 'WEAPON', 'RARE', 'RANGED', 30, 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.png'),
     ('HAND_GUN', 'WEAPON', 'EPIC', 'RANGED', 50, 4, 'https://storage.googleapis.com/withergate-images/items/handgun.png');
+
+INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, bonus, bonus_type, bonus_text, image_url) VALUES
+    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 12, 0, 2, 'PIERCING', 'detail.weapon.bonus.piercing', 'https://storage.googleapis.com/withergate-images/items/bat.png'),
+    ('SHINY_CROWBAR', 'WEAPON', 'COMMON', 'MELEE', 15, 1, -10, 'CAMOUFLAGE', 'detail.weapon.bonus.camouflage', 'https://storage.googleapis.com/withergate-images/items/shiny-crowbar.png'),
+    ('THROWING_KNIVES', 'WEAPON', 'RARE', 'RANGED', 22, 2, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('KNIFE', 'en', 'Knife'),
@@ -16,6 +19,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('AXE', 'cs', 'Sekera'),
     ('BAT', 'en', 'Baseball bat'),
     ('BAT', 'cs', 'Palice'),
+    ('SHINY_CROWBAR', 'en', 'Shiny crowbar'),
+    ('SHINY_CROWBAR', 'cs', 'Třpytivé páčidlo'),
     ('CHAINSAW', 'en', 'Chainsaw'),
     ('CHAINSAW', 'cs', 'Motorová pila'),
     ('BOOMERANG', 'en', 'Boomerang'),
@@ -32,14 +37,16 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('KNIFE', 'cs', 'Orezlý kuchyňský nůž od krve.'),
     ('AXE', 'en', 'One-handed axe.'),
     ('AXE', 'cs', 'Jednoruční sekera.'),
-    ('BAT', 'en', 'Baseball bat full of splinters enhanced with some nails.'),
-    ('BAT', 'cs', 'Baseballová pálka vylepšená několika hřebíky.'),
+    ('BAT', 'en', 'Baseball bat full of splinters enhanced with some nails. It is hard to hit something but when it does, it pierces through the armor of your opponent.'),
+    ('BAT', 'cs', 'Baseballová pálka vylepšená několika hřebíky. Díky své váze je poměrně náročné někoho trefit, ale když se to povede, stojí to za to. Ignoruje část zbroje protivníka.'),
+    ('SHINY_CROWBAR', 'en', 'Handy crowbar with a shiny finish. Looks really nice but increases the encounter chance when searching and scouting.'),
+    ('SHINY_CROWBAR', 'cs', 'Páčidlo v provedení vysokého lesku. Vyadá velmi efektně, ale přitahuje pozornost. Zvyšuje šanci na náhodnou událost při hledání a pátrání.'),
     ('CHAINSAW', 'en', 'Gas powered chainsaw with some fuel still left in the tank.'),
     ('CHAINSAW', 'cs', 'Benzinová motorová pila s palivem v nádrži.'),
     ('BOOMERANG', 'en', 'Wooden boomerang. With some razors attached to it.'),
     ('BOOMERANG', 'cs', 'Dřevěný boomerang s přidělanými žiletkami.'),
-    ('THROWING_KNIVES', 'en', 'A set of well balanced throwing knives.'),
-    ('THROWING_KNIVES', 'cs', 'Několik dobře vybalancovaných vrhacích nožů.'),
+    ('THROWING_KNIVES', 'en', 'A set of well balanced throwing knives. Especially effective if you hit someone in the face. Ignores part of the armor of your opponent.'),
+    ('THROWING_KNIVES', 'cs', 'Několik dobře vybalancovaných vrhacích nožů. Efektivní zejména, pokud někoho trefíte do xichtu. Ignorují část zbroje vašho protivníka.'),
     ('CROSSBOW', 'en', 'Modern crossbows can be precise and silent at the same time.'),
     ('CROSSBOW', 'cs', 'Moderní kuše. Přesná a tichá.'),
     ('HAND_GUN', 'en', 'Hand gun. Light, practical, deadly.'),
