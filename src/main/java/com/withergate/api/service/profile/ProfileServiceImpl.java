@@ -1,5 +1,7 @@
 package com.withergate.api.service.profile;
 
+import java.time.LocalDateTime;
+
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.repository.ProfileRepository;
 import com.withergate.api.profile.request.ProfileRequest;
@@ -22,6 +24,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private static final int PROFILE_NAME_MIN_LENGTH = 6;
     private static final int PROFILE_NAME_MAX_LENGTH = 30;
+    private static final int BASE_RANKING = 100;
 
     private final ProfileRepository repository;
 
@@ -48,7 +51,15 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = new Profile();
         profile.setId(playerId);
         profile.setName(request.getName());
+        profile.setLastActivity(LocalDateTime.now());
+        profile.setRanking(BASE_RANKING);
 
+        return repository.save(profile);
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public Profile saveProfile(Profile profile) {
         return repository.save(profile);
     }
 }

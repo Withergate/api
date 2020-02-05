@@ -5,9 +5,11 @@ import java.util.List;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.request.ClanRequest;
 import com.withergate.api.profile.model.HistoricalResult;
+import com.withergate.api.profile.model.Profile;
 import com.withergate.api.service.AdminService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.profile.HistoricalResultsService;
+import com.withergate.api.service.profile.ProfileService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +27,9 @@ public class GameRestartIT {
 
     @Autowired
     private ClanService clanService;
+
+    @Autowired
+    private ProfileService profileService;
 
     @Autowired
     private HistoricalResultsService resultsService;
@@ -51,6 +56,11 @@ public class GameRestartIT {
         clan.setId(1);
         clan.setFame(10);
         clan.setName("Warbarons");
+
+        Profile profile = new Profile();
+        profile.setId(1);
+        profile.setName("Stalker");
+        profileService.saveProfile(profile);
 
         // given result
         HistoricalResult result = new HistoricalResult();

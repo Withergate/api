@@ -25,7 +25,8 @@ public class ConditionValidator {
      * @param character character
      * @param condition condition
      */
-    public static void checkActionCondition(Character character, SolutionCondition condition, ItemCost itemCost) throws InvalidActionException {
+    public static void checkActionCondition(Character character, SolutionCondition condition, ItemCost itemCost)
+            throws InvalidActionException {
         if (itemCost != null) {
             switch (itemCost) {
                 case ANY:

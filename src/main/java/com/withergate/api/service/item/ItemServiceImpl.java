@@ -1,5 +1,7 @@
 package com.withergate.api.service.item;
 
+import java.util.List;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
@@ -22,8 +24,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Item service.
@@ -253,6 +253,8 @@ public class ItemServiceImpl implements ItemService {
             case GEAR:
                 item = character.getGear();
                 break;
+            default:
+                log.error("Unknown item type: {}", itemCost.name());
         }
 
         if (item == null) {

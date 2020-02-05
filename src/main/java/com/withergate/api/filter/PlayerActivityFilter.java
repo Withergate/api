@@ -10,8 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.withergate.api.game.model.Clan;
-import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.profile.model.Profile;
+import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,16 +19,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
- * Lst activity filter. Tracks the last activity for the currently authenticated clan.
+ * Lst activity filter. Tracks the last activity for the currently authenticated player.
  *
  * @author Martin Myslik
  */
 @Slf4j
 @AllArgsConstructor
 @Component
-public class ClanActivityFilter implements Filter {
+public class PlayerActivityFilter implements Filter {
 
-    private final ClanService clanService;
+    private final ProfileService profileService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterchain) throws IOException, ServletException {
@@ -37,12 +37,12 @@ public class ClanActivityFilter implements Filter {
 
         if (authentication != null && authentication.isAuthenticated()) {
             try {
-                Clan clan = clanService.getClan(Integer.parseInt(authentication.getName()));
+                Profile profile = profileService.getProfile(Integer.parseInt(authentication.getName()));
 
-                // if clan exists - set last activity
-                if (clan != null) {
-                    clan.setLastActivity(LocalDateTime.now());
-                    clanService.saveClan(clan);
+                // if profile exists - set last activity
+                if (profile != null) {
+                   profile.setLastActivity(LocalDateTime.now());
+                    profileService.saveProfile(profile);
                 }
             } catch (Exception e) {
                 log.trace("Error parsing authentication name.", e);

@@ -29,4 +29,12 @@ public interface ProfileService {
      */
     Profile createProfile(ProfileRequest request, int playerId) throws EntityConflictException, ValidationException;
 
+    /**
+     * Saves the provided profile.
+     *
+     * @param profile profile
+     * @return saved profile
+     */
+    Profile saveProfile(Profile profile);
+
 }
