@@ -2,6 +2,7 @@ package com.withergate.api.service.profile;
 
 import java.time.LocalDateTime;
 
+import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.repository.ProfileRepository;
 import com.withergate.api.profile.request.ProfileRequest;
@@ -24,7 +25,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private static final int PROFILE_NAME_MIN_LENGTH = 6;
     private static final int PROFILE_NAME_MAX_LENGTH = 30;
-    private static final int BASE_RANKING = 100;
+    private static final int RANKING_GAME_BONUS = 10;
 
     private final ProfileRepository repository;
 
@@ -52,7 +53,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setId(playerId);
         profile.setName(request.getName());
         profile.setLastActivity(LocalDateTime.now());
-        profile.setRanking(BASE_RANKING);
+        profile.setRanking(0);
 
         return repository.save(profile);
     }
@@ -61,5 +62,24 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Profile saveProfile(Profile profile) {
         return repository.save(profile);
+    }
+
+    // Called from historical results service
+    @Override
+    public void recalculateRankings() {
+        log.debug("-> Recalculating all rankings");
+        for (Profile profile : repository.findAll()) {
+            if (profile.getResults().isEmpty()) continue;
+
+            int numGames = profile.getResults().size();
+            int sumFame = 0;
+            for (HistoricalResult result : profile.getResults()) {
+                sumFame += result.getFame();
+            }
+
+            // ranking is average score from all games plus small amount of points per played game
+            double ranking = (double) (sumFame) / numGames + numGames * RANKING_GAME_BONUS;
+            profile.setRanking((int) ranking);
+        }
     }
 }

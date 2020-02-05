@@ -37,4 +37,9 @@ public interface ProfileService {
      */
     Profile saveProfile(Profile profile);
 
+    /**
+     * Recalculates all rankings.
+     */
+    void recalculateRankings();
+
 }

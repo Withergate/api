@@ -50,6 +50,9 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
 
                 resultRepository.save(result);
             }
+
+            // recalculate rankings
+            profileService.recalculateRankings();
         } catch (Exception e) {
             log.error("Error saving historical results.", e);
         }
