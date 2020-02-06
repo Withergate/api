@@ -237,7 +237,7 @@ public class BuildingServiceImpl implements BuildingService {
         Research research = character.getClan().getResearch(ResearchBonusType.CRAFTING_CAPS);
         if (bonusType.equals(BonusType.CRAFTING) && research != null && research.isCompleted()) {
             // add caps to clan for forgery
-            int caps = randomService.getRandomInt(1, RandomServiceImpl.K4);
+            int caps = randomService.getRandomInt(1, RandomServiceImpl.K6);
             character.getClan().changeCaps(caps);
             notification.changeCaps(caps);
 

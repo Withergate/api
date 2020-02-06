@@ -110,6 +110,7 @@ INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type
     ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
     ('BANNER', 'GEAR', 'RARE', 20, 2, 'FACTION_POINTS', 'detail.gear.bonus.factionPoints', 'https://storage.googleapis.com/withergate-images/items/banner.png'),
     ('TRINKETS', 'GEAR', 'RARE', 20, 2, 'SCOUTING', 'detail.gear.bonus.information', 'https://storage.googleapis.com/withergate-images/items/trinkets.png'),
+    ('SURVIVAL_KIT', 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
@@ -131,6 +132,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('BANNER', 'cs', 'Standarta'),
     ('TRINKETS', 'en', 'Trinkets'),
     ('TRINKETS', 'cs', 'Cetky'),
+    ('SURVIVAL_KIT', 'en', 'Survival kit'),
+    ('SURVIVAL_KIT', 'cs', 'KPZ'),
     ('DETECTOR', 'en', 'Detector'),
     ('DETECTOR', 'cs', 'Detektor');
 
@@ -153,6 +156,8 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('BANNER', 'cs', 'Není lepší způsob, jak vyjádřit zápal pro vlastní frakci, než s sebou všude tahat obří standartu. Předmět dává bonus k zisku vlivu k akcím podporujícím frakci.'),
     ('TRINKETS', 'en', 'Collection of small shiny trinkets that could be used as bribes for locals. Increases the information gained from scouting.'),
     ('TRINKETS', 'cs', 'Kolekce třpytivé veteše, která se dá použít jako úplatky pro místní. Zvýší počet získaných informací při průzkumu.'),
+    ('SURVIVAL_KIT', 'en', 'A small box containing all basic equipment for survival. Add bonus progress when successfully preventing disaster.'),
+    ('SURVIVAL_KIT', 'cs', 'Malá krabička se základními potřebami pro přežití. Dává postup navíc při úspěšném odvracení pohromy.'),
     ('DETECTOR', 'en', 'A few decades old, so it doesn’t work really well. Improves the chance of finding junk.'),
     ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
 

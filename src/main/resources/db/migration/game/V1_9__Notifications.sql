@@ -177,6 +177,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.gear.bonus.camouflage', 'cs', 'Postava snížila pravděpodobnost náhodné údálosti díky: [].'),
     ('detail.gear.bonus.factionPoints', 'en', 'Character got bonus influence thanks to the item [].'),
     ('detail.gear.bonus.factionPoints', 'cs', 'Postava získala vliv navíc díky předmětu [].'),
+    ('detail.gear.bonus.disaster', 'en', 'Character got bonus progress for disaster aversion thanks to [].'),
+    ('detail.gear.bonus.disaster', 'cs', 'Postava odvracela pohromu efektivněji díky předmětu [].'),
     ('detail.weapon.bonus.piercing', 'en', 'Armor of the defender was reduced thanks to [].'),
     ('detail.weapon.bonus.piercing', 'cs', 'Zbroj obránce byla snížena díky [].'),
     ('detail.weapon.sanction.camouflage', 'en', 'Character increased encounter chance thanks to: [].'),
