@@ -4,7 +4,7 @@ INSERT INTO research_details(identifier, bonus_type, bonus_text, value, informat
     ('BEGGING', 'SCOUT_FOOD', 'detail.research.begging', 0, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/begging.png'),
     ('CULTIVATION', 'REST_FOOD', 'detail.research.cultivation', 0, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/cultivation.png'),
     ('PLENTIFUL', 'NEIGHBORHOOD_LOOT', null, 15, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/plentiful.png'),
-    ('ARCHITECTURE', 'BUILDING_FAME', 'detail.research.architecture', 2, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
+    ('ARCHITECTURE', 'BUILDING_FAME', 'detail.research.architecture', 3, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
     ('COLLECTING', 'TRADE_FAME', 'detail.research.collecting', 2, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
     ('CULINARY', 'FOOD_FAME', 'research.culinary', 30, 4, 50, 5, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
     ('DECORATION', 'JUNK_FAME', 'research.decoration', 30, 4, 50, 5, 'https://storage.googleapis.com/withergate-images/research/decoration.png');

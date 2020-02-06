@@ -19,7 +19,7 @@ public class BuildingTest {
         building.setLevel(1);
         Assert.assertEquals(10, building.getVisitJunkCost());
         building.setLevel(2);
-        Assert.assertEquals(8, building.getVisitJunkCost());
+        Assert.assertEquals(9, building.getVisitJunkCost());
     }
 
 }

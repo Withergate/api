@@ -4,9 +4,9 @@ INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, bonus
     ('GMO_FARM', 12, false, 0, null, null, 0, null, 'FOOD_INCOME', 2, 'building.gmofarm.income', 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
     ('TRAINING_GROUNDS', 12, false, 0, 'TRAINING', 'detail.building.training', 1, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
     ('MONUMENT', 16, false, 0, null, null, 0, null, 'FAME_INCOME', 1, 'building.monument.income', 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
-    ('FORGE', 12, true, 10, 'CRAFTING', null, 5, 'WEAPON', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
-    ('WORKSHOP', 12, true, 10, 'CRAFTING', null, 5, 'GEAR', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
-    ('RAGS_SHOP', 12, true, 10, 'CRAFTING', null, 5, 'OUTFIT', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
+    ('FORGE', 12, true, 7, 'CRAFTING', null, 5, 'WEAPON', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
+    ('WORKSHOP', 12, true, 7, 'CRAFTING', null, 5, 'GEAR', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
+    ('RAGS_SHOP', 12, true, 7, 'CRAFTING', null, 5, 'OUTFIT', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
     ('QUARTERS', 16, false, 0, null, null, 0, null, 'POPULATION', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
     ('STUDY', 16, false, 0, 'RESEARCH', 'detail.building.study', 1, null, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
     ('KENNELS', 12, false, 0, null, null, 0, null, 'CLAN_DEFENSE', 2, null, 'https://storage.googleapis.com/withergate-images/buildings/kennels.png');

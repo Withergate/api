@@ -66,7 +66,7 @@ public class Building {
         if (level <= 1) {
             return details.getVisitJunkCost();
         }
-        return details.getVisitJunkCost() - level * 2 + 2;
+        return details.getVisitJunkCost() - level + 1;
     }
 
 }
