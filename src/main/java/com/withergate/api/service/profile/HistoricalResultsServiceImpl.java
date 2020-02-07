@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.quest.Quest;
+import com.withergate.api.game.model.statistics.ClanTurnStatistics;
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.repository.HistoricalResultRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,13 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
                 result.setNumTurns(gameProperties.getMaxTurns());
                 result.setFame(clan.getFame());
                 result.setClanName(clan.getName());
+
+                // statistics
+                ClanTurnStatistics statistics = new ClanTurnStatistics(clan, 0);
+                result.setFaction(clan.getFaction() != null ? clan.getFaction().getIdentifier() : null);
+                result.setBuildings(statistics.getBuildings());
+                result.setResearch(statistics.getResearch());
+                result.setCompletedQuests((int) clan.getQuests().stream().filter(Quest::isCompleted).count());
 
                 resultRepository.save(result);
             }

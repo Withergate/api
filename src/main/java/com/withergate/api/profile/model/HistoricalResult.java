@@ -61,4 +61,18 @@ public class HistoricalResult {
     @Column(name = "game_version")
     private String gameVersion;
 
+    // STATISTICS
+
+    @Column(name = "faction")
+    private String faction;
+
+    @Column(name = "completed_quests")
+    private int completedQuests;
+
+    @Column(name = "buildings")
+    private int buildings;
+
+    @Column(name = "research")
+    private int research;
+
 }

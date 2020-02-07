@@ -9,11 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,7 +57,7 @@ public class Profile {
     private int consecutiveLogins;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<HistoricalResult> results;
 
     /**
@@ -63,6 +65,11 @@ public class Profile {
      */
     public Profile() {
         this.results = new ArrayList<>();
+    }
+
+    @JsonProperty("numGames")
+    public int getNumPlayedGames() {
+        return results.size();
     }
 
 }
