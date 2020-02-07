@@ -50,7 +50,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FactionServiceImpl implements FactionService {
 
-    private static final int FAME_PER_CLAN = 10;
     private static final int LEADERBOARD_SIZE = 5;
 
     private final FactionRepository factionRepository;
@@ -302,11 +301,11 @@ public class FactionServiceImpl implements FactionService {
 
     private int getFactionFame(Faction faction, List<Faction> factions) {
         int clanCount = (int) clanRepository.count();
-        int totalFame = FAME_PER_CLAN * clanCount; // total fame to be redistributed
+        int totalFame = properties.getFactionFameCoefficient() * clanCount; // total fame to be redistributed
         int totalPoints = factions.stream().mapToInt(Faction::getPoints).sum(); // total points
         double ratio = (double) faction.getPoints() / totalPoints;
 
-        return FAME_PER_CLAN * clanCount + (int) (totalFame * ratio);
+        return properties.getFactionFameCoefficient() * clanCount + (int) (totalFame * ratio);
     }
 
     private int getClanFame(Clan clan, int factionFame) {

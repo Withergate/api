@@ -21,6 +21,10 @@ CREATE TABLE historical_results (
     num_turns INT,
     game_version VARCHAR(16),
     game_ended TIMESTAMP,
+    faction VARCHAR(16),
+    completed_quests INT,
+    research INT,
+    buildings INT,
     PRIMARY KEY (result_id),
     CONSTRAINT result_profile_fk FOREIGN KEY (profile_id) REFERENCES profiles (profile_id)
 );

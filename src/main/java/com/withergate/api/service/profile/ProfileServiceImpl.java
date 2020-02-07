@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
-    private static final int PROFILE_NAME_MIN_LENGTH = 6;
-    private static final int PROFILE_NAME_MAX_LENGTH = 30;
+    private static final int PROFILE_NAME_MIN_LENGTH = 5;
+    private static final int PROFILE_NAME_MAX_LENGTH = 20;
     private static final int RANKING_GAME_BONUS = 10;
 
     private final ProfileRepository repository;
@@ -40,7 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile createProfile(ProfileRequest request, int playerId) throws EntityConflictException, ValidationException {
         // validate profile name
         if (request.getName().length() < PROFILE_NAME_MIN_LENGTH || request.getName().length() > PROFILE_NAME_MAX_LENGTH) {
-            throw new ValidationException("Profile name must be between 6 and 18 characters long.");
+            throw new ValidationException("Profile name must be between 5 and 20 characters long.");
         }
 
         // check if profile exists
