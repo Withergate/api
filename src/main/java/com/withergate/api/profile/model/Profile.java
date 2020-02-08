@@ -43,6 +43,9 @@ public class Profile {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "theme")
+    private String theme;
+
     @Column(name = "ranking")
     private int ranking;
 

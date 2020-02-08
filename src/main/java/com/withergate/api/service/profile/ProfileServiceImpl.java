@@ -10,6 +10,7 @@ import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
     private static final int PROFILE_NAME_MIN_LENGTH = 5;
     private static final int PROFILE_NAME_MAX_LENGTH = 20;
     private static final int RANKING_GAME_BONUS = 10;
+    private static final String DEFAULT_THEME = "light";
 
     private final ProfileRepository repository;
 
@@ -54,6 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setName(request.getName());
         profile.setLastActivity(LocalDateTime.now());
         profile.setRanking(0);
+        profile.setTheme(DEFAULT_THEME);
 
         return repository.save(profile);
     }
@@ -64,7 +67,8 @@ public class ProfileServiceImpl implements ProfileService {
         return repository.save(profile);
     }
 
-    // Called from historical results service
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Retryable
     @Override
     public void recalculateRankings() {
         log.debug("-> Recalculating all rankings");

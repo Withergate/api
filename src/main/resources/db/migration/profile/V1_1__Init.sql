@@ -4,6 +4,7 @@ CREATE TABLE profiles (
     name VARCHAR(32) UNIQUE NOT NULL,
     premium_type VARCHAR(16) DEFAULT NULL,
     avatar_url VARCHAR(256),
+    theme VARCHAR(16),
     ranking INT,
     last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     consecutive_logins INT DEFAULT 0,
