@@ -45,6 +45,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         notificationCombat.setName2(character2.getName());
         notificationCombat.setHealth1(character1.getHitpoints());
         notificationCombat.setHealth2(character2.getHitpoints());
+        notificationCombat.setCombat1(character1.getTotalCombat());
+        notificationCombat.setCombat2(character2.getTotalCombat());
 
         // initial dice rolls
         int roll1 = randomService.getRandomInt(1, RandomServiceImpl.K6);
@@ -69,8 +71,6 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             }
             details.add(detailDraw);
         }
-        notificationCombat.setCombat1(combat1);
-        notificationCombat.setCombat2(combat2);
 
         // select winner and loser
         RoundOutcome outcome = new RoundOutcome(character1, character2, combat1, combat2, notification1, notification2);
@@ -84,6 +84,12 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         outcome.getLoserNotification().changeInjury(injury);
         notificationCombat.setInjury(injury);
         notificationCombat.setLoser(outcome.getLoser().getName());
+
+        // save combat results
+        NotificationDetail detailSummary = new NotificationDetail();
+        notificationService.addLocalizedTexts(detailSummary.getText(), "detail.combat.summary", new String[]{String.valueOf(round)});
+        detailSummary.setCombatRound(notificationCombat);
+        details.add(detailSummary);
 
         // check death
         if (outcome.getLoser().getHitpoints() < 1) {
@@ -115,12 +121,6 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         result.setWinner(outcome.getWinner());
         result.setLoser(outcome.getLoser());
         result.setDetails(details);
-
-        // save combat results
-        NotificationDetail detailSummary = new NotificationDetail();
-        notificationService.addLocalizedTexts(detailSummary.getText(), "detail.combat.summary", new String[]{String.valueOf(round)});
-        detailSummary.setCombatRound(notificationCombat);
-        details.add(detailSummary);
 
         return result;
     }

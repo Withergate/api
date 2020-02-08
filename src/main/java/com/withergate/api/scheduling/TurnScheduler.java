@@ -8,6 +8,7 @@ import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.profile.HistoricalResultsService;
+import com.withergate.api.service.profile.ProfileService;
 import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class TurnScheduler {
     private final ClanService clanService;
     private final CharacterService characterService;
     private final HistoricalResultsService resultsService;
+    private final ProfileService profileService;
     private final GameProperties gameProperties;
 
     /**
@@ -100,6 +102,9 @@ public class TurnScheduler {
 
             // save historical results
             resultsService.saveResults(clanService.getAllClansByFame());
+
+            // recalcalculate rankings
+            profileService.recalculateRankings();
         }
 
         // prepare statistics
