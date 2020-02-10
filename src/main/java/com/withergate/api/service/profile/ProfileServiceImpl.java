@@ -3,11 +3,14 @@ package com.withergate.api.service.profile;
 import java.time.LocalDateTime;
 
 import com.withergate.api.profile.model.HistoricalResult;
+import com.withergate.api.profile.model.PremiumType;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.repository.ProfileRepository;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
+import com.withergate.api.service.premium.PremiumAccountChecker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -85,5 +88,17 @@ public class ProfileServiceImpl implements ProfileService {
             double ranking = (double) (sumFame) / numGames + numGames * RANKING_GAME_BONUS;
             profile.setRanking((int) ranking);
         }
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public void changeTheme(int profileId, String theme) throws InvalidActionException {
+        Profile profile = getProfile(profileId);
+
+        // check premium
+        PremiumAccountChecker.checkPremiumAccount(PremiumType.SILVER, profile);
+
+        // update theme
+        profile.setTheme(theme);
     }
 }

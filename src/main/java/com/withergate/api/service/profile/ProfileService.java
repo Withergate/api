@@ -3,6 +3,7 @@ package com.withergate.api.service.profile;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 
 /**
@@ -41,5 +42,13 @@ public interface ProfileService {
      * Recalculates all rankings.
      */
     void recalculateRankings();
+
+    /**
+     * Changes profile theme. Premium feature.
+     *
+     * @param profileId profile ID
+     * @param theme theme
+     */
+    void changeTheme(int profileId, String theme) throws InvalidActionException;
 
 }
