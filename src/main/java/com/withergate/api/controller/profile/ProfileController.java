@@ -4,7 +4,9 @@ import java.security.Principal;
 
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.request.ProfileRequest;
+import com.withergate.api.profile.request.ThemeRequest;
 import com.withergate.api.service.exception.EntityConflictException;
+import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,7 +53,7 @@ public class ProfileController {
      * Creates a new profile for the authenticated player. If this player already has a profile, returns error status.
      *
      * @param principal   the principal
-     * @param request the profile request containing necessary clan details
+     * @param request the profile request
      * @return the created profile
      * @throws EntityConflictException entity conflict
      */
@@ -61,6 +64,20 @@ public class ProfileController {
 
         Profile profile = profileService.createProfile(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(profile, HttpStatus.CREATED);
+    }
+
+    /**
+     * Updates theme.
+     *
+     * @param principal the principal
+     * @param request the theme request
+     */
+    @PutMapping("/profile/theme")
+    public ResponseEntity<Void> updateTheme(Principal principal, @RequestBody ThemeRequest request) throws InvalidActionException {
+        log.debug("Changing theme preference for player {}", principal.getName());
+
+        profileService.changeTheme(Integer.parseInt(principal.getName()), request.getTheme());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
