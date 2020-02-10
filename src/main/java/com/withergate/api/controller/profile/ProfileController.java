@@ -1,7 +1,5 @@
 package com.withergate.api.controller.profile;
 
-import java.security.Principal;
-
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.profile.request.ThemeRequest;
@@ -11,6 +9,8 @@ import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 /**
  * Profile controller.
@@ -47,6 +49,17 @@ public class ProfileController {
         }
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves the list of all profiles. Supports paging and sorting.
+     *
+     * @param pageable pagination and sorting
+     * @return the page containing profiles in the specified order
+     */
+    @GetMapping("/profiles")
+    public ResponseEntity<Page<Profile>> getProfiles(Pageable pageable) {
+        return new ResponseEntity<>(profileService.getProfiles(pageable), HttpStatus.OK);
     }
 
     /**

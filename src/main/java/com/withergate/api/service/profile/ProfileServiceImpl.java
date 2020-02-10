@@ -13,6 +13,8 @@ import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.premium.PremiumAccountChecker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,11 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Profile getProfile(int profileId) {
         return repository.findById(profileId).orElse(null);
+    }
+
+    @Override
+    public Page<Profile> getProfiles(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Transactional(transactionManager = "profileTransactionManager")

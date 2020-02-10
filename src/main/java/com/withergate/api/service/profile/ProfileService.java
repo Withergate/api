@@ -1,10 +1,13 @@
 package com.withergate.api.service.profile;
 
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Profile service.
@@ -20,6 +23,14 @@ public interface ProfileService {
      * @return profile
      */
     Profile getProfile(int profileId);
+
+    /**
+     * Retrieves the list of profiles. Supports paging and sorting.
+     *
+     * @param pageable pagination and sorting
+     * @return the page containing profiles in the specified order
+     */
+    Page<Profile> getProfiles(Pageable pageable);
 
     /**
      * Creates new player profile. Throws exception if not valid.
