@@ -278,6 +278,8 @@ public class FactionServiceImpl implements FactionService {
             receiverNotification.changeFood(aid.getAid());
             receiver.changeJunk(aid.getAid());
             receiverNotification.changeJunk(aid.getAid());
+            receiver.changeInformation(aid.getAid());
+            receiverNotification.changeInformation(aid.getAid());
 
             notificationService.save(receiverNotification);
 
