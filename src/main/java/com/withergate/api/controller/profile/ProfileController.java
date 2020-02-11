@@ -1,11 +1,13 @@
 package com.withergate.api.controller.profile;
 
+import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.profile.request.ThemeRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
+import com.withergate.api.service.profile.HistoricalResultsService;
 import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,7 @@ import java.security.Principal;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final HistoricalResultsService resultsService;
 
     /**
      * Retrieves the profile for the authenticated player.
@@ -49,6 +52,17 @@ public class ProfileController {
         }
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves the historical results for the authenticated player.
+     *
+     * @param principal the principal
+     * @return the loaded historical results
+     */
+    @GetMapping("/profile/results")
+    public ResponseEntity<Page<HistoricalResult>> getHistoricalResults(Principal principal, Pageable pageable) {
+        return new ResponseEntity<>(resultsService.loadResults(Integer.parseInt(principal.getName()), pageable), HttpStatus.OK);
     }
 
     /**
