@@ -22,6 +22,6 @@ public interface ClanRepository extends JpaRepository<Clan, Integer> {
 
     List<Clan> findAllByOrderByFameDesc();
 
-    long count();
+    long countAllByFactionNotNull();
 
 }
