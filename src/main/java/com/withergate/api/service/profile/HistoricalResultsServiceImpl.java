@@ -12,6 +12,8 @@ import com.withergate.api.profile.repository.HistoricalResultRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +69,10 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
     @Override
     public List<HistoricalResult> loadResults(int profileId) {
         return resultRepository.findAllByProfileId(profileId);
+    }
+
+    @Override
+    public Page<HistoricalResult> loadResults(int playerId, Pageable pageable) {
+        return resultRepository.findAllByProfileId(playerId, pageable);
     }
 }
