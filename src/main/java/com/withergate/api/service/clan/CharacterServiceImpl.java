@@ -8,15 +8,20 @@ import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
+import com.withergate.api.profile.model.PremiumType;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.premium.PremiumAccountChecker;
+import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Character service.
@@ -36,6 +41,8 @@ public class CharacterServiceImpl implements CharacterService {
     private final NameService nameService;
     private final TraitService traitService;
     private final NotificationService notificationService;
+    private final BaseActionRepository actionRepository;
+    private final ProfileService profileService;
 
     @Override
     public Character load(int characterId) {
@@ -166,6 +173,28 @@ public class CharacterServiceImpl implements CharacterService {
 
         // save
         notificationService.save(notification);
+    }
+
+    @Transactional
+    @Override
+    public void cancelAction(int characterId, int clanId) throws InvalidActionException {
+        // check premium type
+        PremiumAccountChecker.checkPremiumAccount(PremiumType.GOLD, profileService.getProfile(clanId));
+
+        Character character = characterRepository.getOne(characterId);
+
+        // check conditions
+        if (character.getClan().getId() != clanId) {
+            throw new InvalidActionException("Character must belong to your clan to perform this action.");
+        }
+        if (character.getCurrentAction().isEmpty() || !character.getCurrentAction().get().isCancellable()) {
+            throw new InvalidActionException("Character has no action or this action is not cancellable.");
+        }
+
+        // cancel action
+        actionRepository.delete(character.getCurrentAction().get());
+        character.getActions().remove(character.getCurrentAction().get());
+        character.setState(CharacterState.READY);
     }
 
 }

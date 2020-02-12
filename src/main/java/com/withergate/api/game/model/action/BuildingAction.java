@@ -30,6 +30,11 @@ public class BuildingAction extends BaseAction {
         return ActionDescriptor.BUILDING + "." + type;
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
     /**
      * Action type.
      */

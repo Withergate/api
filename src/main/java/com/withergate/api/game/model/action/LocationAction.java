@@ -32,6 +32,11 @@ public class LocationAction extends BaseAction {
         return ActionDescriptor.LOCATION + "." + type;
     }
 
+    @Override
+    public boolean isCancellable() {
+        return true;
+    }
+
     /**
      * Action type.
      */

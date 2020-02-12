@@ -30,4 +30,9 @@ public class TavernAction extends BaseAction {
         return ActionDescriptor.TAVERN.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
 }
