@@ -35,7 +35,7 @@ public class GameRestartIT {
     private HistoricalResultsService resultsService;
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "1", roles = {"ADMIN"})
     public void testGivenClanWhenRestartingGameThenVerifyClanDeleted() throws Exception {
         // given clan
         ClanRequest request = new ClanRequest();
@@ -50,7 +50,7 @@ public class GameRestartIT {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "1", roles = {"ADMIN"})
     public void testGivenHistoricalResultWhenRestartingGameThenVerifyResultNotDeleted() {
         Clan clan = new Clan();
         clan.setId(1);

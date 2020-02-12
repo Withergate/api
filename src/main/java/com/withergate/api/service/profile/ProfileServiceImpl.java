@@ -8,9 +8,8 @@ import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.repository.ProfileRepository;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.service.exception.EntityConflictException;
-import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
-import com.withergate.api.service.premium.PremiumAccountChecker;
+import com.withergate.api.service.premium.Premium;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -98,12 +97,10 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Transactional(transactionManager = "profileTransactionManager")
+    @Premium(type = PremiumType.SILVER)
     @Override
-    public void changeTheme(int profileId, String theme) throws InvalidActionException {
+    public void changeTheme(int profileId, String theme) {
         Profile profile = getProfile(profileId);
-
-        // check premium
-        PremiumAccountChecker.checkPremiumAccount(PremiumType.SILVER, profile);
 
         // update theme
         profile.setTheme(theme);

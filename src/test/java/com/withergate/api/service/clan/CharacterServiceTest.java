@@ -15,7 +15,6 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
-import com.withergate.api.service.profile.ProfileService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,15 +46,12 @@ public class CharacterServiceTest {
     @Mock
     private BaseActionRepository actionRepository;
 
-    @Mock
-    private ProfileService profileService;
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         characterService = new CharacterServiceImpl(characterRepository, randomService, nameService, traitService, notificationService,
-                actionRepository, profileService);
+                actionRepository);
     }
 
     @Test

@@ -60,6 +60,6 @@ public interface ProfileService {
      * @param profileId profile ID
      * @param theme theme
      */
-    void changeTheme(int profileId, String theme) throws InvalidActionException;
+    void changeTheme(int profileId, String theme);
 
 }

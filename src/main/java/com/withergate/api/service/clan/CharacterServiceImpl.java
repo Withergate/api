@@ -16,8 +16,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
-import com.withergate.api.service.premium.PremiumAccountChecker;
-import com.withergate.api.service.profile.ProfileService;
+import com.withergate.api.service.premium.Premium;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final TraitService traitService;
     private final NotificationService notificationService;
     private final BaseActionRepository actionRepository;
-    private final ProfileService profileService;
 
     @Override
     public Character load(int characterId) {
@@ -176,11 +174,9 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Transactional
+    @Premium(type = PremiumType.GOLD)
     @Override
     public void cancelAction(int characterId, int clanId) throws InvalidActionException {
-        // check premium type
-        PremiumAccountChecker.checkPremiumAccount(PremiumType.GOLD, profileService.getProfile(clanId));
-
         Character character = characterRepository.getOne(characterId);
 
         // check conditions
