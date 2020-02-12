@@ -8,12 +8,14 @@ import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.ProfileService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,11 +44,18 @@ public class CharacterServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private BaseActionRepository actionRepository;
+
+    @Mock
+    private ProfileService profileService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        characterService = new CharacterServiceImpl(characterRepository, randomService, nameService, traitService, notificationService);
+        characterService = new CharacterServiceImpl(characterRepository, randomService, nameService, traitService, notificationService,
+                actionRepository, profileService);
     }
 
     @Test

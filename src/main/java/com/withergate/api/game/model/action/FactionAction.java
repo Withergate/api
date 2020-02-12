@@ -40,6 +40,11 @@ public class FactionAction extends BaseAction {
         return ActionDescriptor.FACTION.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
     /**
      * Action type.
      */

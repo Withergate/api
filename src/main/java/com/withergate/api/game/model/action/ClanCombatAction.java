@@ -26,4 +26,9 @@ public class ClanCombatAction extends BaseAction {
         return ActionDescriptor.CLAN_COMBAT.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
 }

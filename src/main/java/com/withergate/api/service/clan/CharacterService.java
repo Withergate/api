@@ -81,4 +81,13 @@ public interface CharacterService {
      * @param turnId turn
      */
     void increaseCharacterLevel(Character character, int turnId);
+
+    /**
+     * Cancels current action of the character if the action is cancellable.
+     *
+     * @param characterId character ID
+     * @param clanId clan ID
+     * @throws InvalidActionException invalid action
+     */
+    void cancelAction(int characterId, int clanId) throws InvalidActionException;
 }

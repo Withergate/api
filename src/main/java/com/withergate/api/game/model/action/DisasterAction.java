@@ -32,4 +32,9 @@ public class DisasterAction extends BaseAction {
         return ActionDescriptor.DISASTER.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
 }

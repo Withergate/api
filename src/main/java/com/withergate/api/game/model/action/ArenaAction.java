@@ -22,4 +22,9 @@ public class ArenaAction extends BaseAction {
         return ActionDescriptor.ARENA.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return true;
+    }
+
 }

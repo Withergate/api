@@ -30,4 +30,9 @@ public class QuestAction extends BaseAction {
         return ActionDescriptor.QUEST.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
 }

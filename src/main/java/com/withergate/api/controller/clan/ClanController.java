@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.TavernOffer;
 import com.withergate.api.game.model.dto.ClanIntelDTO;
+import com.withergate.api.game.model.request.ActionCancelRequest;
 import com.withergate.api.game.model.request.ClanRequest;
 import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.statistics.ClanTurnStatistics;
@@ -14,6 +15,7 @@ import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.game.model.view.Views;
 import com.withergate.api.game.repository.TurnRepository;
 import com.withergate.api.game.repository.statistics.ClanTurnStatisticsRepository;
+import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -46,6 +48,7 @@ public class ClanController {
     private final TavernService tavernService;
     private final TurnRepository turnRepository;
     private final ClanTurnStatisticsRepository statisticsRepository;
+    private final CharacterService characterService;
 
     /**
      * Retrieves the clan for the authenticated player.
@@ -150,6 +153,15 @@ public class ClanController {
     public ResponseEntity<List<ClanTurnStatistics>> getClanStatistics(Principal principal) {
         return new ResponseEntity<>(statisticsRepository.findAllByClanIdOrderByTurnIdAsc(Integer.parseInt(principal.getName())),
                 HttpStatus.OK);
+    }
+
+    /**
+     * Cancels given action if supported.
+     */
+    @PostMapping("/character/action/cancel")
+    public ResponseEntity<Void> cancelAction(Principal principal, @RequestBody ActionCancelRequest request) throws InvalidActionException {
+        characterService.cancelAction(request.getCharacterId(), Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

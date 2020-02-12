@@ -24,4 +24,9 @@ public class ResearchAction extends BaseAction {
         return ActionDescriptor.RESEARCH.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return true;
+    }
+
 }

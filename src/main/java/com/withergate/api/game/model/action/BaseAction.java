@@ -52,4 +52,12 @@ public abstract class BaseAction {
     @JsonProperty("descriptor")
     public abstract String getDescriptor();
 
+    /**
+     * Checks whether this action type can be cancelled.
+     *
+     * @return true if action is cancellable
+     */
+    @JsonProperty("cancellable")
+    public abstract boolean isCancellable();
+
 }

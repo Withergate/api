@@ -34,4 +34,9 @@ public class ResourceTradeAction extends BaseAction {
         return ActionDescriptor.TRADE.name();
     }
 
+    @Override
+    public boolean isCancellable() {
+        return false;
+    }
+
 }
