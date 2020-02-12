@@ -1,7 +1,9 @@
 package com.withergate.api.filter;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,8 +43,10 @@ public class PlayerActivityFilter implements Filter {
 
                 // if profile exists - set last activity
                 if (profile != null) {
+                    handleConsecutiveLogins(profile);
+
                    profile.setLastActivity(LocalDateTime.now());
-                    profileService.saveProfile(profile);
+                   profileService.saveProfile(profile);
                 }
             } catch (Exception e) {
                 log.trace("Error parsing authentication name.", e);
@@ -61,6 +65,25 @@ public class PlayerActivityFilter implements Filter {
     @Override
     public void destroy() {
         // no action needed
+    }
+
+    void handleConsecutiveLogins(Profile profile) {
+        LocalDate today = LocalDate.now();
+        if (profile.getLastActivity() != null) {
+            LocalDate lastDate = profile.getLastActivity().toLocalDate();
+            // last activity today
+            if (lastDate.isEqual(today)) {
+                return;
+            }
+            // last activity yesterday
+            if (today.minus(1, ChronoUnit.DAYS).isEqual(lastDate)) {
+                profile.setConsecutiveLogins(profile.getConsecutiveLogins() + 1);
+            }
+            // last activity long before yesterday
+            if (lastDate.isBefore(today.minus(1, ChronoUnit.DAYS))) {
+                profile.setConsecutiveLogins(0);
+            }
+        }
     }
 
 }
