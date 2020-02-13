@@ -13,6 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import com.withergate.api.profile.model.Profile;
+import com.withergate.api.profile.model.achievement.AchievementType;
+import com.withergate.api.service.profile.AchievementService;
 import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,7 @@ import org.springframework.stereotype.Component;
 public class PlayerActivityFilter implements Filter {
 
     private final ProfileService profileService;
+    private final AchievementService achievementService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterchain) throws IOException, ServletException {

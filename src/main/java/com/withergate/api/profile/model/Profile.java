@@ -3,6 +3,7 @@ package com.withergate.api.profile.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.withergate.api.profile.model.achievement.Achievement;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,6 +64,9 @@ public class Profile {
     @JsonIgnore
     @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<HistoricalResult> results;
+
+    @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Achievement> achievements;
 
     /**
      * Constructor.

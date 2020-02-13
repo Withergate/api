@@ -7,6 +7,7 @@ import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.profile.AchievementService;
 import com.withergate.api.service.profile.HistoricalResultsService;
 import com.withergate.api.service.profile.ProfileService;
 import com.withergate.api.service.turn.TurnService;
@@ -31,6 +32,7 @@ public class TurnScheduler {
     private final CharacterService characterService;
     private final HistoricalResultsService resultsService;
     private final ProfileService profileService;
+    private final AchievementService achievementService;
     private final GameProperties gameProperties;
 
     /**
@@ -110,6 +112,9 @@ public class TurnScheduler {
 
         // prepare statistics
         clanService.prepareStatistics(currentTurn.getTurnId());
+
+        // handle achievements
+        achievementService.handleEndTurnAchievements();
 
         // prepare next turn
         log.info(" === Finished processing turn: {} ===", currentTurn.getTurnId());

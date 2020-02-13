@@ -1,6 +1,7 @@
 package com.withergate.api.service.profile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.PremiumType;
@@ -39,6 +40,12 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Profile getProfile(int profileId) {
         return repository.findById(profileId).orElse(null);
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public List<Profile> getAllProfiles() {
+        return repository.findAll();
     }
 
     @Override
@@ -105,4 +112,5 @@ public class ProfileServiceImpl implements ProfileService {
         // update theme
         profile.setTheme(theme);
     }
+
 }
