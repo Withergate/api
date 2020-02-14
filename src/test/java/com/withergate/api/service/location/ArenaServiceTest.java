@@ -15,6 +15,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.AchievementService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,12 +43,15 @@ public class ArenaServiceTest {
     @Mock
     private CharacterService characterService;
 
+    @Mock
+    private AchievementService achievementService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         arenaService = new ArenaServiceImpl(arenaActionRepository, combatService, notificationService, arenaStatsRepository,
-                characterService);
+                characterService, achievementService);
     }
 
     @Test

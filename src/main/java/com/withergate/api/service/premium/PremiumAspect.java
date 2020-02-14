@@ -14,6 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Premium aspect. Handles @premium annotaiton.
+ *
+ * @author Martin Myslik
+ */
 @Aspect
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +27,9 @@ public class PremiumAspect {
 
     private final ProfileService profileService;
 
+    /**
+     * Checks whetehr logged user has a premium account of required level.
+     */
     @Around("@annotation(Premium)")
     public Object checkPremium(ProceedingJoinPoint joinPoint) throws Throwable {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

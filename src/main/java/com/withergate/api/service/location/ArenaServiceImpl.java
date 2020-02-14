@@ -17,10 +17,12 @@ import com.withergate.api.game.model.location.ArenaResult;
 import com.withergate.api.game.model.request.ArenaRequest;
 import com.withergate.api.game.repository.action.ArenaActionRepository;
 import com.withergate.api.game.repository.arena.ArenaStatsRepository;
+import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.AchievementService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ public class ArenaServiceImpl implements ArenaService {
     private final NotificationService notificationService;
     private final ArenaStatsRepository arenaStatsRepository;
     private final CharacterService characterService;
+    private final AchievementService achievementService;
 
     @Transactional
     @Override
@@ -106,10 +109,12 @@ public class ArenaServiceImpl implements ArenaService {
 
     private void saveOrUpdateArenaStats(ArenaResult result) {
         Optional<ArenaStats> stats = arenaStatsRepository.findById(result.getCharacter().getId());
+        ArenaStats updated = null;
 
         if (stats.isPresent()) {
             // update existing
             stats.get().setStats(stats.get().getStats() + 1);
+            updated = stats.get();
         } else {
             // create new stats
             ArenaStats newStats = new ArenaStats();
@@ -118,7 +123,10 @@ public class ArenaServiceImpl implements ArenaService {
             newStats.setClanName(result.getCharacter().getClan().getName());
             newStats.setStats(1);
 
-            arenaStatsRepository.save(newStats);
+            updated = arenaStatsRepository.save(newStats);
         }
+
+        // check achievement
+        achievementService.checkAchievementAward(result.getCharacter().getClan().getId(), AchievementType.ARENA_WINS, updated.getStats());
     }
 }

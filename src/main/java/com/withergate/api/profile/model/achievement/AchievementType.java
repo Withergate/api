@@ -6,5 +6,9 @@ package com.withergate.api.profile.model.achievement;
  * @author Martin Myslik
  */
 public enum AchievementType {
-    CONSECUTIVE_LOGINS, PREMIUM
+    // general achievements
+    CONSECUTIVE_LOGINS, PREMIUM,
+
+    // action achievements
+    ARENA_WINS, BUILDING_ALL, BUILDING_TOP, BUILDING_DEFENSE
 }

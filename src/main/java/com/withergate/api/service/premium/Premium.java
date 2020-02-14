@@ -6,7 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.withergate.api.profile.model.PremiumType;
-import lombok.Getter;
 
 /**
  * Premium account checker annotation.
@@ -17,6 +16,11 @@ import lombok.Getter;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Premium {
 
+    /**
+     * Returns premium type.
+     *
+     * @return premium type
+     */
     PremiumType type() default PremiumType.GOLD;
 
 }
