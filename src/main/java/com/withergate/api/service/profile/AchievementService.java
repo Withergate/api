@@ -35,6 +35,15 @@ public interface AchievementService {
     /**
      * Checks achievement validity and award new achievement if conditions are met.
      *
+     * @param profileId profile ID
+     * @param type achievement type
+     * @param value required value
+     */
+    void checkAchievementAward(int profileId, AchievementType type, int value);
+
+    /**
+     * Checks achievement validity and award new achievement if conditions are met.
+     *
      * @param profile profile
      * @param type achievement type
      * @param value required value

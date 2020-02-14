@@ -3,11 +3,15 @@ package com.withergate.api.service.profile;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.building.Building;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.model.achievement.Achievement;
 import com.withergate.api.profile.model.achievement.AchievementDetails;
 import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.profile.repository.AchievementDetailsRepository;
+import com.withergate.api.service.clan.ClanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AchievementServiceImpl implements AchievementService {
 
     private final ProfileService profileService;
+    private final ClanService clanService;
     private final AchievementDetailsRepository detailsRepository;
 
     @Transactional(transactionManager = "profileTransactionManager", propagation = Propagation.REQUIRED)
@@ -34,7 +39,21 @@ public class AchievementServiceImpl implements AchievementService {
         for (Profile profile : profileService.getAllProfiles()) {
             if (profile.getPremiumType() != null) {
                 checkAchievementAward(profile, AchievementType.PREMIUM, profile.getPremiumType().name());
-                checkAchievementAward(profile, AchievementType.CONSECUTIVE_LOGINS, profile.getConsecutiveLogins());
+            }
+            checkAchievementAward(profile, AchievementType.CONSECUTIVE_LOGINS, profile.getConsecutiveLogins());
+
+            // clan achievements
+            Clan clan = clanService.getClan(profile.getId());
+            if (clan == null) continue;
+
+            if (clan.getBuildings().stream().noneMatch(b -> b.getLevel() < 1)) { // all buildings level at least 1
+                checkAchievementAward(profile, AchievementType.BUILDING_ALL);
+            }
+            for (Building building : clan.getBuildings()) {
+                checkAchievementAward(profile, AchievementType.BUILDING_TOP, building.getLevel()); // building of certain level
+                if (building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE)) { // defense building
+                    checkAchievementAward(profile, AchievementType.BUILDING_DEFENSE, building.getLevel());
+                }
             }
         }
     }
@@ -59,6 +78,12 @@ public class AchievementServiceImpl implements AchievementService {
                 awardAchievement(profile, details);
             }
         }
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public void checkAchievementAward(int profileId, AchievementType type, int value) {
+        checkAchievementAward(profileService.getProfile(profileId), type, value);
     }
 
     @Transactional(transactionManager = "profileTransactionManager")
