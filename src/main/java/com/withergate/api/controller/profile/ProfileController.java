@@ -1,5 +1,7 @@
 package com.withergate.api.controller.profile;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.game.model.view.Views;
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.request.ProfileRequest;
@@ -71,6 +73,7 @@ public class ProfileController {
      * @param pageable pagination and sorting
      * @return the page containing profiles in the specified order
      */
+    @JsonView(Views.Public.class)
     @GetMapping("/profiles")
     public ResponseEntity<Page<Profile>> getProfiles(Pageable pageable) {
         return new ResponseEntity<>(profileService.getProfiles(pageable), HttpStatus.OK);
