@@ -5,7 +5,7 @@ INSERT INTO research_details(identifier, bonus_type, bonus_text, value, informat
     ('CULTIVATION', 'REST_FOOD', 'detail.research.cultivation', 0, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/cultivation.png'),
     ('PLENTIFUL', 'NEIGHBORHOOD_LOOT', null, 15, 0, 20, 1, 'https://storage.googleapis.com/withergate-images/research/plentiful.png'),
     ('ARCHITECTURE', 'BUILDING_FAME', 'detail.research.architecture', 3, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/architecture.png'),
-    ('COLLECTING', 'TRADE_FAME', 'detail.research.collecting', 2, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
+    ('COLLECTING', 'TRADE_FAME', 'detail.research.collecting', 3, 2, 35, 3, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
     ('CULINARY', 'FOOD_FAME', 'research.culinary', 30, 4, 50, 5, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
     ('DECORATION', 'JUNK_FAME', 'research.decoration', 30, 4, 50, 5, 'https://storage.googleapis.com/withergate-images/research/decoration.png');
 
@@ -56,8 +56,8 @@ INSERT INTO localized_texts(research_info, lang, text) VALUES
     ('PLENTIFUL', 'cs', 'Tato technologie zvyšuje šance na nalezení předmětu při hledání v Sousedství.'),
     ('ARCHITECTURE', 'en', 'Whenever you build a new building or increase a level of an existing one, you will be awarded additional fame.'),
     ('ARCHITECTURE', 'cs', 'Kdykoli postavíš novou budovu nebo vylepšíš nějakou stávající, tak obdržíš slávu navíc.'),
-    ('COLLECTING', 'en', 'Whenever you buy an item, you will pay 10 extra caps (if possible). If you do, 2 fame will be awarded to your clan. This effect triggers during turn evaluation (both extra caps payment and fame income).'),
-    ('COLLECTING', 'cs', 'Kdykoli zakoupíš předmět na tržišti, bude ti odečteno 10 zátek navíc (pokud to je možné). Stane-li se tak, obdržíš 2 slávy navíc. Tento efekt se vyhodnocuje při přepočtu kola (platba extra zátek i příjem slávy).'),
+    ('COLLECTING', 'en', 'Whenever you buy an item, you will pay 10 extra caps (if possible). If you do, 3 fame will be awarded to your clan. This effect triggers during turn evaluation (both extra caps payment and fame income).'),
+    ('COLLECTING', 'cs', 'Kdykoli zakoupíš předmět na tržišti, bude ti odečteno 10 zátek navíc (pokud to je možné). Stane-li se tak, obdržíš 3 slávy navíc. Tento efekt se vyhodnocuje při přepočtu kola (platba extra zátek i příjem slávy).'),
     ('CULINARY', 'en', 'At the end of every turn, your clan will receive 1 fame for every 30 food you own (max 5 per turn). This effect is calculated after food consumption.'),
     ('CULINARY', 'cs', 'Tvůj klan dostane 1 slávu na koci každého kola za každých 30 jídel, které máš v zásobě (maximum 5 za kolo). Tento efekt se počítá po konzumaci jídla.'),
     ('DECORATION', 'en', 'At the end of every turn, your clan will receive 1 fame for every 30 junk you own (max 5 per turn).'),

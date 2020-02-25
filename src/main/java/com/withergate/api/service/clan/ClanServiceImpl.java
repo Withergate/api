@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ClanServiceImpl implements ClanService {
 
-    public static final int INFORMATION_QUOTIENT = 10;
+    public static final int INFORMATION_QUOTIENT = 12;
     public static final int BASIC_POPULATION_LIMIT = 6;
     public static final int INITIAL_CLAN_SIZE = 5;
     public static final int MAX_CHARACTER_STRENGTH = 17;

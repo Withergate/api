@@ -72,7 +72,7 @@ public class ClanTurnServiceTest {
         clan.setId(1);
         clan.setName("Stalkers");
         clan.setInformationLevel(0);
-        clan.setInformation(12);
+        clan.setInformation(14);
 
         // when increasing information level
         clanTurnService.performClanTurnUpdates(clan, 1);

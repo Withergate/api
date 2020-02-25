@@ -13,7 +13,7 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
 
 INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
     ('r.item', 'REVOLUTION', 'FACTION_SUPPORT', 0, 0, 0, false, 'ANY', 5, 0),
-    ('r.resources', 'REVOLUTION', 'RESOURCE_SUPPORT', 10, 1, 3, false, null, 10, 1);
+    ('r.resources', 'REVOLUTION', 'RESOURCE_SUPPORT', 12, 1, 3, false, null, 10, 1);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('r.item', 'en', 'Revolution support - hando ver an item for the Revolution'),
@@ -61,7 +61,7 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
 
 INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
     ('c.sacrifice', 'CULT', 'FACTION_SUPPORT', 0, 0, 0, true, null, 5, 0),
-    ('c.resources', 'CULT', 'RESOURCE_SUPPORT', 10, 1, 3, false, null, 10, 1);
+    ('c.resources', 'CULT', 'RESOURCE_SUPPORT', 12, 1, 3, false, null, 10, 1);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('c.sacrifice', 'en', 'Flagellum dei - Spend the day with a fruitful flagellation'),
