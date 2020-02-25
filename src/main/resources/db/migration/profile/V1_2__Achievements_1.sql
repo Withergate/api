@@ -46,7 +46,11 @@ INSERT INTO achievement_details (identifier, achievement_type, rarity, value_num
     ('ARENA_PHANTOM', 'ARENA_WINS', 'EPIC', 20, null, 'https://storage.googleapis.com/withergate-images/achievements/arena-phantom.png'),
     ('BOB_BUILDER', 'BUILDING_ALL', 'COMMON', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/bob-builder.png'),
     ('CAMPER', 'BUILDING_DEFENSE', 'COMMON', 4, null, 'https://storage.googleapis.com/withergate-images/achievements/camper.png'),
-    ('BRICK_WALL', 'BUILDING_TOP', 'RARE', 6, null, 'https://storage.googleapis.com/withergate-images/achievements/brick-wall.png');
+    ('BRICK_WALL', 'BUILDING_TOP', 'RARE', 6, null, 'https://storage.googleapis.com/withergate-images/achievements/brick-wall.png'),
+    ('MASTERMIND', 'RESEARCH_COUNT', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/mastermind.png'),
+    ('KEEPER_SECRETS', 'INFORMATION_LEVEL', 'COMMON', 6, null, 'https://storage.googleapis.com/withergate-images/achievements/keeper-secrets.png'),
+    ('WEB_LIES', 'INFORMATION_LEVEL', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/web-lies.png'),
+    ('HORDES', 'CHARACTER_COUNT', 'EPIC', 10, null, 'https://storage.googleapis.com/withergate-images/achievements/hordes.png');
 
 INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('DEDICATED', 'en', 'Dedicated'),
@@ -68,7 +72,15 @@ INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('CAMPER', 'en', 'Camper'),
     ('CAMPER', 'cs', 'Kemper'),
     ('BRICK_WALL', 'en', 'Another Brick in the Wall'),
-    ('BRICK_WALL', 'cs', 'Another Brick in the Wall');
+    ('BRICK_WALL', 'cs', 'Another Brick in the Wall'),
+    ('MASTERMIND', 'en', 'Mastermind'),
+    ('MASTERMIND', 'cs', 'Heuréka'),
+    ('KEEPER_SECRETS', 'en', 'Keeper of Secrets'),
+    ('KEEPER_SECRETS', 'cs', 'Strážce Tajemství'),
+    ('WEB_LIES', 'en', 'Web of Lies'),
+    ('WEB_LIES', 'cs', 'Pavučina Lží'),
+    ('HORDES', 'en', 'Hordes of Chernobyl'),
+    ('HORDES', 'cs', 'Hordy z Černobylu');
 
 INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('DEDICATED', 'en', 'Login to the game 5 days in a row.'),
@@ -90,4 +102,12 @@ INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('CAMPER', 'en', 'Build at least four levels of a defense building.'),
     ('CAMPER', 'cs', 'Postav svou obrannou budovu alespoň na čtvrtou úroveň.'),
     ('BRICK_WALL', 'en', 'Build at least six levels of a single building.'),
-    ('BRICK_WALL', 'cs', 'Postav alespoň jednu ze svých budov na šestou úroveň.');
+    ('BRICK_WALL', 'cs', 'Postav alespoň jednu ze svých budov na šestou úroveň.'),
+    ('MASTERMIND', 'en', 'Complete at least eight research projects during a single game.'),
+    ('MASTERMIND', 'cs', 'Vynalezni alespoň osm výzkumů během jedinného věku.'),
+    ('KEEPER_SECRETS', 'en', 'Reach information level six.'),
+    ('KEEPER_SECRETS', 'cs', 'Dosáhni úrovně informací šest.'),
+    ('WEB_LIES', 'en', 'Reach information level eight.'),
+    ('WEB_LIES', 'cs', 'Dosáhni úrovně informací osm.'),
+    ('HORDES', 'en', 'Have at least ten characters in your clan.'),
+    ('HORDES', 'cs', 'Měj alespoň deset postav ve svém klanu.');

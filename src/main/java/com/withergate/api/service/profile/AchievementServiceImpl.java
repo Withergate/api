@@ -1,17 +1,23 @@
 package com.withergate.api.service.profile;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.EndBonusType;
 import com.withergate.api.game.model.building.Building;
+import com.withergate.api.game.model.research.Research;
+import com.withergate.api.profile.model.PremiumType;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.model.achievement.Achievement;
 import com.withergate.api.profile.model.achievement.AchievementDetails;
 import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.profile.repository.AchievementDetailsRepository;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.premium.Premium;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,6 +62,10 @@ public class AchievementServiceImpl implements AchievementService {
                     checkAchievementAward(profile, AchievementType.BUILDING_DEFENSE, building.getLevel());
                 }
             }
+            checkAchievementAward(profile, AchievementType.RESEARCH_COUNT,
+                    (int) clan.getResearch().stream().filter(Research::isCompleted).count());
+            checkAchievementAward(profile, AchievementType.INFORMATION_LEVEL, clan.getInformationLevel());
+            checkAchievementAward(profile, AchievementType.CHARACTER_COUNT, clan.getCharacters().size());
         }
     }
 
@@ -97,6 +107,21 @@ public class AchievementServiceImpl implements AchievementService {
                 awardAchievement(profile, details);
             }
         }
+    }
+
+    @Premium(type = PremiumType.SILVER)
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public List<AchievementDetails> getAvailableAchievements(int profileId) {
+        Profile profile = profileService.getProfile(profileId);
+        Set<String> completed = new HashSet<>();
+        profile.getAchievements().forEach(a -> completed.add(a.getDetails().getIdentifier()));
+
+        List<AchievementDetails> achievementDetails = detailsRepository.findAll();
+        List<AchievementDetails> filtered = achievementDetails.stream()
+                .filter(d -> !completed.contains(d.getIdentifier())).collect(Collectors.toList());
+
+        return filtered;
     }
 
     private void awardAchievement(Profile profile, AchievementDetails details) {

@@ -1,6 +1,9 @@
 package com.withergate.api.service.profile;
 
+import java.util.List;
+
 import com.withergate.api.profile.model.Profile;
+import com.withergate.api.profile.model.achievement.AchievementDetails;
 import com.withergate.api.profile.model.achievement.AchievementType;
 
 /**
@@ -49,5 +52,13 @@ public interface AchievementService {
      * @param value required value
      */
     void checkAchievementAward(Profile profile, AchievementType type, String value);
+
+    /**
+     * Gets all available achievements for given profile. Premium feature.
+     *
+     * @param profileId profile ID
+     * @return available achievements
+     */
+    List<AchievementDetails> getAvailableAchievements(int profileId);
 
 }
