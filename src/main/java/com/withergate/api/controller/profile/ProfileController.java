@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.game.model.view.Views;
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
+import com.withergate.api.profile.model.achievement.AchievementDetails;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.profile.request.ThemeRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
+import com.withergate.api.service.profile.AchievementService;
 import com.withergate.api.service.profile.HistoricalResultsService;
 import com.withergate.api.service.profile.ProfileService;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Profile controller.
@@ -37,6 +40,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
     private final HistoricalResultsService resultsService;
+    private final AchievementService achievementService;
 
     /**
      * Retrieves the profile for the authenticated player.
@@ -103,11 +107,23 @@ public class ProfileController {
      * @param request the theme request
      */
     @PutMapping("/profile/theme")
-    public ResponseEntity<Void> updateTheme(Principal principal, @RequestBody ThemeRequest request) throws InvalidActionException {
+    public ResponseEntity<Void> updateTheme(Principal principal, @RequestBody ThemeRequest request) {
         log.debug("Changing theme preference for player {}", principal.getName());
 
         profileService.changeTheme(Integer.parseInt(principal.getName()), request.getTheme());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves the list of all available achievements. Premium feature.
+     *
+     * @param principal principal
+     * @return list of available achievements
+     */
+    @JsonView(Views.Public.class)
+    @GetMapping("/profile/achievements/available")
+    public ResponseEntity<List<AchievementDetails>> getAvailableAchievements(Principal principal) {
+        return new ResponseEntity<>(achievementService.getAvailableAchievements(Integer.parseInt(principal.getName())), HttpStatus.OK);
     }
 
 }
