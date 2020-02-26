@@ -55,6 +55,7 @@ CREATE TABLE clans (
     prefer_disaster BIT DEFAULT 1,
     faction VARCHAR(16),
     faction_points INT DEFAULT 0,
+    defender_name VARCHAR(16),
     CONSTRAINT clan_faction_fk FOREIGN KEY (faction) REFERENCES factions (identifier),
     PRIMARY KEY (clan_id)
 );

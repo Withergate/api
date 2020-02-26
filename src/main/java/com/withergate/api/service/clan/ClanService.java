@@ -110,4 +110,13 @@ public interface ClanService {
      */
     ClanIntelDTO getClanIntel(int targetId, int spyId) throws InvalidActionException;
 
+    /**
+     * Renames the clan's defender. Premium feature.
+     *
+     * @param clanId clan ID
+     * @param name new name
+     * @throws InvalidActionException
+     */
+    void renameDefender(int clanId, String name) throws InvalidActionException;
+
 }

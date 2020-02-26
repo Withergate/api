@@ -57,8 +57,8 @@ public class AchievementServiceImpl implements AchievementService {
             }
             for (Building building : clan.getBuildings()) {
                 checkAchievementAward(profile, AchievementType.BUILDING_TOP, building.getLevel()); // building of certain level
-                if (building.getDetails().getEndBonusType() != null &&
-                        building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE)) { // defense building
+                if (building.getDetails().getEndBonusType() != null
+                        && building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE)) { // defense building
                     checkAchievementAward(profile, AchievementType.BUILDING_DEFENSE, building.getLevel());
                 }
             }

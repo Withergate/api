@@ -97,8 +97,11 @@ public class Profile {
         return results.size();
     }
 
-    @JsonProperty("achievementStats")
+    /**
+     * Compiles stats about achievements.
+     */
     @JsonView(Views.Public.class)
+    @JsonProperty("achievementStats")
     public Map<Rarity, Integer> getAchievementStats() {
         Map<Rarity, Integer> stats = new HashMap<>();
         Arrays.asList(Rarity.values()).forEach(r -> stats.put(r, 0));

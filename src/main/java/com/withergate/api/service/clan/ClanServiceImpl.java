@@ -16,12 +16,14 @@ import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.statistics.ClanTurnStatistics;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.statistics.ClanTurnStatisticsRepository;
+import com.withergate.api.profile.model.PremiumType;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
+import com.withergate.api.service.premium.Premium;
 import com.withergate.api.service.research.ResearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +57,9 @@ public class ClanServiceImpl implements ClanService {
 
     private static final int CLAN_NAME_MIN_LENGTH = 6;
     private static final int CLAN_NAME_MAX_LENGTH = 30;
+    private static final int DEFENDER_MIN_LENGTH = 5;
+    private static final int DEFENDER_MAX_LENGTH = 16;
+    private static final String DEFAULT_DEFENDER_NAME = "Doggo";
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
@@ -124,6 +129,7 @@ public class ClanServiceImpl implements ClanService {
         clan.setCharacters(new HashSet<>());
         clan.setDefaultAction(DefaultAction.EXPLORE_NEIGHBORHOOD);
         clan.setPreferDisaster(true);
+        clan.setDefenderName(DEFAULT_DEFENDER_NAME);
 
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
@@ -201,6 +207,22 @@ public class ClanServiceImpl implements ClanService {
         }
 
         return new ClanIntelDTO(target, spy);
+    }
+
+    @Transactional
+    @Premium(type = PremiumType.SILVER)
+    @Override
+    public void renameDefender(int clanId, String name) throws InvalidActionException {
+        // get clan
+        Clan clan = getClan(clanId);
+
+        // check name length
+        if (name.length() < DEFENDER_MIN_LENGTH || name.length() > DEFENDER_MAX_LENGTH) {
+            throw new InvalidActionException("Name must be between " + DEFENDER_MIN_LENGTH + " and " + DEFENDER_MAX_LENGTH
+                    + " characters long");
+        }
+
+        clan.setDefenderName(name);
     }
 
     /*
