@@ -10,6 +10,7 @@ import com.withergate.api.game.model.dto.ClanIntelDTO;
 import com.withergate.api.game.model.request.ActionCancelRequest;
 import com.withergate.api.game.model.request.ClanRequest;
 import com.withergate.api.game.model.request.DefaultActionRequest;
+import com.withergate.api.game.model.request.RenameRequest;
 import com.withergate.api.game.model.statistics.ClanTurnStatistics;
 import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.game.model.view.Views;
@@ -161,6 +162,20 @@ public class ClanController {
     @PostMapping("/character/action/cancel")
     public ResponseEntity<Void> cancelAction(Principal principal, @RequestBody ActionCancelRequest request) throws InvalidActionException {
         characterService.cancelAction(request.getCharacterId(), Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Renames clan's defender. Premium feature.
+     *
+     * @param principal   the principal
+     * @param request the request with new name
+     */
+    @PutMapping("/clan/defender")
+    public ResponseEntity<Void> renameDefender(Principal principal, @RequestBody RenameRequest request) throws InvalidActionException {
+        log.debug("Renaming defender for clan {}", principal.getName());
+
+        clanService.renameDefender(Integer.parseInt(principal.getName()), request.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

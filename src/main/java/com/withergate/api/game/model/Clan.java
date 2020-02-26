@@ -170,6 +170,9 @@ public class Clan {
     @Column(name = "faction_points", nullable = false)
     private int factionPoints;
 
+    @Column(name = "defender_name", nullable = false)
+    private String defenderName;
+
     @JsonProperty("defender")
     @JsonView(Views.Internal.class)
     public Character getDefender() {
