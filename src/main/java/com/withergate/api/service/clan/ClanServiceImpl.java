@@ -27,6 +27,7 @@ import com.withergate.api.service.premium.Premium;
 import com.withergate.api.service.research.ResearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Retryable;
@@ -98,8 +99,11 @@ public class ClanServiceImpl implements ClanService {
     @Transactional
     @Override
     public Clan createClan(int clanId, ClanRequest clanRequest, int turn) throws EntityConflictException, ValidationException {
+        // sanitize
+        String name = clanRequest.getName().replaceAll("\\s+", " ").trim();
+
         // validate clan name
-        if (clanRequest.getName().length() < CLAN_NAME_MIN_LENGTH || clanRequest.getName().length() > CLAN_NAME_MAX_LENGTH) {
+        if (name.length() < CLAN_NAME_MIN_LENGTH || name.length() > CLAN_NAME_MAX_LENGTH) {
             throw new ValidationException("Clan name must be between 6 and 30 characters long.");
         }
 
@@ -110,7 +114,7 @@ public class ClanServiceImpl implements ClanService {
         }
 
         // check for name collisions. Clan name must be unique among all players.
-        if (clanRepository.findOneByName(clanRequest.getName()) != null) {
+        if (clanRepository.findOneByName(name) != null) {
             log.warn("Cannot create a clan with name {}", clanRequest.getName());
             throw new EntityConflictException("Clan with the provided name already exists.");
         }
@@ -118,7 +122,7 @@ public class ClanServiceImpl implements ClanService {
         // Create clan with initial resources.
         Clan clan = new Clan();
         clan.setId(clanId);
-        clan.setName(clanRequest.getName());
+        clan.setName(name);
         clan.setFame(0);
         clan.setCaps(INITIAL_CAPS + getStartingResourceBonus(turn));
         clan.setJunk(INITIAL_JUNK + getStartingResourceBonus(turn));
@@ -215,6 +219,9 @@ public class ClanServiceImpl implements ClanService {
     public void renameDefender(int clanId, String name) throws InvalidActionException {
         // get clan
         Clan clan = getClan(clanId);
+
+        // sanitize
+        name = name.replaceAll("\\s+", " ").trim();
 
         // check name length
         if (name.length() < DEFENDER_MIN_LENGTH || name.length() > DEFENDER_MAX_LENGTH) {

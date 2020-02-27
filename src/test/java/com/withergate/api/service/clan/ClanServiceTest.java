@@ -109,6 +109,17 @@ public class ClanServiceTest {
         // then expect exception
     }
 
+    @Test(expected = ValidationException.class)
+    public void testGivenClanRequestWhenNameWithSpacesThenExpectException() throws Exception {
+        // given request
+        ClanRequest clanRequest = new ClanRequest("a      z");
+
+        // when clan name too short
+        clanService.createClan(1, clanRequest, 1);
+
+        // then expect exception
+    }
+
     @Test
     public void testGivenUniqueClanWhenCreatingClanThenVerifyClanSaved() throws Exception {
         // given existing clan name

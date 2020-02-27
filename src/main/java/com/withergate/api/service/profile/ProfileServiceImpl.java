@@ -56,20 +56,23 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(transactionManager = "profileTransactionManager")
     @Override
     public Profile createProfile(ProfileRequest request, int playerId) throws EntityConflictException, ValidationException {
+        // sanitize
+        String name = request.getName().replaceAll("\\s+", " ").trim();
+
         // validate profile name
-        if (request.getName().length() < PROFILE_NAME_MIN_LENGTH || request.getName().length() > PROFILE_NAME_MAX_LENGTH) {
+        if (name.length() < PROFILE_NAME_MIN_LENGTH || name.length() > PROFILE_NAME_MAX_LENGTH) {
             throw new ValidationException("Profile name must be between 5 and 20 characters long.");
         }
 
         // check if profile exists
-        Profile check = repository.findOneByName(request.getName());
+        Profile check = repository.findOneByName(name);
         if (check != null) {
             throw new EntityConflictException("Profile with this name already exists!");
         }
 
         Profile profile = new Profile();
         profile.setId(playerId);
-        profile.setName(request.getName());
+        profile.setName(name);
         profile.setLastActivity(LocalDateTime.now());
         profile.setRanking(0);
         profile.setTheme(DEFAULT_THEME);
