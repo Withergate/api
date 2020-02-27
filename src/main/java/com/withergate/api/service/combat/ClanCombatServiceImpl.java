@@ -116,6 +116,9 @@ public class ClanCombatServiceImpl implements ClanCombatService {
                                Character attacker, Character defender) {
         log.debug("Character {} from clan {} is attacking {}.", attacker, attacker.getClan().getName(), defender.getClan().getName());
 
+        attacker.getClan().getStatistics().setOutcomingAttacks(attacker.getClan().getStatistics().getOutcomingAttacks() + 1);
+        defender.getClan().getStatistics().setIncomingAttacks(defender.getClan().getStatistics().getIncomingAttacks() + 1);
+
         // handle combat
         boolean attackerSuccess = combatService.handleClanCombat(attackerNotification, defenderNotification, attacker, defender);
 
@@ -126,6 +129,10 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             // increase experience
             attacker.changeExperience(2);
             attackerNotification.changeExperience(2);
+
+            // statistics
+            attacker.getClan().getStatistics()
+                    .setOutcomingAttacksSuccess(attacker.getClan().getStatistics().getOutcomingAttacksSuccess() + 1);
 
             // add reward
             try {
@@ -164,6 +171,10 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             // increase experience
             attacker.changeExperience(1);
             attackerNotification.changeExperience(1);
+
+            // statistics
+            defender.getClan().getStatistics()
+                    .setIncomingAttacksSuccess(defender.getClan().getStatistics().getIncomingAttacksSuccess() + 1);
         }
 
         // remove injury from defender notification - not needed for generated defender

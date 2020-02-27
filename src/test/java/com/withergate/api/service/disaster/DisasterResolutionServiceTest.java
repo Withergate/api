@@ -113,6 +113,7 @@ public class DisasterResolutionServiceTest {
         Assert.assertEquals(30, clan.getFood());
         Assert.assertEquals(30, clan.getJunk());
         Assert.assertEquals(50, clan.getFame());
+        Assert.assertEquals(1, clan.getStatistics().getFailedDisasters());
     }
 
     @Test
@@ -159,6 +160,7 @@ public class DisasterResolutionServiceTest {
         // then verify penalties applied
         Assert.assertEquals(30, clan.getFame());
         Mockito.verify(itemService).deleteItem(weapon);
+        Assert.assertEquals(1, clan.getStatistics().getFailedDisasters());
     }
 
     @Test

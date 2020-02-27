@@ -35,6 +35,20 @@ public class GameRestartIT {
     private HistoricalResultsService resultsService;
 
     @Test
+    public void testGivenClanWhenCreatingNewThenVerifyStatisticsCreated() throws Exception {
+        // given clan
+        ClanRequest request = new ClanRequest();
+        request.setName("Warbarons");
+
+        // when creating clan
+        Clan clan = clanService.createClan(1, request, 1);
+
+        // verify statistics created
+        Assert.assertEquals(clan.getName(), clanService.getClan(1).getName());
+        Assert.assertNotNull(clan.getStatistics());
+    }
+
+    @Test
     @WithMockUser(username = "1", roles = {"ADMIN"})
     public void testGivenClanWhenRestartingGameThenVerifyClanDeleted() throws Exception {
         // given clan
@@ -42,6 +56,7 @@ public class GameRestartIT {
         request.setName("Warbarons");
         Clan clan = clanService.createClan(1, request, 1);
         Assert.assertEquals(clan.getName(), clanService.getClan(1).getName());
+        Assert.assertNotNull(clan.getStatistics());
 
         adminService.restartGame();
 

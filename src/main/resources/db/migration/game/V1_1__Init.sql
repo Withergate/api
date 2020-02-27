@@ -461,7 +461,7 @@ DROP TABLE IF EXISTS tavern_offers;
 CREATE TABLE tavern_offers (
     offer_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
-    character_id INT NOT NULL,
+    character_id INT,
     price INT NOT NULL,
     clan_id INT NOT NULL,
     CONSTRAINT tavern_offer_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
@@ -530,4 +530,21 @@ CREATE TABLE clan_turn_statistics (
     research INT,
     quests INT,
     PRIMARY KEY (statistics_id)
+);
+
+DROP TABLE IF EXISTS clan_statistics;
+CREATE TABLE clan_statistics (
+    statistics_id INT AUTO_INCREMENT,
+    clan_clan_id INT NOT NULL,
+    starvations INT,
+    failed_disasters INT,
+    crafted_items INT,
+    encounters INT,
+    encounters_success INT,
+    incoming_attacks INT,
+    incoming_attacks_success INT,
+    outcoming_attacks INT,
+    outcoming_attacks_success INT,
+    PRIMARY KEY (statistics_id),
+    CONSTRAINT statistics_clan_fk FOREIGN KEY (clan_clan_id) REFERENCES clans (clan_id)
 );

@@ -232,6 +232,9 @@ public class CharacterServiceImpl implements CharacterService {
             if (character.getClan() != null) {
                 character.getClan().getCharacters().remove(character);
             }
+            if (character.getOffer() != null) {
+                character.getOffer().setCharacter(null);
+            }
             character.setClan(null);
             character.setOffer(null);
             characterRepository.delete(character);

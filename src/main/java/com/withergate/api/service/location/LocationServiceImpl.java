@@ -112,10 +112,12 @@ public class LocationServiceImpl implements LocationService {
             // handle encounter, experience is handled by encounter service
             encounterSuccess = encounterService.handleEncounter(notification, character, action.getLocation());
             encounter = true;
+            character.getClan().getStatistics().setEncounters(character.getClan().getStatistics().getEncounters() + 1);
 
             if (encounterSuccess) {
                 character.changeExperience(2);
                 notification.changeExperience(2);
+                character.getClan().getStatistics().setEncountersSuccess(character.getClan().getStatistics().getEncountersSuccess() + 1);
             } else {
                 character.changeExperience(1);
                 notification.changeExperience(1);
