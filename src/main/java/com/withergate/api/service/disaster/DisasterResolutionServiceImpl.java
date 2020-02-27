@@ -74,6 +74,11 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         for (int i = 0; i < numPenalties; i++) {
             handlePenalty(clan, notification, disaster.getDetails().getPenalties().get(i));
         }
+
+        // update statistics
+        if (clan.getDisasterProgress() < 100) {
+            clan.getStatistics().setFailedDisasters(clan.getStatistics().getFailedDisasters() + 1);
+        }
     }
 
     private void handlePenalty(Clan clan, ClanNotification notification, DisasterPenalty penalty) {

@@ -27,7 +27,6 @@ import com.withergate.api.service.premium.Premium;
 import com.withergate.api.service.research.ResearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Retryable;

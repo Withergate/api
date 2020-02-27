@@ -10,6 +10,7 @@ import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.statistics.ClanStatistics;
 import com.withergate.api.game.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.combat.ClanDefenseUtils;
@@ -26,6 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Optional;
@@ -111,6 +113,9 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private boolean preferDisaster;
 
+    @OneToOne(mappedBy = "clan", cascade = CascadeType.ALL)
+    private ClanStatistics statistics;
+
     /**
      * Constructor.
      */
@@ -120,6 +125,11 @@ public class Clan {
         research = new HashSet<>();
         items = new HashSet<>();
         quests = new HashSet<>();
+
+        // statistics
+        ClanStatistics statistics = new ClanStatistics();
+        statistics.setClan(this);
+        setStatistics(statistics);
     }
 
     /**

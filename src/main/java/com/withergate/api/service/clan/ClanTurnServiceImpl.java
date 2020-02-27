@@ -111,6 +111,9 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 // lose fame
                 clan.changeFame(- gameProperties.getStarvationFame());
 
+                // update statistics
+                clan.getStatistics().setStarvations(clan.getStatistics().getStarvations() + 1);
+
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);

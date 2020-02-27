@@ -140,7 +140,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void generateCraftableItem(Character character, int bonus, ClanNotification notification, ItemType type) {
-        log.debug("Crafting weapon with {}", character.getName());
+        log.debug("Crafting item with {}", character.getName());
 
         ItemDetails.Rarity rarity = getRandomRarity(character.getCraftsmanship(), bonus);
         ItemDetails details = getRandomItemDetails(type, rarity);
@@ -157,6 +157,9 @@ public class ItemServiceImpl implements ItemService {
         notificationService.addLocalizedTexts(detail.getText(), "detail.character.crafting", new String[] {character.getName()},
                 details.getName());
         notification.getDetails().add(detail);
+
+        // update statistics
+        character.getClan().getStatistics().setCraftedItems(character.getClan().getStatistics().getCraftedItems() + 1);
     }
 
     @Override
