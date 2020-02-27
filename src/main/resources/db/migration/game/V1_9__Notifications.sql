@@ -200,4 +200,6 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.disaster.building.destruction', 'en', 'Your building [] lost some progress as a result of the disaster.'),
     ('detail.disaster.building.destruction', 'cs', 'V důsledku pohromy tvá budova [] utrpěla škody.'),
     ('detail.faction.aid', 'en', 'Your ally {} received a material support from your clan.'),
-    ('detail.faction.aid', 'cs', 'Tvůj spojenec {} obdržel materiální podporu od tvého klanu.');
+    ('detail.faction.aid', 'cs', 'Tvůj spojenec {} obdržel materiální podporu od tvého klanu.'),
+    ('detail.action.progress', 'en', 'Your current progress is {}.'),
+    ('detail.action.progress', 'cs', 'Tvůj aktuální postup je {}.');
