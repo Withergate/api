@@ -191,13 +191,19 @@ public class BuildingServiceImpl implements BuildingService {
         // progress
         Building building = clan.getBuilding(action.getBuilding());
         building.setProgress(building.getProgress() + progress);
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.action.progress",
+                new String[]{building.getProgress() + " / " + building.getNextLevelWork()});
+        notification.getDetails().add(detail);
+
         if (building.getProgress() >= building.getNextLevelWork()) {
             building.setProgress(building.getProgress() - building.getNextLevelWork());
             building.setLevel(building.getLevel() + 1);
 
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), "detail.building.levelup", new String[] {}, details.getName());
-            notification.getDetails().add(detail);
+            NotificationDetail detailLevel = new NotificationDetail();
+            notificationService.addLocalizedTexts(detailLevel.getText(), "detail.building.levelup", new String[] {}, details.getName());
+            notification.getDetails().add(detailLevel);
 
             // level up bonuses
             processBuildingLevelUpBonuses(building, clan, notification);

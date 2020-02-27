@@ -7,6 +7,7 @@ import com.withergate.api.game.model.action.ResearchAction;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.ResearchRequest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.research.ResearchDetails;
@@ -117,6 +118,11 @@ public class ResearchServiceImpl implements ResearchService {
         int progress = character.getIntellect() + BonusUtils.getBonus(character, BonusType.RESEARCH, notification, notificationService);
 
         research.setProgress(research.getProgress() + progress);
+
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.action.progress",
+                new String[]{research.getProgress() + " / " + research.getDetails().getCost()});
+        notification.getDetails().add(detail);
 
         notificationService.addLocalizedTexts(notification.getText(), "research.work", new String[] {}, details.getName());
 
