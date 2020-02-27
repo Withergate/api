@@ -83,4 +83,14 @@ public interface CharacterService {
      * @throws InvalidActionException invalid action
      */
     void cancelAction(int characterId, int clanId) throws InvalidActionException;
+
+    /**
+     * Renames provided character. Throws an exception if action is not valid. Premium feature.
+     *
+     * @param characterId character ID
+     * @param clanId clan ID
+     * @param name new name
+     * @throws InvalidActionException
+     */
+    void renameCharacter(int characterId, int clanId, String name) throws InvalidActionException;
 }

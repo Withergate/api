@@ -38,6 +38,9 @@ public class CharacterServiceImpl implements CharacterService {
     public static final int LEVEL_QUOTIENT = 10;
     public static final int FREE_TRAIT_THRESHOLD = 10;
 
+    private static final int MIN_NAME_LENGTH = 6;
+    private static final int MAX_NAME_LENGTH = 30;
+
     private final CharacterRepository characterRepository;
     private final RandomService randomService;
     private final NameService nameService;
@@ -189,6 +192,38 @@ public class CharacterServiceImpl implements CharacterService {
         actionRepository.delete(character.getCurrentAction().get());
         character.getActions().remove(character.getCurrentAction().get());
         character.setState(CharacterState.READY);
+    }
+
+    @Transactional
+    @Premium(type = PremiumType.GOLD)
+    @Override
+    public void renameCharacter(int characterId, int clanId, String name) throws InvalidActionException {
+        Character character = characterRepository.getOne(characterId);
+
+        // check conditions
+        if (character.getClan().getId() != clanId) {
+            throw new InvalidActionException("Character must belong to your clan to perform this action.");
+        }
+
+        // sanitize
+        name = name.replaceAll("\\s+", " ").trim();
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new InvalidActionException("Character name must be between " + MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH
+                + " characters long.");
+        }
+
+        // capitalize
+        name = name.substring(0, 1).toUpperCase() + name.substring(1);
+
+        // check name collisions
+        for (Character ch : character.getClan().getCharacters()) {
+            if (ch.getName().equals(name)) {
+                throw new InvalidActionException("Character with this name already exists in your clan!");
+            }
+        }
+
+        // rename
+        character.setName(name);
     }
 
     private void delete(Character character) {

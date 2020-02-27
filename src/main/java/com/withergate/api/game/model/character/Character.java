@@ -55,7 +55,7 @@ public class Character {
     @JsonIgnore
     private Clan clan;
 
-    @Column(name = "character_name", updatable = false, nullable = false)
+    @Column(name = "character_name", nullable = false)
     private String name;
 
     @Column(name = "image_url", nullable = false)
