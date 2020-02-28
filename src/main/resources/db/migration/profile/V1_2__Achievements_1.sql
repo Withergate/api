@@ -50,7 +50,15 @@ INSERT INTO achievement_details (identifier, achievement_type, rarity, value_num
     ('MASTERMIND', 'RESEARCH_COUNT', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/mastermind.png'),
     ('KEEPER_SECRETS', 'INFORMATION_LEVEL', 'COMMON', 6, null, 'https://storage.googleapis.com/withergate-images/achievements/keeper-secrets.png'),
     ('WEB_LIES', 'INFORMATION_LEVEL', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/web-lies.png'),
-    ('HORDES', 'CHARACTER_COUNT', 'EPIC', 10, null, 'https://storage.googleapis.com/withergate-images/achievements/hordes.png');
+    ('HORDES', 'CHARACTER_COUNT', 'EPIC', 10, null, 'https://storage.googleapis.com/withergate-images/achievements/hordes.png'),
+    ('LOGISTICIAN', 'NO_STARVATION', 'COMMON', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/logistician.png'),
+    ('NO_WORRY', 'DISASTERS_AVERTED', 'COMMON', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/no-wory.png'),
+    ('STEADY', 'GAME_COUNT', 'COMMON', 3, null, 'https://storage.googleapis.com/withergate-images/achievements/steady.png'),
+    ('UNWAVERING', 'GAME_COUNT', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/unwavering.png'),
+    ('HANDY', 'CRAFT_COUNT', 'COMMON', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/handy.png'),
+    ('ALIEXPRESS', 'CRAFT_COUNT', 'RARE', 15, null, 'https://storage.googleapis.com/withergate-images/achievements/aliexpress.png'),
+    ('NO_SOW', 'ATTACK_SUCCESS_COUNT', 'RARE', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/no-sow.png'),
+    ('UNBENT', 'DEFENSE_SUCCESS_COUNT', 'RARE', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/unbent.png');
 
 INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('DEDICATED', 'en', 'Dedicated'),
@@ -80,7 +88,23 @@ INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('WEB_LIES', 'en', 'Web of Lies'),
     ('WEB_LIES', 'cs', 'Pavučina Lží'),
     ('HORDES', 'en', 'Hordes of Chernobyl'),
-    ('HORDES', 'cs', 'Hordy z Černobylu');
+    ('HORDES', 'cs', 'Hordy z Černobylu'),
+    ('LOGISTICIAN', 'en', 'Logistician'),
+    ('LOGISTICIAN', 'cs', 'Svačinář'),
+    ('NO_WORRY', 'en', 'No worries'),
+    ('NO_WORRY', 'cs', 'V pohodě'),
+    ('STEADY', 'en', 'Steady'),
+    ('STEADY', 'cs', 'Spolehlivý'),
+    ('UNWAVERING', 'en', 'Unwavering'),
+    ('UNWAVERING', 'cs', 'Neochvějný'),
+    ('HANDY', 'en', 'Handy'),
+    ('HANDY', 'cs', 'Šikovný'),
+    ('ALIEXPRESS', 'en', 'Aliexpress'),
+    ('ALIEXPRESS', 'cs', 'Aliepxress'),
+    ('NO_SOW', 'en', 'We do not sow'),
+    ('NO_SOW', 'cs', 'My nesijeme'),
+    ('UNBENT', 'en', 'Unbowed, unbent, unbroken'),
+    ('UNBENT', 'cs', 'Neohnuti, neskloněni, nezlomeni');
 
 INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('DEDICATED', 'en', 'Login to the game 5 days in a row.'),
@@ -110,4 +134,20 @@ INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('WEB_LIES', 'en', 'Reach information level eight.'),
     ('WEB_LIES', 'cs', 'Dosáhni úrovně informací osm.'),
     ('HORDES', 'en', 'Have at least ten characters in your clan.'),
-    ('HORDES', 'cs', 'Měj alespoň deset postav ve svém klanu.');
+    ('HORDES', 'cs', 'Měj alespoň deset postav ve svém klanu.'),
+    ('LOGISTICIAN', 'en', 'Your characters did not starve during a single era.'),
+    ('LOGISTICIAN', 'cs', 'Tvé postavy ani jednou za celý věk nehladověly.'),
+    ('NO_WORRY', 'en', 'Avert every disaster during a single era.'),
+    ('NO_WORRY', 'cs', 'Úspěšně vyřeš všechny pohromy v jednom věku.'),
+    ('STEADY', 'en', 'Play at least three games.'),
+    ('STEADY', 'cs', 'Odehraj alespoň tři herní věky.'),
+    ('UNWAVERING', 'en', 'Play at least eight games.'),
+    ('UNWAVERING', 'cs', 'Odehraj alespoň osm herních věků.'),
+    ('HANDY', 'en', 'Craft at least five items. Awarded at the end of the game.'),
+    ('HANDY', 'cs', 'Vyrob alespoň pět předmětů. Vyhodnocuje se na konci hry.'),
+    ('ALIEXPRESS', 'en', 'Craft at least fifteen items. Awarded at the end of the game.'),
+    ('ALIEXPRESS', 'cs', 'Vyrob alespoň patnáct předmětů. Vyhodnocuje se na konci hry.'),
+    ('NO_SOW', 'en', 'Perform at least five successful attacks against other players.'),
+    ('NO_SOW', 'cs', 'Podnikni alespoň pět úspěšných útoků proti ostatním hráčům.'),
+    ('UNBENT', 'en', 'Successfully defend your clan base against at least five attacks from other players.'),
+    ('UNBENT', 'cs', 'Ubraň se alespoň pěti útokům od ostatních hráčů.');
