@@ -14,11 +14,6 @@ import com.withergate.api.profile.model.achievement.AchievementType;
 public interface AchievementService {
 
     /**
-     * Handles all end turn achievements.
-     */
-    void handleEndTurnAchievements();
-
-    /**
      * Checks achievement validity and award new achievement without conditions.
      *
      * @param profile profile
@@ -60,5 +55,15 @@ public interface AchievementService {
      * @return available achievements
      */
     List<AchievementDetails> getAvailableAchievements(int profileId);
+
+    /**
+     * Handles all end turn achievements.
+     */
+    void handleEndTurnAchievements();
+
+    /**
+     * Handles all end game achievements.
+     */
+    void handleEndGameAchievements();
 
 }

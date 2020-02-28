@@ -12,12 +12,14 @@ import com.withergate.api.game.model.dto.ClanIntelDTO;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.request.ClanCombatRequest;
 import com.withergate.api.game.repository.action.ClanCombatActionRepository;
+import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.AchievementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
     private final CombatService combatService;
     private final CharacterService characterService;
     private final RandomService randomService;
+    private final AchievementService achievementService;
 
     @Transactional
     @Override
@@ -122,7 +125,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
         // handle combat
         boolean attackerSuccess = combatService.handleClanCombat(attackerNotification, defenderNotification, attacker, defender);
 
-        if (attackerSuccess) {
+        if (attackerSuccess) { // ATTACKER SUCCESS
             notificationService.addLocalizedTexts(attackerNotification.getText(), "clan.combat.victory", new String[]{});
             notificationService.addLocalizedTexts(defenderNotification.getText(), "clan.combat.failure", new String[]{});
 
@@ -133,6 +136,8 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             // statistics
             attacker.getClan().getStatistics()
                     .setOutcomingAttacksSuccess(attacker.getClan().getStatistics().getOutcomingAttacksSuccess() + 1);
+            achievementService.checkAchievementAward(attacker.getClan().getId(), AchievementType.ATTACK_SUCCESS_COUNT,
+                    attacker.getClan().getStatistics().getOutcomingAttacksSuccess());
 
             // add reward
             try {
@@ -164,7 +169,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
                 log.error("Cannot compute attacker reward.", e);
             }
 
-        } else {
+        } else { // DEFENDER SUCCESS
             notificationService.addLocalizedTexts(attackerNotification.getText(), "clan.combat.failure", new String[]{});
             notificationService.addLocalizedTexts(defenderNotification.getText(), "clan.combat.victory", new String[]{});
 
@@ -175,6 +180,8 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             // statistics
             defender.getClan().getStatistics()
                     .setIncomingAttacksSuccess(defender.getClan().getStatistics().getIncomingAttacksSuccess() + 1);
+            achievementService.checkAchievementAward(defender.getClan().getId(), AchievementType.DEFENSE_SUCCESS_COUNT,
+                    defender.getClan().getStatistics().getIncomingAttacksSuccess());
         }
 
         // remove injury from defender notification - not needed for generated defender

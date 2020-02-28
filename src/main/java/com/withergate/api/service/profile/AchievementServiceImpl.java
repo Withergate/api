@@ -20,6 +20,7 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.premium.Premium;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,37 +38,6 @@ public class AchievementServiceImpl implements AchievementService {
     private final ProfileService profileService;
     private final ClanService clanService;
     private final AchievementDetailsRepository detailsRepository;
-
-    @Transactional(transactionManager = "profileTransactionManager", propagation = Propagation.REQUIRED)
-    @Override
-    public void handleEndTurnAchievements() {
-        log.debug("--> Handling end turn achievements.");
-        for (Profile profile : profileService.getAllProfiles()) {
-            if (profile.getPremiumType() != null) {
-                checkAchievementAward(profile, AchievementType.PREMIUM, profile.getPremiumType().name());
-            }
-            checkAchievementAward(profile, AchievementType.CONSECUTIVE_LOGINS, profile.getConsecutiveLogins());
-
-            // clan achievements
-            Clan clan = clanService.getClan(profile.getId());
-            if (clan == null) continue;
-
-            if (clan.getBuildings().stream().noneMatch(b -> b.getLevel() < 1)) { // all buildings level at least 1
-                checkAchievementAward(profile, AchievementType.BUILDING_ALL);
-            }
-            for (Building building : clan.getBuildings()) {
-                checkAchievementAward(profile, AchievementType.BUILDING_TOP, building.getLevel()); // building of certain level
-                if (building.getDetails().getEndBonusType() != null
-                        && building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE)) { // defense building
-                    checkAchievementAward(profile, AchievementType.BUILDING_DEFENSE, building.getLevel());
-                }
-            }
-            checkAchievementAward(profile, AchievementType.RESEARCH_COUNT,
-                    (int) clan.getResearch().stream().filter(Research::isCompleted).count());
-            checkAchievementAward(profile, AchievementType.INFORMATION_LEVEL, clan.getInformationLevel());
-            checkAchievementAward(profile, AchievementType.CHARACTER_COUNT, clan.getCharacters().size());
-        }
-    }
 
     @Transactional(transactionManager = "profileTransactionManager")
     @Override
@@ -122,6 +92,57 @@ public class AchievementServiceImpl implements AchievementService {
                 .filter(d -> !completed.contains(d.getIdentifier())).collect(Collectors.toList());
 
         return filtered;
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager", propagation = Propagation.REQUIRED)
+    @Override
+    public void handleEndTurnAchievements() {
+        log.debug("--> Handling end turn achievements.");
+        for (Profile profile : profileService.getAllProfiles()) {
+            if (profile.getPremiumType() != null) {
+                checkAchievementAward(profile, AchievementType.PREMIUM, profile.getPremiumType().name());
+            }
+            checkAchievementAward(profile, AchievementType.CONSECUTIVE_LOGINS, profile.getConsecutiveLogins());
+
+            // clan achievements
+            Clan clan = clanService.getClan(profile.getId());
+            if (clan == null) continue;
+
+            if (clan.getBuildings().stream().noneMatch(b -> b.getLevel() < 1)) { // all buildings level at least 1
+                checkAchievementAward(profile, AchievementType.BUILDING_ALL);
+            }
+            for (Building building : clan.getBuildings()) {
+                checkAchievementAward(profile, AchievementType.BUILDING_TOP, building.getLevel()); // building of certain level
+                if (building.getDetails().getEndBonusType() != null
+                        && building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE)) { // defense building
+                    checkAchievementAward(profile, AchievementType.BUILDING_DEFENSE, building.getLevel());
+                }
+            }
+            checkAchievementAward(profile, AchievementType.RESEARCH_COUNT,
+                    (int) clan.getResearch().stream().filter(Research::isCompleted).count());
+            checkAchievementAward(profile, AchievementType.INFORMATION_LEVEL, clan.getInformationLevel());
+            checkAchievementAward(profile, AchievementType.CHARACTER_COUNT, clan.getCharacters().size());
+        }
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager", propagation = Propagation.REQUIRED)
+    @Retryable
+    @Override
+    public void handleEndGameAchievements() {
+        log.debug("--> Handling end game achievements.");
+
+        for (Profile profile : profileService.getAllProfiles()) {
+            Clan clan = clanService.getClan(profile.getId());
+
+            if (clan.getStatistics().getStarvations() == 0) {
+                checkAchievementAward(profile, AchievementType.NO_STARVATION);
+            }
+            if (clan.getStatistics().getFailedDisasters() == 0) {
+                checkAchievementAward(profile, AchievementType.DISASTERS_AVERTED);
+            }
+            checkAchievementAward(profile, AchievementType.GAME_COUNT, profile.getNumPlayedGames());
+            checkAchievementAward(profile, AchievementType.CRAFT_COUNT, clan.getStatistics().getCraftedItems());
+        }
     }
 
     private void awardAchievement(Profile profile, AchievementDetails details) {

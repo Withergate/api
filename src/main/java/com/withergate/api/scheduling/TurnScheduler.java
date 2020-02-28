@@ -108,6 +108,9 @@ public class TurnScheduler {
 
             // recalcalculate rankings
             profileService.recalculateRankings();
+
+            // end game achievements
+            achievementService.handleEndGameAchievements();
         }
 
         // prepare statistics
