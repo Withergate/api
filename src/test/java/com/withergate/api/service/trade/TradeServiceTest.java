@@ -203,8 +203,7 @@ public class TradeServiceTest {
         offer.setId(1);
         offer.setState(State.PUBLISHED);
         offer.setSeller(clan);
-        offer.setItemId(2);
-        offer.setDetails(details);
+        offer.setItem(gear);
 
         Mockito.when(marketOfferRepository.findById(1)).thenReturn(Optional.of(offer));
 
@@ -235,8 +234,7 @@ public class TradeServiceTest {
         offer.setId(1);
         offer.setState(State.PUBLISHED);
         offer.setSeller(clan);
-        offer.setItemId(2);
-        offer.setDetails(details);
+        offer.setItem(gear);
 
         Mockito.when(marketOfferRepository.getOne(1)).thenReturn(offer);
 
@@ -264,8 +262,7 @@ public class TradeServiceTest {
 
         MarketOffer offer = new MarketOffer();
         offer.setId(2);
-        offer.setItemId(1);
-        offer.setDetails(details);
+        offer.setItem(weapon);
         offer.setState(State.PENDING);
         offer.setPrice(20);
         offer.setSeller(seller);
@@ -359,8 +356,7 @@ public class TradeServiceTest {
 
         MarketOffer offer = new MarketOffer();
         offer.setId(2);
-        offer.setItemId(1);
-        offer.setDetails(details);
+        offer.setItem(weapon);
         offer.setState(State.PUBLISHED);
         offer.setPrice(20);
         offer.setSeller(seller);

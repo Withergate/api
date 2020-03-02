@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.item.ItemDetails;
+import com.withergate.api.game.model.item.Item;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,11 +40,8 @@ public class MarketOffer {
     private int price;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "identifier")
-    private ItemDetails details;
-
-    @Column(name = "item_id")
-    private int itemId;
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
