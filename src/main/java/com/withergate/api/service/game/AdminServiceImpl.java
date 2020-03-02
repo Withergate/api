@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.game;
 
 import com.withergate.api.game.model.notification.GlobalNotification;
 import com.withergate.api.game.model.request.GlobalNotificationRequest;

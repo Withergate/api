@@ -1,12 +1,16 @@
 package com.withergate.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.dto.GamePropertiesDTO;
+import com.withergate.api.game.model.dto.InfoDTO;
 import com.withergate.api.game.model.notification.GlobalNotification;
 import com.withergate.api.game.model.request.GlobalNotificationRequest;
 import com.withergate.api.game.model.request.TurnRequest;
+import com.withergate.api.game.model.view.Views;
 import com.withergate.api.game.repository.notification.GlobalNotificationRepository;
-import com.withergate.api.service.AdminService;
+import com.withergate.api.service.game.AdminService;
+import com.withergate.api.service.game.InfoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.info.BuildProperties;
@@ -32,6 +36,7 @@ public class ApplicationController {
     private final GlobalNotificationRepository globalNotificationRepository;
     private final GameProperties properties;
     private final BuildProperties buildProperties;
+    private final InfoService infoService;
 
     /**
      * Returns the current application version.
@@ -41,6 +46,17 @@ public class ApplicationController {
     @GetMapping("/version")
     public ResponseEntity<String> getVerison() {
         return new ResponseEntity<>(buildProperties.getVersion(), HttpStatus.OK);
+    }
+
+    /**
+     * Returns game information..
+     *
+     * @return the info
+     */
+    @JsonView(Views.Public.class)
+    @GetMapping("/game/info")
+    public ResponseEntity<InfoDTO> getInfo() {
+        return new ResponseEntity<>(infoService.getGameInfo(), HttpStatus.OK);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.clan;
 
 import java.util.List;
 import java.util.Set;
@@ -11,6 +11,7 @@ import com.withergate.api.game.model.character.NamePrefix;
 import com.withergate.api.game.repository.AvatarRepository;
 import com.withergate.api.game.repository.NamePrefixRepository;
 import com.withergate.api.game.repository.NameRepository;
+import com.withergate.api.service.RandomService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -9,7 +9,6 @@ import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.profile.model.PremiumType;
-import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;

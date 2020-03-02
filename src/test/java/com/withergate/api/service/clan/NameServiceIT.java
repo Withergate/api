@@ -1,8 +1,9 @@
-package com.withergate.api.service;
+package com.withergate.api.service.clan;
 
 import java.util.HashSet;
 
 import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.service.clan.NameServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

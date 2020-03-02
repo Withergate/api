@@ -19,7 +19,7 @@ import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
-import com.withergate.api.service.BonusUtils;
+import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;

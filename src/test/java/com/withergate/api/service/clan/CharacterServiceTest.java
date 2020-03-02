@@ -10,7 +10,6 @@ import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
 import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
-import com.withergate.api.service.NameService;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;

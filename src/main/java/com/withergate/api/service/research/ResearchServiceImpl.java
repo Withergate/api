@@ -13,7 +13,7 @@ import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.research.ResearchDetails;
 import com.withergate.api.game.repository.action.ResearchActionRepository;
 import com.withergate.api.game.repository.research.ResearchDetailsRepository;
-import com.withergate.api.service.BonusUtils;
+import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
@@ -112,13 +112,12 @@ public class ResearchServiceImpl implements ResearchService {
     private void processResearchAction(ResearchAction action, ClanNotification notification) {
         Character character = action.getCharacter();
         Research research = character.getClan().getResearch(action.getResearch());
-        ResearchDetails details = research.getDetails();
 
         // compute progress
         int progress = character.getIntellect() + BonusUtils.getBonus(character, BonusType.RESEARCH, notification, notificationService);
-
         research.setProgress(research.getProgress() + progress);
 
+        ResearchDetails details = research.getDetails();
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.action.progress",
                 new String[]{research.getProgress() + " / " + research.getDetails().getCost()});

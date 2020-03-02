@@ -90,7 +90,7 @@ public interface CharacterService {
      * @param characterId character ID
      * @param clanId clan ID
      * @param name new name
-     * @throws InvalidActionException
+     * @throws InvalidActionException invalid action
      */
     void renameCharacter(int characterId, int clanId, String name) throws InvalidActionException;
 }

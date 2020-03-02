@@ -6,7 +6,7 @@ import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.request.ClanRequest;
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
-import com.withergate.api.service.AdminService;
+import com.withergate.api.service.game.AdminService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.profile.HistoricalResultsService;
 import com.withergate.api.service.profile.ProfileService;

@@ -113,6 +113,7 @@ public class Clan {
     @JsonView(Views.Internal.class)
     private boolean preferDisaster;
 
+    @JsonView(Views.Internal.class)
     @OneToOne(mappedBy = "clan", cascade = CascadeType.ALL)
     private ClanStatistics statistics;
 

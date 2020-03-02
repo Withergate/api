@@ -12,7 +12,7 @@ import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.repository.clan.ClanRepository;
-import com.withergate.api.service.BonusUtils;
+import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
