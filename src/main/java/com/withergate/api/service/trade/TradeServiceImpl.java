@@ -186,9 +186,8 @@ public class TradeServiceImpl implements TradeService {
 
         // create market offer
         MarketOffer offer = new MarketOffer();
-        offer.setDetails(item.getDetails());
         offer.setSeller(item.getClan());
-        offer.setItemId(request.getItemId());
+        offer.setItem(item);
         offer.setPrice(request.getPrice());
         offer.setState(State.PUBLISHED);
         marketOfferRepository.save(offer);
@@ -211,7 +210,7 @@ public class TradeServiceImpl implements TradeService {
         }
 
         // return item to the seller
-        Item item = itemService.loadItem(offer.get().getItemId());
+        Item item = offer.get().getItem();
         item.setClan(offer.get().getSeller());
 
         // delete the offer
@@ -227,15 +226,15 @@ public class TradeServiceImpl implements TradeService {
     public void performComputerTradeActions(int turnId) {
         for (MarketOffer offer : marketOfferRepository.findAllByState(State.PUBLISHED)) {
             // if item is offered for market price, sell it
-            if (offer.getPrice() == offer.getDetails().getPrice()) {
+            if (offer.getPrice() == offer.getItem().getDetails().getPrice()) {
                 Clan clan = offer.getSeller();
                 clan.changeCaps(offer.getPrice());
 
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
                 notificationService.addLocalizedTexts(notification.getText(), "clan.trade.item.computer",
-                        new String[]{}, offer.getDetails().getName());
-                notification.changeCaps(offer.getDetails().getPrice());
+                        new String[]{}, offer.getItem().getDetails().getName());
+                notification.changeCaps(offer.getItem().getDetails().getPrice());
                 notificationService.save(notification);
 
                 // delete offer
@@ -260,8 +259,7 @@ public class TradeServiceImpl implements TradeService {
             Item item = itemService.generateRandomItem();
 
             MarketOffer offer = new MarketOffer();
-            offer.setItemId(item.getId());
-            offer.setDetails(item.getDetails());
+            offer.setItem(item);
             offer.setPrice(item.getDetails().getPrice() * 2);
             offer.setState(State.PUBLISHED);
             offer.setSeller(null);
@@ -293,15 +291,16 @@ public class TradeServiceImpl implements TradeService {
         buyerNotification.setHeader(offer.getBuyer().getName());
 
         // transfer item
-        Item item = itemService.loadItem(offer.getItemId());
+        Item item = offer.getItem();
         item.setClan(offer.getBuyer());
         buyerNotification.setItem(true);
 
         // update notification
         notificationService.addLocalizedTexts(buyerNotification.getText(), "clan.trade.item.bought",
-                new String[]{offer.getSeller() != null ? offer.getSeller().getName() : "NPC"}, offer.getDetails().getName());
+                new String[]{offer.getSeller() != null ? offer.getSeller().getName() : "NPC"}, offer.getItem().getDetails().getName());
         NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.item.bought", new String[]{}, offer.getDetails().getName());
+        notificationService.addLocalizedTexts(detail.getText(), "detail.item.bought", new String[]{},
+                offer.getItem().getDetails().getName());
         buyerNotification.getDetails().add(detail);
 
         // handle research bonuses
@@ -318,7 +317,7 @@ public class TradeServiceImpl implements TradeService {
             seller.changeCaps(offer.getPrice());
             sellerNotification.changeCaps(offer.getPrice());
             notificationService.addLocalizedTexts(sellerNotification.getText(), "clan.trade.item.sold",
-                    new String[]{offer.getBuyer().getName()}, offer.getDetails().getName());
+                    new String[]{offer.getBuyer().getName()}, offer.getItem().getDetails().getName());
 
             notificationService.save(sellerNotification);
         }
