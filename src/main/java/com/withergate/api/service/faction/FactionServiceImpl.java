@@ -27,7 +27,7 @@ import com.withergate.api.game.model.request.FactionRequest;
 import com.withergate.api.game.repository.action.FactionActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.faction.FactionRepository;
-import com.withergate.api.service.BonusUtils;
+import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;

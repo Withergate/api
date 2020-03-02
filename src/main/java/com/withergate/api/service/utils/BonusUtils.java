@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.utils;
 
 import com.withergate.api.game.model.BonusType;
 import com.withergate.api.game.model.Clan;

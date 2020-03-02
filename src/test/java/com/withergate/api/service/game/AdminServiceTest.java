@@ -1,4 +1,4 @@
-package com.withergate.api.service;
+package com.withergate.api.service.game;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +9,7 @@ import com.withergate.api.game.model.notification.LocalizedText;
 import com.withergate.api.game.model.request.GlobalNotificationRequest;
 import com.withergate.api.game.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.scheduling.TurnScheduler;
+import com.withergate.api.service.game.AdminServiceImpl;
 import com.withergate.api.service.turn.TurnService;
 import org.flywaydb.core.Flyway;
 import org.junit.Assert;

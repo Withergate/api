@@ -52,7 +52,7 @@ INSERT INTO achievement_details (identifier, achievement_type, rarity, value_num
     ('WEB_LIES', 'INFORMATION_LEVEL', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/web-lies.png'),
     ('HORDES', 'CHARACTER_COUNT', 'EPIC', 10, null, 'https://storage.googleapis.com/withergate-images/achievements/hordes.png'),
     ('LOGISTICIAN', 'NO_STARVATION', 'COMMON', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/logistician.png'),
-    ('NO_WORRY', 'DISASTERS_AVERTED', 'COMMON', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/no-wory.png'),
+    ('NO_WORRY', 'DISASTERS_AVERTED', 'COMMON', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/no-worry.png'),
     ('STEADY', 'GAME_COUNT', 'COMMON', 3, null, 'https://storage.googleapis.com/withergate-images/achievements/steady.png'),
     ('UNWAVERING', 'GAME_COUNT', 'RARE', 8, null, 'https://storage.googleapis.com/withergate-images/achievements/unwavering.png'),
     ('HANDY', 'CRAFT_COUNT', 'COMMON', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/handy.png'),

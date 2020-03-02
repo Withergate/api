@@ -25,7 +25,7 @@ import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.game.repository.disaster.DisasterRepository;
 import com.withergate.api.game.repository.disaster.DisasterSolutionRepository;
-import com.withergate.api.service.BonusUtils;
+import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;

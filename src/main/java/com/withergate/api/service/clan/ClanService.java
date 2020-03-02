@@ -115,7 +115,7 @@ public interface ClanService {
      *
      * @param clanId clan ID
      * @param name new name
-     * @throws InvalidActionException
+     * @throws InvalidActionException if name is invalid
      */
     void renameDefender(int clanId, String name) throws InvalidActionException;
 

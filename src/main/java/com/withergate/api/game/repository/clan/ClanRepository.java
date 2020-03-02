@@ -3,6 +3,7 @@ package com.withergate.api.game.repository.clan;
 import java.util.List;
 
 import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.arena.ArenaStats;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,7 @@ public interface ClanRepository extends JpaRepository<Clan, Integer> {
     List<Clan> findAllByOrderByFameDesc();
 
     long countAllByFactionNotNull();
+
+    List<Clan> findTop3ByOrderByFameDesc();
 
 }

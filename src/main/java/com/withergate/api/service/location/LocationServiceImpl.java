@@ -15,7 +15,7 @@ import com.withergate.api.game.model.request.LocationRequest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.repository.LocationDescriptionRepository;
 import com.withergate.api.game.repository.action.LocationActionRepository;
-import com.withergate.api.service.BonusUtils;
+import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
