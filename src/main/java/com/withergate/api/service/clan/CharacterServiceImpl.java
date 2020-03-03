@@ -19,7 +19,10 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.premium.Premium;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -68,6 +71,8 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.save(character);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
     public void deleteDeadCharacters() {
         for (Character character : loadAll()) {
