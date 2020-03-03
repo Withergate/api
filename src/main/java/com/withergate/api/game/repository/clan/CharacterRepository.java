@@ -16,4 +16,5 @@ import java.util.List;
 public interface CharacterRepository extends JpaRepository<Character, Integer> {
 
     List<Character> findAllByState(CharacterState state);
+
 }

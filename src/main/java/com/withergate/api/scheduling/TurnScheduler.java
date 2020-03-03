@@ -95,6 +95,7 @@ public class TurnScheduler {
 
         // perform clan turn updates
         clanService.performClanTurnUpdates(currentTurn.getTurnId());
+        characterService.deleteDeadCharacters();
 
         // perform end game actions
         if (currentTurn.getTurnId() == gameProperties.getMaxTurns()) {

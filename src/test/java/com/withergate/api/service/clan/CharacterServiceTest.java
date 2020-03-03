@@ -114,8 +114,10 @@ public class CharacterServiceTest {
         character.setId(1);
         character.setClan(new Clan());
         character.setName("Rusty Nick");
+        character.setHitpoints(0);
+        Mockito.when(characterRepository.findAll()).thenReturn(List.of(character));
 
-        characterService.delete(character);
+        characterService.deleteDeadCharacters();
 
         // then verify repository called
         Mockito.verify(characterRepository).delete(character);

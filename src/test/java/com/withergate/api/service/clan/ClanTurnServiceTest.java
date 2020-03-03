@@ -1,8 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.BonusType;
 import com.withergate.api.game.model.Clan;
@@ -23,6 +20,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -165,35 +165,11 @@ public class ClanTurnServiceTest {
         character.setState(CharacterState.READY);
         character.setClan(clan);
 
-        List<Character> characters = new ArrayList<>();
-        characters.add(character);
-
         // when performing healing
         clanTurnService.performClanTurnUpdates(clan,1);
 
         // then verify character not updated
         assertEquals(7, character.getHitpoints());
-    }
-
-    @Test
-    public void testGivenClanWithoutFoodAndInjuredCharacterWhenPerformingTurnActionsThenVerifyCharacterDied() {
-        // given clan
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setFood(0);
-
-        Character character = new Character();
-        character.setId(1);
-        character.setHitpoints(1);
-        character.setClan(clan);
-        clan.getCharacters().add(character);
-
-        // when performing turn updates
-        clanTurnService.performClanTurnUpdates(clan,1);
-
-        // then verify character died of starvation
-        Assert.assertEquals(0, clan.getCharacters().size());
-        Mockito.verify(characterService).delete(character);
     }
 
     @Test

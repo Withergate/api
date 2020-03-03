@@ -46,13 +46,6 @@ public interface CharacterService {
     Character save(Character character);
 
     /**
-     * Deletes the provided character.
-     *
-     * @param character the character to be deleted
-     */
-    void delete(Character character);
-
-    /**
      * Deletes all dead characters.
      */
     void deleteDeadCharacters();

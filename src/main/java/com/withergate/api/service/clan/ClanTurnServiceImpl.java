@@ -88,9 +88,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         notification.setHeader(clan.getName());
         notificationService.addLocalizedTexts(notification.getText(), "clan.foodConsumption", new String[] {});
 
-        Iterator<Character> iterator = clan.getCharacters().iterator();
-        while (iterator.hasNext()) {
-            Character character = iterator.next();
+        for (Character character : clan.getCharacters()) {
             int consumption = gameProperties.getFoodConsumption();
 
             // ascetic
@@ -127,10 +125,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                             new String[] {character.getName()});
                     notification.getDetails().add(detailDeath);
                     notification.setDeath(true);
-
-                    // delete and remove from clan
-                    characterService.delete(character);
-                    iterator.remove();
                 }
             }
         }

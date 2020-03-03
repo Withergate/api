@@ -69,13 +69,6 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public void delete(Character character) {
-        character.getClan().getCharacters().remove(character);
-        character.setClan(null);
-        characterRepository.delete(character);
-    }
-
-    @Override
     public void deleteDeadCharacters() {
         for (Character character : loadAll()) {
             if (character.getHitpoints() < 1) {
@@ -191,6 +184,12 @@ public class CharacterServiceImpl implements CharacterService {
         actionRepository.delete(character.getCurrentAction().get());
         character.getActions().remove(character.getCurrentAction().get());
         character.setState(CharacterState.READY);
+    }
+
+    private void delete(Character character) {
+        character.getClan().getCharacters().remove(character);
+        character.setClan(null);
+        characterRepository.delete(character);
     }
 
 }
