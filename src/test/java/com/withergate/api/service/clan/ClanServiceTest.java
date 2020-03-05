@@ -298,7 +298,6 @@ public class ClanServiceTest {
         // then verify correct values returned
         Assert.assertEquals(Integer.valueOf(100), result.getFame());
         Assert.assertEquals(Integer.valueOf(0), result.getCharacters());
-        Assert.assertEquals(Integer.valueOf(2), result.getDefense());
         Assert.assertEquals(Integer.valueOf(0), result.getBuildings());
         Assert.assertEquals(Integer.valueOf(0), result.getResearch());
         Assert.assertNull(result.getDisasterProgress());

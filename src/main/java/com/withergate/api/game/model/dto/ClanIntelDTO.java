@@ -2,6 +2,7 @@ package com.withergate.api.game.model.dto;
 
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.building.Building;
+import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.research.Research;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,14 +26,14 @@ public class ClanIntelDTO {
     private String faction;
     private Integer fame;
 
-    private Integer characters;
-    private Integer defense;
+    private Integer characters;;
     private Integer caps;
     private Integer buildings;
     private Integer research;
     private Integer disasterProgress;
     private Integer food;
     private Integer junk;
+    private Character defender;
 
     // dynamic statistics
     private int fameReward;
@@ -56,7 +57,7 @@ public class ClanIntelDTO {
             characters = target.getCharacters().size();
         }
         if (spy.getInformationLevel() >= 2) {
-            defense = target.getDefender().getCombat();
+            defender = target.getDefender();
         }
         if (spy.getInformationLevel() >= 3) {
             caps = target.getCaps();
