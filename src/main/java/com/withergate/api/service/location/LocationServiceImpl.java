@@ -102,7 +102,7 @@ public class LocationServiceImpl implements LocationService {
         // handle random encounter first
         boolean encounter = false;
         boolean encounterSuccess = false;
-        int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100) + character.getIntellect();
+        int encounterRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (description.getEncounterChance() > 0) {
             encounterRoll += BonusUtils.getBonus(character, BonusType.CAMOUFLAGE, notification, notificationService);
         }

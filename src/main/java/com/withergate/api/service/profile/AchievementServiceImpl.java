@@ -15,6 +15,7 @@ import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.model.achievement.Achievement;
 import com.withergate.api.profile.model.achievement.AchievementDetails;
 import com.withergate.api.profile.model.achievement.AchievementType;
+import com.withergate.api.profile.model.achievement.Rarity;
 import com.withergate.api.profile.repository.AchievementDetailsRepository;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.premium.Premium;
@@ -89,7 +90,8 @@ public class AchievementServiceImpl implements AchievementService {
 
         List<AchievementDetails> achievementDetails = detailsRepository.findAll();
         List<AchievementDetails> filtered = achievementDetails.stream()
-                .filter(d -> !completed.contains(d.getIdentifier())).collect(Collectors.toList());
+                .filter(d -> !completed.contains(d.getIdentifier()) && !d.getRarity().equals(Rarity.EPIC))
+                .collect(Collectors.toList());
 
         return filtered;
     }
