@@ -1,5 +1,8 @@
 package com.withergate.api.service.combat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.withergate.api.game.model.BonusType;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.combat.CombatResult;
@@ -7,17 +10,18 @@ import com.withergate.api.game.model.item.ItemDetails.WeaponType;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationCombatRound;
 import com.withergate.api.game.model.notification.NotificationDetail;
-import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.notification.NotificationService;
-import lombok.AllArgsConstructor;
+import com.withergate.api.service.profile.AchievementService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Combat round service implementation. Used for detail combat mechanics.
@@ -25,12 +29,18 @@ import java.util.List;
  * @author Martin Myslik
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class CombatRoundServiceImpl implements CombatRoundService {
 
     private final RandomService randomService;
     private final NotificationService notificationService;
+    private AchievementService achievementService;
+
+    @Autowired
+    public void setAchievementService(@Lazy AchievementService achievementService) {
+        this.achievementService = achievementService;
+    }
 
     @Override
     public CombatResult handleCombatRound(
@@ -100,6 +110,9 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             details.add(detailDeath);
             if (!outcome.getLoser().isNpc()) {
                 outcome.getLoserNotification().setDeath(true);
+
+                // award achievements
+                handleDeathAchievements(outcome);
             }
         }
 
@@ -114,6 +127,10 @@ public class CombatRoundServiceImpl implements CombatRoundService {
                     new String[]{outcome.getLoser().getName(), String.valueOf((int) fleeChance)});
 
             details.add(fleeDetail);
+
+            // award achievements
+            handleFleeAchievements(outcome.getLoser());
+            handleVictoryAchievements(outcome.getWinner());
         }
 
         // create result
@@ -163,6 +180,25 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         }
 
         return armor;
+    }
+
+    private void handleVictoryAchievements(Character character) {
+        if (!character.isNpc() && character.getHitpoints() == 1) {
+            achievementService.checkAchievementAward(character.getClan().getId(), AchievementType.COMBAT_WIN_LUCKY);
+        }
+    }
+
+    private void handleDeathAchievements(RoundOutcome outcome) {
+        achievementService.checkAchievementAward(outcome.getLoser().getClan().getId(), AchievementType.COMBAT_DEATH);
+        if (!outcome.getWinner().isNpc()) {
+            achievementService.checkAchievementAward(outcome.getWinner().getClan().getId(), AchievementType.COMBAT_KILL);
+        }
+    }
+
+    private void handleFleeAchievements(Character character) {
+        if (!character.isNpc() && character.getHitpoints() == 1) {
+            achievementService.checkAchievementAward(character.getClan().getId(), AchievementType.COMBAT_FLEE_LUCKY);
+        }
     }
 
     @Getter

@@ -16,12 +16,16 @@ import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.game.repository.item.ItemDetailsRepository;
 import com.withergate.api.game.repository.item.ItemRepository;
+import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
-import lombok.AllArgsConstructor;
+import com.withergate.api.service.profile.AchievementService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Myslik
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
 
@@ -43,6 +47,12 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final RandomService randomService;
     private final NotificationService notificationService;
+    private AchievementService achievementService;
+
+    @Autowired
+    public void setAchievementService(@Lazy AchievementService achievementService) {
+        this.achievementService = achievementService;
+    }
 
     @Override
     public Item loadItem(int itemId) {
@@ -159,7 +169,9 @@ public class ItemServiceImpl implements ItemService {
         notification.getDetails().add(detail);
 
         // update statistics
-        character.getClan().getStatistics().setCraftedItems(character.getClan().getStatistics().getCraftedItems() + 1);
+        Clan clan = character.getClan();
+        clan.getStatistics().setCraftedItems(clan.getStatistics().getCraftedItems() + 1);
+        achievementService.checkAchievementAward(clan.getId(), AchievementType.CRAFT_COUNT, clan.getStatistics().getCraftedItems());
     }
 
     @Override

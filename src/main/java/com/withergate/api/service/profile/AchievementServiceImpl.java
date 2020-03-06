@@ -21,6 +21,7 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.premium.Premium;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 @RequiredArgsConstructor
+@Lazy
 @Service
 public class AchievementServiceImpl implements AchievementService {
 
@@ -48,6 +50,12 @@ public class AchievementServiceImpl implements AchievementService {
         for (AchievementDetails details : detailsList) {
             awardAchievement(profile, details);
         }
+    }
+
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public void checkAchievementAward(int profileId, AchievementType type) {
+        checkAchievementAward(profileService.getProfile(profileId), type);
     }
 
     @Transactional(transactionManager = "profileTransactionManager")
@@ -143,7 +151,6 @@ public class AchievementServiceImpl implements AchievementService {
                 checkAchievementAward(profile, AchievementType.DISASTERS_AVERTED);
             }
             checkAchievementAward(profile, AchievementType.GAME_COUNT, profile.getNumPlayedGames());
-            checkAchievementAward(profile, AchievementType.CRAFT_COUNT, clan.getStatistics().getCraftedItems());
         }
     }
 

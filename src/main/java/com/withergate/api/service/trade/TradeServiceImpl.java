@@ -21,12 +21,16 @@ import com.withergate.api.game.model.trade.TradeType;
 import com.withergate.api.game.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.trade.MarketOfferRepository;
+import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
-import lombok.AllArgsConstructor;
+import com.withergate.api.service.profile.AchievementService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Myslik
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class TradeServiceImpl implements TradeService {
 
@@ -51,6 +55,12 @@ public class TradeServiceImpl implements TradeService {
     private final MarketOfferRepository marketOfferRepository;
     private final CharacterService characterService;
     private final ClanRepository clanRepository;
+    private AchievementService achievementService;
+
+    @Autowired
+    public void setAchievementService(@Lazy AchievementService achievementService) {
+        this.achievementService = achievementService;
+    }
 
     @Transactional
     @Override
@@ -320,6 +330,11 @@ public class TradeServiceImpl implements TradeService {
                     new String[]{offer.getBuyer().getName()}, offer.getItem().getDetails().getName());
 
             notificationService.save(sellerNotification);
+
+            // achievement
+            if (offer.getPrice() == offer.getItem().getDetails().getPrice() * 2) {
+                achievementService.checkAchievementAward(seller.getId(), AchievementType.TRADE_PRICE_MAX);
+            }
         }
     }
 
