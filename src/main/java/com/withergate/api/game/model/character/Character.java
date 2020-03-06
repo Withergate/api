@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Transient;
+
 
 /**
  * Character entity.
@@ -44,6 +46,10 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class Character {
+
+    // player character marker
+    @Transient
+    private transient boolean npc;
 
     @Id
     @Column(name = "character_id", updatable = false, nullable = false)
@@ -132,6 +138,7 @@ public class Character {
         items = new HashSet<>();
         state = CharacterState.READY;
         level = 1;
+        npc = false;
     }
 
     // Helper functions

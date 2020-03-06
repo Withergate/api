@@ -49,6 +49,7 @@ public class CombatServiceImpl implements CombatService {
 
         // prepare enemy
         Character enemy = new Character();
+        enemy.setNpc(true);
         enemy.setId(-1);
         enemy.setName("Enemy");
         enemy.setCombat(difficulty);
@@ -78,8 +79,10 @@ public class CombatServiceImpl implements CombatService {
         // check if list is odd
         if (characters.size() % 2 != 0) {
             log.debug("There is odd number of arena competitors. Generating random opponent...");
-            characters.add(characterService.generateRandomCharacter(new CharacterFilter(),
-                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH)));
+            Character character = characterService.generateRandomCharacter(new CharacterFilter(),
+                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH));
+            character.setNpc(true);
+            characters.add(character);
         }
 
         // split characters into fighting pairs
