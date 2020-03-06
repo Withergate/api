@@ -16,6 +16,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.AchievementService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,12 +52,16 @@ public class ItemServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private AchievementService achievementService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         itemService = new ItemServiceImpl(characterRepository, itemDetailsRepository,
                 itemRepository, randomService, notificationService);
+        itemService.setAchievementService(achievementService);
     }
 
     @Test

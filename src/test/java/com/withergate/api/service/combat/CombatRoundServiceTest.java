@@ -7,6 +7,7 @@ import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.AchievementService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 public class CombatRoundServiceTest {
 
-    private CombatRoundService combatRoundService;
+    private CombatRoundServiceImpl combatRoundService;
 
     @Mock
     private RandomService randomService;
@@ -24,11 +25,15 @@ public class CombatRoundServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private AchievementService achievementService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         combatRoundService = new CombatRoundServiceImpl(randomService, notificationService);
+        combatRoundService.setAchievementService(achievementService);
     }
 
     @Test
@@ -96,14 +101,18 @@ public class CombatRoundServiceTest {
         character1.setHitpoints(1);
         character1.setMaxHitpoints(10);
         character1.setCombat(1);
-        character1.setClan(new Clan());
+        Clan clan1 = new Clan();
+        clan1.setId(1);
+        character1.setClan(clan1);
 
         Character character2 = new Character();
         character2.setName("Mike");
         character2.setHitpoints(10);
         character2.setMaxHitpoints(10);
         character2.setCombat(5);
-        character2.setClan(new Clan());
+        Clan clan2 = new Clan();
+        clan2.setId(2);
+        character2.setClan(clan2);
 
         // when handling combat
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(4, 4); // combat rolls

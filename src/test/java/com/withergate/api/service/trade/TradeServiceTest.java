@@ -22,6 +22,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.profile.AchievementService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,12 +58,16 @@ public class TradeServiceTest {
     @Mock
     private ClanRepository clanRepository;
 
+    @Mock
+    private AchievementService achievementService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         tradeService = new TradeServiceImpl(resourceTradeActionRepository, notificationService,
                 itemService, marketOfferRepository, characterService, clanRepository);
+        tradeService.setAchievementService(achievementService);
     }
 
     @Test

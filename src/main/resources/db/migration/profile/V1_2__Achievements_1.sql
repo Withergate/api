@@ -58,7 +58,12 @@ INSERT INTO achievement_details (identifier, achievement_type, rarity, value_num
     ('HANDY', 'CRAFT_COUNT', 'COMMON', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/handy.png'),
     ('ALIEXPRESS', 'CRAFT_COUNT', 'RARE', 15, null, 'https://storage.googleapis.com/withergate-images/achievements/aliexpress.png'),
     ('NO_SOW', 'ATTACK_SUCCESS_COUNT', 'RARE', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/no-sow.png'),
-    ('UNBENT', 'DEFENSE_SUCCESS_COUNT', 'RARE', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/unbent.png');
+    ('UNBENT', 'DEFENSE_SUCCESS_COUNT', 'RARE', 5, null, 'https://storage.googleapis.com/withergate-images/achievements/unbent.png'),
+    ('MACKIE', 'COMBAT_KILL', 'EPIC', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/mackie.png'),
+    ('PUSCHKIN', 'COMBAT_DEATH', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/puschkin.png'),
+    ('LUCKY_WINNER', 'COMBAT_WIN_LUCKY', 'EPIC', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/lucky-winner.png'),
+    ('LUCKY_LOSER', 'COMBAT_FLEE_LUCKY', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/lucky-loser.png'),
+    ('DIBBLER', 'TRADE_PRICE_MAX', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/dibbler.png');
 
 INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('DEDICATED', 'en', 'Dedicated'),
@@ -103,8 +108,18 @@ INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('ALIEXPRESS', 'cs', 'Aliepxress'),
     ('NO_SOW', 'en', 'We do not sow'),
     ('NO_SOW', 'cs', 'My nesijeme'),
-    ('UNBENT', 'en', 'Unbowed, unbent, unbroken'),
-    ('UNBENT', 'cs', 'Neohnuti, neskloněni, nezlomeni');
+    ('UNBENT', 'en', 'Unbowed, Unbent, Unbroken'),
+    ('UNBENT', 'cs', 'Neohnuti, neskloněni, nezlomeni'),
+    ('MACKIE', 'en', 'Mackie Messer'),
+    ('MACKIE', 'cs', 'Kajínek'),
+    ('PUSCHKIN', 'en', 'Puschkin'),
+    ('PUSCHKIN', 'cs', 'Puškin'),
+    ('LUCKY_WINNER', 'en', 'Lucky winner'),
+    ('LUCKY_WINNER', 'cs', 'Klikač'),
+    ('LUCKY_LOSER', 'en', 'Lucky Loser'),
+    ('LUCKY_LOSER', 'cs', 'Klikař'),
+    ('DIBBLER', 'en', 'Cut-Me-Own-Throat Dibbler'),
+    ('DIBBLER', 'cs', 'Kolík Aťsepicnu');
 
 INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('DEDICATED', 'en', 'Login to the game 5 days in a row.'),
@@ -143,11 +158,21 @@ INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('STEADY', 'cs', 'Odehraj alespoň tři herní věky.'),
     ('UNWAVERING', 'en', 'Play at least eight games.'),
     ('UNWAVERING', 'cs', 'Odehraj alespoň osm herních věků.'),
-    ('HANDY', 'en', 'Craft at least five items. Awarded at the end of the game.'),
-    ('HANDY', 'cs', 'Vyrob alespoň pět předmětů. Vyhodnocuje se na konci hry.'),
-    ('ALIEXPRESS', 'en', 'Craft at least fifteen items. Awarded at the end of the game.'),
-    ('ALIEXPRESS', 'cs', 'Vyrob alespoň patnáct předmětů. Vyhodnocuje se na konci hry.'),
+    ('HANDY', 'en', 'Craft at least five items.'),
+    ('HANDY', 'cs', 'Vyrob alespoň pět předmětů.'),
+    ('ALIEXPRESS', 'en', 'Craft at least fifteen items.'),
+    ('ALIEXPRESS', 'cs', 'Vyrob alespoň patnáct předmětů.'),
     ('NO_SOW', 'en', 'Perform at least five successful attacks against other players.'),
     ('NO_SOW', 'cs', 'Podnikni alespoň pět úspěšných útoků proti ostatním hráčům.'),
     ('UNBENT', 'en', 'Successfully defend your clan base against at least five attacks from other players.'),
-    ('UNBENT', 'cs', 'Ubraň se alespoň pěti útokům od ostatních hráčů.');
+    ('UNBENT', 'cs', 'Ubraň se alespoň pěti útokům od ostatních hráčů.'),
+    ('MACKIE', 'en', 'Kill another player`s character during combat.'),
+    ('MACKIE', 'cs', 'Zabij v souboji postavu jiného hráče.'),
+    ('PUSCHKIN', 'en', 'Lose a character during a combat.'),
+    ('PUSCHKIN', 'cs', 'Přijď o postavu během souboje.'),
+    ('LUCKY_WINNER', 'en', 'Win a combat with one remaining health.'),
+    ('LUCKY_WINNER', 'cs', 'Vyhraj souboj s posledním zbývajícím životem.'),
+    ('LUCKY_LOSER', 'en', 'Flee from combat with one remaining health.'),
+    ('LUCKY_LOSER', 'cs', 'Uteč ze souboje s poledním zbývajícím životem.'),
+    ('DIBBLER', 'en', 'Sell item on marketplace for double its market price.'),
+    ('DIBBLER', 'cs', 'Prodej předmět na tržišti za dvojnásobek jeho tržní hodnoty.');
