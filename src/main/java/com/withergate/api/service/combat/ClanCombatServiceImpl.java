@@ -186,6 +186,5 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
         // remove injury from defender notification - not needed for generated defender
         defenderNotification.setInjury(0);
-        defenderNotification.setDeath(false);
     }
 }

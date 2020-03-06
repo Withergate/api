@@ -98,8 +98,9 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             notificationService.addLocalizedTexts(detailDeath.getText(), "detail.character.injurydeath",
                     new String[]{outcome.getLoser().getName()});
             details.add(detailDeath);
-            notification1.setDeath(true);
-            notification2.setDeath(true);
+            if (!outcome.getLoser().isNpc()) {
+                outcome.getLoserNotification().setDeath(true);
+            }
         }
 
         // compute the chance to flee the combat

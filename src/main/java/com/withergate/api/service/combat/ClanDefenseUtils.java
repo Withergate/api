@@ -39,6 +39,7 @@ public class ClanDefenseUtils {
         int buildingLevel = building != null ? building.getLevel() : 0;
 
         Character character = new Character();
+        character.setNpc(true);
         character.setName(clan.getDefenderName());
         character.setClan(clan);
         character.setCombat(BASE_COMBAT + COMBAT_PER_LEVEL * buildingLevel);
