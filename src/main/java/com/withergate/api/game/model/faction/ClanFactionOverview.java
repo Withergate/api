@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 public class ClanFactionOverview {
 
+    private int clanId;
     private String name;
     private int points;
     private int fame;

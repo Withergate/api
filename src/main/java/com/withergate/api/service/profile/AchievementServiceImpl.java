@@ -18,6 +18,7 @@ import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.profile.model.achievement.Rarity;
 import com.withergate.api.profile.repository.AchievementDetailsRepository;
 import com.withergate.api.service.clan.ClanService;
+import com.withergate.api.service.faction.FactionService;
 import com.withergate.api.service.premium.Premium;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ public class AchievementServiceImpl implements AchievementService {
     private final ProfileService profileService;
     private final ClanService clanService;
     private final AchievementDetailsRepository detailsRepository;
+    private final FactionService factionService;
 
     @Transactional(transactionManager = "profileTransactionManager")
     @Override
@@ -143,6 +145,9 @@ public class AchievementServiceImpl implements AchievementService {
 
         for (Profile profile : profileService.getAllProfiles()) {
             Clan clan = clanService.getClan(profile.getId());
+            if (clan == null) {
+                continue;
+            }
 
             if (clan.getStatistics().getStarvations() == 0) {
                 checkAchievementAward(profile, AchievementType.NO_STARVATION);
@@ -151,6 +156,13 @@ public class AchievementServiceImpl implements AchievementService {
                 checkAchievementAward(profile, AchievementType.DISASTERS_AVERTED);
             }
             checkAchievementAward(profile, AchievementType.GAME_COUNT, profile.getNumPlayedGames());
+            if (clan.getFaction() != null
+                    && clan.getFaction().getIdentifier().equals(factionService.getBestFaction().getIdentifier())) {
+                checkAchievementAward(profile, AchievementType.MEMBER_OF_TOP_FACTION, clan.getFactionPoints());
+            }
+            if (clan.getFaction() != null && clan.getId() == factionService.getBestClan(clan.getFaction()).getId()) {
+                checkAchievementAward(profile, AchievementType.TOP_FACTION_MEMBER);
+            }
         }
     }
 

@@ -63,7 +63,9 @@ INSERT INTO achievement_details (identifier, achievement_type, rarity, value_num
     ('PUSCHKIN', 'COMBAT_DEATH', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/puschkin.png'),
     ('LUCKY_WINNER', 'COMBAT_WIN_LUCKY', 'EPIC', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/lucky-winner.png'),
     ('LUCKY_LOSER', 'COMBAT_FLEE_LUCKY', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/lucky-loser.png'),
-    ('DIBBLER', 'TRADE_PRICE_MAX', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/dibbler.png');
+    ('DIBBLER', 'TRADE_PRICE_MAX', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/dibbler.png'),
+    ('RIGHT_SIDE', 'MEMBER_OF_TOP_FACTION', 'COMMON', 1, null, 'https://storage.googleapis.com/withergate-images/achievements/right-side.png'),
+    ('FOLLOW_ME', 'TOP_FACTION_MEMBER', 'RARE', 0, null, 'https://storage.googleapis.com/withergate-images/achievements/follow-me.png');
 
 INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('DEDICATED', 'en', 'Dedicated'),
@@ -109,7 +111,7 @@ INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('NO_SOW', 'en', 'We do not sow'),
     ('NO_SOW', 'cs', 'My nesijeme'),
     ('UNBENT', 'en', 'Unbowed, Unbent, Unbroken'),
-    ('UNBENT', 'cs', 'Neohnuti, neskloněni, nezlomeni'),
+    ('UNBENT', 'cs', 'Neohnuti, Neskloněni, Nezlomeni'),
     ('MACKIE', 'en', 'Mackie Messer'),
     ('MACKIE', 'cs', 'Kajínek'),
     ('PUSCHKIN', 'en', 'Puschkin'),
@@ -119,7 +121,11 @@ INSERT INTO localized_texts (achievement_name, lang, text) VALUES
     ('LUCKY_LOSER', 'en', 'Lucky Loser'),
     ('LUCKY_LOSER', 'cs', 'Klikař'),
     ('DIBBLER', 'en', 'Cut-Me-Own-Throat Dibbler'),
-    ('DIBBLER', 'cs', 'Kolík Aťsepicnu');
+    ('DIBBLER', 'cs', 'Kolík Aťsepicnu'),
+    ('RIGHT_SIDE', 'en', 'Be on the Right Side'),
+    ('RIGHT_SIDE', 'cs', 'Na Správné Straně'),
+    ('FOLLOW_ME', 'en', 'Follow my Lead'),
+    ('FOLLOW_ME', 'cs', 'Dělejte, co říkám');
 
 INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('DEDICATED', 'en', 'Login to the game 5 days in a row.'),
@@ -175,4 +181,8 @@ INSERT INTO localized_texts (achievement_description, lang, text) VALUES
     ('LUCKY_LOSER', 'en', 'Flee from combat with one remaining health.'),
     ('LUCKY_LOSER', 'cs', 'Uteč ze souboje s poledním zbývajícím životem.'),
     ('DIBBLER', 'en', 'Sell item on marketplace for double its market price.'),
-    ('DIBBLER', 'cs', 'Prodej předmět na tržišti za dvojnásobek jeho tržní hodnoty.');
+    ('DIBBLER', 'cs', 'Prodej předmět na tržišti za dvojnásobek jeho tržní hodnoty.'),
+    ('RIGHT_SIDE', 'en', 'Be a member of the winning faction with at least one influence point at the end of the game.'),
+    ('RIGHT_SIDE', 'cs', 'Buď členem nejsilnější frakce s alespoň jedním vlivem na konci hry.'),
+    ('FOLLOW_ME', 'en', 'Be the most influential clan of your faction at the end of the game..'),
+    ('FOLLOW_ME', 'cs', 'Buď nejvlivnějším klanem své frakce na konci hry.');
