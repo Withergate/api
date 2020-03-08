@@ -140,13 +140,19 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
                 int food = Math.min(defender.getClan().getFood(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 attackerNotification.changeFood(food);
+                attacker.getClan().changeFood(food);
                 defenderNotification.changeFood(- food);
+                defender.getClan().changeFood(- food);
                 int junk = Math.min(defender.getClan().getJunk(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 attackerNotification.changeJunk(junk);
+                attacker.getClan().changeJunk(junk);
                 defenderNotification.changeJunk(- junk);
+                defender.getClan().changeJunk(- junk);
                 int caps = Math.min(defender.getClan().getCaps(), randomService.getRandomInt(1, RandomServiceImpl.K4));
                 attackerNotification.changeCaps(caps);
+                attacker.getClan().changeCaps(caps);
                 defenderNotification.changeCaps(- caps);
+                defender.getClan().changeCaps(- caps);
             } catch (InvalidActionException e) {
                 log.error("Cannot compute attacker reward.", e);
             }
