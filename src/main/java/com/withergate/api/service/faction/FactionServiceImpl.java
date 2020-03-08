@@ -212,6 +212,23 @@ public class FactionServiceImpl implements FactionService {
         }
     }
 
+    @Override
+    public Faction getBestFaction() {
+        List<Faction> factions = factionRepository.findAll().stream().sorted(Comparator.comparingInt(Faction::getPoints)
+                .reversed()).collect(Collectors.toList());
+        return factions.get(0);
+    }
+
+    @Override
+    public Clan getBestClan(Faction faction) {
+        List<ClanFactionOverview> leaderboard = getLeaderboard(faction, 0);
+        if (leaderboard.isEmpty()) {
+            return null;
+        }
+
+        return clanRepository.getOne(leaderboard.get(0).getClanId());
+    }
+
     private void joinFaction(Faction faction, Character character, ClanNotification notification) {
         Clan clan = character.getClan();
 
@@ -324,7 +341,7 @@ public class FactionServiceImpl implements FactionService {
         int i = 0;
         for (Clan clan : clans) {
             if (i >= LEADERBOARD_SIZE) break;
-            ClanFactionOverview overview = new ClanFactionOverview(clan.getName(), clan.getFactionPoints(),
+            ClanFactionOverview overview = new ClanFactionOverview(clan.getId(), clan.getName(), clan.getFactionPoints(),
                     getClanFame(clan, factionFame));
             overviews.add(overview);
             i++;
