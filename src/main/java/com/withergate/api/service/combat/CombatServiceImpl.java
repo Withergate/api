@@ -3,6 +3,7 @@ package com.withergate.api.service.combat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.withergate.api.game.model.ResearchBonusType;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.combat.CombatResult;
@@ -10,6 +11,7 @@ import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.location.ArenaResult;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.model.research.Research;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
@@ -137,6 +139,13 @@ public class CombatServiceImpl implements CombatService {
             }
 
             if (result.isFinished()) {
+                // handle bonuses
+                if (!result.getWinner().isNpc()) {
+                    Character winner = result.getWinner();
+                    ClanNotification winnerNotification = winner.getId() == character1.getId() ? notification1 : notification2;
+                    handleWinnerBonuses(result.getWinner(), winnerNotification);
+                }
+
                 return result;
             }
 
@@ -217,7 +226,19 @@ public class CombatServiceImpl implements CombatService {
             } catch (InvalidActionException e) {
                 log.error("Error un-equipping ranged weapon before arena fight.");
             }
+        }
+    }
 
+    private void handleWinnerBonuses(Character character, ClanNotification notification) {
+        Research research = character.getClan().getResearch(ResearchBonusType.COMBAT_FAME);
+        if (research != null && research.isCompleted()) {
+            // add fame to clan
+            notification.changeFame(research.getDetails().getValue());
+            character.getClan().changeFame(research.getDetails().getValue());
+
+            NotificationDetail detail = new NotificationDetail();
+            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
+            notification.getDetails().add(detail);
         }
     }
 

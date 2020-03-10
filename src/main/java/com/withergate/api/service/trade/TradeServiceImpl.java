@@ -340,10 +340,10 @@ public class TradeServiceImpl implements TradeService {
 
     private void handleBonuses(Clan buyer, ClanNotification buyerNotification) {
         Research research = buyer.getResearch(ResearchBonusType.TRADE_FAME);
-        if (research != null && research.isCompleted() && buyer.getCaps() >= 10) {
+        if (research != null && research.isCompleted() && buyer.getCaps() >= research.getDetails().getCostAction()) {
             // pay caps
-            buyer.changeCaps(- 10);
-            buyerNotification.changeCaps(- 10);
+            buyer.changeCaps(- research.getDetails().getCostAction());
+            buyerNotification.changeCaps(- research.getDetails().getCostAction());
 
             // award fame
             buyer.changeFame(research.getDetails().getValue());

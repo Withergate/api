@@ -66,6 +66,9 @@ public class ResearchDetails {
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost;
 
+    @Column(name = "cost_action", updatable = false, nullable = false)
+    private int costAction;
+
     @Column(name = "fame", updatable = false, nullable = false)
     private int fame;
 
