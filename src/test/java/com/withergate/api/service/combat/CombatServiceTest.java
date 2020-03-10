@@ -51,6 +51,7 @@ public class CombatServiceTest {
         Character character = new Character();
         character.setId(1);
         character.setName("John");
+        character.setClan(new Clan());
 
         CombatResult combatResult = new CombatResult();
         combatResult.setWinner(character);

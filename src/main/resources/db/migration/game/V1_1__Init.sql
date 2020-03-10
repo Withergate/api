@@ -100,6 +100,7 @@ CREATE TABLE research_details (
     value INT NOT NULL,
     information_level INT NOT NULL,
     cost INT NOT NULL,
+    cost_action INT NOT NULL,
     fame INT NOT NULL,
     PRIMARY KEY (identifier)
 );
