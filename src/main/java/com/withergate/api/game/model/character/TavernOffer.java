@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,8 +39,8 @@ public class TavernOffer {
     @JsonIgnore
     private Clan clan;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "character_id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "character_id")
     private Character character;
 
     @Column(name = "price", updatable = false, nullable = false)

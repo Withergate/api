@@ -1,21 +1,5 @@
 package com.withergate.api.game.model;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -31,6 +15,21 @@ import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.combat.ClanDefenseUtils;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Clan entity. Represent the player and all his/her resources.

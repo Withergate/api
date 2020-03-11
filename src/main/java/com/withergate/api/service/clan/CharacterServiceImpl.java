@@ -1,7 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.List;
-
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.character.CharacterState;
@@ -24,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Character service.
@@ -192,9 +192,18 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     private void delete(Character character) {
-        character.getClan().getCharacters().remove(character);
-        character.setClan(null);
-        characterRepository.delete(character);
+        try {
+            log.debug("Deleting character {}.", character.getId());
+            if (character.getClan() != null) {
+                character.getClan().getCharacters().remove(character);
+            }
+            character.setClan(null);
+            character.setOffer(null);
+            characterRepository.delete(character);
+        } catch (Throwable e) {
+            log.error("Cannot delete character.", e);
+        }
+
     }
 
 }
