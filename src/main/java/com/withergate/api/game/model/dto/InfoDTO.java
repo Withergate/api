@@ -21,6 +21,8 @@ public class InfoDTO {
     private long clanNum;
     private long profileNum;
     private Turn currentTurn;
+    private int maxTurns;
+    private FactionMiniDTO faction;
 
     @JsonView(Views.Public.class)
     private List<Clan> topClans;
