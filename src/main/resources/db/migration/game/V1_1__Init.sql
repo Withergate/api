@@ -465,7 +465,6 @@ CREATE TABLE tavern_offers (
     price INT NOT NULL,
     clan_id INT NOT NULL,
     CONSTRAINT tavern_offer_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
-    CONSTRAINT tavern_character_identifier_fk FOREIGN KEY (character_id) REFERENCES characters (character_id),
     PRIMARY KEY (offer_id)
 );
 
