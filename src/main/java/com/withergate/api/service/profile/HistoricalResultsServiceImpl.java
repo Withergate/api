@@ -8,10 +8,13 @@ import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.statistics.ClanTurnStatistics;
 import com.withergate.api.profile.model.HistoricalResult;
+import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.profile.repository.HistoricalResultRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Retryable;
@@ -32,6 +35,13 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
     private final ProfileService profileService;
     private final BuildProperties buildProperties;
     private final GameProperties gameProperties;
+    private AchievementService achievementService;
+
+    @Autowired
+    public void setAchievementService(@Lazy AchievementService achievementService) {
+        this.achievementService = achievementService;
+    }
+
 
     @Transactional(transactionManager = "profileTransactionManager")
     @Retryable
@@ -60,6 +70,9 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
                 result.setCompletedQuests((int) clan.getQuests().stream().filter(Quest::isCompleted).count());
 
                 resultRepository.save(result);
+
+                // handle achievements
+                handleAchievements(clan, result);
             }
         } catch (Exception e) {
             log.error("Error saving historical results.", e);
@@ -74,5 +87,11 @@ public class HistoricalResultsServiceImpl implements HistoricalResultsService {
     @Override
     public Page<HistoricalResult> loadResults(int playerId, Pageable pageable) {
         return resultRepository.findAllByProfileId(playerId, pageable);
+    }
+
+    private void handleAchievements(Clan clan, HistoricalResult result) {
+        if (result.getPlace() == 1) {
+            achievementService.checkAchievementAward(clan.getId(), AchievementType.GAME_WINNER);
+        }
     }
 }
