@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,7 +76,7 @@ public class Profile {
 
     @JsonIgnore
     @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<HistoricalResult> results;
+    private Set<HistoricalResult> results;
 
     @JsonView(Views.Internal.class)
     @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -87,7 +86,7 @@ public class Profile {
      * Constructor.
      */
     public Profile() {
-        this.results = new ArrayList<>();
+        this.results = new HashSet<>();
         this.achievements = new HashSet<>();
     }
 
