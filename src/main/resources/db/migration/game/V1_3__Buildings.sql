@@ -75,4 +75,4 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('STUDY', 'en', 'Each level of this building increases the speed of research and grants free information point every turn..'),
     ('STUDY', 'cs', 'Každá úroveň této budovy zvýší rychlost výzkumu a poskytuje informaci zdarma každé kolo.'),
     ('KENNELS', 'en', 'Each level of this building increases your clan defense against attacks from other players.'),
-    ('KENNELS', 'cs', 'Každá úroveň této budovy zvyšuje obranischopnost tvého klanu proti útokům od ostatních hráčů.');
+    ('KENNELS', 'cs', 'Každá úroveň této budovy zvyšuje obranyschopnost tvého klanu proti útokům od ostatních hráčů.');

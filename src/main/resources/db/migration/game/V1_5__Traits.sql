@@ -73,4 +73,4 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('GHOST', 'en', 'Character with this trait has lower chance for random encounters when searching for resources or scouting.'),
     ('GHOST', 'cs', 'Postava s touto schopností má nižší šanci na náhodnou události při hledání surovin nebo pátrání.'),
     ('BRUTE', 'en', 'Character with this trait ignores part of the armor of his/her opponent.'),
-    ('BRUTE', 'cs', 'Postava s touto schopností ignore část zbroje svého protivníka.');
+    ('BRUTE', 'cs', 'Postava s touto schopností ignoruje část zbroje svého protivníka.');
