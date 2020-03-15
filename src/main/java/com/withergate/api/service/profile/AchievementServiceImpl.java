@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.EndBonusType;
 import com.withergate.api.game.model.building.Building;
+import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.profile.model.PremiumType;
 import com.withergate.api.profile.model.Profile;
@@ -145,9 +146,7 @@ public class AchievementServiceImpl implements AchievementService {
 
         for (Profile profile : profileService.getAllProfiles()) {
             Clan clan = clanService.getClan(profile.getId());
-            if (clan == null) {
-                continue;
-            }
+            if (clan == null) continue;
 
             if (clan.getStatistics().getStarvations() == 0) {
                 checkAchievementAward(profile, AchievementType.NO_STARVATION);
@@ -163,6 +162,9 @@ public class AchievementServiceImpl implements AchievementService {
             if (clan.getFaction() != null && clan.getId() == factionService.getBestClan(clan.getFaction()).getId()) {
                 checkAchievementAward(profile, AchievementType.TOP_FACTION_MEMBER);
             }
+            checkAchievementAward(profile, AchievementType.GAME_FAME, clan.getFame());
+            checkAchievementAward(profile, AchievementType.QUEST_COUNT,
+                    (int) clan.getQuests().stream().filter(Quest::isCompleted).count());
         }
     }
 
