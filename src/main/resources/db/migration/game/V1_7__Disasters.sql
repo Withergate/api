@@ -255,6 +255,57 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.bandits.s4', 'en', 'The most vicious bandits are not hiding. I heard one of them boasting about his latest raid in the tavern. We should go after them and defeat them in combat.'),
     ('d.bandits.s4', 'cs', 'Ti největší hrdlořezové o sobě dávají vědět a proto nebude těžké je najít. Pokud je porazíme v boji a všichni uvidí jejich smutný osud, může to snížit počet banditů v okolí.');
 
+-- Outbreak
+INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
+    ('d.outbreak', false, 15, 'd.outbreak.success', 'd.outbreak.partialSuccess', 'd.outbreak.failure', 'https://storage.googleapis.com/withergate-images/disasters/outbreak.png');
+
+INSERT INTO disaster_penalties(identifier, disaster, penalty_type) VALUES
+    ('d.outbreak.p1', 'd.outbreak', 'RESOURCES_LOSS'),
+    ('d.outbreak.p2', 'd.outbreak', 'INFORMATION_LOSS'),
+    ('d.outbreak.p3', 'd.outbreak', 'CHARACTER_INJURY');
+
+INSERT INTO localized_texts(disaster_name, lang, text) VALUES
+    ('d.outbreak', 'en', 'Virus outbreak'),
+    ('d.outbreak', 'cs', 'Nákaza');
+
+INSERT INTO localized_texts(disaster_description, lang, text) VALUES
+    ('d.outbreak', 'en', 'There are rumours that there was a virus outbreak in Withergate. We are not sure what it is but it is highly contagious and it is just a question of time before it spreads through the whole Wasteland. We should ready ourselves for the worst case, gather information and stock up. Or is it already too late?'),
+    ('d.outbreak', 'cs', 'Donesly se k nám zprávy, že ve Withergate se začal šířit nějaký nebezpečný virus. Nevíme zatím, o co se jedná, ale rychle se šíří je jen otázkou času, kdy se rozšíří po celé Pustině. Měli bychom se připravit na nejhorší, zjistit si dostatek informací a udělat zásoby. Nebo už je příliš pozdě?');
+
+INSERT INTO placeholder_texts(code, lang, text) VALUES
+    ('d.outbreak.success', 'en', 'We managed to avoid the outbreak in our clan and surroundings. Fortunately, nobody got infected, we are sufficiently stocked and others are well informed about hygiene and quarantine. Well done!'),
+    ('d.outbreak.success', 'cs', 'Podařilo se nám zastavit šíření nákazy v našem okolí. Díky naší rychlé reakci se nikdo z nás nenakazil, máme dostatek zásob, abychom přečkali krátkou karanténu a ostatní jsme řádně poučili o nutnosti lepší hygieny. Neštěstí se nám zcela vyhnulo.'),
+    ('d.outbreak.partialSuccess', 'en', 'We managed to soften the blow but dealing with the outbreak cost us a lot of resources. We had to cut ourselves off for some time as well. Fortunately, nobody died.'),
+    ('d.outbreak.partialSuccess', 'cs', 'Podařilo se nám zmírnit dopady nákazy, ale řešení situace nás stálo nemalé investice. Také jsme museli absolvovat krátkou karanténu. Nemoc se naštěstí neobjevila u nás, takže nemáme ztráty na životech.'),
+    ('d.outbreak.failure', 'en', 'We completely underestimated the situation and had to invest a lot of resources to deal with the consequences. Our whole clan had to be locked in quarantine and some of got infected. We need to take better care next time.'),
+    ('d.outbreak.failure', 'cs', 'Tak tohle jsme hodně podcenili. Nejen, že se několik z nás nakazilo, ale ještě jsme museli vyhlásit dlouhou karanténu a věnovat většinu našich surovin na boj s nákazou. Příště si musíme dát větší pozor.');
+
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
+    ('d.outbreak.s1', true, 'd.outbreak', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
+    ('d.outbreak.s2', false, 'd.outbreak', 'CRAFTSMANSHIP', null, 6, 10, 5, 0, 0, null),
+    ('d.outbreak.s3', false, 'd.outbreak', 'AUTOMATIC', null, 0, 10, 0, 0, 12, null),
+    ('d.outbreak.s4', false, 'd.outbreak', 'SCAVENGE', null, 8, 10, 0, 0, 0, null);
+
+INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
+    ('d.outbreak.s1', 'en', 'Educate others'),
+    ('d.outbreak.s1', 'cs', 'Šířit osvětu'),
+    ('d.outbreak.s2', 'en', 'Prepare medical drapes'),
+    ('d.outbreak.s2', 'cs', 'Připravit ochranné roušky'),
+    ('d.outbreak.s3', 'en', 'Stock up'),
+    ('d.outbreak.s3', 'cs', 'Udělat si zásoby'),
+    ('d.outbreak.s4', 'en', 'Search for cure'),
+    ('d.outbreak.s4', 'cs', 'Hledat lék');
+
+INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
+    ('d.outbreak.s1', 'en', 'Let’s go from clan to clan, talk to wayfarers and organize happenings. We need to tell others that it is absolutely crucial to avoid all sorts of human contact, restrict travel and improve hygiene.'),
+    ('d.outbreak.s1', 'cs', 'Pojďme chodit od klanu ke klanu, zastavovat pocestné a pořádat setkání a besedy, na kterých ostatní řádně poučíme o nutnosti omezení cestování a shlukování lidí a lepší hygieně.'),
+    ('d.outbreak.s2', 'en', 'Ti šikovnější z nás by mohli vyrobit lékařské roušky a respirátory, abychom nedýchali stejný vzduch jako ti méně šťastní z nás.'),
+    ('d.outbreak.s2', 'cs', 'Some of us can work on creating improvised medical drapes and respirators so we don’t breathe the same air as the sick ones.'),
+    ('d.outbreak.s3', 'en', 'We should stock up in case of quarantine so we won’t die in case we need to cut ourselves off completely.'),
+    ('d.outbreak.s3', 'cs', 'Možná, že nás čeká delší karanténa. Bude nutné vytvořit zásoby, abychom během ní nepomřeli hlady.'),
+    ('d.outbreak.s4', 'en', 'A very rare herb grows in a Wasteland, which is said to be able to partially cure this disease. It might be just a hoax but we might want to check it out and look for it.'),
+    ('d.outbreak.s4', 'cs', 'V Pustině roste velmi vzácná bylina, o které se říká, že dokáže částečně léčit tuto nákazu. Možná to jsou povídačky, ale mohli bychom se po ní podívat.');
+
 -- Clans assembly
 INSERT INTO disaster_details(identifier, final_disaster, fame_reward, success_text, partial_success_text, failure_text, image_url) VALUES
     ('d.clans', true, 0, 'd.clans.success', 'd.clans.partialSuccess', 'd.clans.failure', 'https://storage.googleapis.com/withergate-images/disasters/clans.png');
