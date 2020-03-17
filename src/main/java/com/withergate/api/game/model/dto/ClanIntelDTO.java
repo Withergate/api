@@ -63,17 +63,15 @@ public class ClanIntelDTO {
             caps = target.getCaps();
         }
         if (spy.getInformationLevel() >= 4) {
-            buildings = target.getBuildings().stream().mapToInt(Building::getLevel).sum();
+            food = target.getFood();
+            junk = target.getJunk();
         }
         if (spy.getInformationLevel() >= 5) {
+            buildings = target.getBuildings().stream().mapToInt(Building::getLevel).sum();
             research = (int) target.getResearch().stream().filter(Research::isCompleted).count();
         }
         if (spy.getInformationLevel() >= 6) {
             disasterProgress = target.getDisasterProgress();
-        }
-        if (spy.getInformationLevel() >= 7) {
-            food = target.getFood();
-            junk = target.getJunk();
         }
     }
 
