@@ -289,7 +289,7 @@ public class ClanServiceTest {
 
         Clan spy = new Clan();
         spy.setId(2);
-        spy.setInformationLevel(5);
+        spy.setInformationLevel(3);
         Mockito.when(clanRepository.findById(2)).thenReturn(Optional.of(spy));
 
         // when getting intel
@@ -298,8 +298,8 @@ public class ClanServiceTest {
         // then verify correct values returned
         Assert.assertEquals(Integer.valueOf(100), result.getFame());
         Assert.assertEquals(Integer.valueOf(0), result.getCharacters());
-        Assert.assertEquals(Integer.valueOf(0), result.getBuildings());
-        Assert.assertEquals(Integer.valueOf(0), result.getResearch());
+        Assert.assertNull(result.getBuildings());
+        Assert.assertNull(result.getResearch());
         Assert.assertNull(result.getDisasterProgress());
         Assert.assertNull(result.getFood());
         Assert.assertNull(result.getJunk());
