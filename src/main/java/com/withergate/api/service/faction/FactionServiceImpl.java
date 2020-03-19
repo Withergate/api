@@ -324,7 +324,7 @@ public class FactionServiceImpl implements FactionService {
         int totalPoints = factions.stream().mapToInt(Faction::getPoints).sum(); // total points
         double ratio = (double) faction.getPoints() / totalPoints;
 
-        return properties.getFactionFameCoefficient() * clanCount + (int) (totalFame * ratio * 2);
+        return properties.getFactionFameCoefficient() * clanCount + (int) (totalFame * ratio * 3);
     }
 
     private int getClanFame(Clan clan, int factionFame) {

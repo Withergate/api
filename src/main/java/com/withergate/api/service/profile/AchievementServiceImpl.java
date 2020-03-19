@@ -135,6 +135,8 @@ public class AchievementServiceImpl implements AchievementService {
                     (int) clan.getResearch().stream().filter(Research::isCompleted).count());
             checkAchievementAward(profile, AchievementType.INFORMATION_LEVEL, clan.getInformationLevel());
             checkAchievementAward(profile, AchievementType.CHARACTER_COUNT, clan.getCharacters().size());
+            checkAchievementAward(profile, AchievementType.QUEST_COUNT,
+                    (int) clan.getQuests().stream().filter(Quest::isCompleted).count());
         }
     }
 
@@ -163,8 +165,6 @@ public class AchievementServiceImpl implements AchievementService {
                 checkAchievementAward(profile, AchievementType.TOP_FACTION_MEMBER);
             }
             checkAchievementAward(profile, AchievementType.GAME_FAME, clan.getFame());
-            checkAchievementAward(profile, AchievementType.QUEST_COUNT,
-                    (int) clan.getQuests().stream().filter(Quest::isCompleted).count());
         }
     }
 

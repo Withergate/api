@@ -12,7 +12,7 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('REVOLUTION', 'cs', 'Nejhorší na světě jsou zpátečníci, kteří nevěří v pokrok. Přesně takoví lidé, kteří se báli velkých vynálezů a neuměli je správně využít, způsobili zkázu civilizace. A jsou stále mezi námi - vládnou městu, vládnou Pustině a společně s atomisty ovládají vše... Tomu je třeba učinit přítrž. Není čas na dlouhé debaty na sněmu klanů, není čas čekat na příchod Krále za Pustinou, pojďme společně svrhnout zkorumpovanou honoraci a nastolit opravdovou vládu lidu, jaká dle legend existovala před dávnými věky.');
 
 INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
-    ('r.item', 'REVOLUTION', 'FACTION_SUPPORT', 0, 0, 0, false, 'ANY', 5, 0),
+    ('r.item', 'REVOLUTION', 'FACTION_SUPPORT', 0, 0, 0, false, 'ANY', 10, 0),
     ('r.resources', 'REVOLUTION', 'RESOURCE_SUPPORT', 12, 1, 3, false, null, 10, 1);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
@@ -60,7 +60,7 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('CULT', 'cs', 'Vše, co jsme měli, nám zničil pokrok. Ďábelské vynálezy přinesly zkázu, zmar a způsobily konec světa. Lidstvo se neponaučilo. Musíme zastavit znovunastupující mechanizaci a být silní ve víře, která nás sjednotí. Jen tak obnovíme světový řád. Atom a jeho kněží se tuto pravdu snaží zakrýt a nečinně přihlíží všeobecnému úpadku. Pravdu ale vidí pouze kněží boha Rarraqa - své učení postavili na prastarém náboženství starším než lidstvo samo. Mluví sice v divném jazyce, ale určitě to jsou samé velké myšlenky. Vlastně malé myšlenky, protože velké myšlenky jsou zlo.');
 
 INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
-    ('c.sacrifice', 'CULT', 'FACTION_SUPPORT', 0, 0, 0, true, null, 5, 0),
+    ('c.sacrifice', 'CULT', 'FACTION_SUPPORT', 0, 0, 0, true, null, 10, 0),
     ('c.resources', 'CULT', 'RESOURCE_SUPPORT', 12, 1, 3, false, null, 10, 1);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
