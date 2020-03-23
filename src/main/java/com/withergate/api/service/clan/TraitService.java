@@ -25,4 +25,12 @@ public interface TraitService {
      * @param clanId clan ID
      */
     void activateTrait(TraitRequest request, int clanId) throws InvalidActionException;
+
+    /**
+     * Forgets the provided trait for given character. Throws an exception if conditions are not met.
+     *
+     * @param request request
+     * @param clanId clan ID
+     */
+    void forgetTrait(TraitRequest request, int clanId) throws InvalidActionException;
 }

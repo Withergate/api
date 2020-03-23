@@ -30,6 +30,7 @@ public class GameProperties {
     private int buildingFame;
     private int tavernRefreshPrice;
     private int trainingPrice;
+    private int traitForgetPrice;
     private int factionEntryFame;
     private int factionFameCoefficient;
 

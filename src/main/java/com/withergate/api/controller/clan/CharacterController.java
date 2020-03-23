@@ -60,6 +60,20 @@ public class CharacterController {
     }
 
     /**
+     * Forgets trait for character.
+     *
+     * @param request the request with character id
+     * @throws InvalidActionException invalid action
+     */
+    @PostMapping("/characters/trait/forget")
+    public ResponseEntity<Void> forgetTrait(Principal principal, @RequestBody TraitRequest request)
+            throws InvalidActionException {
+
+        traitService.forgetTrait(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
      * Renames character. Premium feature.
      *
      * @param principal the principal

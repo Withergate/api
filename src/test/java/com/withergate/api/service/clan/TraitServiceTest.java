@@ -246,4 +246,48 @@ public class TraitServiceTest {
         // then expect exception
     }
 
+    @Test
+    public void testGivenCharacterWhenForgettingTraitThenVerifyOrderChanged() throws Exception {
+        // given character
+        Character character = new Character();
+        character.setId(1);
+        character.setSkillPoints(1);
+        Clan clan = new Clan();
+        clan.setId(1);
+        character.setClan(clan);
+        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+
+        TraitDetails d1 = new TraitDetails();
+        d1.setIdentifier("BUILDER");
+        Trait t1 = new Trait();
+        t1.setOrder(0);
+        t1.setDetails(d1);
+        character.getTraits().add(t1);
+
+        TraitDetails d2 = new TraitDetails();
+        d2.setIdentifier("ROBBER");
+        Trait t2 = new Trait();
+        t2.setOrder(1);
+        t2.setDetails(d2);
+        character.getTraits().add(t2);
+
+        TraitDetails d3 = new TraitDetails();
+        d3.setIdentifier("SCAVENGER");
+        Trait t3 = new Trait();
+        t3.setOrder(2);
+        t3.setDetails(d3);
+        character.getTraits().add(t3);
+
+        // when forgetting trait
+        TraitRequest request = new TraitRequest();
+        request.setCharacterId(1);
+        request.setTraitName("ROBBER");
+        traitService.forgetTrait(request, 1);
+
+        // then verify order changed
+        Assert.assertEquals(0, t1.getOrder());
+        Assert.assertEquals(9, t2.getOrder());
+        Assert.assertEquals(1, t3.getOrder());
+    }
+
 }

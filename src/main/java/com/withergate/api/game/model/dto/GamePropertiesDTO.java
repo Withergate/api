@@ -24,6 +24,7 @@ public class GamePropertiesDTO {
     private final int buildingFame;
     private final int tavernRefreshPrice;
     private final int trainingPrice;
+    private final int traitForgetPrice;
     private final int factionEntryFame;
 
     /**
@@ -41,6 +42,7 @@ public class GamePropertiesDTO {
         this.buildingFame = properties.getBuildingFame();
         this.tavernRefreshPrice = properties.getTavernRefreshPrice();
         this.trainingPrice = properties.getTrainingPrice();
+        this.traitForgetPrice = properties.getTraitForgetPrice();
         this.factionEntryFame = properties.getFactionEntryFame();
     }
 
