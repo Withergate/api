@@ -205,6 +205,8 @@ INSERT INTO avatars (gender, image_url) VALUES
     ('MALE', 'https://storage.googleapis.com/withergate-images/avatars/male23.png'),
     ('MALE', 'https://storage.googleapis.com/withergate-images/avatars/male24.png'),
     ('MALE', 'https://storage.googleapis.com/withergate-images/avatars/male24.png'),
+    ('MALE', 'https://storage.googleapis.com/withergate-images/avatars/male25.png'),
+    ('MALE', 'https://storage.googleapis.com/withergate-images/avatars/male26.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female01.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female02.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female03.png'),
@@ -229,4 +231,5 @@ INSERT INTO avatars (gender, image_url) VALUES
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female22.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female23.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female24.png'),
-    ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female25.png');
+    ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female25.png'),
+    ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female26.png');
