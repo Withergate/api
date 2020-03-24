@@ -56,6 +56,7 @@ CREATE TABLE clans (
     faction VARCHAR(16),
     faction_points INT DEFAULT 0,
     defender_name VARCHAR(16),
+    active_loan BIT DEFAULT 0,
     CONSTRAINT clan_faction_fk FOREIGN KEY (faction) REFERENCES factions (identifier),
     PRIMARY KEY (clan_id)
 );

@@ -119,4 +119,12 @@ public interface ClanService {
      */
     void renameDefender(int clanId, String name) throws InvalidActionException;
 
+    /**
+     * Handles loan request.
+     *
+     * @param clanId clanId
+     * @throws InvalidActionException
+     */
+    void processLoan(int clanId) throws InvalidActionException;
+
 }

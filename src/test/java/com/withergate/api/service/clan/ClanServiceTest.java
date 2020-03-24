@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
@@ -62,8 +63,13 @@ public class ClanServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        GameProperties properties = new GameProperties();
+        properties.setLoanCaps(20);
+        properties.setLoanFame(10);
+        properties.setLoanPayback(30);
+
         clanService = new ClanServiceImpl(clanRepository, characterService, buildingService, researchService, tavernService,
-                clanTurnService, randomService, statisticsRepository);
+                clanTurnService, randomService, statisticsRepository, properties);
     }
 
     @Test(expected = EntityConflictException.class)
@@ -303,6 +309,44 @@ public class ClanServiceTest {
         Assert.assertNull(result.getDisasterProgress());
         Assert.assertNull(result.getFood());
         Assert.assertNull(result.getJunk());
+    }
+
+    @Test
+    public void testGivenClanWithActiveLoanWhenHandlingLoanThenVerifyResourcesUpdated() throws Exception {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setCaps(40);
+        clan.setFame(5);
+        clan.setActiveLoan(true);
+        Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(clan));
+
+        // when handling loan
+        clanService.processLoan(1);
+
+        // then verify resources updated
+        Assert.assertEquals(10, clan.getCaps());
+        Assert.assertEquals(15, clan.getFame());
+        Assert.assertFalse(clan.isActiveLoan());
+    }
+
+    @Test
+    public void testGivenClanWithInactiveLoanWhenHandlingLoanThenVerifyResourcesUpdated() throws Exception {
+        // given clan
+        Clan clan = new Clan();
+        clan.setId(1);
+        clan.setCaps(40);
+        clan.setFame(15);
+        clan.setActiveLoan(false);
+        Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(clan));
+
+        // when handling loan
+        clanService.processLoan(1);
+
+        // then verify resources updated
+        Assert.assertEquals(60, clan.getCaps());
+        Assert.assertEquals(5, clan.getFame());
+        Assert.assertTrue(clan.isActiveLoan());
     }
 
 }

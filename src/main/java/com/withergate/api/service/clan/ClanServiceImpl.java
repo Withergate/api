@@ -3,6 +3,7 @@ package com.withergate.api.service.clan;
 import java.util.HashSet;
 import java.util.List;
 
+import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.Clan.DefaultAction;
 import com.withergate.api.game.model.building.Building;
@@ -69,6 +70,7 @@ public class ClanServiceImpl implements ClanService {
     private final ClanTurnService clanTurnService;
     private final RandomService randomService;
     private final ClanTurnStatisticsRepository statisticsRepository;
+    private final GameProperties properties;
 
     @Override
     public Clan getClan(int clanId) {
@@ -229,6 +231,28 @@ public class ClanServiceImpl implements ClanService {
         }
 
         clan.setDefenderName(name);
+    }
+
+    @Transactional
+    @Override
+    public void processLoan(int clanId) throws InvalidActionException {
+        Clan clan = getClan(clanId);
+
+        if (clan.isActiveLoan()) { // payback
+            // check price
+            if (clan.getCaps() < properties.getLoanPayback()) {
+                throw new InvalidActionException("Not enough caps to perform this action.");
+            }
+
+            // pay price
+            clan.changeCaps(- properties.getLoanPayback());
+            clan.changeFame(properties.getLoanFame());
+            clan.setActiveLoan(false);
+        } else { // get loan
+            clan.changeCaps(properties.getLoanCaps());
+            clan.changeFame(- properties.getLoanFame());
+            clan.setActiveLoan(true);
+        }
     }
 
     /*
