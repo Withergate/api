@@ -1,6 +1,10 @@
 package com.withergate.api.controller.profile;
 
+import java.security.Principal;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonView;
+import com.withergate.api.game.model.dto.ProfileIntelDTO;
 import com.withergate.api.game.model.view.Views;
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
@@ -8,7 +12,6 @@ import com.withergate.api.profile.model.achievement.AchievementDetails;
 import com.withergate.api.profile.request.ProfileRequest;
 import com.withergate.api.profile.request.ThemeRequest;
 import com.withergate.api.service.exception.EntityConflictException;
-import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.profile.AchievementService;
 import com.withergate.api.service.profile.HistoricalResultsService;
@@ -20,13 +23,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-import java.util.List;
 
 /**
  * Profile controller.
@@ -124,6 +125,21 @@ public class ProfileController {
     @GetMapping("/profile/achievements/available")
     public ResponseEntity<List<AchievementDetails>> getAvailableAchievements(Principal principal) {
         return new ResponseEntity<>(achievementService.getAvailableAchievements(Integer.parseInt(principal.getName())), HttpStatus.OK);
+    }
+
+    /**
+     * Compares the profile with the authenticated player.
+     *
+     * @param principal the principal
+     * @param targetId target ID
+     * @return the profile intel
+     */
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<ProfileIntelDTO> compareProfile(Principal principal, @PathVariable("id") int targetId) {
+        Profile profile = profileService.getProfile(Integer.parseInt(principal.getName()));
+        Profile target = profileService.getProfile(targetId);
+
+        return new ResponseEntity<>(new ProfileIntelDTO(target, profile), HttpStatus.OK);
     }
 
 }

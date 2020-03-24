@@ -123,7 +123,7 @@ public interface ClanService {
      * Handles loan request.
      *
      * @param clanId clanId
-     * @throws InvalidActionException
+     * @throws InvalidActionException if not valid
      */
     void processLoan(int clanId) throws InvalidActionException;
 

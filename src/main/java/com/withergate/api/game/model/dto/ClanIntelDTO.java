@@ -26,7 +26,7 @@ public class ClanIntelDTO {
     private String faction;
     private Integer fame;
 
-    private Integer characters;;
+    private Integer characters;
     private Integer caps;
     private Integer buildings;
     private Integer research;
