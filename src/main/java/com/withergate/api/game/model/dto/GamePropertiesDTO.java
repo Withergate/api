@@ -27,6 +27,11 @@ public class GamePropertiesDTO {
     private final int traitForgetPrice;
     private final int factionEntryFame;
 
+    // loans
+    private final int loanCaps;
+    private final int loanPayback;
+    private final int loanFame;
+
     /**
      * Constructor.
      */
@@ -44,6 +49,9 @@ public class GamePropertiesDTO {
         this.trainingPrice = properties.getTrainingPrice();
         this.traitForgetPrice = properties.getTraitForgetPrice();
         this.factionEntryFame = properties.getFactionEntryFame();
+        this.loanCaps = properties.getLoanCaps();
+        this.loanPayback = properties.getLoanPayback();
+        this.loanFame = properties.getLoanFame();
     }
 
 }

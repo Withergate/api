@@ -34,6 +34,11 @@ public class GameProperties {
     private int factionEntryFame;
     private int factionFameCoefficient;
 
+    // loans
+    private int loanCaps;
+    private int loanPayback;
+    private int loanFame;
+
     // disasters
     private List<Integer> disasterTurns;
     private int disasterVisibility;

@@ -133,6 +133,15 @@ public class ClanController {
     }
 
     /**
+     * Handles clan loan.
+     */
+    @PostMapping("/clan/loan")
+    public ResponseEntity<Void> handleLoan(Principal principal) throws InvalidActionException {
+        clanService.processLoan(Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
      * Changes clan's default action.
      *
      * @param principal   the principal

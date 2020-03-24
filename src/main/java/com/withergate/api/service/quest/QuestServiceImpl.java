@@ -192,16 +192,17 @@ public class QuestServiceImpl implements QuestService {
         notificationService.addLocalizedTexts(notification.getText(), "character.quest.success", new String[]{},
                 quest.getDetails().getName());
 
-        NotificationDetail detail = new NotificationDetail();
-        notificationService.addLocalizedTexts(detail.getText(), "detail.action.progress",
-                new String[]{quest.getProgress() + " / " + quest.getDetails().getCompletion()});
-        notification.getDetails().add(detail);
-
         // award experience
         character.setExperience(character.getExperience() + 2);
         notification.changeExperience(2);
 
         quest.setProgress(quest.getProgress() + 1);
+
+        // update progress notification
+        NotificationDetail detail = new NotificationDetail();
+        notificationService.addLocalizedTexts(detail.getText(), "detail.action.progress",
+                new String[]{quest.getProgress() + " / " + quest.getDetails().getCompletion()});
+        notification.getDetails().add(detail);
 
         Clan clan = quest.getClan();
         // quest has been completed
