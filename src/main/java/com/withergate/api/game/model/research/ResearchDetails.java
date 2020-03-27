@@ -1,6 +1,6 @@
 package com.withergate.api.game.model.research;
 
-import com.withergate.api.game.model.ResearchBonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;

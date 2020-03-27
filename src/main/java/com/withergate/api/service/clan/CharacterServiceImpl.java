@@ -1,5 +1,6 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.character.CharacterState;
@@ -85,7 +86,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character generateRandomCharacter(CharacterFilter filter, int[] attributes) {
+    public Character generateRandomCharacter(CharacterFilter filter, AttributeTemplate attributes) {
         Character character = new Character();
 
         // set character's state to READY
@@ -105,10 +106,10 @@ public class CharacterServiceImpl implements CharacterService {
         character.setMaxHitpoints(hitpoints);
 
         // generate random stats
-        character.setCombat(attributes[0]);
-        character.setScavenge(attributes[1]);
-        character.setCraftsmanship(attributes[2]);
-        character.setIntellect(attributes[3]);
+        character.setCombat(attributes.getCombat());
+        character.setScavenge(attributes.getScavenge());
+        character.setCraftsmanship(attributes.getCraftsmanship());
+        character.setIntellect(attributes.getIntellect());
 
         // generate random avatar
         character.setImageUrl(nameService.generateRandomAvatar(gender, filter.getAvatars()));

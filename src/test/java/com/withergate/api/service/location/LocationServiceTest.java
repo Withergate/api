@@ -3,7 +3,7 @@ package com.withergate.api.service.location;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.LocationAction;

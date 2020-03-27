@@ -3,6 +3,7 @@ package com.withergate.api.service.clan;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
@@ -130,7 +131,12 @@ public class CharacterServiceTest {
         Mockito.when(randomService.getRandomGender()).thenReturn(Gender.MALE);
         Mockito.when(nameService.generateRandomName(Mockito.eq(Gender.MALE), Mockito.any())).thenReturn("Rusty Nick");
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K10)).thenReturn(8); // hp
-        int[] attributes = {4, 1, 5, 3};
+
+        AttributeTemplate attributes = new AttributeTemplate();
+        attributes.setCombat(4);
+        attributes.setScavenge(1);
+        attributes.setCraftsmanship(5);
+        attributes.setIntellect(3);
 
         Character result = characterService.generateRandomCharacter(new CharacterFilter(), attributes);
 

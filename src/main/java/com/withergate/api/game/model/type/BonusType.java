@@ -1,4 +1,4 @@
-package com.withergate.api.game.model;
+package com.withergate.api.game.model.type;
 
 /**
  * BonusType enum.

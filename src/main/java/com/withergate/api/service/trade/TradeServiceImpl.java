@@ -3,7 +3,7 @@ package com.withergate.api.service.trade;
 import java.util.Optional;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.ResearchBonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.ResourceTradeAction;
 import com.withergate.api.game.model.character.Character;

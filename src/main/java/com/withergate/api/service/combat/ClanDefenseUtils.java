@@ -1,7 +1,7 @@
 package com.withergate.api.service.combat;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.item.Item;

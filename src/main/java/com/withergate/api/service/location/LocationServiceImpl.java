@@ -1,8 +1,8 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.ResearchBonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.LocationAction;
 import com.withergate.api.game.model.character.Character;

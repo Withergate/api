@@ -139,8 +139,9 @@ public class ClanServiceImpl implements ClanService {
         // assign random initial characters to clan.
         CharacterFilter filter = new CharacterFilter();
         for (int i = 0; i < INITIAL_CLAN_SIZE; i++) {
+            int sum = MAX_CHARACTER_STRENGTH - i * 2;
             Character character = characterService.generateRandomCharacter(filter,
-                    randomService.getRandomAttributeCombination(MAX_CHARACTER_STRENGTH - i * 2));
+                    randomService.getRandomAttributeCombination(sum, clanRequest.getType()));
             character.setClan(clan);
             clan.getCharacters().add(character);
 

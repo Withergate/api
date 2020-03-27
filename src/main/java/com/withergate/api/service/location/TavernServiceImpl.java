@@ -3,6 +3,7 @@ package com.withergate.api.service.location;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
 import com.withergate.api.game.model.action.ActionState;
@@ -154,8 +155,9 @@ public class TavernServiceImpl implements TavernService {
 
         // create new offers
         for (int i = 0; i < TAVERN_OFFERS; i++) {
+            int sum = ClanServiceImpl.MAX_CHARACTER_STRENGTH - i * 4;
             Character character = characterService.generateRandomCharacter(filter,
-                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH - i * 4));
+                    randomService.getRandomAttributeCombination(sum, Type.RANDOM));
             characterService.save(character);
             int price = calculateOfferPrice(character);
 
