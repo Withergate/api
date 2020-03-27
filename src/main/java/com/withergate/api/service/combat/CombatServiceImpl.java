@@ -3,7 +3,8 @@ package com.withergate.api.service.combat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.withergate.api.game.model.ResearchBonusType;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.combat.CombatResult;
@@ -82,7 +83,7 @@ public class CombatServiceImpl implements CombatService {
         if (characters.size() % 2 != 0) {
             log.debug("There is odd number of arena competitors. Generating random opponent...");
             Character character = characterService.generateRandomCharacter(new CharacterFilter(),
-                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH));
+                    randomService.getRandomAttributeCombination(ClanServiceImpl.MAX_CHARACTER_STRENGTH, Type.RANDOM));
             character.setNpc(true);
             characters.add(character);
         }

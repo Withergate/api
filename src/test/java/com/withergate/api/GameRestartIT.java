@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.request.ClanRequest;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.profile.model.HistoricalResult;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.service.game.AdminService;
@@ -37,8 +38,7 @@ public class GameRestartIT {
     @Test
     public void testGivenClanWhenCreatingNewThenVerifyStatisticsCreated() throws Exception {
         // given clan
-        ClanRequest request = new ClanRequest();
-        request.setName("Warbarons");
+        ClanRequest request = new ClanRequest("Warbarons", Type.RANDOM);
 
         // when creating clan
         Clan clan = clanService.createClan(1, request, 1);
@@ -52,8 +52,7 @@ public class GameRestartIT {
     @WithMockUser(username = "1", roles = {"ADMIN"})
     public void testGivenClanWhenRestartingGameThenVerifyClanDeleted() throws Exception {
         // given clan
-        ClanRequest request = new ClanRequest();
-        request.setName("Warbarons");
+        ClanRequest request = new ClanRequest("Warbarons", Type.SMART);
         Clan clan = clanService.createClan(1, request, 1);
         Assert.assertEquals(clan.getName(), clanService.getClan(1).getName());
         Assert.assertNotNull(clan.getStatistics());

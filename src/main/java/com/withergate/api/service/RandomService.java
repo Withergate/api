@@ -1,5 +1,7 @@
 package com.withergate.api.service;
 
+import com.withergate.api.game.model.type.AttributeTemplate;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.model.character.Gender;
 import com.withergate.api.game.model.item.ItemType;
 
@@ -34,11 +36,11 @@ public interface RandomService {
     ItemType getRandomItemType();
 
     /**
-     * Generates random attribute combination
+     * Generates random attribute combination.
      *
      * @param n total sum
-     * @return random combination
+     * @return attribute combination
      */
-    int[] getRandomAttributeCombination(int n);
+    AttributeTemplate getRandomAttributeCombination(int n, Type type);
 
 }

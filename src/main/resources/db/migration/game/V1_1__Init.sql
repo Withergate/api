@@ -548,3 +548,16 @@ CREATE TABLE clan_statistics (
     PRIMARY KEY (statistics_id),
     CONSTRAINT statistics_clan_fk FOREIGN KEY (clan_clan_id) REFERENCES clans (clan_id)
 );
+
+-- Attribute templates
+DROP TABLE IF EXISTS attribute_templates;
+CREATE TABLE attribute_templates (
+    template_id INT AUTO_INCREMENT,
+    template_type VARCHAR(16) NOT NULL,
+    attr_sum INT,
+    combat INT,
+    scavenge INT,
+    craftsmanship INT,
+    intellect INT,
+    PRIMARY KEY (template_id)
+);

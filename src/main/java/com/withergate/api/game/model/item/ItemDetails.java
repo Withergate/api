@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;

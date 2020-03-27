@@ -11,6 +11,8 @@ import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.statistics.ClanStatistics;
+import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.combat.ClanDefenseUtils;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
@@ -82,7 +83,7 @@ public class ClanServiceTest {
         Mockito.when(clanRepository.findOneByName("Stalkers")).thenReturn(clan);
 
         // when creating new clan
-        ClanRequest clanRequest = new ClanRequest("Stalkers");
+        ClanRequest clanRequest = new ClanRequest("Stalkers", Type.RANDOM);
         clanService.createClan(2, clanRequest, 1);
 
         // then expect exception
@@ -98,7 +99,7 @@ public class ClanServiceTest {
         Mockito.when(clanRepository.findById(1)).thenReturn(Optional.of(clan));
 
         // when creating new clan
-        ClanRequest clanRequest = new ClanRequest("Dragons");
+        ClanRequest clanRequest = new ClanRequest("Dragons", Type.RANDOM);
         clanService.createClan(1, clanRequest, 1);
 
         // then expect exception
@@ -107,7 +108,7 @@ public class ClanServiceTest {
     @Test(expected = ValidationException.class)
     public void testGivenClanRequestWhenNameTooShortThenExpectException() throws Exception {
         // given request
-        ClanRequest clanRequest = new ClanRequest("aaa");
+        ClanRequest clanRequest = new ClanRequest("aaa", Type.RANDOM);
 
         // when clan name too short
         clanService.createClan(1, clanRequest, 1);
@@ -118,7 +119,7 @@ public class ClanServiceTest {
     @Test(expected = ValidationException.class)
     public void testGivenClanRequestWhenNameWithSpacesThenExpectException() throws Exception {
         // given request
-        ClanRequest clanRequest = new ClanRequest("a      z");
+        ClanRequest clanRequest = new ClanRequest("a      z", Type.RANDOM);
 
         // when clan name too short
         clanService.createClan(1, clanRequest, 1);
@@ -146,7 +147,7 @@ public class ClanServiceTest {
                 .thenReturn(characters[0], characters[1], characters[2], characters[3], characters[4]);
 
         // when creating new clan
-        ClanRequest clanRequest = new ClanRequest("Dragons");
+        ClanRequest clanRequest = new ClanRequest("Dragons", Type.RANDOM);
         clanService.createClan(2, clanRequest, 1);
 
         // then verify clan saved
@@ -161,7 +162,7 @@ public class ClanServiceTest {
     @Test
     public void testGivenClanRequestWhenCreatingClanLateThenVerifyBonusResourcesGiven() throws Exception {
         // given clan request
-        ClanRequest clanRequest = new ClanRequest("Dragons");
+        ClanRequest clanRequest = new ClanRequest("Dragons", Type.RANDOM);
         int turn = 3;
 
         Character[] characters = new Character[5];

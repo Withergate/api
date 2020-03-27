@@ -233,3 +233,26 @@ INSERT INTO avatars (gender, image_url) VALUES
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female24.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female25.png'),
     ('FEMALE', 'https://storage.googleapis.com/withergate-images/avatars/female26.png');
+
+-- Attribute templates
+INSERT INTO attribute_templates (template_type, attr_sum, combat, scavenge, craftsmanship, intellect) VALUES
+    ('BALANCED', 17, 5, 4, 4, 4),
+    ('BALANCED', 15, 4, 5, 3, 3),
+    ('BALANCED', 13, 2, 3, 5, 3),
+    ('BALANCED', 11, 3, 2, 1, 5),
+    ('BALANCED', 9, 2, 2, 3, 2),
+    ('ECONOMY', 17, 4, 5, 4, 4),
+    ('ECONOMY', 15, 5, 3, 5, 2),
+    ('ECONOMY', 13, 2, 4, 3, 2),
+    ('ECONOMY', 11, 3, 2, 1, 5),
+    ('ECONOMY', 9, 2, 3, 2, 2),
+    ('SMART', 17, 4, 4, 4, 5),
+    ('SMART', 15, 3, 4, 4, 4),
+    ('SMART', 13, 4, 3, 1, 5),
+    ('SMART', 11, 3, 3, 2, 3),
+    ('SMART', 9, 2, 3, 2, 2),
+    ('COMBAT', 17, 5, 5, 4, 3),
+    ('COMBAT', 15, 5, 3, 5, 2),
+    ('COMBAT', 13, 3, 3, 2, 5),
+    ('COMBAT', 11, 2, 4, 4, 1),
+    ('COMBAT', 9, 4, 1, 1, 3);

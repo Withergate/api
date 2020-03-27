@@ -1,7 +1,7 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;

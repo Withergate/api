@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;

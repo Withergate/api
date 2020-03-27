@@ -1,16 +1,26 @@
 package com.withergate.api.service;
 
+import com.withergate.api.game.model.type.AttributeTemplate;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
+import com.withergate.api.game.repository.clan.AttributeTemplateRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class RandomServiceTest {
 
     private RandomServiceImpl randomService;
 
+    @Mock
+    private AttributeTemplateRepository templateRepository;
+
     @Before
     public void setUp() {
-        randomService = new RandomServiceImpl();
+        MockitoAnnotations.initMocks(this);
+
+        randomService = new RandomServiceImpl(templateRepository);
     }
 
     @Test
@@ -33,15 +43,11 @@ public class RandomServiceTest {
         int sum = 16;
 
         // when generating combination
-        int[] comb = randomService.getRandomAttributeCombination(sum);
+        AttributeTemplate template = randomService.getRandomAttributeCombination(sum, Type.RANDOM);
 
         // then verify sum matching
-        int result = 0;
-        for (int i = 0; i < comb.length; i++) {
-            result += comb[i];
-            Assert.assertTrue(comb[i] <= 6);
-        }
-        Assert.assertEquals(sum, result);
+        Assert.assertEquals(sum, template.getCombat() + template.getScavenge()
+                + template.getCraftsmanship() + template.getIntellect());
     }
 
 }

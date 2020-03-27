@@ -1,8 +1,8 @@
 package com.withergate.api.service.utils;
 
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.Trait;

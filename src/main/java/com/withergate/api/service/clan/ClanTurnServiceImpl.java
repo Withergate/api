@@ -1,11 +1,9 @@
 package com.withergate.api.service.clan;
 
-import java.util.Iterator;
-
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.ResearchBonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.notification.ClanNotification;

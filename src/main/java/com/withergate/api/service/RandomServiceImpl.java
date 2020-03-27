@@ -5,8 +5,12 @@ import java.util.Collections;
 import java.util.Random;
 
 import com.google.common.primitives.Ints;
+import com.withergate.api.game.model.type.AttributeTemplate;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.model.character.Gender;
 import com.withergate.api.game.model.item.ItemType;
+import com.withergate.api.game.repository.clan.AttributeTemplateRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
  * @author Martin Myslik
  */
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class RandomServiceImpl implements RandomService {
 
@@ -26,6 +31,8 @@ public class RandomServiceImpl implements RandomService {
     public static final int K100 = 100;
 
     private static final int ATTRIBUTES = 4;
+
+    private final AttributeTemplateRepository templateRepository;
 
     private Random rand = new Random();
 
@@ -66,7 +73,21 @@ public class RandomServiceImpl implements RandomService {
     }
 
     @Override
-    public int[] getRandomAttributeCombination(int n) {
+    public AttributeTemplate getRandomAttributeCombination(int n, Type type) {
+        if (type.equals(Type.RANDOM)) {
+            return generateRandomCombination(n);
+        }
+
+        // load preset
+        AttributeTemplate template = templateRepository.findFirstByTypeAndSum(type, n);
+        if (template == null) {
+            log.error("Could not find attribute template {} for type {}. Fallback to random.", n, type);
+            return generateRandomCombination(n);
+        }
+        return template;
+    }
+
+    private AttributeTemplate generateRandomCombination(int n) {
         int[] attr = new int[ATTRIBUTES];
 
         for (int i = 1; i < attr.length; i++) {
@@ -99,6 +120,12 @@ public class RandomServiceImpl implements RandomService {
 
         // shuffle
         Collections.shuffle(Ints.asList(attr));
-        return attr;
+        AttributeTemplate template = new AttributeTemplate();
+        template.setCombat(attr[0]);
+        template.setScavenge(attr[1]);
+        template.setCraftsmanship(attr[2]);
+        template.setIntellect(attr[3]);
+        return template;
     }
+
 }

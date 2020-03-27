@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.BuildingAction;
 import com.withergate.api.game.model.action.BuildingAction.Type;

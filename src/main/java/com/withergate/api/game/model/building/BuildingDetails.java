@@ -13,8 +13,8 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.withergate.api.game.model.BonusType;
-import com.withergate.api.game.model.EndBonusType;
+import com.withergate.api.game.model.type.BonusType;
+import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.LocalizedText;
 import lombok.Getter;

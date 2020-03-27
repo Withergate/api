@@ -3,7 +3,7 @@ package com.withergate.api.service.combat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.withergate.api.game.model.BonusType;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.combat.CombatResult;
 import com.withergate.api.game.model.item.ItemDetails.WeaponType;

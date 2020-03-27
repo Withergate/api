@@ -2,6 +2,7 @@ package com.withergate.api.service.clan;
 
 import java.util.List;
 
+import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -56,7 +57,7 @@ public interface CharacterService {
      * @param filter filter
      * @return the generated character
      */
-    Character generateRandomCharacter(CharacterFilter filter, int[] attributes);
+    Character generateRandomCharacter(CharacterFilter filter, AttributeTemplate attributes);
 
     /**
      * Marks character as resting.
