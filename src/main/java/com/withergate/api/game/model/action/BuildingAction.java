@@ -21,25 +21,14 @@ public class BuildingAction extends BaseAction {
     @Column(name = "building", nullable = false)
     private String building;
 
-    @Column(name = "action_type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type;
-
     @Override
     public String getDescriptor() {
-        return ActionDescriptor.BUILDING + "." + type;
+        return ActionDescriptor.BUILDING.name();
     }
 
     @Override
     public boolean isCancellable() {
         return false;
-    }
-
-    /**
-     * Action type.
-     */
-    public enum Type {
-        VISIT, CONSTRUCT
     }
 
 }

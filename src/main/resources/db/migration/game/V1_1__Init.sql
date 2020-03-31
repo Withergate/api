@@ -67,8 +67,6 @@ CREATE TABLE building_details (
     identifier VARCHAR(16) UNIQUE NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     cost INT NOT NULL,
-    visitable BIT NOT NULL,
-    visit_junk_cost INT DEFAULT 0,
     bonus INT DEFAULT 0,
     bonus_type VARCHAR(32),
     bonus_text VARCHAR(32),

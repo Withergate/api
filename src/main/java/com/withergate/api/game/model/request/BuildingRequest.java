@@ -17,6 +17,5 @@ public class BuildingRequest {
 
     private int characterId;
     private String building;
-    private BuildingAction.Type type;
 
 }

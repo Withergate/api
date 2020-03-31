@@ -1,15 +1,15 @@
 -- Building details
-INSERT INTO building_details(identifier, cost, visitable, visit_junk_cost, bonus_type, bonus_text, bonus, item_type, end_bonus_type, end_bonus, end_bonus_text, image_url) VALUES
-    ('SICK_BAY', 12, false, 0, 'HEALING', 'detail.healing.building', 2, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
-    ('GMO_FARM', 12, false, 0, null, null, 0, null, 'FOOD_INCOME', 2, 'building.gmofarm.income', 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
-    ('TRAINING_GROUNDS', 12, false, 0, 'TRAINING', 'detail.building.training', 1, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
-    ('MONUMENT', 16, false, 0, null, null, 0, null, 'FAME_INCOME', 1, 'building.monument.income', 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
-    ('FORGE', 12, true, 7, 'CRAFTING', null, 5, 'WEAPON', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
-    ('WORKSHOP', 12, true, 7, 'CRAFTING', null, 5, 'GEAR', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
-    ('RAGS_SHOP', 12, true, 7, 'CRAFTING', null, 5, 'OUTFIT', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
-    ('QUARTERS', 16, false, 0, null, null, 0, null, 'POPULATION', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
-    ('STUDY', 16, false, 0, 'RESEARCH', 'detail.building.study', 1, null, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
-    ('KENNELS', 12, false, 0, null, null, 0, null, 'CLAN_DEFENSE', 2, null, 'https://storage.googleapis.com/withergate-images/buildings/kennels.png');
+INSERT INTO building_details(identifier, cost, bonus_type, bonus_text, bonus, item_type, end_bonus_type, end_bonus, end_bonus_text, image_url) VALUES
+    ('SICK_BAY', 12, 'HEALING', 'detail.healing.building', 2, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
+    ('GMO_FARM', 12, null, null, 0, null, 'FOOD_INCOME', 2, 'building.gmofarm.income', 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
+    ('TRAINING_GROUNDS', 12, 'TRAINING', 'detail.building.training', 1, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
+    ('MONUMENT', 16, null, null, 0, null, 'FAME_INCOME', 1, 'building.monument.income', 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
+    ('FORGE', 12, 'CRAFTING', null, 5, 'WEAPON', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
+    ('WORKSHOP', 12, 'CRAFTING', null, 5, 'GEAR', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
+    ('RAGS_SHOP', 12, 'CRAFTING', null, 5, 'OUTFIT', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
+    ('QUARTERS', 16, null, null, 0, null, 'POPULATION', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
+    ('STUDY', 16, 'RESEARCH', 'detail.building.study', 1, null, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
+    ('KENNELS', 12, null, null, 0, null, 'CLAN_DEFENSE', 2, null, 'https://storage.googleapis.com/withergate-images/buildings/kennels.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),
@@ -64,12 +64,12 @@ INSERT INTO localized_texts(building_info, lang, text) VALUES
     ('TRAINING_GROUNDS', 'cs', 'Odpočívající postavy dostanou každé kolo zkušenosti zdarma. Kromě toho, zvyšování úrovně této budovy rošiřuje nabídku schopností k trénování pro každou postavu.'),
     ('MONUMENT', 'en', 'Each level of this building grants free fame every turn.'),
     ('MONUMENT', 'cs', 'Každá úroveň této budovy poskytuje slávu každé kolo.'),
-    ('FORGE', 'en', 'Pay junk and craft a random weapon! High craftsmanship and building level affect the rarity of the crafted item. Higher building levels decrease the crafting cost.'),
-    ('FORGE', 'cs', 'Zaplať šrot a vyrob náhodnou zbraň! Zručnost a úroveň budovy ovlivňují šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
-    ('WORKSHOP', 'en', 'Pay junk and craft a random gear! High craftsmanship and building level affect the rarity of the crafted item. Higher building levels decrease the crafting cost.'),
-    ('WORKSHOP', 'cs', 'Zaplať šrot a vyrob náhodný kus výbavy! Zručnost a úroveň budovy ovlivňují šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
-    ('RAGS_SHOP', 'en', 'Pay junk and craft a random outfit! High craftsmanship and building level affect the rarity of the crafted item. Higher building levels decrease the crafting cost.'),
-    ('RAGS_SHOP', 'cs', 'Zaplať šrot a vyrob náhodný oděv! Zručnost a úroveň budovy ovlivňuj šanci na vyšší raritu předmětu. Vyšší úroveň budovy navíc snižuje cenu výroby.'),
+    ('FORGE', 'en', 'This building grants the ability to craft weapons. Higher building levels decrease the crafting cost and unlocked more weapons to craft.'),
+    ('FORGE', 'cs', 'Tato budova umožňuje vyrábět zbraně. Vyšší úroveň budovy navíc snižuje cenu výroby a odemyká více typů předmětů k výrobě.'),
+    ('WORKSHOP', 'en', 'This building grants the ability to craft gear. Higher building levels decrease the crafting cost and unlocked more gear types to craft.'),
+    ('WORKSHOP', 'cs', 'Tato budova umožňuje vyrábět vybavení. Vyšší úroveň budovy navíc snižuje cenu výroby a odemyká více typů předmětů k výrobě.'),
+    ('RAGS_SHOP', 'en', 'This building grants the ability to craft outfits. Higher building levels decrease the crafting cost and unlocked more outfits to craft.'),
+    ('RAGS_SHOP', 'cs', 'Tato budova umožňuje vyrábět zbroje. Vyšší úroveň budovy navíc snižuje cenu výroby a odemyká více typů zbrojí k výrobě.'),
     ('QUARTERS', 'en', 'Each level of this building increases your population limit.'),
     ('QUARTERS', 'cs', 'Každá úroveň této budovy navyšuje tvůj populační limit.'),
     ('STUDY', 'en', 'Each level of this building increases the speed of research and grants free information point every turn..'),

@@ -5,12 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.BuildingAction;
-import com.withergate.api.game.model.action.BuildingAction.Type;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;
 import com.withergate.api.game.model.character.Character;
@@ -20,24 +17,20 @@ import com.withergate.api.game.model.character.TraitDetails;
 import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemType;
-import com.withergate.api.game.model.notification.ClanNotification;
-import com.withergate.api.game.model.request.BuildingRequest;
+import com.withergate.api.game.model.type.BonusType;
+import com.withergate.api.game.model.type.EndBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.Assert.assertEquals;
 
 public class BuildingServiceTest {
 
@@ -72,114 +65,6 @@ public class BuildingServiceTest {
                 buildingDetailsRepository, notificationService, randomService, properties, characterService);
     }
 
-    @Test(expected = InvalidActionException.class)
-    public void testGivenBuildingVisitRequestWhenClanDoesNotHaveBuildingThenVerifyExceptionThrown() throws InvalidActionException {
-        // given building request
-        BuildingRequest request = new BuildingRequest();
-        request.setCharacterId(1);
-        request.setBuilding("Forge");
-        request.setType(Type.VISIT);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setFood(10);
-        clan.setName("Dragons");
-
-        Character character = new Character();
-        character.setId(1);
-        character.setName("Rusty Nick");
-        character.setClan(clan);
-        character.setState(CharacterState.READY);
-        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
-
-        BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier("Forge");
-        buildingDetails.setBonusType(BonusType.CRAFTING);
-        Mockito.when(buildingService.getBuildingDetails("Forge")).thenReturn(buildingDetails);
-
-        // when creating building action
-        buildingService.saveBuildingAction(request, 1);
-
-        // then expect exception
-    }
-
-    @Test(expected = InvalidActionException.class)
-    public void testGivenBuildingVisitRequestWhenBuildingInsufficientLevelThenVerifyExceptionThrown() throws InvalidActionException {
-        // given building request
-        BuildingRequest request = new BuildingRequest();
-        request.setCharacterId(1);
-        request.setBuilding("Forge");
-        request.setType(Type.VISIT);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setFood(10);
-        clan.setName("Dragons");
-
-        Character character = new Character();
-        character.setId(1);
-        character.setName("Rusty Nick");
-        character.setClan(clan);
-        character.setState(CharacterState.READY);
-        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
-
-        BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier("Forge");
-        Mockito.when(buildingService.getBuildingDetails("Forge")).thenReturn(buildingDetails);
-
-        Building building = new Building();
-        building.setDetails(buildingDetails);
-        building.setLevel(0);
-        clan.getBuildings().add(building);
-
-        // when creating building action
-        buildingService.saveBuildingAction(request, 1);
-
-        // then expect exception
-    }
-
-    @Test
-    public void testGivenBuildingVisitRequestWhenBuildingSufficientLevelThenActionCreated() throws InvalidActionException {
-        // given building request
-        BuildingRequest request = new BuildingRequest();
-        request.setCharacterId(1);
-        request.setBuilding("Forge");
-        request.setType(Type.VISIT);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setJunk(10);
-        clan.setName("Dragons");
-
-        Character character = new Character();
-        character.setId(1);
-        character.setName("Rusty Nick");
-        character.setClan(clan);
-        character.setState(CharacterState.READY);
-        Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
-
-        BuildingDetails buildingDetails = new BuildingDetails();
-        buildingDetails.setIdentifier("Forge");
-        buildingDetails.setVisitJunkCost(10);
-        buildingDetails.setVisitable(true);
-        Mockito.when(buildingService.getBuildingDetails("Forge")).thenReturn(buildingDetails);
-
-        Building building = new Building();
-        building.setDetails(buildingDetails);
-        building.setLevel(1);
-        clan.getBuildings().add(building);
-
-        // when creating building action
-        buildingService.saveBuildingAction(request, 1);
-
-        // then verify action created
-        ArgumentCaptor<BuildingAction> captor = ArgumentCaptor.forClass(BuildingAction.class);
-        Mockito.verify(buildingActionRepository).save(captor.capture());
-
-        assertEquals(character, captor.getValue().getCharacter());
-        assertEquals("Forge", captor.getValue().getBuilding());
-    }
-
     @Test
     public void testGivenBuildingActionWhenConstructingNewBuildingThenVerifyProgressSavedAndActionHandled() {
         // given building action
@@ -208,7 +93,6 @@ public class BuildingServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setBuilding("MONUMENT");
-        action.setType(BuildingAction.Type.CONSTRUCT);
 
         List<BuildingAction> actions = new ArrayList<>();
         actions.add(action);
@@ -244,7 +128,6 @@ public class BuildingServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setBuilding("FORGE");
-        action.setType(BuildingAction.Type.CONSTRUCT);
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
@@ -295,7 +178,6 @@ public class BuildingServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setBuilding("QUARTERS");
-        action.setType(BuildingAction.Type.CONSTRUCT);
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
@@ -344,7 +226,6 @@ public class BuildingServiceTest {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setBuilding("QUARTERS");
-        action.setType(BuildingAction.Type.CONSTRUCT);
 
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
@@ -376,7 +257,6 @@ public class BuildingServiceTest {
         // when getting building details
         BuildingDetails details = new BuildingDetails();
         details.setIdentifier("FORGE");
-        details.setVisitable(true);
         Mockito.when(buildingDetailsRepository.getOne(name)).thenReturn(details);
 
         BuildingDetails result = buildingService.getBuildingDetails(name);
@@ -390,7 +270,6 @@ public class BuildingServiceTest {
         // given service when getting building details
         BuildingDetails details = new BuildingDetails();
         details.setIdentifier("FORGE");
-        details.setVisitable(true);
         details.setBonusType(BonusType.CRAFTING);
 
         List<BuildingDetails> detailsList = new ArrayList<>();
@@ -402,162 +281,6 @@ public class BuildingServiceTest {
 
         // then verify correct list returned
         Assert.assertEquals(1, result.size());
-    }
-
-    @Test
-    public void testGivenCraftingActionWhenForgingThenVerifyItemServiceCalled() {
-        // given action
-        Character character = new Character();
-        character.setCraftsmanship(3);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        character.setClan(clan);
-
-        BuildingDetails details = new BuildingDetails();
-        details.setIdentifier("FORGE");
-        details.setBonusType(BonusType.CRAFTING);
-        details.setItemType(ItemType.WEAPON);
-        Building building = new Building();
-        building.setLevel(1);
-        building.setDetails(details);
-        clan.getBuildings().add(building);
-
-        BuildingAction action = new BuildingAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setBuilding("FORGE");
-        action.setType(Type.VISIT);
-
-        List<BuildingAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-
-        // when processing actions with forge
-        buildingService.processBuildingActions(1);
-
-        // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(0),
-                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.WEAPON));
-    }
-
-    @Test
-    public void testGivenCraftingActionWhenCraftingOutfitThenVerifyItemServiceCalled() {
-        // given action
-        Character character = new Character();
-        character.setCraftsmanship(3);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        character.setClan(clan);
-
-        BuildingDetails details = new BuildingDetails();
-        details.setIdentifier("RAGS_SHOP");
-        details.setBonusType(BonusType.CRAFTING);
-        details.setItemType(ItemType.OUTFIT);
-        Building building = new Building();
-        building.setLevel(1);
-        building.setDetails(details);
-        clan.getBuildings().add(building);
-
-        BuildingAction action = new BuildingAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setBuilding("RAGS_SHOP");
-        action.setType(Type.VISIT);
-
-        List<BuildingAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-
-        // when processing actions with forge
-        buildingService.processBuildingActions(1);
-
-        // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(0),
-                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.OUTFIT));
-    }
-
-    @Test
-    public void testGivenCraftingActionWhenCraftingGearThenVerifyItemServiceCalled() {
-        // given action
-        Character character = new Character();
-        character.setCraftsmanship(3);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        character.setClan(clan);
-
-        BuildingDetails details = new BuildingDetails();
-        details.setIdentifier("WORKSHOP");
-        details.setBonusType(BonusType.CRAFTING);
-        details.setItemType(ItemType.GEAR);
-        Building building = new Building();
-        building.setLevel(1);
-        building.setDetails(details);
-        clan.getBuildings().add(building);
-
-        BuildingAction action = new BuildingAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setBuilding("WORKSHOP");
-        action.setType(Type.VISIT);
-
-        List<BuildingAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-
-        // when processing actions with forge
-        buildingService.processBuildingActions(1);
-
-        // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(0),
-                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.GEAR));
-    }
-
-    @Test
-    public void testGivenCraftingActionWhenCraftingGearWithHammerThenVerifyItemServiceCalled() {
-        // given action
-        Character character = new Character();
-        character.setCraftsmanship(3);
-
-        Clan clan = new Clan();
-        clan.setId(1);
-        character.setClan(clan);
-
-        ItemDetails gearDetails = new ItemDetails();
-        gearDetails.setBonus(1);
-        gearDetails.setBonusType(BonusType.CRAFTING);
-        gearDetails.setItemType(ItemType.GEAR);
-        Item gear = new Item();
-        gear.setDetails(gearDetails);
-        character.getItems().add(gear);
-
-        BuildingDetails details = new BuildingDetails();
-        details.setIdentifier("WORKSHOP");
-        details.setBonusType(BonusType.CRAFTING);
-        details.setItemType(ItemType.GEAR);
-        Building building = new Building();
-        building.setLevel(1);
-        building.setDetails(details);
-        clan.getBuildings().add(building);
-
-        BuildingAction action = new BuildingAction();
-        action.setState(ActionState.PENDING);
-        action.setCharacter(character);
-        action.setBuilding("WORKSHOP");
-        action.setType(Type.VISIT);
-
-        List<BuildingAction> actions = new ArrayList<>();
-        actions.add(action);
-        Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-
-        // when processing actions with forge
-        buildingService.processBuildingActions(1);
-
-        // then verify item service called
-        Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.eq(1),
-                Mockito.any(ClanNotification.class), Mockito.eq(ItemType.GEAR));
     }
 
     @Test
