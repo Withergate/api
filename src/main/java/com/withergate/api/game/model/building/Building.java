@@ -56,17 +56,4 @@ public class Building {
         return details.getCost() + level * (details.getCost() / 2);
     }
 
-    /**
-     * Returns visit junk cost adjusted by building level.
-     *
-     * @return the visit junk cost
-     */
-    @JsonProperty("visitJunkCost")
-    public int getVisitJunkCost() {
-        if (level <= 1) {
-            return details.getVisitJunkCost();
-        }
-        return details.getVisitJunkCost() - level + 1;
-    }
-
 }

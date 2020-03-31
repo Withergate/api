@@ -53,12 +53,6 @@ public class BuildingDetails {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column(name = "visitable", nullable = false)
-    private boolean visitable;
-
-    @Column(name = "visit_junk_cost")
-    private int visitJunkCost;
-
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost; // cost per level
 

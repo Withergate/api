@@ -3,6 +3,8 @@ package com.withergate.api.service.item;
 import java.util.List;
 
 import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.action.BuildingAction;
+import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.item.EffectType;
@@ -13,6 +15,9 @@ import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.type.BonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.game.repository.item.ItemDetailsRepository;
 import com.withergate.api.game.repository.item.ItemRepository;
@@ -22,6 +27,7 @@ import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.profile.AchievementService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -316,4 +322,5 @@ public class ItemServiceImpl implements ItemService {
         List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
         return detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
     }
+
 }

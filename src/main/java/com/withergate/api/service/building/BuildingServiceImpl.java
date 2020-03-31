@@ -1,13 +1,11 @@
 package com.withergate.api.service.building;
 
+import java.util.List;
+
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.EndBonusType;
-import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.BuildingAction;
-import com.withergate.api.game.model.action.BuildingAction.Type;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;
 import com.withergate.api.game.model.character.Character;
@@ -17,21 +15,22 @@ import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.type.BonusType;
+import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
-import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Building service implementation.
@@ -63,19 +62,7 @@ public class BuildingServiceImpl implements BuildingService {
             throw new InvalidActionException("This building does not exist");
         }
 
-        if (request.getType() == BuildingAction.Type.VISIT && building.getLevel() < 1) {
-            throw new InvalidActionException("This building has not reached sufficient level yet!!");
-        }
-
-        if (request.getType() == BuildingAction.Type.VISIT && !building.getDetails().isVisitable()) {
-            throw new InvalidActionException("This building does not support this type of action.");
-        }
-
-        if (request.getType() == BuildingAction.Type.VISIT && character.getClan().getJunk() < building.getVisitJunkCost()) {
-            throw new InvalidActionException("Not enough junk to perform this action!");
-        }
-
-        if (request.getType() == BuildingAction.Type.CONSTRUCT && character.getClan().getJunk() < character.getCraftsmanship()) {
+        if (character.getClan().getJunk() < character.getCraftsmanship()) {
             throw new InvalidActionException("Not enough junk to perform this action.");
         }
 
@@ -83,17 +70,12 @@ public class BuildingServiceImpl implements BuildingService {
         action.setState(ActionState.PENDING);
         action.setCharacter(character);
         action.setBuilding(building.getDetails().getIdentifier());
-        action.setType(request.getType());
 
         buildingActionRepository.save(action);
 
         // pay junk
         Clan clan = character.getClan();
-        if (request.getType().equals(BuildingAction.Type.CONSTRUCT)) {
-            clan.changeJunk(- character.getCraftsmanship());
-        } else if (request.getType().equals(BuildingAction.Type.VISIT)) {
-            clan.changeJunk(- building.getVisitJunkCost());
-        }
+        clan.changeJunk(- character.getCraftsmanship());
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -112,14 +94,8 @@ public class BuildingServiceImpl implements BuildingService {
             Clan clan = character.getClan();
 
             // construct actions
-            if (action.getType() == BuildingAction.Type.CONSTRUCT) {
-                processConstructAction(action, character, clan, notification);
-            }
+            processConstructAction(action, character, clan, notification);
 
-            // visit actions
-            if (action.getType().equals(Type.VISIT)) {
-                processVisitAction(action, character, clan, notification);
-            }
 
             // award experience
             character.changeExperience(1);
