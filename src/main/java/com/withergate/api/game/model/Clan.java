@@ -11,7 +11,7 @@ import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.statistics.ClanStatistics;
-import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.view.Views;
 import com.withergate.api.service.clan.ClanServiceImpl;
@@ -149,8 +149,8 @@ public class Clan {
     public int getPopulationLimit() {
         int limit = ClanServiceImpl.BASIC_POPULATION_LIMIT;
 
-        Optional<Building> building = buildings.stream().filter(b -> b.getDetails().getEndBonusType() != null
-                && b.getDetails().getEndBonusType().equals(EndBonusType.POPULATION)).findFirst();
+        Optional<Building> building = buildings.stream().filter(b -> b.getDetails().getPassiveBonusType() != null
+                && b.getDetails().getPassiveBonusType().equals(PassiveBonusType.POPULATION)).findFirst();
         if (building.isPresent()) {
             limit += building.get().getLevel();
         }
