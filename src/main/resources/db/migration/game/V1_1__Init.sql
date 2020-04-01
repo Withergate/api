@@ -70,10 +70,9 @@ CREATE TABLE building_details (
     bonus INT DEFAULT 0,
     bonus_type VARCHAR(32),
     bonus_text VARCHAR(32),
-    item_type VARCHAR(32),
-    end_bonus INT DEFAULT 0,
-    end_bonus_type VARCHAR(32),
-    end_bonus_text VARCHAR(32),
+    passive_bonus INT DEFAULT 0,
+    passive_bonus_type VARCHAR(32),
+    passive_bonus_text VARCHAR(32),
     PRIMARY KEY (identifier)
 );
 
@@ -153,6 +152,8 @@ CREATE TABLE item_details (
     bonus_text VARCHAR(32),
     effect_type VARCHAR(32),
     weapon_type VARCHAR(16),
+    crafting_cost INT,
+    crafting_level INT,
     PRIMARY KEY (identifier)
 );
 

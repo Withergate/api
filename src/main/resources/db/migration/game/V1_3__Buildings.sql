@@ -1,15 +1,15 @@
 -- Building details
-INSERT INTO building_details(identifier, cost, bonus_type, bonus_text, bonus, item_type, end_bonus_type, end_bonus, end_bonus_text, image_url) VALUES
-    ('SICK_BAY', 12, 'HEALING', 'detail.healing.building', 2, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
-    ('GMO_FARM', 12, null, null, 0, null, 'FOOD_INCOME', 2, 'building.gmofarm.income', 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
-    ('TRAINING_GROUNDS', 12, 'TRAINING', 'detail.building.training', 1, null, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
-    ('MONUMENT', 16, null, null, 0, null, 'FAME_INCOME', 1, 'building.monument.income', 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
-    ('FORGE', 12, 'CRAFTING', null, 5, 'WEAPON', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
-    ('WORKSHOP', 12, 'CRAFTING', null, 5, 'GEAR', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
-    ('RAGS_SHOP', 12, 'CRAFTING', null, 5, 'OUTFIT', null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
-    ('QUARTERS', 16, null, null, 0, null, 'POPULATION', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
-    ('STUDY', 16, 'RESEARCH', 'detail.building.study', 1, null, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
-    ('KENNELS', 12, null, null, 0, null, 'CLAN_DEFENSE', 2, null, 'https://storage.googleapis.com/withergate-images/buildings/kennels.png');
+INSERT INTO building_details(identifier, cost, bonus_type, bonus_text, bonus, passive_bonus_type, passive_bonus, passive_bonus_text, image_url) VALUES
+    ('SICK_BAY', 12, 'HEALING', 'detail.healing.building', 2, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
+    ('GMO_FARM', 12, null, null, 0, 'FOOD_INCOME', 2, 'building.gmofarm.income', 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
+    ('TRAINING_GROUNDS', 12, 'TRAINING', 'detail.building.training', 1, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
+    ('MONUMENT', 16, null, null, 0, 'FAME_INCOME', 1, 'building.monument.income', 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
+    ('FORGE', 12, null, null, 5, 'CRAFTING_WEAPON', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/forge.png'),
+    ('WORKSHOP', 12, null, null, 5, 'CRAFTING_GEAR', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/workshop.png'),
+    ('RAGS_SHOP', 12, null, null, 5, 'CRAFTING_OUTFIT', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/ragsshop.png'),
+    ('QUARTERS', 16, null, null, 0, 'POPULATION', 1, null, 'https://storage.googleapis.com/withergate-images/buildings/quarters.png'),
+    ('STUDY', 16, 'RESEARCH', 'detail.building.study', 1, 'INFORMATION_INCOME', 1, 'building.study.income', 'https://storage.googleapis.com/withergate-images/buildings/study.png'),
+    ('KENNELS', 12, null, null, 0, 'CLAN_DEFENSE', 2, null, 'https://storage.googleapis.com/withergate-images/buildings/kennels.png');
 
 INSERT INTO localized_texts(building_name, lang, text) VALUES
     ('SICK_BAY', 'en', 'Sick bay'),

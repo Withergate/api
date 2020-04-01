@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
@@ -126,8 +126,8 @@ public class AchievementServiceImpl implements AchievementService {
             }
             for (Building building : clan.getBuildings()) {
                 checkAchievementAward(profile, AchievementType.BUILDING_TOP, building.getLevel()); // building of certain level
-                if (building.getDetails().getEndBonusType() != null
-                        && building.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE)) { // defense building
+                if (building.getDetails().getPassiveBonusType() != null
+                        && building.getDetails().getPassiveBonusType().equals(PassiveBonusType.CLAN_DEFENSE)) { // defense building
                     checkAchievementAward(profile, AchievementType.BUILDING_DEFENSE, building.getLevel());
                 }
             }

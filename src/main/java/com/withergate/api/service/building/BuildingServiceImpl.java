@@ -10,13 +10,12 @@ import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
-import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.type.BonusType;
-import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
@@ -116,7 +115,7 @@ public class BuildingServiceImpl implements BuildingService {
         // fame
         ClanNotification notificationFame = new ClanNotification(turnId, clan.getId());
         notificationFame.setHeader(clan.getName());
-        int fame = BonusUtils.getBuildingEndBonus(clan, EndBonusType.FAME_INCOME, notificationService, notificationFame);
+        int fame = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.FAME_INCOME, notificationService, notificationFame);
         if (fame > 0) {
             clan.changeFame(fame);
             notificationFame.changeFame(fame);
@@ -126,7 +125,7 @@ public class BuildingServiceImpl implements BuildingService {
         // food
         ClanNotification notificationFood = new ClanNotification(turnId, clan.getId());
         notificationFood.setHeader(clan.getName());
-        int food = BonusUtils.getBuildingEndBonus(clan, EndBonusType.FOOD_INCOME, notificationService, notificationFood);
+        int food = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.FOOD_INCOME, notificationService, notificationFood);
         if (food > 0) {
             clan.changeFood(food);
             notificationFood.changeFood(food);
@@ -136,7 +135,7 @@ public class BuildingServiceImpl implements BuildingService {
         // information
         ClanNotification notificationInfo = new ClanNotification(turnId, clan.getId());
         notificationInfo.setHeader(clan.getName());
-        int info = BonusUtils.getBuildingEndBonus(clan, EndBonusType.INFORMATION_INCOME, notificationService, notificationInfo);
+        int info = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.INFORMATION_INCOME, notificationService, notificationInfo);
         if (info > 0) {
             clan.changeInformation(info);
             notificationInfo.changeInformation(info);
@@ -183,30 +182,6 @@ public class BuildingServiceImpl implements BuildingService {
 
             // level up bonuses
             processBuildingLevelUpBonuses(building, clan, notification);
-        }
-    }
-
-    private void processVisitAction(BuildingAction action, Character character, Clan clan, ClanNotification notification) {
-        Building building = clan.getBuilding(action.getBuilding());
-        if (building.getDetails().getItemType().equals(ItemType.WEAPON)) {
-            log.debug("{} is crafting weapon.", character.getName());
-            notificationService.addLocalizedTexts(notification.getText(), "building.crafting.weapon", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, getBonus(character, notification, BonusType.CRAFTING), notification,
-                    ItemType.WEAPON);
-        }
-
-        if (building.getDetails().getItemType().equals(ItemType.OUTFIT)) {
-            log.debug("{} is crafting outfit.", character.getName());
-            notificationService.addLocalizedTexts(notification.getText(), "building.crafting.outfit", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, getBonus(character, notification, BonusType.CRAFTING),notification,
-                    ItemType.OUTFIT);
-        }
-
-        if (building.getDetails().getItemType().equals(ItemType.GEAR)) {
-            log.debug("{} is crafting gear.", character.getName());
-            notificationService.addLocalizedTexts(notification.getText(), "building.crafting.gear", new String[] {character.getName()});
-            itemService.generateCraftableItem(character, getBonus(character, notification, BonusType.CRAFTING), notification,
-                    ItemType.GEAR);
         }
     }
 

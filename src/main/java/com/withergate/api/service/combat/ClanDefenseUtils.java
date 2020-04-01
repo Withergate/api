@@ -1,7 +1,7 @@
 package com.withergate.api.service.combat;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.item.Item;
@@ -32,8 +32,8 @@ public class ClanDefenseUtils {
      */
     public static Character getDefender(Clan clan) {
         Building building = clan.getBuildings().stream().filter(b ->
-                b.getDetails().getEndBonusType() != null
-                        && b.getDetails().getEndBonusType().equals(EndBonusType.CLAN_DEFENSE))
+                b.getDetails().getPassiveBonusType() != null
+                        && b.getDetails().getPassiveBonusType().equals(PassiveBonusType.CLAN_DEFENSE))
                 .findFirst().orElse(null);
 
         int buildingLevel = building != null ? building.getLevel() : 0;

@@ -13,10 +13,9 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.withergate.api.game.model.type.BonusType;
-import com.withergate.api.game.model.type.EndBonusType;
-import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.LocalizedText;
+import com.withergate.api.game.model.type.BonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,18 +65,14 @@ public class BuildingDetails {
     @Column(name = "bonus_text", updatable = false)
     private String bonusText;
 
-    @Column(name = "item_type", updatable = false)
+    @Column(name = "passive_bonus_type", updatable = false)
     @Enumerated(EnumType.STRING)
-    private ItemType itemType;
+    private PassiveBonusType passiveBonusType;
 
-    @Column(name = "end_bonus_type", updatable = false)
-    @Enumerated(EnumType.STRING)
-    private EndBonusType endBonusType;
+    @Column(name = "passive_bonus_text", updatable = false)
+    private String passiveBonusText;
 
-    @Column(name = "end_bonus_text", updatable = false)
-    private String endBonusText;
-
-    @Column(name = "end_bonus", updatable = false, nullable = false)
-    private int endBonus;
+    @Column(name = "passive_bonus", updatable = false, nullable = false)
+    private int passiveBonus;
 
 }

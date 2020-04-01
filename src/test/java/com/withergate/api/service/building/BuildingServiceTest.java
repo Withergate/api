@@ -18,7 +18,7 @@ import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.type.BonusType;
-import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.RandomService;
@@ -74,7 +74,7 @@ public class BuildingServiceTest {
         BuildingDetails details = new BuildingDetails();
         details.setCost(10);
         details.setIdentifier("MONUMENT");
-        details.setEndBonusType(EndBonusType.FAME_INCOME);
+        details.setPassiveBonusType(PassiveBonusType.FAME_INCOME);
 
         Building building = new Building();
         building.setLevel(0);
@@ -294,8 +294,8 @@ public class BuildingServiceTest {
 
         BuildingDetails monumentDetails = new BuildingDetails();
         monumentDetails.setIdentifier("MONUMENT");
-        monumentDetails.setEndBonusType(EndBonusType.FAME_INCOME);
-        monumentDetails.setEndBonus(1);
+        monumentDetails.setPassiveBonusType(PassiveBonusType.FAME_INCOME);
+        monumentDetails.setPassiveBonus(1);
         Building monument = new Building();
         monument.setDetails(monumentDetails);
         monument.setLevel(2);
@@ -303,8 +303,8 @@ public class BuildingServiceTest {
 
         BuildingDetails gmoDetails = new BuildingDetails();
         gmoDetails.setIdentifier("GMO_FARM");
-        gmoDetails.setEndBonusType(EndBonusType.FOOD_INCOME);
-        gmoDetails.setEndBonus(2);
+        gmoDetails.setPassiveBonusType(PassiveBonusType.FOOD_INCOME);
+        gmoDetails.setPassiveBonus(2);
         Building farm = new Building();
         farm.setDetails(gmoDetails);
         farm.setLevel(1);
@@ -312,8 +312,8 @@ public class BuildingServiceTest {
 
         BuildingDetails studyDetails = new BuildingDetails();
         studyDetails.setIdentifier("STUDY");
-        studyDetails.setEndBonusType(EndBonusType.INFORMATION_INCOME);
-        studyDetails.setEndBonus(1);
+        studyDetails.setPassiveBonusType(PassiveBonusType.INFORMATION_INCOME);
+        studyDetails.setPassiveBonus(1);
         Building study = new Building();
         study.setDetails(studyDetails);
         study.setLevel(1);

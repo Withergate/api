@@ -2,7 +2,7 @@ package com.withergate.api.service.utils;
 
 import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.EndBonusType;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.Trait;
@@ -51,17 +51,17 @@ public class BonusUtils {
      * @param notification notification
      * @return bonus
      */
-    public static int getBuildingEndBonus(Clan clan, EndBonusType bonusType, NotificationService notificationService,
+    public static int getBuildingEndBonus(Clan clan, PassiveBonusType bonusType, NotificationService notificationService,
                                           ClanNotification notification) {
         // find relevant building, update notification and compute bonus
         for (Building building : clan.getBuildings()) {
-            if (building.getDetails().getEndBonusType() != null && building.getDetails().getEndBonusType().equals(bonusType)
+            if (building.getDetails().getPassiveBonusType() != null && building.getDetails().getPassiveBonusType().equals(bonusType)
                     && building.getLevel() > 0) {
-                if (building.getDetails().getEndBonusText() != null) {
-                    notificationService.addLocalizedTexts(notification.getText(), building.getDetails().getEndBonusText(), new String[] {},
+                if (building.getDetails().getPassiveBonusText() != null) {
+                    notificationService.addLocalizedTexts(notification.getText(), building.getDetails().getPassiveBonusText(), new String[] {},
                             building.getDetails().getName());
                 }
-                return building.getDetails().getEndBonus() * building.getLevel();
+                return building.getDetails().getPassiveBonus() * building.getLevel();
             }
         }
 
