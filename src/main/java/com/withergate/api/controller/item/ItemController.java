@@ -1,6 +1,10 @@
 package com.withergate.api.controller.item;
 
+import java.security.Principal;
+import java.util.List;
+
 import com.withergate.api.game.model.item.ItemDetails;
+import com.withergate.api.game.model.request.CraftingRequest;
 import com.withergate.api.game.model.request.EquipRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.CraftingService;
@@ -13,9 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-import java.util.List;
 
 /**
  * Item controller.
@@ -69,6 +70,20 @@ public class ItemController {
     @GetMapping("/items/crafting")
     public ResponseEntity<List<ItemDetails>> getCraftingItems(Principal principal) {
         return new ResponseEntity<>(craftingService.getAvailableItems(Integer.parseInt(principal.getName())), HttpStatus.OK);
+    }
+
+    /**
+     * Submits a new crafting action and checks if this action is applicable. Throws an exception if not.
+     *
+     * @param principal the principal
+     * @param request   the building action request
+     * @throws InvalidActionException invalid action
+     */
+    @PostMapping("/items/craft")
+    public ResponseEntity<Void> submitBuildingAction(Principal principal, @RequestBody CraftingRequest request)
+            throws InvalidActionException {
+        craftingService.saveCraftingAction(request, Integer.parseInt(principal.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

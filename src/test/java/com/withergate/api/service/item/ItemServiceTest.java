@@ -263,19 +263,14 @@ public class ItemServiceTest {
         clan.setId(1);
         character.setClan(clan);
 
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50);
-        Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
-
         List<ItemDetails> detailsList = new ArrayList<>(0);
         ItemDetails details = new ItemDetails();
         details.setIdentifier("Knife");
         detailsList.add(details);
-        Mockito.when(itemDetailsRepository.findItemDetailsByRarityAndItemType(Rarity.COMMON, ItemType.WEAPON))
-                .thenReturn(detailsList);
 
         // when crafting weapon
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableItem(character, 1, notification, ItemType.WEAPON);
+        itemService.generateCraftableItem(character, notification, details);
 
         // then verify weapon saved
         ArgumentCaptor<Item> captor = ArgumentCaptor.forClass(Item.class);
@@ -295,20 +290,13 @@ public class ItemServiceTest {
         clan.setId(1);
         character.setClan(clan);
 
-        Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(1); // rare
-        Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
-
-        List<ItemDetails> detailsList = new ArrayList<>(0);
         ItemDetails details = new ItemDetails();
         details.setIdentifier("Rare rags");
         details.setRarity(Rarity.RARE);
-        detailsList.add(details);
-        Mockito.when(itemDetailsRepository.findItemDetailsByRarityAndItemType(Rarity.RARE, ItemType.OUTFIT))
-                .thenReturn(detailsList);
 
         // when crafting outfit
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableItem(character, 1, notification, ItemType.OUTFIT);
+        itemService.generateCraftableItem(character, notification, details);
 
         // then verify outfit saved
         ArgumentCaptor<Item> captor = ArgumentCaptor.forClass(Item.class);
@@ -331,16 +319,12 @@ public class ItemServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(90);
         Mockito.when(randomService.getRandomInt(0, 1)).thenReturn(0);
 
-        List<ItemDetails> detailsList = new ArrayList<>(0);
         ItemDetails details = new ItemDetails();
         details.setIdentifier("Gear");
-        detailsList.add(details);
-        Mockito.when(itemDetailsRepository.findItemDetailsByRarityAndItemType(Rarity.COMMON, ItemType.GEAR))
-                .thenReturn(detailsList);
 
         // when crafting gear
         ClanNotification notification = new ClanNotification();
-        itemService.generateCraftableItem(character, 1, notification, ItemType.GEAR);
+        itemService.generateCraftableItem(character, notification, details);
 
         // then verify gear saved
         ArgumentCaptor<Item> captor = ArgumentCaptor.forClass(Item.class);
