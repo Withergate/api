@@ -29,6 +29,13 @@ public interface ActionService {
     void processBuildingActions(int turnId);
 
     /**
+     * Executes all pending crafting actions.
+     *
+     * @param turnId turn ID
+     */
+    void processCraftingActions(int turnId);
+
+    /**
      * Executes all pending research actions.
      *
      * @param turnId turn ID

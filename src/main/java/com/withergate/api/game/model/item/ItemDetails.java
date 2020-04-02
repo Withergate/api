@@ -84,6 +84,12 @@ public class ItemDetails {
     @Enumerated(EnumType.STRING)
     private WeaponType weaponType;
 
+    @Column(name = "crafting_cost", updatable = false)
+    private int craftingCost;
+
+    @Column(name = "crafting_level", updatable = false)
+    private int craftingLevel;
+
     /**
      * Weapon type.
      */
