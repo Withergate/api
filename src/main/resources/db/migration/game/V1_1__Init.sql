@@ -152,8 +152,8 @@ CREATE TABLE item_details (
     bonus_text VARCHAR(32),
     effect_type VARCHAR(32),
     weapon_type VARCHAR(16),
-    crafting_cost INT,
-    crafting_level INT,
+    crafting_cost INT DEFAULT 0,
+    crafting_level INT DEFAULT 0,
     PRIMARY KEY (identifier)
 );
 
