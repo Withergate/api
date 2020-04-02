@@ -85,7 +85,9 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('clan.combat.victory', 'en', 'We managed to win the combat.'),
     ('clan.combat.victory', 'cs', 'Podařilo se nám v souboji zvítězit.'),
     ('clan.combat.failure', 'en', 'Unfortunately, we lost the fight.'),
-    ('clan.combat.failure', 'cs', 'Bohužel jsme neuspěli v souboji..');
+    ('clan.combat.failure', 'cs', 'Bohužel jsme neuspěli v souboji.'),
+    ('crafting.item', 'en', 'Character was crafting an item.'),
+    ('crafting.item', 'cs', 'Postava vyráběla předmět.');
 
 -- Placeholder texts detail
 INSERT INTO placeholder_texts(code, lang, text) VALUES

@@ -3,6 +3,7 @@ package com.withergate.api.service.item;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemCost;
+import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -54,11 +55,10 @@ public interface ItemService {
      * Generates craftable item.
      *
      * @param character     the character performing the crafting
-     * @param bonus         additional bonus to crafting
      * @param notification  the crafted weapon
-     * @param type          the item type
+     * @param details       item details
      */
-    void generateCraftableItem(Character character, int bonus, ClanNotification notification, ItemType type);
+    void generateCraftableItem(Character character, ClanNotification notification, ItemDetails details);
 
     /**
      * Generates random item.
