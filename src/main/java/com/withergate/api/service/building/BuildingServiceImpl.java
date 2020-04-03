@@ -159,7 +159,7 @@ public class BuildingServiceImpl implements BuildingService {
         int progress = character.getCraftsmanship(); // progress to be done
 
         // calculate bonus for gear and traits
-        progress += getBonus(character, notification, BonusType.CONSTRUCT);
+        progress += BonusUtils.getBonus(character, BonusType.CONSTRUCT, notification, notificationService);
 
         notificationService.addLocalizedTexts(notification.getText(), "building.work", new String[] {}, details.getName());
 
@@ -183,43 +183,6 @@ public class BuildingServiceImpl implements BuildingService {
             // level up bonuses
             processBuildingLevelUpBonuses(building, clan, notification);
         }
-    }
-
-    private int getBonus(Character character, ClanNotification notification, BonusType bonusType) {
-        int bonus = 0;
-
-        bonus += BonusUtils.getBonus(character, bonusType, notification, notificationService);
-
-        // research side effect
-        Research researchCaps = character.getClan().getResearch(ResearchBonusType.CRAFTING_CAPS);
-        if (bonusType.equals(BonusType.CRAFTING) && researchCaps != null && researchCaps.isCompleted()) {
-            // add caps to clan for forgery
-            int caps = randomService.getRandomInt(1, RandomServiceImpl.K6);
-            character.getClan().changeCaps(caps);
-            notification.changeCaps(caps);
-
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), researchCaps.getDetails().getBonusText(), new String[]{});
-            notification.getDetails().add(detail);
-        }
-
-        Research researchFame = character.getClan().getResearch(ResearchBonusType.CRAFTING_FAME);
-        if (researchFame != null && researchFame.isCompleted()
-                && character.getClan().getJunk() >= researchFame.getDetails().getCostAction()) {
-            // pay junk
-            character.getClan().changeJunk(- researchFame.getDetails().getCostAction());
-            notification.changeJunk(- researchFame.getDetails().getCostAction());
-
-            // award fame
-            character.getClan().changeFame(researchFame.getDetails().getValue());
-            notification.changeFame(researchFame.getDetails().getValue());
-
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), researchFame.getDetails().getBonusText(), new String[]{});
-            notification.getDetails().add(detail);
-        }
-
-        return bonus;
     }
 
     private void processBuildingLevelUpBonuses(Building building, Clan clan, ClanNotification notification) {

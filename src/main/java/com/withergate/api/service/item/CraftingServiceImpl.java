@@ -88,7 +88,8 @@ public class CraftingServiceImpl implements CraftingService {
         }
 
         // check cost
-        int cost = details.getCraftingCost() - character.getCraftsmanship();
+        int cost = details.getCraftingCost() - character.getCraftingBonus();
+        if (cost < 1) cost = 1;
         if (clan.getJunk() < cost) {
             throw new InvalidActionException("Not enough junk to perform this action.");
         }
@@ -164,6 +165,8 @@ public class CraftingServiceImpl implements CraftingService {
     private boolean checkCraftingRequirements(ItemDetails details, Clan clan) throws InvalidActionException {
         Building building = getBuildingForItem(details.getItemType(), clan);
 
+        if (building == null) return false;
+
         if (building.getLevel() >= details.getCraftingLevel()) {
             return true;
         }
@@ -183,6 +186,8 @@ public class CraftingServiceImpl implements CraftingService {
             } else if (type.equals(ItemType.OUTFIT)
                     && building.getDetails().getPassiveBonusType().equals(PassiveBonusType.CRAFTING_OUTFIT)) {
                 return building;
+            } else if (type.equals(ItemType.CONSUMABLE)) {
+                return null;
             }
         }
 

@@ -74,10 +74,12 @@ public class BonusUtils {
         for (Trait trait : character.getActiveTraits()) {
             if (trait.getDetails().getBonusType() != null && trait.getDetails().getBonusType().equals(bonusType)) {
                 if (!trait.getDetails().isOptional() || Math.random() < 0.5) {
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), trait.getDetails().getBonusText(),
-                            new String[] {character.getName()}, trait.getDetails().getName());
-                    notification.getDetails().add(detail);
+                    if (notification != null) {
+                        NotificationDetail detail = new NotificationDetail();
+                        notificationService.addLocalizedTexts(detail.getText(), trait.getDetails().getBonusText(),
+                                new String[] {character.getName()}, trait.getDetails().getName());
+                        notification.getDetails().add(detail);
+                    }
 
                     return trait.getDetails().getBonus();
                 }
@@ -94,10 +96,12 @@ public class BonusUtils {
         // find relevant item
         for (Item item : character.getItems()) {
             if (item.getDetails().getBonusType() != null && item.getDetails().getBonusType().equals(bonusType)) {
-                NotificationDetail detail = new NotificationDetail();
-                notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
-                        item.getDetails().getName());
-                notification.getDetails().add(detail);
+                if (notification != null) {
+                    NotificationDetail detail = new NotificationDetail();
+                    notificationService.addLocalizedTexts(detail.getText(), item.getDetails().getBonusText(), new String[] {},
+                            item.getDetails().getName());
+                    notification.getDetails().add(detail);
+                }
 
                 bonus += item.getDetails().getBonus();
             }
@@ -117,10 +121,12 @@ public class BonusUtils {
             if (building.getDetails().getBonusType() != null && building.getDetails().getBonusType().equals(bonusType)
                     && building.getLevel() > 0) {
                 if (building.getDetails().getBonusText() != null) {
-                    NotificationDetail detail = new NotificationDetail();
-                    notificationService.addLocalizedTexts(detail.getText(), building.getDetails().getBonusText(),
-                            new String[] {character.getName()}, building.getDetails().getName());
-                    notification.getDetails().add(detail);
+                    if (notification != null) {
+                        NotificationDetail detail = new NotificationDetail();
+                        notificationService.addLocalizedTexts(detail.getText(), building.getDetails().getBonusText(),
+                                new String[] {character.getName()}, building.getDetails().getName());
+                        notification.getDetails().add(detail);
+                    }
                 }
                 return building.getDetails().getBonus() * building.getLevel();
             }
