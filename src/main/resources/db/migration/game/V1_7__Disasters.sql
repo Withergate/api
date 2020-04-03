@@ -130,7 +130,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
 INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
     ('d.refugees.s1', true, 'd.refugees', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
     ('d.refugees.s2', false, 'd.refugees', 'INTELLECT', null, 7, 10, 0, 0, 0, null),
-    ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', null, 0, 12, 0, 0, 30, null),
+    ('d.refugees.s3', false, 'd.refugees', 'AUTOMATIC', null, 0, 15, 0, 0, 20, null),
     ('d.refugees.s4', false, 'd.refugees', 'COMBAT', null, 4, 10, 0, 0, 0, null);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES

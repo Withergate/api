@@ -13,7 +13,8 @@ INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, i
     ('SPARTA', 2, 'DISASTER', 'detail.trait.disaster', false, 'https://storage.googleapis.com/withergate-images/traits/sparta-trait.png'),
     ('PATRIOT', 2, 'FACTION_POINTS', 'detail.trait.factionPoints', false, 'https://storage.googleapis.com/withergate-images/traits/patriot-trait.png'),
     ('GHOST', 10, 'CAMOUFLAGE', 'detail.trait.camouflage', false, 'https://storage.googleapis.com/withergate-images/traits/ghost-trait.png'),
-    ('BRUTE', 1, 'PIERCING', 'detail.trait.piercing', false, 'https://storage.googleapis.com/withergate-images/traits/brute-trait.png');
+    ('BRUTE', 1, 'PIERCING', 'detail.trait.piercing', false, 'https://storage.googleapis.com/withergate-images/traits/brute-trait.png'),
+    ('HANDYMAN', 2, 'CRAFTING', null, false, 'https://storage.googleapis.com/withergate-images/traits/handyman-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -43,7 +44,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('GHOST', 'en', 'Ghost'),
     ('GHOST', 'cs', 'Duch'),
     ('BRUTE', 'en', 'Brute'),
-    ('BRUTE', 'cs', 'Surovec');
+    ('BRUTE', 'cs', 'Surovec'),
+    ('HANDYMAN', 'en', 'Handy man'),
+    ('HANDYMAN', 'cs', 'Kutil');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -73,4 +76,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('GHOST', 'en', 'Character with this trait has lower chance for random encounters when searching for resources or scouting.'),
     ('GHOST', 'cs', 'Postava s touto schopností má nižší šanci na náhodnou události při hledání surovin nebo pátrání.'),
     ('BRUTE', 'en', 'Character with this trait ignores part of the armor of his/her opponent.'),
-    ('BRUTE', 'cs', 'Postava s touto schopností ignoruje část zbroje svého protivníka.');
+    ('BRUTE', 'cs', 'Postava s touto schopností ignoruje část zbroje svého protivníka.'),
+    ('HANDYMAN', 'en', 'Character with this trait has decreased crafting cost.'),
+    ('HANDYMAN', 'cs', 'Postava s touto schopností snižuje cenu výroby předmětů.');

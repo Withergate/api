@@ -10,6 +10,7 @@ import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.service.clan.CharacterServiceImpl;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -162,6 +163,16 @@ public class Character {
     @JsonProperty("nextLevel")
     public int getNextLevelExperience() {
         return level * CharacterServiceImpl.LEVEL_QUOTIENT;
+    }
+
+    /**
+     * Returns total crafting bonus.
+     *
+     * @return crafting bonus
+     */
+    @JsonProperty("crafting")
+    public int getCraftingBonus() {
+        return craftsmanship + BonusUtils.getBonus(this, BonusType.CRAFTING, null, null);
     }
 
     /**
