@@ -135,7 +135,7 @@ public class CraftingServiceImpl implements CraftingService {
         // handle crafting research bonuses
         Clan clan = action.getCharacter().getClan();
         Research researchCaps = clan.getResearch(ResearchBonusType.CRAFTING_CAPS);
-        if (researchCaps.isCompleted()) {
+        if (researchCaps != null && researchCaps.isCompleted()) {
             int caps = randomService.getRandomInt(1, RandomServiceImpl.K4);
             clan.changeCaps(caps);
             notification.changeCaps(caps);
@@ -146,7 +146,7 @@ public class CraftingServiceImpl implements CraftingService {
         }
 
         Research researchFame = clan.getResearch(ResearchBonusType.CRAFTING_FAME);
-        if (researchFame.isCompleted()) {
+        if (researchFame != null && researchFame.isCompleted()) {
             // check cost
             if (clan.getJunk() >= researchFame.getDetails().getCostAction()) {
                 clan.changeJunk(- researchFame.getDetails().getCostAction());
