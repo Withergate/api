@@ -72,7 +72,7 @@ INSERT INTO localized_texts(research_info, lang, text) VALUES
     ('COLLECTING', 'cs', 'Kdykoli zakoupíš předmět na tržišti, bude ti odečteno 10 zátek navíc (pokud to je možné). Stane-li se tak, obdržíš 3 slávy navíc. Tento efekt se vyhodnocuje při přepočtu kola (platba extra zátek i příjem slávy).'),
     ('JUNKSMITHERY', 'en', 'Whenever you craft an item, you will pay 5 extra junk (if possible). If you do, 3 fame will be awarded to your clan.'),
     ('JUNKSMITHERY', 'cs', 'Kdykoli vyrobíš předmět, bude ti odečteno 5 šrotu navíc (pokud to je možné). Stane-li se tak, obdržíš 3 slávy navíc.'),
-    ('CULINARY', 'en', 'At the end of every turn, your clan will receive 1 fame for every 30 food you own (max 5 per turn). This effect is calculated after food consumption.'),
-    ('CULINARY', 'cs', 'Tvůj klan dostane 1 slávu na koci každého kola za každých 30 jídel, které máš v zásobě (maximum 5 za kolo). Tento efekt se počítá po konzumaci jídla.'),
-    ('DECORATION', 'en', 'At the end of every turn, your clan will receive 1 fame for every 30 junk you own (max 5 per turn).'),
-    ('DECORATION', 'cs', 'Tvůj klan dostane 1 slávu na konci každého kola za každých 30 šrotů, které máš v zásobě (maximum 5 za kolo).');
+    ('CULINARY', 'en', 'At the end of every turn, your clan will receive 1 fame and pay 1 food for every 30 food you own (max 5 per turn). This effect is calculated after food consumption.'),
+    ('CULINARY', 'cs', 'Tvůj klan dostane 1 slávu a zaplatí 1 jídlo na koci každého kola za každých 30 jídel, které máš v zásobě (maximum 5 za kolo). Tento efekt se počítá po konzumaci jídla.'),
+    ('DECORATION', 'en', 'At the end of every turn, your clan will receive 1 fame and pay 1 junk for every 30 junk you own (max 5 per turn).'),
+    ('DECORATION', 'cs', 'Tvůj klan dostane 1 slávu a zaplatí 1 šrot na konci každého kola za každých 30 šrotů, které máš v zásobě (maximum 5 za kolo).');

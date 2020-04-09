@@ -210,6 +210,21 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 notification.changeFame(fame);
 
                 notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
+
+                // pay resources
+                switch (bonusType) {
+                    case FOOD_FAME:
+                        clan.changeFood(- fame);
+                        notification.changeFood(- fame);
+                        break;
+                    case JUNK_FAME:
+                        clan.changeJunk(- fame);
+                        notification.changeJunk(- fame);
+                        break;
+                    default:
+                        log.error("Incompatible research type: {}", bonusType);
+                }
+
                 notificationService.save(notification);
             }
         }

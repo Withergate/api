@@ -8,8 +8,8 @@ INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, comb
     ('HAND_GUN', 'WEAPON', 'EPIC', 'RANGED', 50, 4, 0, 0, 'https://storage.googleapis.com/withergate-images/items/handgun.png');
 
 INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
-    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 12, 0, 2, 'PIERCING', 'detail.weapon.bonus.piercing', 10, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
-    ('SHINY_CROWBAR', 'WEAPON', 'COMMON', 'MELEE', 15, 1, -10, 'CAMOUFLAGE', 'detail.weapon.bonus.camouflage', 12, 1, 'https://storage.googleapis.com/withergate-images/items/shiny-crowbar.png'),
+    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 10, 0, 2, 'PIERCING', 'detail.weapon.bonus.piercing', 10, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
+    ('SHINY_CROWBAR', 'WEAPON', 'COMMON', 'MELEE', 15, 1, -10, 'CAMOUFLAGE', 'detail.weapon.sanction.camo', 12, 1, 'https://storage.googleapis.com/withergate-images/items/shiny-crowbar.png'),
     ('THROWING_KNIVES', 'WEAPON', 'RARE', 'RANGED', 22, 2, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 14, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
