@@ -56,7 +56,7 @@ public class CombatServiceImpl implements CombatService {
         enemy.setId(-1);
         enemy.setName("Enemy");
         enemy.setCombat(difficulty);
-        enemy.setHitpoints(difficulty + randomService.getRandomInt(1, RandomServiceImpl.K10));
+        enemy.setHitpoints(RandomServiceImpl.K10 + randomService.getRandomInt(difficulty, RandomServiceImpl.K10));
         enemy.setMaxHitpoints(enemy.getHitpoints());
 
         CombatResult result = handleCombat(character, notification, enemy, new ClanNotification());
