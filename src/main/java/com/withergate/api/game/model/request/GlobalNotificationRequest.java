@@ -2,6 +2,7 @@ package com.withergate.api.game.model.request;
 
 import java.util.Map;
 
+import com.withergate.api.game.model.notification.GlobalNotification.Type;
 import com.withergate.api.game.model.notification.LocalizedText;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.Setter;
 public class GlobalNotificationRequest {
 
     private Map<String, LocalizedText> message;
+    private Type type;
     private boolean active;
 
 }

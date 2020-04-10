@@ -1,6 +1,7 @@
 package com.withergate.api.service.game;
 
 import com.withergate.api.game.model.notification.GlobalNotification;
+import com.withergate.api.game.model.notification.GlobalNotification.Type;
 import com.withergate.api.game.model.request.GlobalNotificationRequest;
 import com.withergate.api.game.model.turn.Turn;
 import com.withergate.api.game.repository.notification.GlobalNotificationRepository;
@@ -57,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     @Override
     public void updateGlobalNotification(GlobalNotificationRequest request) {
-        GlobalNotification notification = globalNotificationRepository.getOne(GlobalNotification.Singleton.SINGLE);
+        GlobalNotification notification = globalNotificationRepository.getOne(request.getType());
         notification.setActive(request.isActive());
 
         for (String lang : request.getMessage().keySet()) {

@@ -31,7 +31,7 @@ public class GlobalNotification {
     @Id
     @Enumerated(EnumType.STRING)
     @Column(name = "single_id")
-    private Singleton id;
+    private Type id;
 
     @OneToMany
     @MapKeyColumn(name = "lang")
@@ -44,8 +44,8 @@ public class GlobalNotification {
     /**
      * Enforces single entity per table.
      */
-    public enum Singleton {
-        SINGLE
+    public enum Type {
+        GLOBAL, INGAME
     }
 
 }

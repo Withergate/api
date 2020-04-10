@@ -18,7 +18,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
-                .and().ignoring().antMatchers(HttpMethod.GET, "/actuator/health", "/version", "/game/info");
+                .and().ignoring().antMatchers(HttpMethod.GET, "/actuator/health", "/version", "/game/info",
+                "/notifications/global");
     }
 
 }
