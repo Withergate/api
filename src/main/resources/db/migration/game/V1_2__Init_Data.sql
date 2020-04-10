@@ -256,3 +256,14 @@ INSERT INTO attribute_templates (template_type, attr_sum, combat, scavenge, craf
     ('COMBAT', 13, 3, 3, 2, 5),
     ('COMBAT', 11, 2, 4, 4, 1),
     ('COMBAT', 9, 4, 1, 1, 3);
+
+-- Notification bootstrap
+INSERT INTO global_notification VALUES
+    ('GLOBAL', false),
+    ('INGAME', false);
+
+INSERT INTO localized_texts (global_notification, lang, text) VALUES
+    ('GLOBAL', 'en', ''),
+    ('GLOBAL', 'cs', ''),
+    ('INGAME', 'en', ''),
+    ('INGAME', 'cs', '');

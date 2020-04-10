@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.withergate.api.game.model.notification.GlobalNotification;
-import com.withergate.api.game.model.notification.GlobalNotification.Singleton;
+import com.withergate.api.game.model.notification.GlobalNotification.Type;
 import com.withergate.api.game.model.notification.LocalizedText;
 import com.withergate.api.game.model.request.GlobalNotificationRequest;
 import com.withergate.api.game.repository.notification.GlobalNotificationRepository;
 import com.withergate.api.scheduling.TurnScheduler;
-import com.withergate.api.service.game.AdminServiceImpl;
 import com.withergate.api.service.turn.TurnService;
 import org.flywaydb.core.Flyway;
 import org.junit.Assert;
@@ -56,6 +55,7 @@ public class AdminServiceTest {
         // given request
         GlobalNotificationRequest request = new GlobalNotificationRequest();
         request.setActive(true);
+        request.setType(Type.GLOBAL);
 
         Map<String, LocalizedText> messageRequest = new HashMap<>();
         LocalizedText text = new LocalizedText();
@@ -72,7 +72,7 @@ public class AdminServiceTest {
         text2.setLang("en");
         messageNotification.put("en", text2);
         notification.setMessage(messageNotification);
-        Mockito.when(globalNotificationRepository.getOne(Singleton.SINGLE)).thenReturn(notification);
+        Mockito.when(globalNotificationRepository.getOne(Type.GLOBAL)).thenReturn(notification);
 
         // when updating
         adminService.updateGlobalNotification(request);

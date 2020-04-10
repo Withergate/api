@@ -1,10 +1,13 @@
 package com.withergate.api.controller;
 
+import javax.xml.bind.annotation.XmlElementDecl.GLOBAL;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.dto.GamePropertiesDTO;
 import com.withergate.api.game.model.dto.InfoDTO;
 import com.withergate.api.game.model.notification.GlobalNotification;
+import com.withergate.api.game.model.notification.GlobalNotification.Type;
 import com.withergate.api.game.model.request.GlobalNotificationRequest;
 import com.withergate.api.game.model.request.TurnRequest;
 import com.withergate.api.game.model.view.Views;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -113,8 +117,8 @@ public class ApplicationController {
      * @return the application version
      */
     @GetMapping("/notifications/global")
-    public ResponseEntity<GlobalNotification> getGlobalNotification() {
-        return new ResponseEntity<>(globalNotificationRepository.getOne(GlobalNotification.Singleton.SINGLE), HttpStatus.OK);
+    public ResponseEntity<GlobalNotification> getGlobalNotification(@RequestParam(name = "type") String type) {
+        return new ResponseEntity<>(globalNotificationRepository.getOne(Type.valueOf(type)), HttpStatus.OK);
     }
 
     /**

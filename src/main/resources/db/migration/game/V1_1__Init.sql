@@ -435,12 +435,6 @@ CREATE TABLE localized_texts (
     CONSTRAINT localized_text_faction_aid_fk FOREIGN KEY (faction_aid) REFERENCES faction_aids (identifier)
 );
 
--- Notification bootstrap
-INSERT INTO global_notification VALUES ('SINGLE', false);
-INSERT INTO localized_texts (global_notification, lang, text) VALUES
-    ('SINGLE', 'en', ''),
-    ('SINGLE', 'cs', '');
-
 -- Market offers
 DROP TABLE IF EXISTS market_offers;
 CREATE TABLE market_offers (
