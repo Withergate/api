@@ -10,6 +10,7 @@ INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, comb
 INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
     ('BAT', 'WEAPON', 'COMMON', 'MELEE', 10, 0, 2, 'PIERCING', 'detail.weapon.bonus.piercing', 10, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
     ('SHINY_CROWBAR', 'WEAPON', 'COMMON', 'MELEE', 15, 1, -10, 'CAMOUFLAGE', 'detail.weapon.sanction.camo', 12, 1, 'https://storage.googleapis.com/withergate-images/items/shiny-crowbar.png'),
+    ('MACHETE', 'WEAPON', 'RARE', 'MELEE', 20, 1, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 13, 2, 'https://storage.googleapis.com/withergate-images/items/machete.png'),
     ('THROWING_KNIVES', 'WEAPON', 'RARE', 'RANGED', 22, 2, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 14, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
@@ -27,6 +28,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('BOOMERANG', 'cs', 'Boomerang'),
     ('THROWING_KNIVES', 'en', 'Throwing knives'),
     ('THROWING_KNIVES', 'cs', 'Vrhací nože'),
+    ('MACHETE', 'en', 'Machete'),
+    ('MACHETE', 'cs', 'Mačeta'),
     ('CROSSBOW', 'en', 'Crossbow'),
     ('CROSSBOW', 'cs', 'Kuše'),
     ('HAND_GUN', 'en', 'Hand gun'),
@@ -47,6 +50,8 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('BOOMERANG', 'cs', 'Dřevěný boomerang s přidělanými žiletkami.'),
     ('THROWING_KNIVES', 'en', 'A set of well balanced throwing knives. Especially effective if you hit someone in the face. Ignores part of the armor of your opponent.'),
     ('THROWING_KNIVES', 'cs', 'Několik dobře vybalancovaných vrhacích nožů. Efektivní zejména, pokud někoho trefíte do xichtu. Ignorují část zbroje vašho protivníka.'),
+    ('MACHETE', 'en', 'A very strong argument. Pierces through the armor of your opponent.'),
+    ('MACHETE', 'cs', 'Velice pádný a docela i ostrý argument do jakékoliv debaty. Mačeta ignoruje část zbroje protivníka.'),
     ('CROSSBOW', 'en', 'Modern crossbows can be precise and silent at the same time.'),
     ('CROSSBOW', 'cs', 'Moderní kuše. Přesná a tichá.'),
     ('HAND_GUN', 'en', 'Hand gun. Light, practical, deadly.'),
@@ -164,9 +169,12 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 -- Outfit details
 INSERT INTO item_details(identifier, item_type, rarity, price, combat, bonus_type, bonus, bonus_text, crafting_cost, crafting_level, image_url) VALUES
     ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 12, 1, null, 0, null, 12, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
-    ('LAB_COAT', 'OUTFIT', 'COMMON', 12, 0, 'RESEARCH', 1, 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/lab-coat.png'),
+    ('LAB_COAT', 'OUTFIT', 'COMMON', 11, 0, 'RESEARCH', 1, 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/lab-coat.png'),
+    ('CAMO_JACKET', 'OUTFIT', 'COMMON', 12, 0, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 11, 1, 'https://storage.googleapis.com/withergate-images/items/camo-jacket.png'),
     ('LEATHER_COVERED', 'OUTFIT', 'RARE', 20, 2, null, 0, null, 14, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
     ('CAMO_SUIT', 'OUTFIT', 'RARE', 20, 1, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 14, 2, 'https://storage.googleapis.com/withergate-images/items/camo-suit.png'),
+    ('PONCHO', 'OUTFIT', 'RARE', 22, 0, 'CAMOUFLAGE', 20, 'detail.gear.bonus.camouflage', 14, 2, 'https://storage.googleapis.com/withergate-images/items/poncho.png'),
+    ('PROTECTIVE_SUIT', 'OUTFIT', 'RARE', 26, 1, 'RESEARCH', 2, 'detail.gear.bonus.work', 15, 3, 'https://storage.googleapis.com/withergate-images/items/protective-suit.png'),
     ('KEVLAR', 'OUTFIT', 'EPIC', 45, 3, null, 0, null, 0, 0, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
@@ -174,10 +182,16 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('LEATHER_CLOTHES', 'cs', 'Kožené oblečení'),
     ('LAB_COAT', 'en', 'Lab coat'),
     ('LAB_COAT', 'cs', 'Laboratorní plášť'),
+    ('CAMO_JACKET', 'en', 'Camo jacket'),
+    ('CAMO_JACKET', 'cs', 'Maskovací bunda'),
     ('LEATHER_COVERED', 'en', 'Leather clothes covered with nails'),
     ('LEATHER_COVERED', 'cs', 'Hřeby pobité kožené oblečení'),
     ('CAMO_SUIT', 'en', 'Camo suit'),
     ('CAMO_SUIT', 'cs', 'Maskáče'),
+    ('PONCHO', 'en', 'Camo poncho'),
+    ('PONCHO', 'cs', 'Hejkal'),
+    ('PROTECTIVE_SUIT', 'en', 'Protective suit'),
+    ('PROTECTIVE_SUIT', 'cs', 'Ochranný oblek'),
     ('KEVLAR', 'en', 'Kevlar vest'),
     ('KEVLAR', 'cs', 'Kevlarová vesta');
 
@@ -186,9 +200,15 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('LEATHER_CLOTHES', 'cs', 'Standardní oděv poskytující základní ochranu.'),
     ('LAB_COAT', 'en', 'Torn lab coat. Does not offer any protection but looks incredibly smart. Increases research speed.'),
     ('LAB_COAT', 'cs', 'Potrhaný laboratorní plášť. Neposkytuje žádnou ochranu, ale vypadá zatraceně chytře. Zvyšuje rychlost výzkumu.'),
+    ('CAMO_JACKET', 'en', 'This clothing decreases chances for random encounters but does not provide any defense.'),
+    ('CAMO_JACKET', 'cs', 'Tento oděv pokrytý listím a dalším bordelem nijak nepomůže v boji, ale snižuje šanci na náhodné události.'),
     ('LEATHER_COVERED', 'en', 'Clothing made of leather covered with nails and other metal junk. Unattractive, yes, but it protects every important parts of the body.'),
     ('LEATHER_COVERED', 'cs', 'Oděv z kůže pobité hřeby a dalšími kovovými zbytky. Nevzhledně vypadající, leč dostatečně chránící všechny důležité části těla.'),
     ('CAMO_SUIT', 'en', 'Camouflage clothing designed to resemble the background environment. It provides basic defense and also decreases chances for random encounters.'),
     ('CAMO_SUIT', 'cs', 'Maskovací oblečení pro splynutí s okolím. Tento oděv poskytuje základní ochranu a navíc snižuje šanci na náhodné události.'),
+    ('PONCHO', 'en', 'This clothing rapidly decreases chance for random encounters. Works also in the streets, really!'),
+    ('PONCHO', 'cs', 'Pončo, na němž je připevněna snad polovina lesa. Zásadně snižuje šanci na náhodné události - z nějakého nepochopitelného důvodu i ve městě.'),
+    ('PROTECTIVE_SUIT', 'en', 'Not really the power armor, but still cool. This clothing provides basic defence and rapidly increases research speed.'),
+    ('PROTECTIVE_SUIT', 'cs', 'V tomhle tě při výzkumu nových technologií nic nezraní, ani menší výbuch. Oděv poskytuje základní ochranu, ale hlavně zásadně zvyšuje rychlost výzkumu.'),
     ('KEVLAR', 'en', 'Vest made of ancient material which nobody can produce today. Apart from few scratches, it is a real masterpiece.'),
     ('KEVLAR', 'cs', 'Vesta z pradávného materiálu, který dnes již nikdo neumí vyrobit. Až na pár odřenin je to skutečný skvost..');
