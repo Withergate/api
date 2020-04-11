@@ -443,6 +443,7 @@ CREATE TABLE market_offers (
     seller_id INT,
     buyer_id INT,
     item_id INT,
+    intelligent BIT DEFAULT 0,
     price INT NOT NULL,
     CONSTRAINT offer_seller_fk FOREIGN KEY (seller_id) REFERENCES clans (clan_id),
     CONSTRAINT offer_buyer_fk FOREIGN KEY (buyer_id) REFERENCES clans (clan_id),

@@ -39,6 +39,9 @@ public class MarketOffer {
     @Column(name = "price", nullable = false)
     private int price;
 
+    @Column(name = "intelligent", nullable = false)
+    private boolean intelligent;
+
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;

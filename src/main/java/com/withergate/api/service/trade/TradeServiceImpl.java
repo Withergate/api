@@ -199,6 +199,7 @@ public class TradeServiceImpl implements TradeService {
         offer.setSeller(item.getClan());
         offer.setItem(item);
         offer.setPrice(request.getPrice());
+        offer.setIntelligent(request.isIntelligent());
         offer.setState(State.PUBLISHED);
         marketOfferRepository.save(offer);
 
@@ -235,6 +236,11 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public void performComputerTradeActions(int turnId) {
         for (MarketOffer offer : marketOfferRepository.findAllByState(State.PUBLISHED)) {
+            // intelligent offers
+            if (offer.isIntelligent()) {
+                offer.setPrice(offer.getItem().getDetails().getPrice());
+            }
+
             // if item is offered for market price, sell it
             if (offer.getPrice() == offer.getItem().getDetails().getPrice()) {
                 Clan clan = offer.getSeller();
@@ -260,6 +266,7 @@ public class TradeServiceImpl implements TradeService {
         // delete old unprocessed offers
         for (MarketOffer offer : marketOfferRepository.findAllByState(State.PUBLISHED)) {
             if (offer.getSeller() == null) {
+                itemService.deleteItem(offer.getItem());
                 marketOfferRepository.delete(offer);
             }
         }
