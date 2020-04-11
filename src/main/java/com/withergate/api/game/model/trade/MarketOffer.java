@@ -39,7 +39,7 @@ public class MarketOffer {
     @Column(name = "price", nullable = false)
     private int price;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 

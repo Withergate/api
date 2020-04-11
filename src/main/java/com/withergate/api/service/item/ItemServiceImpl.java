@@ -241,12 +241,16 @@ public class ItemServiceImpl implements ItemService {
         }
 
         // delete consumable
-        consumable.setClan(null);
-        itemRepository.delete(consumable);
+        deleteItem(consumable);
     }
 
     @Override
     public void deleteItem(Item item) {
+        if (item.getOffer() != null) {
+            item.getOffer().setItem(null);
+            item.setOffer(null);
+        }
+
         item.setClan(null);
         item.setCharacter(null);
         itemRepository.delete(item);
