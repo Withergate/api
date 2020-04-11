@@ -442,7 +442,7 @@ CREATE TABLE market_offers (
     state VARCHAR(16) NOT NULL,
     seller_id INT,
     buyer_id INT,
-    item_id INT NOT NULL,
+    item_id INT,
     price INT NOT NULL,
     CONSTRAINT offer_seller_fk FOREIGN KEY (seller_id) REFERENCES clans (clan_id),
     CONSTRAINT offer_buyer_fk FOREIGN KEY (buyer_id) REFERENCES clans (clan_id),
