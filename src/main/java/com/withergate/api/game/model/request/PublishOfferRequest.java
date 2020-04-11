@@ -14,5 +14,6 @@ public class PublishOfferRequest {
 
     private int itemId;
     private int price;
+    private boolean intelligent;
 
 }
