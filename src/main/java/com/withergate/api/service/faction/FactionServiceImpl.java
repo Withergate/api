@@ -212,6 +212,7 @@ public class FactionServiceImpl implements FactionService {
         }
     }
 
+    @Transactional
     @Override
     public Faction getBestFaction() {
         List<Faction> factions = factionRepository.findAll().stream().sorted(Comparator.comparingInt(Faction::getPoints)
