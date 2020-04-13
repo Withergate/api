@@ -157,10 +157,6 @@ public class AchievementServiceImpl implements AchievementService {
                 checkAchievementAward(profile, AchievementType.DISASTERS_AVERTED);
             }
             checkAchievementAward(profile, AchievementType.GAME_COUNT, profile.getNumPlayedGames());
-            if (clan.getFaction() != null
-                    && clan.getFaction().getIdentifier().equals(factionService.getBestFaction().getIdentifier())) {
-                checkAchievementAward(profile, AchievementType.MEMBER_OF_TOP_FACTION, clan.getFactionPoints());
-            }
             if (clan.getFaction() != null && clan.getId() == factionService.getBestClan(clan.getFaction()).getId()) {
                 checkAchievementAward(profile, AchievementType.TOP_FACTION_MEMBER);
             }
