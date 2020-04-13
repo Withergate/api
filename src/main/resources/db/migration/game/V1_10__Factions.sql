@@ -6,7 +6,6 @@ INSERT INTO localized_texts (faction_name, lang, text) VALUES
     ('REVOLUTION', 'en', 'De Fenestra'),
     ('REVOLUTION', 'cs', 'De Fenestra');
 
-
 INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('REVOLUTION', 'en', 'Some people do not believe in progress. Those are the exact people that were afraid of big inventions and were not able to control them. They were the real cause of the end of our civilization. They still walk amongst us - ruling the city, pacting with Atomists... We have to take them down. There is no time for talking at the Clan Assembly or waiting for King beyond the Wasteland to come and rescue us. Let us overthrow the corrupt honoration and create a true democracy, like the one from before the collapse.'),
     ('REVOLUTION', 'cs', 'Nejhorší na světě jsou zpátečníci, kteří nevěří v pokrok. Přesně takoví lidé, kteří se báli velkých vynálezů a neuměli je správně využít, způsobili zkázu civilizace. A jsou stále mezi námi - vládnou městu, vládnou Pustině a společně s atomisty ovládají vše... Tomu je třeba učinit přítrž. Není čas na dlouhé debaty na sněmu klanů, není čas čekat na příchod Krále za Pustinou, pojďme společně svrhnout zkorumpovanou honoraci a nastolit opravdovou vládu lidu, jaká dle legend existovala před dávnými věky.');
@@ -22,10 +21,10 @@ INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('r.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
-    ('quest.r1', 'AUTOMATIC', null, 0, 6, 10, 5, 3, 0, 0, null, false, true, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
+    ('quest.r1', 'AUTOMATIC', null, 0, 5, 10, 5, 3, 0, 0, null, false, true, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
     ('quest.r2', 'INTELLECT_LOW', null, 5, 2, 20, 10, 6, 0, 0, null, false, true, 'quest.r3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r2.png'),
     ('quest.r3', 'CRAFTSMANSHIP', null, 6, 3, 30, 15, 9, 0, 5, null, false, true, 'quest.r4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-r3.png'),
-    ('quest.r4', 'INTELLECT', null, 8, 6, 40, 20, 12, 0, 0, null, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-r4.png');
+    ('quest.r4', 'INTELLECT', null, 8, 5, 40, 20, 12, 0, 0, null, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-r4.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.r1', 'en', 'The voice of a crowd'),
