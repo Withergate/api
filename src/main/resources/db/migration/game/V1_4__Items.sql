@@ -43,7 +43,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('BAT', 'en', 'Baseball bat full of splinters enhanced with some nails. It is hard to hit something but when it does, it pierces through the armor of your opponent.'),
     ('BAT', 'cs', 'Baseballová pálka vylepšená několika hřebíky. Díky své váze je poměrně náročné někoho trefit, ale když se to povede, stojí to za to. Ignoruje část zbroje protivníka.'),
     ('SHINY_CROWBAR', 'en', 'Handy crowbar with a shiny finish. Looks really nice but increases the encounter chance when searching and scouting.'),
-    ('SHINY_CROWBAR', 'cs', 'Páčidlo v provedení vysokého lesku. Vyadá velmi efektně, ale přitahuje pozornost. Zvyšuje šanci na náhodnou událost při hledání a pátrání.'),
+    ('SHINY_CROWBAR', 'cs', 'Páčidlo v provedení vysokého lesku. Vypadá velmi efektně, ale přitahuje pozornost. Zvyšuje šanci na náhodnou událost při hledání a pátrání.'),
     ('CHAINSAW', 'en', 'Gas powered chainsaw with some fuel still left in the tank.'),
     ('CHAINSAW', 'cs', 'Benzinová motorová pila s palivem v nádrži.'),
     ('BOOMERANG', 'en', 'Wooden boomerang. With some razors attached to it.'),
@@ -115,7 +115,7 @@ INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type
     ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 13, 2, 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
     ('BANNER', 'GEAR', 'RARE', 20, 2, 'FACTION_POINTS', 'detail.gear.bonus.factionPoints', 14, 3, 'https://storage.googleapis.com/withergate-images/items/banner.png'),
     ('TRINKETS', 'GEAR', 'RARE', 20, 2, 'SCOUTING', 'detail.gear.bonus.information', 14, 2, 'https://storage.googleapis.com/withergate-images/items/trinkets.png'),
-    ('SURVIVAL_KIT', 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 14, 2, 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
+    ('SURVIVAL_KIT', 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 14, 3, 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 0, 0, 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
