@@ -1,6 +1,6 @@
 -- Building details
 INSERT INTO building_details(identifier, cost, bonus_type, bonus_text, bonus, passive_bonus_type, passive_bonus, passive_bonus_text, image_url) VALUES
-    ('SICK_BAY', 12, 'HEALING', 'detail.healing.building', 2, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
+    ('SICK_BAY', 12, 'HEALING', 'detail.healing.building', 2, 'CRAFTING_CONSUMABLE', 0, null, 'https://storage.googleapis.com/withergate-images/buildings/sickbay.png'),
     ('GMO_FARM', 12, null, null, 0, 'FOOD_INCOME', 2, 'building.gmofarm.income', 'https://storage.googleapis.com/withergate-images/buildings/gmofarm.png'),
     ('TRAINING_GROUNDS', 12, 'TRAINING', 'detail.building.training', 1, null, 0, null, 'https://storage.googleapis.com/withergate-images/buildings/traininggrounds.png'),
     ('MONUMENT', 16, null, null, 0, 'FAME_INCOME', 1, 'building.monument.income', 'https://storage.googleapis.com/withergate-images/buildings/monument.png'),
@@ -56,8 +56,8 @@ INSERT INTO localized_texts(building_description, lang, text) VALUES
     ('KENNELS', 'cs', 'Tohle je Alík. Alík se rád mazlí, aportuje a trhá.');
 
 INSERT INTO localized_texts(building_info, lang, text) VALUES
-    ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting.'),
-    ('SICK_BAY', 'cs', 'Každá úroveň této budovy zvyšuje počet vyléčených životů postav, které odpočívají.'),
+    ('SICK_BAY', 'en', 'Each level of this building increases the hitpoints healed when resting. Sick Bay also enables you to craft medical items.'),
+    ('SICK_BAY', 'cs', 'Každá úroveň této budovy zvyšuje počet vyléčených životů postav, které odpočívají. Kromě toho Marodka odemyká možnost výroby léčivých předmětů.'),
     ('GMO_FARM', 'en', 'Each level of this building grants free food every turn.'),
     ('GMO_FARM', 'cs', 'Každá úroveň této budovy poskytuje jídlo zdarma každé kolo.'),
     ('TRAINING_GROUNDS', 'en', 'Each level of this building grants free experience to all resting characters every turn. Additionally, increasing the level of this building increases the number of traits available for training for each character.'),

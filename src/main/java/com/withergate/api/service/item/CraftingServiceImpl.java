@@ -10,6 +10,7 @@ import com.withergate.api.game.model.action.CraftingAction;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.game.model.item.EffectType;
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.item.ItemType;
@@ -17,6 +18,7 @@ import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.CraftingRequest;
 import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.action.CraftingActionRepository;
@@ -56,7 +58,7 @@ public class CraftingServiceImpl implements CraftingService {
         Clan clan = clanService.getClan(clanId);
 
         List<ItemDetails> detailsList = detailsRepository.findAll().stream()
-                .filter(details -> !details.getRarity().equals(Rarity.EPIC)).collect(
+                .filter(details -> details.getCraftingLevel() > 0).collect(
                 Collectors.toList());
         List<ItemDetails> resultList = new ArrayList<>();
 
@@ -167,7 +169,7 @@ public class CraftingServiceImpl implements CraftingService {
     }
 
     private boolean checkCraftingRequirements(ItemDetails details, Clan clan) throws InvalidActionException {
-        Building building = getBuildingForItem(details.getItemType(), clan);
+        Building building = getBuildingForItem(details, clan);
 
         if (building == null) return false;
 
@@ -178,7 +180,8 @@ public class CraftingServiceImpl implements CraftingService {
         return false;
     }
 
-    private Building getBuildingForItem(ItemType type, Clan clan) throws InvalidActionException {
+    private Building getBuildingForItem(ItemDetails details, Clan clan) throws InvalidActionException {
+        ItemType type = details.getItemType();
         for (Building building : clan.getBuildings()) {
             if (building.getDetails().getPassiveBonusType() == null) continue;
             if (type.equals(ItemType.WEAPON)
@@ -190,7 +193,12 @@ public class CraftingServiceImpl implements CraftingService {
             } else if (type.equals(ItemType.OUTFIT)
                     && building.getDetails().getPassiveBonusType().equals(PassiveBonusType.CRAFTING_OUTFIT)) {
                 return building;
-            } else if (type.equals(ItemType.CONSUMABLE)) {
+            } else if (type.equals(ItemType.CONSUMABLE)
+                    && building.getDetails().getPassiveBonusType().equals(PassiveBonusType.CRAFTING_CONSUMABLE)) {
+                if (details.getEffectType().equals(EffectType.HEALING) && building.getDetails().getBonusType() != null
+                    && building.getDetails().getBonusType().equals(BonusType.HEALING)) {
+                    return building;
+                }
                 return null;
             }
         }
