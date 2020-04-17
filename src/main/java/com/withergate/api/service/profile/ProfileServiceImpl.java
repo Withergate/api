@@ -116,4 +116,13 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setTheme(theme);
     }
 
+    @Transactional(transactionManager = "profileTransactionManager")
+    @Override
+    public void updateProfile(int profileId, ProfileRequest request) {
+        Profile profile = getProfile(profileId);
+
+        // update properties
+        profile.setHelp(request.isHelp());
+    }
+
 }

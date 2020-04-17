@@ -69,4 +69,11 @@ public interface ProfileService {
      */
     void changeTheme(int profileId, String theme);
 
+    /**
+     * Updates profile properties.
+     *
+     * @param request request
+     */
+    void updateProfile(int profileId, ProfileRequest request);
+
 }
