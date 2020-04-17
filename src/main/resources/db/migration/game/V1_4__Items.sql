@@ -58,15 +58,15 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('HAND_GUN', 'cs', 'Pistole. Lehká, praktická, smrtící.');
 
 -- Consumable details
-INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, image_url) VALUES
-    ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 12, 4, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
-    ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
-    ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 12, 5, 3, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
-    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 30, 10, 4, 'EXPERIENCE', 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
-    ('STEROIDS', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 'https://storage.googleapis.com/withergate-images/items/steroids.png'),
-    ('TOXICAT', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_SCAVENGE', 'https://storage.googleapis.com/withergate-images/items/toxicat.png'),
-    ('TRIFFID_HAND', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_CRAFTSMANSHIP', 'https://storage.googleapis.com/withergate-images/items/triffid-hand.png'),
-    ('MIND_PATCH', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 'https://storage.googleapis.com/withergate-images/items/mind-patch.png');
+INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, crafting_cost, crafting_level, image_url) VALUES
+    ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 12, 4, 0, 'HEALING', 11, 2 ,'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
+    ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 13, 3, 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
+    ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 12, 5, 3, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
+    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 30, 10, 4, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
+    ('STEROIDS', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/steroids.png'),
+    ('TOXICAT', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_SCAVENGE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/toxicat.png'),
+    ('TRIFFID_HAND', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_CRAFTSMANSHIP', 0, 0, 'https://storage.googleapis.com/withergate-images/items/triffid-hand.png'),
+    ('MIND_PATCH', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/mind-patch.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SMALL_MEDKIT', 'en', 'Small medkit'),
