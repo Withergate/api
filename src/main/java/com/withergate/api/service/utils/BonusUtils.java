@@ -58,8 +58,8 @@ public class BonusUtils {
             if (building.getDetails().getPassiveBonusType() != null && building.getDetails().getPassiveBonusType().equals(bonusType)
                     && building.getLevel() > 0) {
                 if (building.getDetails().getPassiveBonusText() != null) {
-                    notificationService.addLocalizedTexts(notification.getText(), building.getDetails().getPassiveBonusText(), new String[] {},
-                            building.getDetails().getName());
+                    notificationService.addLocalizedTexts(notification.getText(), building.getDetails().getPassiveBonusText(),
+                            new String[] {}, building.getDetails().getName());
                 }
                 return building.getDetails().getPassiveBonus() * building.getLevel();
             }

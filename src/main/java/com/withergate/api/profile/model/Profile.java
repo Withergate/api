@@ -74,6 +74,10 @@ public class Profile {
     @Column(name = "consecutive_logins")
     private int consecutiveLogins;
 
+    @JsonView(Views.Internal.class)
+    @Column(name = "help")
+    private boolean help;
+
     @JsonIgnore
     @OneToMany(mappedBy = "profile", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<HistoricalResult> results;

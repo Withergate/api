@@ -1,0 +1,1 @@
+ALTER TABLE profiles ADD help BIT DEFAULT 1;

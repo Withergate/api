@@ -93,12 +93,24 @@ public class ProfileController {
      * @throws EntityConflictException entity conflict
      */
     @PostMapping("/profile")
-    public ResponseEntity<Profile> createClan(Principal principal, @RequestBody ProfileRequest request)
+    public ResponseEntity<Profile> createProfile(Principal principal, @RequestBody ProfileRequest request)
             throws EntityConflictException, ValidationException {
         log.debug("Creating a new profile for player {}", principal.getName());
 
         Profile profile = profileService.createProfile(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(profile, HttpStatus.CREATED);
+    }
+
+    /**
+     * Updates an existing profile for the authenticated player..
+     *
+     * @param principal the principal
+     * @param request the profile request
+     */
+    @PutMapping("/profile")
+    public ResponseEntity<Void> updateProfile(Principal principal, @RequestBody ProfileRequest request) {
+        profileService.updateProfile(Integer.parseInt(principal.getName()), request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

@@ -77,7 +77,7 @@ public class CraftingServiceTest {
         detailsList.add(mockItem(ItemType.WEAPON, Rarity.COMMON, 1, "weapon", 10));
         detailsList.add(mockItem(ItemType.GEAR, Rarity.COMMON, 1, "gear1", 10));
         detailsList.add(mockItem(ItemType.GEAR, Rarity.COMMON, 2, "gear2", 10));
-        detailsList.add(mockItem(ItemType.GEAR, Rarity.EPIC, 1, "gear3", 10));
+        detailsList.add(mockItem(ItemType.GEAR, Rarity.EPIC, 0, "gear3", 10));
         Mockito.when(detailsRepository.findAll()).thenReturn(detailsList);
 
         // when getting item details
