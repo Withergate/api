@@ -42,6 +42,9 @@ public class TavernServiceImpl implements TavernService {
     private static final int TAVERN_OFFERS = 3;
     private static final int ATTRIBUTE_PRICE = 8;
     private static final int TRAIT_PRICE = 16;
+    private static final int FAME_PRICE = 15;
+    private static final int CHARACTER_LIMIT = 5;
+    private static final int DEFAULT_ATTRIBUTES = 11;
 
     private final TavernActionRepository tavernActionRepository;
     private final NotificationService notificationService;
@@ -90,6 +93,7 @@ public class TavernServiceImpl implements TavernService {
         }
 
         clan.changeCaps(- cost);
+        clan.changeFame(- offer.getFame());
 
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
@@ -166,12 +170,29 @@ public class TavernServiceImpl implements TavernService {
             offer.setCharacter(character);
             offer.setClan(clan);
             offer.setPrice(price);
+            offer.setFame(0);
 
             tavernOfferRepository.save(offer);
 
             // update filter
             filter.getAvatars().add(character.getImageUrl());
             filter.getNames().add(character.getName());
+        }
+
+        // special offer for players with less characters
+        if (clan.getCharacters().size() < CHARACTER_LIMIT) {
+            Character character = characterService.generateRandomCharacter(filter,
+                    randomService.getRandomAttributeCombination(DEFAULT_ATTRIBUTES, Type.RANDOM));
+            characterService.save(character);
+
+            TavernOffer offer = new TavernOffer();
+            offer.setState(TavernOffer.State.AVAILABLE);
+            offer.setCharacter(character);
+            offer.setClan(clan);
+            offer.setPrice(FAME_PRICE);
+            offer.setFame(FAME_PRICE);
+
+            tavernOfferRepository.save(offer);
         }
     }
 
