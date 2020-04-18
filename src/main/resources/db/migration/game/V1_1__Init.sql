@@ -457,7 +457,8 @@ CREATE TABLE tavern_offers (
     offer_id INT AUTO_INCREMENT,
     state VARCHAR(16) NOT NULL,
     character_id INT,
-    price INT NOT NULL,
+    caps_price INT DEFAULT 0,
+    fame_price INT DEFAULT 0,
     clan_id INT NOT NULL,
     CONSTRAINT tavern_offer_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id),
     PRIMARY KEY (offer_id)

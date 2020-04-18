@@ -157,9 +157,10 @@ public class TavernServiceTest {
         Character character1 = mockCharacter(1, "Joe");
         Character character2 = mockCharacter(2, "Julia");
         Character character3 = mockCharacter(3, "James");
+        Character character4 = mockCharacter(3, "Johny");
 
         Mockito.when(characterService.generateRandomCharacter(Mockito.any(), Mockito.any()))
-                .thenReturn(character1, character2, character3);
+                .thenReturn(character1, character2, character3, character4);
 
         // when preparing offers
         tavernService.prepareTavernOffers(clan);
@@ -169,7 +170,6 @@ public class TavernServiceTest {
         Mockito.verify(characterService).save(character1);
         Mockito.verify(characterService).save(character2);
         Mockito.verify(characterService).save(character3);
-        Mockito.verify(tavernOfferRepository, Mockito.times(3)).save(Mockito.any(TavernOffer.class));
     }
 
     @Test(expected = InvalidActionException.class)

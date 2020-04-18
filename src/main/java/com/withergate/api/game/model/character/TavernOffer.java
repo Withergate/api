@@ -43,8 +43,11 @@ public class TavernOffer {
     @JoinColumn(name = "character_id")
     private Character character;
 
-    @Column(name = "price", updatable = false, nullable = false)
+    @Column(name = "caps_price", updatable = false, nullable = false)
     private int price;
+
+    @Column(name = "fame_price", updatable = false, nullable = false)
+    private int fame;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
