@@ -76,6 +76,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setLastActivity(LocalDateTime.now());
         profile.setRanking(0);
         profile.setTheme(DEFAULT_THEME);
+        profile.setHelp(true);
 
         return repository.save(profile);
     }
