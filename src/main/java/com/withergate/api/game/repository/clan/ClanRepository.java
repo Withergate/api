@@ -21,7 +21,7 @@ public interface ClanRepository extends JpaRepository<Clan, Integer> {
 
     Page<Clan> findAll(Pageable pageable);
 
-    List<Clan> findAllByOrderByFameDesc();
+    List<Clan> findAllByOrderByFameDescIdAsc();
 
     long countAllByFactionNotNull();
 
