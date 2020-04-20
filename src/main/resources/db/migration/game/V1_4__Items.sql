@@ -59,6 +59,7 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Consumable details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, crafting_cost, crafting_level, image_url) VALUES
+    ('BANDAGES', 'CONSUMABLE', 'COMMON', 9, 2, 0, 'HEALING', 9, 1,'https://storage.googleapis.com/withergate-images/items/bandages.png'),
     ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 12, 4, 0, 'HEALING', 11, 2 ,'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
     ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 13, 3, 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
     ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 12, 5, 3, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
@@ -69,6 +70,8 @@ INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, ef
     ('MIND_PATCH', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/mind-patch.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
+    ('BANDAGES', 'en', 'Bandages'),
+    ('BANDAGES', 'cs', 'Obvazy'),
     ('SMALL_MEDKIT', 'en', 'Small medkit'),
     ('SMALL_MEDKIT', 'cs', 'Malá lékárnička'),
     ('LARGE_MEDKIT', 'en', 'Large medkit'),
@@ -87,6 +90,8 @@ INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('MIND_PATCH', 'cs', 'Mozkový štěp');
 
 INSERT INTO localized_texts(item_description, lang, text) VALUES
+    ('BANDAGES', 'en', 'These bandages are made of fabric that was white once... probably.'),
+    ('BANDAGES', 'cs', 'Tyhle obvazy jsou vyrobené z kvalitní látky, která nejspíš kdysi byla bílá.'),
     ('SMALL_MEDKIT', 'en', 'Basic medical equipment for providing first aid and treating minor wounds.'),
     ('SMALL_MEDKIT', 'cs', 'Malá lékárnička se základními potřebami pro první pomoc.'),
     ('LARGE_MEDKIT', 'en', 'Large bag containing all sorts of medical equipment. Useful for treating more dangerous wounds.'),
