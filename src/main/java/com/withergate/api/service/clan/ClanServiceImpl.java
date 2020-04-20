@@ -84,7 +84,7 @@ public class ClanServiceImpl implements ClanService {
 
     @Override
     public List<Clan> getAllClansByFame() {
-        return clanRepository.findAllByOrderByFameDesc();
+        return clanRepository.findAllByOrderByFameDescIdAsc();
     }
 
     @Override

@@ -270,7 +270,7 @@ INSERT INTO localized_texts(disaster_name, lang, text) VALUES
 
 INSERT INTO localized_texts(disaster_description, lang, text) VALUES
     ('d.outbreak', 'en', 'There are rumours that there was a virus outbreak in Withergate. We are not sure what it is but it is highly contagious and it is just a question of time before it spreads through the whole Wasteland. We should ready ourselves for the worst case, gather information and stock up. Or is it already too late?'),
-    ('d.outbreak', 'cs', 'Donesly se k nám zprávy, že ve Withergate se začal šířit nějaký nebezpečný virus. Nevíme zatím, o co se jedná, ale rychle se šíří je jen otázkou času, kdy se rozšíří po celé Pustině. Měli bychom se připravit na nejhorší, zjistit si dostatek informací a udělat zásoby. Nebo už je příliš pozdě?');
+    ('d.outbreak', 'cs', 'Donesly se k nám zprávy, že ve Withergate se začal šířit nějaký nebezpečný virus. Nevíme zatím, o co se jedná, ale rychle se šíří a je jen otázkou času, kdy se rozšíří po celé Pustině. Měli bychom se připravit na nejhorší, zjistit si dostatek informací a udělat zásoby. Nebo už je příliš pozdě?');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.outbreak.success', 'en', 'We managed to avoid the outbreak in our clan and surroundings. Fortunately, nobody got infected, we are sufficiently stocked and others are well informed about hygiene and quarantine. Well done!'),
@@ -299,8 +299,8 @@ INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
 INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.outbreak.s1', 'en', 'Let’s go from clan to clan, talk to wayfarers and organize happenings. We need to tell others that it is absolutely crucial to avoid all sorts of human contact, restrict travel and improve hygiene.'),
     ('d.outbreak.s1', 'cs', 'Pojďme chodit od klanu ke klanu, zastavovat pocestné a pořádat setkání a besedy, na kterých ostatní řádně poučíme o nutnosti omezení cestování a shlukování lidí a lepší hygieně.'),
-    ('d.outbreak.s2', 'en', 'Ti šikovnější z nás by mohli vyrobit lékařské roušky a respirátory, abychom nedýchali stejný vzduch jako ti méně šťastní z nás.'),
-    ('d.outbreak.s2', 'cs', 'Some of us can work on creating improvised medical drapes and respirators so we don’t breathe the same air as the sick ones.'),
+    ('d.outbreak.s2', 'en', 'Some of us can work on creating improvised medical drapes and respirators so we don’t breathe the same air as the sick ones.'),
+    ('d.outbreak.s2', 'cs', 'Ti šikovnější z nás by mohli vyrobit lékařské roušky a respirátory, abychom nedýchali stejný vzduch jako ti méně šťastní z nás.'),
     ('d.outbreak.s3', 'en', 'We should stock up in case of quarantine so we won’t die in case we need to cut ourselves off completely.'),
     ('d.outbreak.s3', 'cs', 'Možná, že nás čeká delší karanténa. Bude nutné vytvořit zásoby, abychom během ní nepomřeli hlady.'),
     ('d.outbreak.s4', 'en', 'A very rare herb grows in a Wasteland, which is said to be able to partially cure this disease. It might be just a hoax but we might want to check it out and look for it.'),
