@@ -1,5 +1,7 @@
 package com.withergate.api.service.action;
 
+import java.util.List;
+
 /**
  * ActionService interface.
  *
@@ -75,7 +77,7 @@ public interface ActionService {
      *
      * @param turnId turn ID
      */
-    void performEndGameActions(int turnId);
+    void performFactionFameDistribution(int turnId, List<Integer> turns);
 
     /**
      * Assign default actions to all characters.

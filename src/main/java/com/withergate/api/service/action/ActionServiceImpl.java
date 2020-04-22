@@ -1,5 +1,6 @@
 package com.withergate.api.service.action;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.withergate.api.game.model.Clan;
@@ -165,11 +166,14 @@ public class ActionServiceImpl implements ActionService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
     @Retryable
     @Override
-    public void performEndGameActions(int turnId) {
-        log.debug("-> Processing end game actions...");
+    public void performFactionFameDistribution(int turnId, List<Integer> turns) {
+        log.debug("-> Checking faction fame distribution...");
 
-        // factions fame distribution
-        factionService.handleFameDistribution(turnId);
+        for (int turn : turns) {
+            if (turn == turnId) {
+                factionService.handleFameDistribution(turnId);
+            }
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)

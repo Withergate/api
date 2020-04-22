@@ -19,7 +19,7 @@ INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, 
     ('quest.17', 'COMBAT', null, 7, 1, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest17.png');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, food_cost, junk_cost, item_cost, health_cost, image_url) VALUES
-    ('quest.18', 'AUTOMATIC', null, 0, 2, 40, 25, 0, 0, 'OUTFIT', true, 'https://storage.googleapis.com/withergate-images/quests/quest-18.png'),
+    ('quest.18', 'AUTOMATIC', null, 0, 2, 40, 25, 0, 0, 'OUTFIT', true, 'https://storage.googleapis.com/withergate-images/quests/quest-18.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.1', 'en', 'Deratization'),

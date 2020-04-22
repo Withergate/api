@@ -102,10 +102,11 @@ public class TurnScheduler {
         clanService.performClanTurnUpdates(currentTurn.getTurnId());
         characterService.deleteDeadCharacters();
 
+        // perform faction fame distribution
+        actionService.performFactionFameDistribution(currentTurn.getTurnId(), gameProperties.getFactionTurns());
+
         // perform end game actions
         if (currentTurn.getTurnId() == gameProperties.getMaxTurns()) {
-            actionService.performEndGameActions(currentTurn.getTurnId());
-
             // save historical results
             resultsService.saveResults(clanService.getAllClansByFame());
 
