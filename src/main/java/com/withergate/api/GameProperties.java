@@ -31,8 +31,11 @@ public class GameProperties {
     private int tavernRefreshPrice;
     private int trainingPrice;
     private int traitForgetPrice;
+
+    // faction
     private int factionEntryFame;
     private int factionFameCoefficient;
+    private List<Integer> factionTurns;
 
     // loans
     private int loanCaps;

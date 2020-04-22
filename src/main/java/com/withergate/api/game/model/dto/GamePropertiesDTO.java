@@ -1,5 +1,7 @@
 package com.withergate.api.game.model.dto;
 
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +28,7 @@ public class GamePropertiesDTO {
     private final int trainingPrice;
     private final int traitForgetPrice;
     private final int factionEntryFame;
+    private final List<Integer> factionTurns;
 
     // loans
     private final int loanCaps;
@@ -49,6 +52,7 @@ public class GamePropertiesDTO {
         this.trainingPrice = properties.getTrainingPrice();
         this.traitForgetPrice = properties.getTraitForgetPrice();
         this.factionEntryFame = properties.getFactionEntryFame();
+        this.factionTurns = properties.getFactionTurns();
         this.loanCaps = properties.getLoanCaps();
         this.loanPayback = properties.getLoanPayback();
         this.loanFame = properties.getLoanFame();
