@@ -105,9 +105,14 @@ public class FactionServiceImpl implements FactionService {
             }
             // check item cost
             ConditionValidator.checkActionCondition(character, null, aid.getItemCost());
+            // check information cost
+            if (clan.getInformation() < aid.getInformationCost()) {
+                throw new InvalidActionException("Not enough information to perform this action.");
+            }
 
             // pay resources
-            clan.changeCaps(-aid.getCost());
+            clan.changeCaps(- aid.getCost());
+            clan.changeInformation(- aid.getInformationCost());
 
             action.setFactionAid(aid);
         }

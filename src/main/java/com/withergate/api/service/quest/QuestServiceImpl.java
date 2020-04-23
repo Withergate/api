@@ -112,11 +112,12 @@ public class QuestServiceImpl implements QuestService {
 
         // check price
         QuestDetails details = quest.getDetails();
-        if (clan.getFood() < details.getFoodCost() || clan.getJunk() < details.getJunkCost()) {
+        if (clan.getFood() < details.getFoodCost() || clan.getJunk() < details.getJunkCost() || clan.getCaps() < details.getCapsCost()) {
             throw new InvalidActionException("Not enough resources to perform this action.");
         }
-        clan.changeFood(-details.getFoodCost());
-        clan.changeJunk(-details.getJunkCost());
+        clan.changeFood(- details.getFoodCost());
+        clan.changeJunk(- details.getJunkCost());
+        clan.changeCaps(- details.getCapsCost());
 
         // persist the action
         QuestAction action = new QuestAction();

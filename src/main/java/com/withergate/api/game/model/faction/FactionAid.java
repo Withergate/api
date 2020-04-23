@@ -65,6 +65,9 @@ public class FactionAid {
     @Column(name = "item_cost", updatable = false, nullable = false)
     private ItemCost itemCost;
 
+    @Column(name = "information_cost", updatable = false, nullable = false)
+    private int informationCost;
+
     @ManyToOne
     @JoinColumn(name = "faction")
     @JsonIgnore

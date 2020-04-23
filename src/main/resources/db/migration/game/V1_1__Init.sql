@@ -34,6 +34,7 @@ CREATE TABLE faction_aids (
     num_aid INT NOT NULL DEFAULT 0,
     health_cost BIT DEFAULT 0,
     item_cost VARCHAR(16) DEFAULT NULL,
+    information_cost INT DEFAULT 0,
     faction VARCHAR(16) NOT NULL,
     PRIMARY KEY (identifier),
     CONSTRAINT faction_faction_solution_fk FOREIGN KEY (faction) REFERENCES factions (identifier)
@@ -298,6 +299,7 @@ CREATE TABLE quest_details (
     faction_reward INT DEFAULT 0,
     food_cost INT DEFAULT 0,
     junk_cost INT DEFAULT 0,
+    caps_cost INT DEFAULT 0,
     item_cost VARCHAR(16) DEFAULT NULL,
     health_cost BIT DEFAULT 0,
     follow_up VARCHAR(32),
