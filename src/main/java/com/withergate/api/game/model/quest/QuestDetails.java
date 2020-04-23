@@ -74,6 +74,9 @@ public class QuestDetails {
     @Column(name = "junk_cost", nullable = false)
     private int junkCost;
 
+    @Column(name = "caps_cost", nullable = false)
+    private int capsCost;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "item_cost", updatable = false, nullable = false)
     private ItemCost itemCost;
