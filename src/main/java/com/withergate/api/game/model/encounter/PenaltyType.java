@@ -6,5 +6,5 @@ package com.withergate.api.game.model.encounter;
  * @author Martin Myslik
  */
 public enum PenaltyType {
-    CAPS, INJURY, NONE
+    CAPS, INJURY, NONE, EXPERIENCE
 }

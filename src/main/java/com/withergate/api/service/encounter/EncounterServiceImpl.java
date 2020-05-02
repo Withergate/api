@@ -148,7 +148,6 @@ public class EncounterServiceImpl implements EncounterService {
             case CAPS:
                 // add caps
                 int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
-
                 clan.changeCaps(caps);
                 notification.changeCaps(caps);
                 break;
@@ -174,6 +173,17 @@ public class EncounterServiceImpl implements EncounterService {
                 // generate item
                 itemService.generateItemForCharacter(character, notification, encounter.getItem());
                 break;
+            case EXPERIENCE:
+                int experience = randomService.getRandomInt(1, RandomServiceImpl.K6);
+                character.changeExperience(experience);
+                notification.changeExperience(experience);
+                break;
+            case HEALING:
+                int missingHp = character.getMaxHitpoints() - character.getHitpoints();
+                int healing = Math.min(randomService.getRandomInt(1, RandomServiceImpl.K6), missingHp);
+                character.changeHitpoints(healing);
+                notification.changeHealing(healing);
+                break;
             default:
                 log.error("Unknown type of reward!");
                 break;
@@ -195,15 +205,11 @@ public class EncounterServiceImpl implements EncounterService {
                 // add caps
                 int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
                 int caps = Math.min(clan.getCaps(), diceRoll);
-
                 clan.changeCaps(-caps);
-
-                // update notification
                 notification.changeCaps(-caps);
                 break;
             case INJURY:
                 int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
-
                 character.changeHitpoints(-injury);
                 notification.changeInjury(injury);
 
@@ -214,6 +220,11 @@ public class EncounterServiceImpl implements EncounterService {
                     notification.getDetails().add(detail);
                     notification.setDeath(true);
                 }
+                break;
+            case EXPERIENCE:
+                int experience = Math.min(randomService.getRandomInt(1, RandomServiceImpl.K6), character.getExperience());
+                character.changeExperience(- experience);
+                notification.changeExperience(- experience);
                 break;
             default:
                 log.error("Unknown type of penalty: {}!", encounter.getPenalty());
