@@ -172,7 +172,7 @@ public class EncounterServiceImpl implements EncounterService {
                 break;
             case ITEM:
                 // generate item
-                itemService.generateItemForCharacter(character, notification);
+                itemService.generateItemForCharacter(character, notification, encounter.getItem());
                 break;
             default:
                 log.error("Unknown type of reward!");

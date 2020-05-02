@@ -48,8 +48,9 @@ public interface ItemService {
      *
      * @param character    the character
      * @param notification the notification to be updated
+     * @param itemId       item ID, could be null
      */
-    void generateItemForCharacter(Character character, ClanNotification notification);
+    void generateItemForCharacter(Character character, ClanNotification notification, String itemId);
 
     /**
      * Generates craftable item.

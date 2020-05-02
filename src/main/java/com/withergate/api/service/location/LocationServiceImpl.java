@@ -155,7 +155,7 @@ public class LocationServiceImpl implements LocationService {
         int lootRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (lootRoll <= lootProbability) {
             notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[] {});
-            itemService.generateItemForCharacter(character, notification);
+            itemService.generateItemForCharacter(character, notification, null);
         }
 
         // junk and food

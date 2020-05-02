@@ -41,6 +41,9 @@ public class Encounter {
     @Enumerated(EnumType.STRING)
     private RewardType reward;
 
+    @Column(name = "item", updatable = false, nullable = false)
+    private String item;
+
     @Column(name = "penalty_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private PenaltyType penalty;
