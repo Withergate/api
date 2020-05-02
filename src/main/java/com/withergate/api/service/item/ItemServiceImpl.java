@@ -120,16 +120,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateItemForCharacter(Character character, ClanNotification notification) {
+    public void generateItemForCharacter(Character character, ClanNotification notification, String itemId) {
         log.debug("Generating random item for character {}", character.getId());
 
-        // get random item type
-        ItemType type = randomService.getRandomItemType();
-        Rarity rarity = getRandomRarity();
-        List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
-        ItemDetails details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
+        ItemDetails details;
+        if (itemId != null) {
+            details = itemDetailsRepository.getOne(itemId);
+        } else {
+            // get random item type
+            ItemType type = randomService.getRandomItemType();
+            Rarity rarity = getRandomRarity();
+            List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
+            details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
+        }
 
-        // create weapon
+        // create item
         Item item = new Item();
         item.setDetails(details);
 

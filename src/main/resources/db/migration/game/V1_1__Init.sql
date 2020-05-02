@@ -278,6 +278,7 @@ CREATE TABLE encounters (
     location VARCHAR(16) NOT NULL,
     encounter_type VARCHAR(16) NOT NULL,
     reward_type VARCHAR(16) NOT NULL,
+    item VARCHAR(16),
     penalty_type VARCHAR(16) NOT NULL,
     difficulty INT NOT NULL,
     description_text VARCHAR(64) NOT NULL,
