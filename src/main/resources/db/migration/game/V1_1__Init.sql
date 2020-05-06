@@ -284,7 +284,8 @@ CREATE TABLE encounters (
     description_text VARCHAR(64) NOT NULL,
     success_text VARCHAR(64) NOT NULL,
     failure_text VARCHAR(64) NOT NULL,
-    PRIMARY KEY (encounter_id)
+    PRIMARY KEY (encounter_id),
+    CONSTRAINT encounter_item_fk FOREIGN KEY (item) REFERENCES item_details (identifier)
 );
 
 -- Quests
