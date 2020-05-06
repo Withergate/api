@@ -111,16 +111,16 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
 
 -- Gear details
 INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
-    ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/saw.png'),
+    ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'detail.gear.bonus.work', 12, 1, 'https://storage.googleapis.com/withergate-images/items/saw.png'),
     ('TRAP', 'GEAR', 'COMMON', 12, 1, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 11, 1, 'https://storage.googleapis.com/withergate-images/items/trap.png'),
     ('GLASSES', 'GEAR', 'COMMON', 12, 1, 'RESEARCH', 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/glasses.png'),
-    ('HAMMER', 'GEAR', 'COMMON', 12, 2, 'CRAFTING', null, 10, 1, 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
+    ('HAMMER', 'GEAR', 'COMMON', 12, 2, 'CRAFTING', null, 11, 1, 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
     ('NOTEBOOK', 'GEAR', 'COMMON', 12, 1, 'SCOUTING', 'detail.gear.bonus.information', 11, 1, 'https://storage.googleapis.com/withergate-images/items/notebook.png'),
-    ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'detail.gear.bonus.work', 14, 2, 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
-    ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 13, 2, 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
+    ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'detail.gear.bonus.work', 15, 2, 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
+    ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 14, 2, 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
     ('BANNER', 'GEAR', 'RARE', 20, 2, 'FACTION_POINTS', 'detail.gear.bonus.factionPoints', 14, 3, 'https://storage.googleapis.com/withergate-images/items/banner.png'),
     ('TRINKETS', 'GEAR', 'RARE', 20, 2, 'SCOUTING', 'detail.gear.bonus.information', 14, 2, 'https://storage.googleapis.com/withergate-images/items/trinkets.png'),
-    ('SURVIVAL_KIT', 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 14, 3, 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
+    ('SURVIVAL_KIT', 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 15, 3, 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
     ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 0, 0, 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
