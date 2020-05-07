@@ -131,6 +131,10 @@ public class CraftingServiceImpl implements CraftingService {
         // craft item
         itemService.generateCraftableItem(action.getCharacter(), notification, details);
 
+        // award experience
+        action.getCharacter().changeExperience(1);
+        notification.changeExperience(1);
+
         // update notification
         notificationService.addLocalizedTexts(notification.getText(), "crafting.item", new String[]{});
 
@@ -145,10 +149,6 @@ public class CraftingServiceImpl implements CraftingService {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), researchCaps.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);
-
-            // award experience
-            action.getCharacter().changeExperience(1);
-            notification.changeExperience(1);
         }
 
         Research researchFame = clan.getResearch(ResearchBonusType.CRAFTING_FAME);

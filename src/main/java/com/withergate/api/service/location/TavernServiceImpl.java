@@ -125,7 +125,6 @@ public class TavernServiceImpl implements TavernService {
             TavernOffer offer = action.getOffer();
             Character hired = offer.getCharacter();
             hired.setClan(character.getClan());
-            hired.setState(CharacterState.BUSY);
 
             notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[] {hired.getName()});
             NotificationDetail detail = new NotificationDetail();
@@ -181,7 +180,7 @@ public class TavernServiceImpl implements TavernService {
         }
 
         // special offer for players with less characters
-        if (clan.getCharacters().size() < CHARACTER_LIMIT) {
+        if (clan.getCharacters().stream().filter(ch -> ch.getHitpoints() > 0).count() < CHARACTER_LIMIT) {
             Character character = characterService.generateRandomCharacter(filter,
                     randomService.getRandomAttributeCombination(DEFAULT_ATTRIBUTES, Type.RANDOM));
             characterService.save(character);
