@@ -13,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface EncounterRepository extends JpaRepository<Encounter, Integer> {
 
-    List<Encounter> findAllByLocation(Location location);
+    List<Encounter> findAllByLocationAndTurnLessThan(Location location, int turn);
 }
