@@ -33,6 +33,9 @@ public class Encounter {
     @Enumerated(EnumType.STRING)
     private Location location;
 
+    @Column(name = "min_turn", updatable = false, nullable = false)
+    private int turn;
+
     @Column(name = "encounter_type", updatable = false, nullable = false)
     @Enumerated(EnumType.STRING)
     private SolutionType type;

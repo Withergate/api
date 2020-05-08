@@ -176,7 +176,8 @@ public class LocationServiceTest {
         locationService.processLocationActions(1);
 
         // then verify encounter triggered
-        Mockito.verify(encounterService).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND));
+        Mockito.verify(encounterService).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
+                Mockito.eq(1));
     }
 
     @Test
@@ -210,7 +211,8 @@ public class LocationServiceTest {
         actions.add(action);
 
         Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND)))
+        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
+                Mockito.eq(1)))
                 .thenReturn(true); // encounter success
 
         // when performing pending actions
@@ -253,7 +255,8 @@ public class LocationServiceTest {
         actions.add(action);
 
         Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND)))
+        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
+                Mockito.eq(1)))
                 .thenReturn(false); // encounter failure
 
         // when performing pending actions
@@ -296,7 +299,8 @@ public class LocationServiceTest {
         actions.add(action);
 
         Mockito.when(locationActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
-        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND)))
+        Mockito.when(encounterService.handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
+                Mockito.eq(1)))
                 .thenReturn(true); // encounter success
 
         // when performing pending actions
@@ -346,7 +350,8 @@ public class LocationServiceTest {
 
         // then verify item generated
         Mockito.verify(itemService).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class), Mockito.eq(null));
-        Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND));
+        Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
+                Mockito.eq(1));
     }
 
     @Test
@@ -388,7 +393,8 @@ public class LocationServiceTest {
         locationService.processLocationActions(1);
 
         // then verify clan saved with updated junk
-        Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.NEIGHBORHOOD));
+        Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.NEIGHBORHOOD),
+                Mockito.eq(1));
         Mockito.verify(itemService, Mockito.never()).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class), Mockito.eq(null));
 
         Assert.assertEquals(15, clan.getJunk());

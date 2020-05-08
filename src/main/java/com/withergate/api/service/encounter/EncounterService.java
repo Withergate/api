@@ -18,9 +18,10 @@ public interface EncounterService {
      * @param notification notification
      * @param character character
      * @param location location
+     * @param turn turn
      * @return true if encounter was successful
      */
-    boolean handleEncounter(ClanNotification notification, Character character, Location location);
+    boolean handleEncounter(ClanNotification notification, Character character, Location location, int turn);
 
     /**
      * Handles solution. Returns true if given character succeeded with the specified solution type.

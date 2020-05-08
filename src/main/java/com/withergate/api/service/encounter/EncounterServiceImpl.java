@@ -38,13 +38,13 @@ public class EncounterServiceImpl implements EncounterService {
     private final NotificationService notificationService;
 
     @Override
-    public boolean handleEncounter(ClanNotification notification, Character character, Location location) {
+    public boolean handleEncounter(ClanNotification notification, Character character, Location location, int turn) {
         // load random encounter from the repository
-        List<Encounter> encounters = encounterRepository.findAllByLocation(location);
+        List<Encounter> encounters = encounterRepository.findAllByLocationAndTurnLessThan(location, turn);
         int index = randomService.getRandomInt(0, encounters.size() - 1);
         Encounter encounter = encounters.get(index);
 
-        log.debug("Processing {} with {} at {}", encounter.getType(), character.getName(), location.name());
+        log.debug("Processing {} with {}. Chosen from {} encounters.", encounter.getType(), character.getName(), encounters.size());
 
         notificationService.addLocalizedTexts(notification.getText(), encounter.getDescriptionText(), new String[] {});
 

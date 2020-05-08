@@ -86,7 +86,7 @@ public class LocationServiceImpl implements LocationService {
             notification.setImageUrl(character.getImageUrl());
 
             // process action
-            processLocationAction(notification, action);
+            processLocationAction(notification, action, turnId);
 
             // send notification about action result
             notificationService.save(notification);
@@ -95,7 +95,7 @@ public class LocationServiceImpl implements LocationService {
         }
     }
 
-    private void processLocationAction(ClanNotification notification, LocationAction action) {
+    private void processLocationAction(ClanNotification notification, LocationAction action, int turn) {
         Character character = action.getCharacter();
         LocationDescription description = locationDescriptionRepository.getOne(action.getLocation());
 
@@ -110,7 +110,7 @@ public class LocationServiceImpl implements LocationService {
             log.debug("Random encounter triggered!");
 
             // handle encounter, experience is handled by encounter service
-            encounterSuccess = encounterService.handleEncounter(notification, character, action.getLocation());
+            encounterSuccess = encounterService.handleEncounter(notification, character, action.getLocation(), turn);
             encounter = true;
             character.getClan().getStatistics().setEncounters(character.getClan().getStatistics().getEncounters() + 1);
 

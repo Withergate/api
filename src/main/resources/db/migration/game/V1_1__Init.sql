@@ -276,6 +276,7 @@ DROP TABLE IF EXISTS encounters;
 CREATE TABLE encounters (
     encounter_id INT AUTO_INCREMENT,
     location VARCHAR(16) NOT NULL,
+    min_turn INT DEFAULT 0,
     encounter_type VARCHAR(16) NOT NULL,
     reward_type VARCHAR(16) NOT NULL,
     item VARCHAR(16),
