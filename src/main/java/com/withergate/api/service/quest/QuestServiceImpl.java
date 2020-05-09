@@ -49,14 +49,14 @@ public class QuestServiceImpl implements QuestService {
     private final ItemService itemService;
 
     @Override
-    public void assignQuests(Clan clan, ClanNotification notification) {
+    public void assignQuests(Clan clan, ClanNotification notification, int turn) {
         log.debug("Assigning new quests to the clan.");
 
         Set<String> identifiers = new HashSet<>();
         clan.getQuests().forEach(quest -> identifiers.add(quest.getDetails().getIdentifier()));
 
         // load details and filter existing/completed quests
-        List<QuestDetails> questDetails = questDetailsRepository.findAll()
+        List<QuestDetails> questDetails = questDetailsRepository.findAllByTurnLessThan(turn)
                 .stream()
                 .filter(details -> !identifiers.contains(details.getIdentifier()) && !details.isFactionSpecific())
                 .collect(Collectors.toList());

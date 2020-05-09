@@ -17,8 +17,9 @@ public interface QuestService {
      *
      * @param clan             the clan
      * @param notification     the notification to be updated
+     * @param turn             turn
      */
-    void assignQuests(Clan clan, ClanNotification notification);
+    void assignQuests(Clan clan, ClanNotification notification, int turn);
 
     /**
      * Assign new quests to the provided clan based on its faction.

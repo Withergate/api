@@ -14,4 +14,5 @@ import java.util.List;
 @Repository
 public interface QuestDetailsRepository extends JpaRepository<QuestDetails, String> {
     List<QuestDetails> findAllByFaction(String faction);
+    List<QuestDetails> findAllByTurnLessThan(int turn);
 }

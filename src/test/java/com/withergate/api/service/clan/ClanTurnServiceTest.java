@@ -75,7 +75,7 @@ public class ClanTurnServiceTest {
         clanTurnService.performClanTurnUpdates(clan, 1);
 
         // then verify quest service called
-        Mockito.verify(questService).assignQuests(Mockito.eq(clan), Mockito.any(ClanNotification.class));
+        Mockito.verify(questService).assignQuests(Mockito.eq(clan), Mockito.any(ClanNotification.class), Mockito.eq(1));
         Assert.assertEquals(1, clan.getInformationLevel());
         Assert.assertEquals(2, clan.getInformation());
     }
