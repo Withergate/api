@@ -35,6 +35,9 @@ public class QuestDetails {
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
+    @Column(name = "min_turn", updatable = false, nullable = false)
+    private int turn;
+
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyColumn(name = "lang")
     @JoinColumn(name = "quest_name")

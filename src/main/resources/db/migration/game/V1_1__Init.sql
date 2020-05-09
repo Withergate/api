@@ -294,6 +294,7 @@ DROP TABLE IF EXISTS quest_details;
 CREATE TABLE quest_details (
     identifier VARCHAR(16),
     quest_type VARCHAR(32) NOT NULL,
+    min_turn INT DEFAULT 0,
     quest_condition VARCHAR(32),
     difficulty INT NOT NULL,
     completion INT NOT NULL,

@@ -185,7 +185,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             notificationService.addLocalizedTexts(notification.getText(), "clan.information.levelup", new String[] {});
 
             // assign quests
-            questService.assignQuests(clan, notification);
+            questService.assignQuests(clan, notification, turnId);
 
             // notify about new research
             notifyAvailableResearch(clan, notification);

@@ -19,7 +19,7 @@ public interface ClanRepository extends JpaRepository<Clan, Integer> {
 
     Clan findOneByName(String name);
 
-    Page<Clan> findAll(Pageable pageable);
+    Page<Clan> findAllByOrderByFameDescIdAsc(Pageable pageable);
 
     List<Clan> findAllByOrderByFameDescIdAsc();
 
