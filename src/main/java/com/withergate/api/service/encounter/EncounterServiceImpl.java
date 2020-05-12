@@ -51,7 +51,7 @@ public class EncounterServiceImpl implements EncounterService {
         boolean success = handleSolution(character, encounter.getType(), encounter.getDifficulty(), notification);
 
         if (success) {
-            handleSuccess(encounter, character, notification);
+            handleSuccess(encounter, character, notification, turn);
         } else {
             handleFailure(encounter, character, notification);
         }
@@ -136,7 +136,7 @@ public class EncounterServiceImpl implements EncounterService {
         return success;
     }
 
-    private void handleSuccess(Encounter encounter, Character character, ClanNotification notification) {
+    private void handleSuccess(Encounter encounter, Character character, ClanNotification notification, int turn) {
         log.debug("Computing reward for character {}", character.getId());
 
         // update notification
@@ -171,7 +171,7 @@ public class EncounterServiceImpl implements EncounterService {
                 break;
             case ITEM:
                 // generate item
-                itemService.generateItemForCharacter(character, notification, encounter.getItem());
+                itemService.generateItemForCharacter(character, notification, encounter.getItem(), turn);
                 break;
             case EXPERIENCE:
                 int experience = randomService.getRandomInt(1, RandomServiceImpl.K6);

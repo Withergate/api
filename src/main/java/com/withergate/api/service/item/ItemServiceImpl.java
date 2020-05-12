@@ -120,7 +120,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateItemForCharacter(Character character, ClanNotification notification, String itemId) {
+    public void generateItemForCharacter(Character character, ClanNotification notification, String itemId, int turn) {
         log.debug("Generating random item for character {}", character.getId());
 
         ItemDetails details;
@@ -130,7 +130,7 @@ public class ItemServiceImpl implements ItemService {
             // get random item type
             ItemType type = randomService.getRandomItemType();
             Rarity rarity = getRandomRarity();
-            List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
+            List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(rarity, type, turn);
             details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
         }
 
@@ -177,8 +177,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item generateRandomItem() {
-        ItemDetails details = getRandomItemDetails(randomService.getRandomItemType(), getRandomRarity());
+    public Item generateRandomItem(int turn) {
+        ItemDetails details = getRandomItemDetails(randomService.getRandomItemType(), getRandomRarity(), turn);
         Item item = new Item();
         item.setDetails(details);
         return itemRepository.save(item);
@@ -314,8 +314,8 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    private ItemDetails getRandomItemDetails(ItemType type, Rarity rarity) {
-        List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemType(rarity, type);
+    private ItemDetails getRandomItemDetails(ItemType type, Rarity rarity, int turn) {
+        List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(rarity, type, turn);
         return detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
     }
 

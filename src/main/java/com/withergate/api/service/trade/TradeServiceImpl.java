@@ -260,7 +260,7 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public void prepareComputerMarketOffers() {
+    public void prepareComputerMarketOffers(int turn) {
         log.debug("Preparing computer market offers.");
 
         // delete old unprocessed offers
@@ -273,7 +273,7 @@ public class TradeServiceImpl implements TradeService {
 
         // prepare new offers
         for (int i = 0; i <= clanRepository.count() / CLANS_PER_OFFER; i++) {
-            Item item = itemService.generateRandomItem();
+            Item item = itemService.generateRandomItem(turn);
 
             MarketOffer offer = new MarketOffer();
             offer.setItem(item);

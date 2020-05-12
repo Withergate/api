@@ -36,6 +36,9 @@ public class ItemDetails {
     @Column(name = "identifier", updatable = false, nullable = false)
     private String identifier;
 
+    @Column(name = "min_turn", updatable = false, nullable = false)
+    private int turn;
+
     @Column(name = "price", updatable = false, nullable = false)
     private int price;
 

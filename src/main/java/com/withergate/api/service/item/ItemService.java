@@ -49,8 +49,9 @@ public interface ItemService {
      * @param character    the character
      * @param notification the notification to be updated
      * @param itemId       item ID, could be null
+     * @param turn         turn
      */
-    void generateItemForCharacter(Character character, ClanNotification notification, String itemId);
+    void generateItemForCharacter(Character character, ClanNotification notification, String itemId, int turn);
 
     /**
      * Generates craftable item.
@@ -64,9 +65,10 @@ public interface ItemService {
     /**
      * Generates random item.
      *
+     * @param turn turn
      * @return generated item
      */
-    Item generateRandomItem();
+    Item generateRandomItem(int turn);
 
     /**
      * Deletes the provided item.

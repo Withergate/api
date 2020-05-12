@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String> {
 
-    List<ItemDetails> findItemDetailsByRarityAndItemType(ItemDetails.Rarity rarity, ItemType itemType);
+    List<ItemDetails> findItemDetailsByRarityAndItemTypeAndTurnLessThan(ItemDetails.Rarity rarity, ItemType itemType, int turn);
 
 }

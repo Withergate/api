@@ -137,7 +137,7 @@ public class ActionServiceImpl implements ActionService {
         tradeService.performComputerTradeActions(turnId);
 
         // prepare offers for next turn
-        tradeService.prepareComputerMarketOffers();
+        tradeService.prepareComputerMarketOffers(turnId);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
