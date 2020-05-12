@@ -142,6 +142,7 @@ CREATE TABLE characters (
 DROP TABLE IF EXISTS item_details;
 CREATE TABLE item_details (
     identifier VARCHAR(16) NOT NULL,
+    min_turn INT DEFAULT 0,
     item_type VARCHAR(16) NOT NULL,
     image_url VARCHAR(256) NOT NULL,
     rarity VARCHAR(8) NOT NULL,

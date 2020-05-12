@@ -1,17 +1,17 @@
 -- Weapon details
-INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, crafting_cost, crafting_level, image_url) VALUES
-    ('KNIFE', 'WEAPON', 'COMMON', 'MELEE', 12, 1, 13, 2, 'https://storage.googleapis.com/withergate-images/items/knife.png'),
-    ('AXE', 'WEAPON', 'RARE', 'MELEE', 25, 2, 15, 3, 'https://storage.googleapis.com/withergate-images/items/axe.png'),
-    ('CHAINSAW', 'WEAPON', 'EPIC', 'MELEE', 45, 3, 0, 0, 'https://storage.googleapis.com/withergate-images/items/chainsaw.png'),
-    ('BOOMERANG', 'WEAPON', 'COMMON', 'RANGED', 12, 1, 11, 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.png'),
-    ('CROSSBOW', 'WEAPON', 'RARE', 'RANGED', 30, 3, 16, 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.png'),
-    ('HAND_GUN', 'WEAPON', 'EPIC', 'RANGED', 50, 4, 0, 0, 'https://storage.googleapis.com/withergate-images/items/handgun.png');
+INSERT INTO item_details(identifier, min_turn, item_type, rarity, weapon_type, price, combat, crafting_cost, crafting_level, image_url) VALUES
+    ('KNIFE', 0, 'WEAPON', 'COMMON', 'MELEE', 12, 1, 13, 2, 'https://storage.googleapis.com/withergate-images/items/knife.png'),
+    ('AXE', 5, 'WEAPON', 'RARE', 'MELEE', 25, 2, 15, 3, 'https://storage.googleapis.com/withergate-images/items/axe.png'),
+    ('CHAINSAW', 15, 'WEAPON', 'EPIC', 'MELEE', 45, 3, 0, 0, 'https://storage.googleapis.com/withergate-images/items/chainsaw.png'),
+    ('BOOMERANG', 0, 'WEAPON', 'COMMON', 'RANGED', 12, 1, 11, 1, 'https://storage.googleapis.com/withergate-images/items/boomerang.png'),
+    ('CROSSBOW', 5, 'WEAPON', 'RARE', 'RANGED', 30, 3, 16, 3, 'https://storage.googleapis.com/withergate-images/items/crossbow.png'),
+    ('HAND_GUN', 15, 'WEAPON', 'EPIC', 'RANGED', 50, 4, 0, 0, 'https://storage.googleapis.com/withergate-images/items/handgun.png');
 
-INSERT INTO item_details(identifier, item_type, rarity, weapon_type, price, combat, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
-    ('BAT', 'WEAPON', 'COMMON', 'MELEE', 10, 0, 2, 'PIERCING', 'detail.weapon.bonus.piercing', 10, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
-    ('SHINY_CROWBAR', 'WEAPON', 'COMMON', 'MELEE', 15, 1, -10, 'CAMOUFLAGE', 'detail.weapon.sanction.camo', 12, 1, 'https://storage.googleapis.com/withergate-images/items/shiny-crowbar.png'),
-    ('MACHETE', 'WEAPON', 'RARE', 'MELEE', 20, 1, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 13, 2, 'https://storage.googleapis.com/withergate-images/items/machete.png'),
-    ('THROWING_KNIVES', 'WEAPON', 'RARE', 'RANGED', 22, 2, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 14, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png');
+INSERT INTO item_details(identifier, min_turn, item_type, rarity, weapon_type, price, combat, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
+    ('BAT', 0, 'WEAPON', 'COMMON', 'MELEE', 10, 0, 2, 'PIERCING', 'detail.weapon.bonus.piercing', 10, 1, 'https://storage.googleapis.com/withergate-images/items/bat.png'),
+    ('SHINY_CROWBAR', 0, 'WEAPON', 'COMMON', 'MELEE', 15, 1, -10, 'CAMOUFLAGE', 'detail.weapon.sanction.camo', 12, 1, 'https://storage.googleapis.com/withergate-images/items/shiny-crowbar.png'),
+    ('MACHETE', 0, 'WEAPON', 'RARE', 'MELEE', 20, 1, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 13, 2, 'https://storage.googleapis.com/withergate-images/items/machete.png'),
+    ('THROWING_KNIVES', 5, 'WEAPON', 'RARE', 'RANGED', 22, 2, 1, 'PIERCING', 'detail.weapon.bonus.piercing', 14, 2, 'https://storage.googleapis.com/withergate-images/items/throwing-knives.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('KNIFE', 'en', 'Knife'),
@@ -58,16 +58,16 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('HAND_GUN', 'cs', 'Pistole. Lehká, praktická, smrtící.');
 
 -- Consumable details
-INSERT INTO item_details(identifier, item_type, rarity, price, bonus, prereq, effect_type, crafting_cost, crafting_level, image_url) VALUES
-    ('BANDAGES', 'CONSUMABLE', 'COMMON', 9, 2, 0, 'HEALING', 9, 1,'https://storage.googleapis.com/withergate-images/items/bandages.png'),
-    ('SMALL_MEDKIT', 'CONSUMABLE', 'COMMON', 12, 4, 0, 'HEALING', 11, 2 ,'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
-    ('LARGE_MEDKIT', 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 13, 3, 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
-    ('MANUSCRIPT', 'CONSUMABLE', 'COMMON', 12, 5, 3, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
-    ('OLD_BOOK', 'CONSUMABLE', 'RARE', 30, 10, 4, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
-    ('STEROIDS', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/steroids.png'),
-    ('TOXICAT', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_SCAVENGE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/toxicat.png'),
-    ('TRIFFID_HAND', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_CRAFTSMANSHIP', 0, 0, 'https://storage.googleapis.com/withergate-images/items/triffid-hand.png'),
-    ('MIND_PATCH', 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/mind-patch.png');
+INSERT INTO item_details(identifier, min_turn, item_type, rarity, price, bonus, prereq, effect_type, crafting_cost, crafting_level, image_url) VALUES
+    ('BANDAGES', 0, 'CONSUMABLE', 'COMMON', 9, 2, 0, 'HEALING', 9, 1,'https://storage.googleapis.com/withergate-images/items/bandages.png'),
+    ('SMALL_MEDKIT', 0, 'CONSUMABLE', 'COMMON', 12, 4, 0, 'HEALING', 11, 2 ,'https://storage.googleapis.com/withergate-images/items/small-medkit.png'),
+    ('LARGE_MEDKIT', 15, 'CONSUMABLE', 'RARE', 20, 8, 0, 'HEALING', 13, 3, 'https://storage.googleapis.com/withergate-images/items/large-medkit.png'),
+    ('MANUSCRIPT', 0, 'CONSUMABLE', 'COMMON', 12, 5, 3, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/manuscript.png'),
+    ('OLD_BOOK', 5, 'CONSUMABLE', 'RARE', 30, 10, 4, 'EXPERIENCE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/old-book.png'),
+    ('STEROIDS', 15, 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_COMBAT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/steroids.png'),
+    ('TOXICAT', 15, 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_SCAVENGE', 0, 0, 'https://storage.googleapis.com/withergate-images/items/toxicat.png'),
+    ('TRIFFID_HAND', 15, 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_CRAFTSMANSHIP', 0, 0, 'https://storage.googleapis.com/withergate-images/items/triffid-hand.png'),
+    ('MIND_PATCH', 15, 'CONSUMABLE', 'EPIC', 40, 1, 0, 'BUFF_INTELLECT', 0, 0, 'https://storage.googleapis.com/withergate-images/items/mind-patch.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('BANDAGES', 'en', 'Bandages'),
@@ -110,18 +110,18 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('MIND_PATCH', 'cs', 'Injekcí do hlavy lze vpravit myšlenky chytřejších lidí a zvýšit tak intelekt postavy. A kdo je chytřejší teď, co?');
 
 -- Gear details
-INSERT INTO item_details(identifier, item_type, rarity, price, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
-    ('SAW', 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'detail.gear.bonus.work', 12, 1, 'https://storage.googleapis.com/withergate-images/items/saw.png'),
-    ('TRAP', 'GEAR', 'COMMON', 12, 1, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 11, 1, 'https://storage.googleapis.com/withergate-images/items/trap.png'),
-    ('GLASSES', 'GEAR', 'COMMON', 12, 1, 'RESEARCH', 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/glasses.png'),
-    ('HAMMER', 'GEAR', 'COMMON', 12, 2, 'CRAFTING', null, 11, 1, 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
-    ('NOTEBOOK', 'GEAR', 'COMMON', 12, 1, 'SCOUTING', 'detail.gear.bonus.information', 11, 1, 'https://storage.googleapis.com/withergate-images/items/notebook.png'),
-    ('SHOVEL', 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'detail.gear.bonus.work', 15, 2, 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
-    ('BINOCULARS', 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 14, 2, 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
-    ('BANNER', 'GEAR', 'RARE', 20, 2, 'FACTION_POINTS', 'detail.gear.bonus.factionPoints', 14, 3, 'https://storage.googleapis.com/withergate-images/items/banner.png'),
-    ('TRINKETS', 'GEAR', 'RARE', 20, 2, 'SCOUTING', 'detail.gear.bonus.information', 14, 2, 'https://storage.googleapis.com/withergate-images/items/trinkets.png'),
-    ('SURVIVAL_KIT', 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 15, 3, 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
-    ('DETECTOR', 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 0, 0, 'https://storage.googleapis.com/withergate-images/items/detector.png');
+INSERT INTO item_details(identifier, min_turn, item_type, rarity, price, bonus, bonus_type, bonus_text, crafting_cost, crafting_level, image_url) VALUES
+    ('SAW', 0, 'GEAR', 'COMMON', 12, 1, 'CONSTRUCT', 'detail.gear.bonus.work', 12, 1, 'https://storage.googleapis.com/withergate-images/items/saw.png'),
+    ('TRAP', 0, 'GEAR', 'COMMON', 12, 1, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 11, 1, 'https://storage.googleapis.com/withergate-images/items/trap.png'),
+    ('GLASSES', 0, 'GEAR', 'COMMON', 12, 1, 'RESEARCH', 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/glasses.png'),
+    ('HAMMER', 0, 'GEAR', 'COMMON', 12, 2, 'CRAFTING', null, 11, 1, 'https://storage.googleapis.com/withergate-images/items/hammer.png'),
+    ('NOTEBOOK', 0, 'GEAR', 'COMMON', 12, 1, 'SCOUTING', 'detail.gear.bonus.information', 11, 1, 'https://storage.googleapis.com/withergate-images/items/notebook.png'),
+    ('SHOVEL', 5, 'GEAR', 'RARE', 20, 2, 'CONSTRUCT', 'detail.gear.bonus.work', 15, 2, 'https://storage.googleapis.com/withergate-images/items/shovel.png'),
+    ('BINOCULARS', 0, 'GEAR', 'RARE', 20, 2, 'SCAVENGE_FOOD', 'detail.gear.bonus.food', 14, 2, 'https://storage.googleapis.com/withergate-images/items/binoculars.png'),
+    ('BANNER', 15, 'GEAR', 'RARE', 20, 2, 'FACTION_POINTS', 'detail.gear.bonus.factionPoints', 14, 3, 'https://storage.googleapis.com/withergate-images/items/banner.png'),
+    ('TRINKETS', 5, 'GEAR', 'RARE', 20, 2, 'SCOUTING', 'detail.gear.bonus.information', 14, 2, 'https://storage.googleapis.com/withergate-images/items/trinkets.png'),
+    ('SURVIVAL_KIT', 5, 'GEAR', 'RARE', 20, 2, 'DISASTER', 'detail.gear.bonus.disaster', 15, 3, 'https://storage.googleapis.com/withergate-images/items/survival-kit.png'),
+    ('DETECTOR', 15, 'GEAR', 'EPIC', 35, 3, 'SCAVENGE_JUNK', 'detail.gear.bonus.junk', 0, 0, 'https://storage.googleapis.com/withergate-images/items/detector.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('SAW', 'en', 'Saw'),
@@ -172,15 +172,15 @@ INSERT INTO localized_texts(item_description, lang, text) VALUES
     ('DETECTOR', 'cs', 'Je stár minimálně několik desetiletí, tak za ta léta už moc neslouží. Zvýší šanci na nalezení kovu.');
 
 -- Outfit details
-INSERT INTO item_details(identifier, item_type, rarity, price, combat, bonus_type, bonus, bonus_text, crafting_cost, crafting_level, image_url) VALUES
-    ('LEATHER_CLOTHES', 'OUTFIT', 'COMMON', 12, 1, null, 0, null, 12, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
-    ('LAB_COAT', 'OUTFIT', 'COMMON', 11, 0, 'RESEARCH', 1, 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/lab-coat.png'),
-    ('CAMO_JACKET', 'OUTFIT', 'COMMON', 12, 0, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 11, 1, 'https://storage.googleapis.com/withergate-images/items/camo-jacket.png'),
-    ('LEATHER_COVERED', 'OUTFIT', 'RARE', 20, 2, null, 0, null, 14, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
-    ('CAMO_SUIT', 'OUTFIT', 'RARE', 20, 1, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 14, 2, 'https://storage.googleapis.com/withergate-images/items/camo-suit.png'),
-    ('PONCHO', 'OUTFIT', 'RARE', 22, 0, 'CAMOUFLAGE', 20, 'detail.gear.bonus.camouflage', 14, 2, 'https://storage.googleapis.com/withergate-images/items/poncho.png'),
-    ('PROTECTIVE_SUIT', 'OUTFIT', 'RARE', 26, 1, 'RESEARCH', 2, 'detail.gear.bonus.work', 15, 3, 'https://storage.googleapis.com/withergate-images/items/protective-suit.png'),
-    ('KEVLAR', 'OUTFIT', 'EPIC', 45, 3, null, 0, null, 0, 0, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
+INSERT INTO item_details(identifier, min_turn, item_type, rarity, price, combat, bonus_type, bonus, bonus_text, crafting_cost, crafting_level, image_url) VALUES
+    ('LEATHER_CLOTHES', 0, 'OUTFIT', 'COMMON', 12, 1, null, 0, null, 12, 1, 'https://storage.googleapis.com/withergate-images/items/leather-clothes.png'),
+    ('LAB_COAT', 0, 'OUTFIT', 'COMMON', 11, 0, 'RESEARCH', 1, 'detail.gear.bonus.work', 11, 1, 'https://storage.googleapis.com/withergate-images/items/lab-coat.png'),
+    ('CAMO_JACKET', 0, 'OUTFIT', 'COMMON', 12, 0, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 11, 1, 'https://storage.googleapis.com/withergate-images/items/camo-jacket.png'),
+    ('LEATHER_COVERED', 5, 'OUTFIT', 'RARE', 20, 2, null, 0, null, 14, 2, 'https://storage.googleapis.com/withergate-images/items/leather-covered.png'),
+    ('CAMO_SUIT', 5, 'OUTFIT', 'RARE', 20, 1, 'CAMOUFLAGE', 10, 'detail.gear.bonus.camouflage', 14, 2, 'https://storage.googleapis.com/withergate-images/items/camo-suit.png'),
+    ('PONCHO', 5, 'OUTFIT', 'RARE', 22, 0, 'CAMOUFLAGE', 20, 'detail.gear.bonus.camouflage', 14, 2, 'https://storage.googleapis.com/withergate-images/items/poncho.png'),
+    ('PROTECTIVE_SUIT', 15, 'OUTFIT', 'RARE', 26, 1, 'RESEARCH', 2, 'detail.gear.bonus.work', 15, 3, 'https://storage.googleapis.com/withergate-images/items/protective-suit.png'),
+    ('KEVLAR', 15, 'OUTFIT', 'EPIC', 45, 3, null, 0, null, 0, 0, 'https://storage.googleapis.com/withergate-images/items/kevlar.png');
 
 INSERT INTO localized_texts(item_name, lang, text) VALUES
     ('LEATHER_CLOTHES', 'en', 'Leather clothes'),

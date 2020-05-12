@@ -91,7 +91,9 @@ public interface TradeService {
 
     /**
      * Prepares market offers published by computer and delete the old ones.
+     *
+     * @param turn turn
      */
-    void prepareComputerMarketOffers();
+    void prepareComputerMarketOffers(int turn);
 
 }

@@ -138,7 +138,7 @@ public class LocationServiceImpl implements LocationService {
         // action result
         switch (action.getType()) {
             case VISIT:
-                handleSearchResult(notification, character, description, encounter);
+                handleSearchResult(notification, character, description, encounter, turn);
                 break;
             case SCOUT:
                 handleScoutResult(notification, character, description, encounter);
@@ -148,14 +148,14 @@ public class LocationServiceImpl implements LocationService {
     }
 
     private void handleSearchResult(ClanNotification notification, Character character, LocationDescription description,
-                                    boolean encounter) {
+                                    boolean encounter, int turn) {
         // loot
         int lootProbability = description.getItemChance() + character.getScavenge()
                 + getLootBonus(character, description.getLocation());
         int lootRoll = randomService.getRandomInt(1, RandomServiceImpl.K100);
         if (lootRoll <= lootProbability) {
             notificationService.addLocalizedTexts(notification.getText(), "location.loot", new String[] {});
-            itemService.generateItemForCharacter(character, notification, null);
+            itemService.generateItemForCharacter(character, notification, null, turn);
         }
 
         // junk and food

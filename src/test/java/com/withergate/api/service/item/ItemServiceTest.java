@@ -355,11 +355,12 @@ public class ItemServiceTest {
         details.setEffectType(EffectType.HEALING);
         detailsList.add(details);
 
-        Mockito.when(itemDetailsRepository.findItemDetailsByRarityAndItemType(Rarity.COMMON, ItemType.CONSUMABLE)).thenReturn(detailsList);
+        Mockito.when(itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(Rarity.COMMON, ItemType.CONSUMABLE, 1))
+                .thenReturn(detailsList);
 
         // when generating random item
         ClanNotification notification = new ClanNotification();
-        itemService.generateItemForCharacter(character, notification, null);
+        itemService.generateItemForCharacter(character, notification, null, 1);
 
         // then verify consumable generated
         assertEquals(details, clan.getItems().iterator().next().getDetails());
