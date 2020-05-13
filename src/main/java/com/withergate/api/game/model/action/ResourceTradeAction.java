@@ -39,4 +39,9 @@ public class ResourceTradeAction extends BaseAction {
         return false;
     }
 
+    @Override
+    public void cancel() {
+        // not supported
+    }
+
 }

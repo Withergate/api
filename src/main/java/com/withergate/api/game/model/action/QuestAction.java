@@ -6,7 +6,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.quest.Quest;
+import com.withergate.api.game.model.quest.QuestDetails;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +34,17 @@ public class QuestAction extends BaseAction {
 
     @Override
     public boolean isCancellable() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public void cancel() {
+        Clan clan = getCharacter().getClan();
+        QuestDetails details = quest.getDetails();
+
+        clan.changeCaps(details.getCapsCost());
+        clan.changeFood(details.getFoodCost());
+        clan.changeJunk(details.getJunkCost());
     }
 
 }

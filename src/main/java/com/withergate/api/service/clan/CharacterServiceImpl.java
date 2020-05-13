@@ -188,6 +188,9 @@ public class CharacterServiceImpl implements CharacterService {
             throw new InvalidActionException("Character has no action or this action is not cancellable.");
         }
 
+        // cancel handler
+        character.getCurrentAction().get().cancel();
+
         // cancel action
         actionRepository.delete(character.getCurrentAction().get());
         character.getActions().remove(character.getCurrentAction().get());

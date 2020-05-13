@@ -37,6 +37,11 @@ public class LocationAction extends BaseAction {
         return true;
     }
 
+    @Override
+    public void cancel() {
+        // not needed
+    }
+
     /**
      * Action type.
      */

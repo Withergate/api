@@ -1,6 +1,7 @@
 package com.withergate.api.game.model.action;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.disaster.DisasterSolution;
 
 import javax.persistence.CascadeType;
@@ -34,7 +35,16 @@ public class DisasterAction extends BaseAction {
 
     @Override
     public boolean isCancellable() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public void cancel() {
+        Clan clan = getCharacter().getClan();
+
+        clan.changeCaps(solution.getCapsCost());
+        clan.changeFood(solution.getFoodCost());
+        clan.changeJunk(solution.getJunkCost());
     }
 
 }

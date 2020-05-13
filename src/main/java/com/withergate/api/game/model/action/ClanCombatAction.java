@@ -31,4 +31,9 @@ public class ClanCombatAction extends BaseAction {
         return false;
     }
 
+    @Override
+    public void cancel() {
+        // not supported
+    }
+
 }

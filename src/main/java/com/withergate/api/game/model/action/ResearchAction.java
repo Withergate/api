@@ -29,4 +29,9 @@ public class ResearchAction extends BaseAction {
         return true;
     }
 
+    @Override
+    public void cancel() {
+        // not needed
+    }
+
 }
