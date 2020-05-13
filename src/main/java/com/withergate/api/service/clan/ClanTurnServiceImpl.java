@@ -52,14 +52,14 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         // tavern offers
         tavernService.prepareTavernOffers(clan);
 
-        // food consumption
-        performFoodConsumption(turnId, clan);
-
         // perform resting
         performResting(turnId, clan);
 
         // perform character leveling
         performCharacterLeveling(turnId, clan);
+
+        // food consumption
+        performFoodConsumption(turnId, clan);
 
         // check information level
         checkInformationLevel(turnId, clan);
@@ -104,7 +104,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 log.debug("Character {} is starving,", character.getName());
 
                 character.changeHitpoints(- gameProperties.getStarvationInjury());
-                character.setState(CharacterState.STARVING);
 
                 // lose fame
                 clan.changeFame(- gameProperties.getStarvationFame());

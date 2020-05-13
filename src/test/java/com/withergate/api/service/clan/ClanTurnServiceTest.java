@@ -179,7 +179,10 @@ public class ClanTurnServiceTest {
 
         Character character = new Character();
         character.setId(1);
+        character.setName("Johny");
         character.setHitpoints(5);
+        character.setMaxHitpoints(15);
+        character.setState(CharacterState.BUSY);
         character.setClan(clan);
         clan.getCharacters().add(character);
 
