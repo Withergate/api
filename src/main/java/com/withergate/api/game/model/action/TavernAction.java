@@ -32,7 +32,13 @@ public class TavernAction extends BaseAction {
 
     @Override
     public boolean isCancellable() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public void cancel() {
+        getCharacter().getClan().changeCaps(offer.getPrice());
+        getCharacter().getClan().changeFame(offer.getFame());
     }
 
 }

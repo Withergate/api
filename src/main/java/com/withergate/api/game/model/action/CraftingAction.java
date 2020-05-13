@@ -29,4 +29,9 @@ public class CraftingAction extends BaseAction {
         return false;
     }
 
+    @Override
+    public void cancel() {
+        // not supported
+    }
+
 }

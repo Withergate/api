@@ -45,6 +45,11 @@ public class FactionAction extends BaseAction {
         return false;
     }
 
+    @Override
+    public void cancel() {
+        // not supported
+    }
+
     /**
      * Action type.
      */

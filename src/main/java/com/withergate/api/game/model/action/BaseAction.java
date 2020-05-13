@@ -2,6 +2,7 @@ package com.withergate.api.game.model.action;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,5 +60,10 @@ public abstract class BaseAction {
      */
     @JsonProperty("cancellable")
     public abstract boolean isCancellable();
+
+    /**
+     * Cancels this action and handle resource re-distribution.
+     */
+    public abstract void cancel();
 
 }

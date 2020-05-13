@@ -27,4 +27,9 @@ public class ArenaAction extends BaseAction {
         return true;
     }
 
+    @Override
+    public void cancel() {
+        // not needed
+    }
+
 }
