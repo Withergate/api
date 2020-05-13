@@ -122,7 +122,7 @@ public class Character {
     // Actions
 
     @JsonIgnore
-    @OneToMany(mappedBy = "character", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "character", cascade = CascadeType.DETACH)
     private List<BaseAction> actions;
 
     // Tavern offer
