@@ -360,7 +360,7 @@ public class ItemServiceTest {
 
         // when generating random item
         ClanNotification notification = new ClanNotification();
-        itemService.generateItemForCharacter(character, notification, null, 1);
+        itemService.generateItemForCharacter(character, notification, null, null,1);
 
         // then verify consumable generated
         assertEquals(details, clan.getItems().iterator().next().getDetails());

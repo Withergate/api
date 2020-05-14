@@ -2,6 +2,8 @@ package com.withergate.api.service.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
@@ -120,7 +122,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateItemForCharacter(Character character, ClanNotification notification, String itemId, int turn) {
+    public void generateItemForCharacter(Character character, ClanNotification notification, @Nullable String itemId,
+                                         @Nullable Rarity rarity, int turn) {
         log.debug("Generating random item for character {}", character.getId());
 
         ItemDetails details;
@@ -129,7 +132,9 @@ public class ItemServiceImpl implements ItemService {
         } else {
             // get random item type
             ItemType type = randomService.getRandomItemType();
-            Rarity rarity = getRandomRarity();
+            if (rarity == null) {
+                rarity = getRandomRarity();
+            }
             List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(rarity, type, turn);
             details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
         }

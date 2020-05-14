@@ -350,7 +350,7 @@ public class LocationServiceTest {
 
         // then verify item generated
         Mockito.verify(itemService).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class),
-                Mockito.eq(null), Mockito.eq(1));
+                Mockito.eq(null), Mockito.eq(null), Mockito.eq(1));
         Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
                 Mockito.eq(1));
     }
@@ -397,7 +397,7 @@ public class LocationServiceTest {
         Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.NEIGHBORHOOD),
                 Mockito.eq(1));
         Mockito.verify(itemService, Mockito.never()).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class),
-                Mockito.eq(null), Mockito.eq(1));
+                Mockito.eq(null), Mockito.eq(null), Mockito.eq(1));
 
         Assert.assertEquals(15, clan.getJunk());
         Assert.assertEquals(10, clan.getFood());

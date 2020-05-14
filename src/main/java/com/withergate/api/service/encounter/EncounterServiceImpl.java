@@ -171,7 +171,7 @@ public class EncounterServiceImpl implements EncounterService {
                 break;
             case ITEM:
                 // generate item
-                itemService.generateItemForCharacter(character, notification, encounter.getItem(), turn);
+                itemService.generateItemForCharacter(character, notification, encounter.getItem(), null, turn);
                 break;
             case EXPERIENCE:
                 int experience = randomService.getRandomInt(1, RandomServiceImpl.K6);
