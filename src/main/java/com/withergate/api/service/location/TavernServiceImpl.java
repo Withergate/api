@@ -125,6 +125,8 @@ public class TavernServiceImpl implements TavernService {
             TavernOffer offer = action.getOffer();
             Character hired = offer.getCharacter();
             hired.setClan(character.getClan());
+            hired.setState(CharacterState.BUSY);
+            character.getClan().getCharacters().add(hired);
 
             notificationService.addLocalizedTexts(notification.getText(), "location.tavern.hired", new String[] {hired.getName()});
             NotificationDetail detail = new NotificationDetail();

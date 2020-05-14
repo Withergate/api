@@ -93,3 +93,51 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.c3', 'cs', 'Což takhle poučit nějaké chudáky o víře a spasit jejich duši? S pomocí Rarraqa a trochou výmluvnosti se to podaří. A když jim nabídneme jídlo, brzy nás budou zástupy...'),
     ('quest.c4', 'en', 'Even destruction can be beautiful. And a masterfully performed obliteration is an art of sorts. Especially if it is those heretic contraptions that are being shattered. They have got us here, to the very bottom of humanity...every sprocket flying from the  device is an ode to Rarraq and a victory for mankind.'),
     ('quest.c4', 'cs', 'I v destrukci je krása. A ničit je vlastně umění. Zvlášť, když se jedná o heretické vynálezy, které nás dostaly až na samé dno. Na čím víc ozubených koleček se tohle zařízení rozletí, tím větší slávu prokážeme Rarraqovi a lidstvu...');
+
+-- Syndicate
+INSERT INTO factions (identifier, image_url, icon_url) VALUES
+    ('SYNDICATE', 'https://storage.googleapis.com/withergate-images/factions/syndicate.png', 'https://storage.googleapis.com/withergate-images/factions/syncidate-icon.png');
+
+INSERT INTO localized_texts (faction_name, lang, text) VALUES
+    ('SYNDICATE', 'en', 'The Web'),
+    ('SYNDICATE', 'cs', 'Síť');
+
+INSERT INTO localized_texts (faction_description, lang, text) VALUES
+    ('SYNDICATE', 'en', 'Everything has a price. Everyone can be bought. And the price of human life has dropped so low lately… We are doing the same as everyone - gathering wealth and power - the difference is we`re organized and successful. We have followers or spies in each clan, in each faction... sometimes they even do not have a clue. We let them win a few caps playing dice and in the meantime they give away their clans` secrets. We are the spiders web. If you fall, we will catch you (for a few caps). If you``re on to success, we``ll be there to make sure it`s a great one. We offer endless possibilities. You can arm the fanatics, you can arm the revolutionaries... once they end up dead, it is us with their caps in our pockets who will prevail.'),
+    ('SYNDICATE', 'cs', 'Všechno má svou cenu. Každý se dá koupit. A po Apokalypse je cena lidského života tak nízká... Děláme jen to, o co se snaží každý - hromadit bohatství a moc. Rozdíl je ale v tom, že my jsme organizovaní a úspěšní. Není frakce, není klanu, kde bychom neměli sympatizanta nebo alespoň špeha. Nevěříš? A pamatuješ, jak jsi nedávno podezřele snadno vyhrál těch pár zátek? Tajemství svého klanu, co jsi nám nevědomky vyklopil, nám vydělá mnohem víc. Přesně takhle my fungujeme. My jsme Síť, v dobrém i ve zlém... Nedaří se ti? Za pár zátek pomůžeme... Daří se ti? Díky nám se ti bude dařit o to víc. Otevřeme ti nové možnosti. Rádi vyzbrojíme náboženské fanatiky i zaslepené revolucionáře... ať se klidně pozabíjí, my jen zinkasujeme zátky.');
+
+INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, information_cost, item_cost, faction_points, fame) VALUES
+    ('s.information', 'SYNDICATE', 'FACTION_SUPPORT', 0, 0, 0, 5, null, 10, 0),
+    ('s.resources', 'SYNDICATE', 'RESOURCE_SUPPORT', 12, 1, 3, 0, null, 10, 1);
+
+INSERT INTO localized_texts (faction_aid, lang, text) VALUES
+    ('s.information', 'en', 'Share some unique information with our leadership'),
+    ('s.information', 'cs', 'Mluviti stříbro, nemlčeti zlato'),
+    ('s.resources', 'en', 'Support our faction members with resources'),
+    ('s.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
+
+INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, caps_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
+    ('quest.s1', 'INTELLECT', null, 0, 2, 0, 5, 5, 0, 0, 10, null, true, true, 'quest.s2', 'SYNDICATE', 'https://storage.googleapis.com/withergate-images/quests/quest-s1.png'),
+    ('quest.s2', 'AUTOMATIC', null, 0, 2, 20, 10, 10, 0, 0, 0, 'ANY', false, true, 'quest.s3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s2.png'),
+    ('quest.s3', 'CRAFTSMANSHIP', null, 6, 3, 30, 15, 15, 0, 3, 0, null, false, true, 'quest.s4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s3.png'),
+    ('quest.s4', 'AUTOMATIC', null, 0, 3, 0, 20, 20, 0, 0, 50, null, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-s4.png');
+
+INSERT INTO localized_texts(quest_name, lang, text) VALUES
+    ('quest.s1', 'en', 'Everything has a price'),
+    ('quest.s1', 'cs', 'Všechno má svou cenu'),
+    ('quest.s2', 'en', 'A kind request'),
+    ('quest.s2', 'cs', 'Zdvořilá prosba'),
+    ('quest.s3', 'en', 'One of a kind'),
+    ('quest.s3', 'cs', 'Originál'),
+    ('quest.s4', 'en', 'The rise of a magnate'),
+    ('quest.s4', 'cs', 'Vzestup magnáta');
+
+INSERT INTO localized_texts(quest_description, lang, text) VALUES
+    ('quest.s1', 'en', 'The Syndicate is rich but that doesn`t mean that it wouldn`t want your money. A to have a share of a future profit is costly. The brighter ones definitely pay less but no one is excluded...so it``s 5 caps...are you still considering it...? Well now it``s 10...there you go, you might actually be smarter than you look.'),
+    ('quest.s1', 'cs', 'Syndikát je bohatý, ale ne tak bohatý, aby nestál i o tvoje peníze. A za podíl na dalším zisku se platí. Když jsi chytřejší, možná zaplatíš míň, ale to neznamená, že se tě to netýká... 5 zátek... že váháš...? Tak 10… no vidíš, že si plácneme, nakonec nebudeš tak hloupý, jak vypadáš.'),
+    ('quest.s2', 'en', 'We have been informed that an attack on the Syndicate Hall is imminent. The Syndicate kindly requests any material help your clan can provide to strengthen the defences of the Hall...and you may be sure, that if the Syndicate kindly requests something, it is going to get it...even if there is nowhere to take.'),
+    ('quest.s2', 'cs', 'Naši informátoři zjistili, že Síni Syndikátu hrozí napadení. Členové jsou zdvořile žádáni o poskytnutí materiálu na obranu Síně... a můžeš si být jist, že když o něco Syndikát zdvořile žádá, tak to taky dostane... a to i když není kde brát.'),
+    ('quest.s3', 'en', 'Right now, a bunch of them are pressing charges against the Syndicate concerning some long forgotten debts. We would show utmost gratitude if you were to manufacture some "genuine" proof of the payment. Of course if the whole thing is discovered you cannot count on us backing you but there is no profit without the risk, heh?'),
+    ('quest.s3', 'cs', 'Nezdá se to pravděpodobné, ale po Apokalypse se vliv právníků ještě zvětšil. A zrovna teď jich pár tlačí na Syndikát kvůli nějakým zatraceným dluhům. Kdyby se ti podařilo vytvořit "zaručeně pravý" doklad o zaplacení, byl by ti Syndikát moc vděčný... samozřejmě, že když to praskne, krýt tě nemůžeme, ale bez rizika není zisk.'),
+    ('quest.s4', 'en', 'The Syndicate membership should in theory bring wealth to anyone but in reality, most of the profit is divided among the class of the most influential and wealthiest members - the magnates. It is definitely not easy to get among their ranks, it takes cunning and loads and loads of caps.'),
+    ('quest.s4', 'cs', 'Členství v Syndikátu zdánlivě přinese bohatství každému... opravdové bohatství si ale mezi sebe rozděluje jen pár nejbohatších členů - magnátů. Není snadné mezi ně proniknout, vyžaduje to prohnanost a hlavně spoustu a spoustu peněz.');
