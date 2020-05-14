@@ -10,15 +10,18 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('REVOLUTION', 'en', 'Some people do not believe in progress. Those are the exact people that were afraid of big inventions and were not able to control them. They were the real cause of the end of our civilization. They still walk amongst us - ruling the city, pacting with Atomists... We have to take them down. There is no time for talking at the Clan Assembly or waiting for King beyond the Wasteland to come and rescue us. Let us overthrow the corrupt honoration and create a true democracy, like the one from before the collapse.'),
     ('REVOLUTION', 'cs', 'Nejhorší na světě jsou zpátečníci, kteří nevěří v pokrok. Přesně takoví lidé, kteří se báli velkých vynálezů a neuměli je správně využít, způsobili zkázu civilizace. A jsou stále mezi námi - vládnou městu, vládnou Pustině a společně s atomisty ovládají vše... Tomu je třeba učinit přítrž. Není čas na dlouhé debaty na sněmu klanů, není čas čekat na příchod Krále za Pustinou, pojďme společně svrhnout zkorumpovanou honoraci a nastolit opravdovou vládu lidu, jaká dle legend existovala před dávnými věky.');
 
-INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
-    ('r.item', 'REVOLUTION', 'FACTION_SUPPORT', 0, 0, 0, false, 'ANY', 10, 0),
-    ('r.resources', 'REVOLUTION', 'RESOURCE_SUPPORT', 12, 1, 3, false, null, 10, 1);
+INSERT INTO faction_aids (identifier, faction, aid_type, in_lead, cost, faction_points_cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
+    ('r.item', 'REVOLUTION', 'FACTION_SUPPORT', false, 0, 0, 0, 0, false, 'ANY', 10, 0),
+    ('r.resources', 'REVOLUTION', 'RESOURCE_SUPPORT', false, 12, 0, 1, 3, false, null, 10, 1),
+    ('r.leading', 'REVOLUTION', 'HEALING_REWARD', true, 0, 20, 10, 0, false, null, 0, 0);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('r.item', 'en', 'Revolution support - hando ver an item for the Revolution'),
     ('r.item', 'cs', 'Podpora revoluce - odevzdat předmět do skladu'),
     ('r.resources', 'en', 'Support our faction members with resources'),
-    ('r.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
+    ('r.resources', 'cs', 'Podpořit naše spolubojovníky surovinami'),
+    ('r.leading', 'en', 'Rest in the exclusive medi-tent in the faction camp. This action will recover high amount of health to the character.'),
+    ('r.leading', 'cs', 'Polenošit ve specielním medi-stanu naší frakce. Tato akce vyléčí postavě vysoký počet životů.');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
     ('quest.r1', 'AUTOMATIC', null, 0, 5, 10, 5, 5, 0, 0, null, false, true, 'quest.r2', 'REVOLUTION', 'https://storage.googleapis.com/withergate-images/quests/quest-r1.png'),
@@ -58,15 +61,18 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('CULT', 'en', 'We have to stop the ongoing mechanization and stay strong in our faith that unites us. That is the only way of restoring the world order. Atom and his priests are trying to hide the truth - the truth of our only Lord, Rarraq. His word is as old as humanity itself. The language might sound like gibberish but it surely carries big ideas.'),
     ('CULT', 'cs', 'Vše, co jsme měli, nám zničil pokrok. Ďábelské vynálezy přinesly zkázu, zmar a způsobily konec světa. Lidstvo se neponaučilo. Musíme zastavit znovunastupující mechanizaci a být silní ve víře, která nás sjednotí. Jen tak obnovíme světový řád. Atom a jeho kněží se tuto pravdu snaží zakrýt a nečinně přihlíží všeobecnému úpadku. Pravdu ale vidí pouze kněží boha Rarraqa - své učení postavili na prastarém náboženství starším než lidstvo samo. Mluví sice v divném jazyce, ale určitě to jsou samé velké myšlenky. Vlastně malé myšlenky, protože velké myšlenky jsou zlo.');
 
-INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
-    ('c.sacrifice', 'CULT', 'FACTION_SUPPORT', 0, 0, 0, true, null, 10, 0),
-    ('c.resources', 'CULT', 'RESOURCE_SUPPORT', 12, 1, 3, false, null, 10, 1);
+INSERT INTO faction_aids (identifier, faction, aid_type, in_lead, cost, faction_points_cost, aid, num_aid, health_cost, item_cost, faction_points, fame) VALUES
+    ('c.sacrifice', 'CULT', 'FACTION_SUPPORT', false, 0, 0, 0, 0, true, null, 10, 0),
+    ('c.resources', 'CULT', 'RESOURCE_SUPPORT', false, 12, 0, 1, 3, false, null, 10, 1),
+    ('c.leading', 'CULT', 'ITEM_REWARD', true, 0, 20, 0, 0, false, null, 0, 0);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('c.sacrifice', 'en', 'Flagellum dei - Spend the day with a fruitful flagellation'),
     ('c.sacrifice', 'cs', 'Flagellum dei - strávit den plodným sebemrskačstvím'),
     ('c.resources', 'en', 'Support our faction members with resources'),
-    ('c.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
+    ('c.resources', 'cs', 'Podpořit naše spolubojovníky surovinami'),
+    ('c.leading', 'en', 'Take some ritual items from our sanctuary. This action will grant a random rare item.'),
+    ('c.leading', 'cs', 'Odnést si ze svatyně nějakou obětinu. Tato akce ti poskytne náhodný vzácný předmět.');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
     ('quest.c1', 'AUTOMATIC', null, 0, 3, 10, 5, 5, 0, 0, null, true, true, 'quest.c2', 'CULT', 'https://storage.googleapis.com/withergate-images/quests/quest-c1.png'),
@@ -96,7 +102,7 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
 
 -- Syndicate
 INSERT INTO factions (identifier, image_url, icon_url) VALUES
-    ('SYNDICATE', 'https://storage.googleapis.com/withergate-images/factions/syndicate.png', 'https://storage.googleapis.com/withergate-images/factions/syncidate-icon.png');
+    ('SYNDICATE', 'https://storage.googleapis.com/withergate-images/factions/syndicate.png', 'https://storage.googleapis.com/withergate-images/factions/syndicate-icon.png');
 
 INSERT INTO localized_texts (faction_name, lang, text) VALUES
     ('SYNDICATE', 'en', 'The Web'),
@@ -106,20 +112,23 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
     ('SYNDICATE', 'en', 'Everything has a price. Everyone can be bought. And the price of human life has dropped so low lately… We are doing the same as everyone - gathering wealth and power - the difference is we`re organized and successful. We have followers or spies in each clan, in each faction... sometimes they even do not have a clue. We let them win a few caps playing dice and in the meantime they give away their clans` secrets. We are the spiders web. If you fall, we will catch you (for a few caps). If you``re on to success, we``ll be there to make sure it`s a great one. We offer endless possibilities. You can arm the fanatics, you can arm the revolutionaries... once they end up dead, it is us with their caps in our pockets who will prevail.'),
     ('SYNDICATE', 'cs', 'Všechno má svou cenu. Každý se dá koupit. A po Apokalypse je cena lidského života tak nízká... Děláme jen to, o co se snaží každý - hromadit bohatství a moc. Rozdíl je ale v tom, že my jsme organizovaní a úspěšní. Není frakce, není klanu, kde bychom neměli sympatizanta nebo alespoň špeha. Nevěříš? A pamatuješ, jak jsi nedávno podezřele snadno vyhrál těch pár zátek? Tajemství svého klanu, co jsi nám nevědomky vyklopil, nám vydělá mnohem víc. Přesně takhle my fungujeme. My jsme Síť, v dobrém i ve zlém... Nedaří se ti? Za pár zátek pomůžeme... Daří se ti? Díky nám se ti bude dařit o to víc. Otevřeme ti nové možnosti. Rádi vyzbrojíme náboženské fanatiky i zaslepené revolucionáře... ať se klidně pozabíjí, my jen zinkasujeme zátky.');
 
-INSERT INTO faction_aids (identifier, faction, aid_type, cost, aid, num_aid, information_cost, item_cost, faction_points, fame) VALUES
-    ('s.information', 'SYNDICATE', 'FACTION_SUPPORT', 0, 0, 0, 5, null, 10, 0),
-    ('s.resources', 'SYNDICATE', 'RESOURCE_SUPPORT', 12, 1, 3, 0, null, 10, 1);
+INSERT INTO faction_aids (identifier, faction, aid_type, in_lead, cost, faction_points_cost, aid, num_aid, information_cost, item_cost, faction_points, fame) VALUES
+    ('s.information', 'SYNDICATE', 'FACTION_SUPPORT', false, 0, 0, 0, 0, 5, null, 10, 0),
+    ('s.resources', 'SYNDICATE', 'RESOURCE_SUPPORT', false, 12, 1, 3, 0, 0, null, 10, 1),
+    ('s.leading', 'SYNDICATE', 'CAPS_REWARD', true, 0, 20, 20, 0, 0, null, 0, 0);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('s.information', 'en', 'Share some unique information with our leadership'),
     ('s.information', 'cs', 'Mluviti stříbro, nemlčeti zlato'),
     ('s.resources', 'en', 'Support our faction members with resources'),
-    ('s.resources', 'cs', 'Podpořit naše spolubojovníky surovinami');
+    ('s.resources', 'cs', 'Podpořit naše spolubojovníky surovinami'),
+    ('s.leading', 'en', 'Beg for some change. This action will grant you 20 caps.'),
+    ('s.leading', 'cs', 'Vyžebrat pár zátek z frakční kasy. Tato akce ti poskytne 20 zátek.');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, caps_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
-    ('quest.s1', 'INTELLECT', null, 0, 2, 0, 5, 5, 0, 0, 10, null, true, true, 'quest.s2', 'SYNDICATE', 'https://storage.googleapis.com/withergate-images/quests/quest-s1.png'),
+    ('quest.s1', 'INTELLECT', null, 0, 2, 0, 5, 5, 0, 0, 10, null, false, true, 'quest.s2', 'SYNDICATE', 'https://storage.googleapis.com/withergate-images/quests/quest-s1.png'),
     ('quest.s2', 'AUTOMATIC', null, 0, 2, 20, 10, 10, 0, 0, 0, 'ANY', false, true, 'quest.s3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s2.png'),
-    ('quest.s3', 'CRAFTSMANSHIP', null, 6, 3, 30, 15, 15, 0, 3, 0, null, false, true, 'quest.s4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s3.png'),
+    ('quest.s3', 'CRAFTSMANSHIP', null, 8, 3, 30, 15, 15, 0, 3, 0, null, false, true, 'quest.s4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s3.png'),
     ('quest.s4', 'AUTOMATIC', null, 0, 3, 0, 20, 20, 0, 0, 50, null, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-s4.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES

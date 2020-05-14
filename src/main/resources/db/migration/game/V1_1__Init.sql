@@ -27,8 +27,10 @@ DROP TABLE IF EXISTS faction_aids;
 CREATE TABLE faction_aids (
     identifier VARCHAR(16) NOT NULL,
     aid_type VARCHAR(32) NOT NULL,
+    in_lead BIT DEFAULT 0,
     fame INT NOT NULL DEFAULT 0,
     faction_points INT NOT NULL DEFAULT 0,
+    faction_points_cost INT NOT NULL DEFAULT 0,
     cost INT NOT NULL DEFAULT 0,
     aid INT NOT NULL DEFAULT 0,
     num_aid INT NOT NULL DEFAULT 0,

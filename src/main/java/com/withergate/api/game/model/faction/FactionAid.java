@@ -43,6 +43,9 @@ public class FactionAid {
     @Enumerated(EnumType.STRING)
     private Type aidType;
 
+    @Column(name = "in_lead", updatable = false, nullable = false)
+    private boolean leading;
+
     @Column(name = "fame", updatable = false, nullable = false)
     private int fame;
 
@@ -51,6 +54,9 @@ public class FactionAid {
 
     @Column(name = "cost", updatable = false, nullable = false)
     private int cost;
+
+    @Column(name = "faction_points_cost", updatable = false, nullable = false)
+    private int factionPointsCost;
 
     @Column(name = "aid", updatable = false, nullable = false)
     private int aid;
@@ -77,7 +83,7 @@ public class FactionAid {
      * Aid type.
      */
     public enum Type {
-        RESOURCE_SUPPORT, FACTION_SUPPORT
+        RESOURCE_SUPPORT, FACTION_SUPPORT, HEALING_REWARD, ITEM_REWARD, CAPS_REWARD
     }
 
 }

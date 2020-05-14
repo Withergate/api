@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.withergate.api.GameProperties;
+import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
@@ -109,10 +110,19 @@ public class FactionServiceImpl implements FactionService {
             if (clan.getInformation() < aid.getInformationCost()) {
                 throw new InvalidActionException("Not enough information to perform this action.");
             }
+            // check influence cost
+            if (clan.getFactionPoints() < aid.getFactionPointsCost()) {
+                throw new InvalidActionException("Not enough influence to perform this action.");
+            }
+            // check leading condition
+            if (aid.isLeading() && !clan.getFaction().getIdentifier().equals(getBestFaction().getIdentifier())) {
+                throw new InvalidActionException(("Your clan must be a member of a leading faction to perform this action."));
+            }
 
             // pay resources
             clan.changeCaps(- aid.getCost());
             clan.changeInformation(- aid.getInformationCost());
+            clan.changeFactionPoints(- aid.getFactionPoints());
 
             action.setFactionAid(aid);
         }
@@ -268,6 +278,18 @@ public class FactionServiceImpl implements FactionService {
                 if (aid.getItemCost() != null) {
                     itemService.deleteItem(character, aid.getItemCost(), notification);
                 }
+                break;
+            case CAPS_REWARD:
+                character.getClan().changeCaps(aid.getAid());
+                notification.changeCaps(aid.getAid());
+                break;
+            case HEALING_REWARD:
+                int missingHealth = character.getMaxHitpoints() - character.getHitpoints();
+                int healing = Math.min(missingHealth, aid.getAid());
+                character.changeHitpoints(healing);
+                notification.changeHealing(healing);
+            case ITEM_REWARD:
+                itemService.generateItemForCharacter(character, notification, null, Rarity.RARE, turnId);
                 break;
             default:
                 log.error("Unknown aid type: {}", aid.getAidType());
