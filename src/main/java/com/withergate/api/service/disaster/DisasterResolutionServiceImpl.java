@@ -12,6 +12,7 @@ import com.withergate.api.game.model.disaster.DisasterPenalty;
 import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.model.research.Research;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.item.ItemService;
@@ -100,6 +101,9 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
                 break;
             case INFORMATION_LOSS:
                 handleInformationLoss(clan, notification);
+                break;
+            case RESEARCH_LOSS:
+                handleResearchLoss(clan, notification);
                 break;
             default: log.error("Unknown penalty type: {}", penalty.getPenaltyType());
         }
@@ -214,6 +218,19 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.building.destruction",
                         new String[]{}, building.getDetails().getName());
+                notification.getDetails().add(detail);
+            }
+        }
+    }
+
+    private void handleResearchLoss(Clan clan, ClanNotification notification) {
+        for (Research research : clan.getResearch()) {
+            if (!research.isCompleted() && research.getProgress() > 0) {
+                research.setProgress(0);
+
+                NotificationDetail detail = new NotificationDetail();
+                notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.research.loss",
+                        new String[]{}, research.getDetails().getName());
                 notification.getDetails().add(detail);
             }
         }
