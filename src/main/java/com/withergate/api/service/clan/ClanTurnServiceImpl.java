@@ -162,7 +162,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
     private void performCharacterLeveling(int turnId, Clan clan) {
         for (Character character : clan.getCharacters()) {
-            if (character.getExperience() >= character.getNextLevelExperience()) {
+            if (character.getExperience() >= character.getNextLevelExperience() && character.getHitpoints() > 0) {
                 // level up
                 characterService.increaseCharacterLevel(character, turnId);
             }
