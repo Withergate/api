@@ -16,6 +16,7 @@ import com.withergate.api.game.model.action.FactionAction;
 import com.withergate.api.game.model.action.FactionAction.Type;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.faction.ClanFactionOverview;
 import com.withergate.api.game.model.faction.Faction;
@@ -38,7 +39,10 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -139,12 +143,12 @@ public class FactionServiceImpl implements FactionService {
         return factionRepository.findAll();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processFactionActions(int turnId) {
-        log.debug("Processing faction actions...");
-
+    public void runActions(int turn) {
         for (FactionAction action : factionActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
             notification.setImageUrl(action.getCharacter().getImageUrl());
 
@@ -156,7 +160,7 @@ public class FactionServiceImpl implements FactionService {
                     joinFaction(faction, character, notification);
                     break;
                 case SUPPORT:
-                    handleSupportAction(action, character, notification, turnId);
+                    handleSupportAction(action, character, notification, turn);
                     break;
                 default:
                     log.error("Unknown action type: {}.", action.getType());
@@ -172,6 +176,11 @@ public class FactionServiceImpl implements FactionService {
             // mark action processed
             action.setState(ActionState.COMPLETED);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.FACTION_ORDER;
     }
 
     @Override
@@ -378,4 +387,5 @@ public class FactionServiceImpl implements FactionService {
 
         return overviews;
     }
+
 }

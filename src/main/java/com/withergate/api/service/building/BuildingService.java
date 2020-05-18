@@ -5,6 +5,7 @@ import java.util.List;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.building.BuildingDetails;
 import com.withergate.api.game.model.request.BuildingRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -12,7 +13,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface BuildingService {
+public interface BuildingService extends Actionable {
 
     /**
      * Validates and saves the provided action.
@@ -21,13 +22,6 @@ public interface BuildingService {
      * @param clanId clan ID
      */
     void saveBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Processes all pending building actions.
-     *
-     * @param turnId turn ID
-     */
-    void processBuildingActions(int turnId);
 
     /**
      * Activates all passive building bonuses for given clan.

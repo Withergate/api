@@ -68,6 +68,8 @@ public class TradeServiceTest {
         tradeService = new TradeServiceImpl(resourceTradeActionRepository, notificationService,
                 itemService, marketOfferRepository, characterService, clanRepository);
         tradeService.setAchievementService(achievementService);
+
+        Mockito.when(itemService.generateRandomItem(1)).thenReturn(mockItem());
     }
 
     @Test
@@ -276,7 +278,7 @@ public class TradeServiceTest {
         Mockito.when(marketOfferRepository.findAllByState(State.PENDING)).thenReturn(List.of(offer));
 
         // when processing trade
-        tradeService.processMarketTradeActions(1);
+        tradeService.runActions(1);
 
         // then verify offer handled
         Assert.assertEquals(buyer, weapon.getClan());
@@ -306,7 +308,7 @@ public class TradeServiceTest {
         Mockito.when(resourceTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        tradeService.processResourceTradeActions(1);
+        tradeService.runActions(1);
 
         // then verify action handled
         Assert.assertEquals(5, clan.getFood());
@@ -336,7 +338,7 @@ public class TradeServiceTest {
         Mockito.when(resourceTradeActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        tradeService.processResourceTradeActions(1);
+        tradeService.runActions(1);
 
         // then verify action handled
         Assert.assertEquals(60, clan.getCaps());
@@ -369,11 +371,21 @@ public class TradeServiceTest {
         Mockito.when(marketOfferRepository.findAllByState(State.PUBLISHED)).thenReturn(List.of(offer));
 
         // when processing computer trade actions
-        tradeService.performComputerTradeActions(1);
+        tradeService.runActions(1);
 
         // then verify offer handled
         Assert.assertEquals(30, seller.getCaps());
         Mockito.verify(marketOfferRepository).delete(offer);
+    }
+
+    private Item mockItem() {
+        ItemDetails details = new ItemDetails();
+        details.setIdentifier("ITEM");
+
+        Item item = new Item();
+        item.setDetails(details);
+
+        return item;
     }
 
 }

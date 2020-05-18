@@ -1,6 +1,5 @@
 package com.withergate.api.service.research;
 
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.ResearchAction;
@@ -11,15 +10,20 @@ import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.ResearchRequest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.research.ResearchDetails;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.action.ResearchActionRepository;
 import com.withergate.api.game.repository.research.ResearchDetailsRepository;
-import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -70,12 +74,12 @@ public class ResearchServiceImpl implements ResearchService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processResearchActions(int turnId) {
-        log.debug("Processing research actions...");
-
+    public void runActions(int turn) {
         for (ResearchAction action : actionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
             notification.setImageUrl(action.getCharacter().getImageUrl());
 
@@ -92,6 +96,11 @@ public class ResearchServiceImpl implements ResearchService {
             // save notification
             notificationService.save(notification);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.RESEARCH_ORDER;
     }
 
     @Override

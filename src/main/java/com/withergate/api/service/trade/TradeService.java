@@ -5,6 +5,7 @@ import com.withergate.api.game.model.request.PublishOfferRequest;
 import com.withergate.api.game.model.request.ResourceTradeRequest;
 import com.withergate.api.game.model.trade.MarketOffer;
 import com.withergate.api.game.model.trade.MarketOffer.State;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import org.springframework.data.domain.Pageable;
  *
  * @author Martin Myslik
  */
-public interface TradeService {
+public interface TradeService extends Actionable {
 
     /**
      * Validates and saves the provided action.
@@ -39,20 +40,6 @@ public interface TradeService {
      * @return the loaded market offer
      */
     MarketOffer loadMarketOffer(int offerId);
-
-    /**
-     * Processes all pending resource trade actions.
-     *
-     * @param turnId turn ID
-     */
-    void processResourceTradeActions(int turnId);
-
-    /**
-     * Processes all pending market trade actions.
-     *
-     * @param turnId turn ID
-     */
-    void processMarketTradeActions(int turnId);
 
     /**
      * Publishes new market offer.
@@ -80,20 +67,5 @@ public interface TradeService {
      * @return page with market offers
      */
     Page<MarketOffer> getMarketOffersByState(State state, Pageable pageable);
-
-    /**
-     * Performs computer trade actions. If an offer is eligible for passive trade action, it will be performed in
-     * scope of this method.
-     *
-     * @param turnId turn ID
-     */
-    void performComputerTradeActions(int turnId);
-
-    /**
-     * Prepares market offers published by computer and delete the old ones.
-     *
-     * @param turn turn
-     */
-    void prepareComputerMarketOffers(int turn);
 
 }

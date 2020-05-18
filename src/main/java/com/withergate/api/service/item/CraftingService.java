@@ -3,8 +3,8 @@ package com.withergate.api.service.item;
 import java.util.List;
 
 import com.withergate.api.game.model.item.ItemDetails;
-import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.game.model.request.CraftingRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -12,7 +12,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author  Martin Myslik
  */
-public interface CraftingService {
+public interface CraftingService extends Actionable {
 
     /**
      * Loads all available items to craft for the provided clan.
@@ -29,12 +29,5 @@ public interface CraftingService {
      * @param clanId clan ID
      */
     void saveCraftingAction(CraftingRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Processes all crafting actions.
-     *
-     * @param turnId turn ID
-     */
-    void processCraftingActions(int turnId);
 
 }

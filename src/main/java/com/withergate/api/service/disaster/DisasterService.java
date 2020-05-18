@@ -2,6 +2,7 @@ package com.withergate.api.service.disaster;
 
 import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.request.DisasterRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -9,7 +10,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface DisasterService {
+public interface DisasterService extends Actionable {
 
     /**
      * Loads the current disaster. Checks whether the disaster is visible for the provided clan.
@@ -20,25 +21,11 @@ public interface DisasterService {
     Disaster getDisasterForClan(int clanId);
 
     /**
-     * Handles the disaster mechanics. Should be invoked every turn.
-     *
-     * @param turnId the current turn
-     */
-    void handleDisaster(int turnId);
-
-    /**
      * Validates and saves the provided action.
      *
      * @param request the action to be saved
      * @param clanId clan ID
      */
     void saveDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Processes all pending disaster actions.
-     *
-     * @param turnId turn ID
-     */
-    void processDisasterActions(int turnId);
 
 }

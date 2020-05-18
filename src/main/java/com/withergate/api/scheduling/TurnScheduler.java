@@ -33,6 +33,7 @@ public class TurnScheduler {
     private final HistoricalResultsService resultsService;
     private final ProfileService profileService;
     private final AchievementService achievementService;
+    private final ActionRegistrar actionRegistrar;
     private final GameProperties gameProperties;
 
     /**
@@ -67,32 +68,8 @@ public class TurnScheduler {
         // assign default actions
         actionService.assignDefaultActions();
 
-        // process clan combat actions
-        actionService.processClanCombatActions(currentTurn.getTurnId());
-
-        // process research actions
-        actionService.processResearchActions(currentTurn.getTurnId());
-
-        // process building actions
-        actionService.processBuildingActions(currentTurn.getTurnId());
-
-        // process building actions
-        actionService.processCraftingActions(currentTurn.getTurnId());
-
-        // process location actions
-        actionService.processLocationActions(currentTurn.getTurnId());
-
-        // process quest actions
-        actionService.processQuestActions(currentTurn.getTurnId());
-
-        // process trade actions
-        actionService.processTradeActions(currentTurn.getTurnId());
-
-        // process faction actions
-        actionService.processFactionActions(currentTurn.getTurnId());
-
-        // handle disaster
-        actionService.processDisaster(currentTurn.getTurnId());
+        // process actionables
+        actionRegistrar.runActions(currentTurn.getTurnId());
 
         // delete dead characters
         characterService.deleteDeadCharacters();

@@ -132,7 +132,7 @@ public class TavernServiceTest {
         Mockito.when(tavernActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when processing actions
-        tavernService.processTavernActions(1);
+        tavernService.runActions(1);
 
         // then verify character hired and action completed
         Assert.assertEquals(clan, hired.getClan());

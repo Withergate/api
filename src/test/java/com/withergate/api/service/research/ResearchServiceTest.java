@@ -2,7 +2,6 @@ package com.withergate.api.service.research;
 
 import java.util.List;
 
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.ResearchAction;
@@ -11,6 +10,7 @@ import com.withergate.api.game.model.character.Trait;
 import com.withergate.api.game.model.character.TraitDetails;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.research.ResearchDetails;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.action.ResearchActionRepository;
 import com.withergate.api.game.repository.research.ResearchDetailsRepository;
 import com.withergate.api.service.clan.CharacterService;
@@ -92,7 +92,7 @@ public class ResearchServiceTest {
         Mockito.when(actionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        researchService.processResearchActions(1);
+        researchService.runActions(1);
 
         // then verify progress increased
         Assert.assertEquals(7, research.getProgress());
@@ -134,7 +134,7 @@ public class ResearchServiceTest {
         Mockito.when(actionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        researchService.processResearchActions(1);
+        researchService.runActions(1);
 
         // then verify progress increased
         Assert.assertEquals(9, research.getProgress());
@@ -169,7 +169,7 @@ public class ResearchServiceTest {
         Mockito.when(actionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        researchService.processResearchActions(1);
+        researchService.runActions(1);
 
         // then verify completion handled
         Assert.assertEquals(20, research.getProgress());

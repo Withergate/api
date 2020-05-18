@@ -1,5 +1,9 @@
 package com.withergate.api.service.quest;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.QuestAction;
@@ -27,10 +31,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -218,7 +218,7 @@ public class QuestServiceTest {
         Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.INTELLECT), Mockito.eq(1),
                 Mockito.any())).thenReturn(true);
 
-        questService.processQuestActions(1);
+        questService.runActions(1);
 
         // then verify entities updated
         Assert.assertEquals(1, quest.getProgress());
@@ -266,7 +266,7 @@ public class QuestServiceTest {
         Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.CRAFTSMANSHIP), Mockito.eq(1),
                 Mockito.any())).thenReturn(true);
 
-        questService.processQuestActions(1);
+        questService.runActions(1);
 
         // then verify entities updated
         Assert.assertTrue(quest.isCompleted());
@@ -309,7 +309,7 @@ public class QuestServiceTest {
         Mockito.when(questActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when handling actions
-        questService.processQuestActions(1);
+        questService.runActions(1);
 
         // then verify combat service called
         Mockito.verify(encounterService).handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.COMBAT), Mockito.eq(1), Mockito.any(ClanNotification.class));

@@ -192,7 +192,7 @@ public class CraftingServiceTest {
         Mockito.when(detailsRepository.getOne("OUTFIT")).thenReturn(details);
 
         // when processing actions
-        craftingService.processCraftingActions(1);
+        craftingService.runActions(1);
 
         // then verify item crafted
         Mockito.verify(itemService).generateCraftableItem(Mockito.eq(character), Mockito.any(ClanNotification.class), Mockito.eq(details));

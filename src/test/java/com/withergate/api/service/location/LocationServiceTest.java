@@ -3,7 +3,6 @@ package com.withergate.api.service.location;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.LocationAction;
@@ -19,6 +18,7 @@ import com.withergate.api.game.model.location.Location;
 import com.withergate.api.game.model.location.LocationDescription;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.request.LocationRequest;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.LocationDescriptionRepository;
 import com.withergate.api.game.repository.action.LocationActionRepository;
 import com.withergate.api.service.RandomService;
@@ -173,7 +173,7 @@ public class LocationServiceTest {
         // when performing pending actions
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
 
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify encounter triggered
         Mockito.verify(encounterService).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.WASTELAND),
@@ -218,7 +218,7 @@ public class LocationServiceTest {
         // when performing pending actions
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
 
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify some resources awarded
         Assert.assertEquals(12, clan.getFood());
@@ -262,7 +262,7 @@ public class LocationServiceTest {
         // when performing pending actions
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
 
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify no resources awarded
         Assert.assertEquals(10, clan.getFood());
@@ -306,7 +306,7 @@ public class LocationServiceTest {
         // when performing pending actions
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(10); // low roll
 
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify partial information awarded
         Assert.assertEquals(7, clan.getInformation());
@@ -346,7 +346,7 @@ public class LocationServiceTest {
         // high encounter roll followed by low loot roll
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50, 5);
 
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify item generated
         Mockito.verify(itemService).generateItemForCharacter(Mockito.eq(character), Mockito.any(ClanNotification.class),
@@ -391,7 +391,7 @@ public class LocationServiceTest {
         // high encounter roll followed by high loot roll
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50);
 
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify clan saved with updated junk
         Mockito.verify(encounterService, Mockito.never()).handleEncounter(Mockito.any(), Mockito.eq(character), Mockito.eq(Location.NEIGHBORHOOD),
@@ -454,7 +454,7 @@ public class LocationServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50); // encounter roll
 
         // when exploring
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify bonuses granted
         Assert.assertEquals(9, clan.getFood());
@@ -513,7 +513,7 @@ public class LocationServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50); // encounter roll
 
         // when exploring
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify bonuses granted
         Assert.assertEquals(5, clan.getFood());
@@ -553,7 +553,7 @@ public class LocationServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K100)).thenReturn(50); // encounter roll
 
         // when exploring
-        locationService.processLocationActions(1);
+        locationService.runActions(1);
 
         // then verify information increased
         Assert.assertEquals(8, clan.getInformation());

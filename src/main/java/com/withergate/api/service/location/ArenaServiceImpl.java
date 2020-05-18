@@ -18,6 +18,7 @@ import com.withergate.api.game.model.request.ArenaRequest;
 import com.withergate.api.game.repository.action.ArenaActionRepository;
 import com.withergate.api.game.repository.arena.ArenaStatsRepository;
 import com.withergate.api.profile.model.achievement.AchievementType;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -25,7 +26,10 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.profile.AchievementService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -74,39 +78,6 @@ public class ArenaServiceImpl implements ArenaService {
         character.setState(CharacterState.BUSY);
     }
 
-    @Override
-    public void processArenaActions(int turnId) {
-        log.debug("Executing arena actions");
-
-        List<ArenaAction> actions = arenaActionRepository.findAllByState(ActionState.PENDING);
-        List<Character> characters = new ArrayList<>(actions.size());
-
-        for (ArenaAction action : actions) {
-            characters.add(action.getCharacter());
-
-            // mark action as completed
-            action.setState(ActionState.COMPLETED);
-        }
-
-        log.debug("{} characters entered arena.", characters.size());
-
-        // process arena fights
-        Collections.shuffle(characters);
-        List<ArenaResult> results = combatService.handleArenaFights(characters);
-
-        for (ArenaResult result : results) {
-            // save results
-            result.getNotification().setTurnId(turnId);
-            result.getNotification().setHeader(result.getCharacter().getName());
-            notificationService.save(result.getNotification());
-
-            // handle stats update for winner
-            if (result.isWinner()) {
-                saveOrUpdateArenaStats(result);
-            }
-        }
-    }
-
     private void saveOrUpdateArenaStats(ArenaResult result) {
         Optional<ArenaStats> stats = arenaStatsRepository.findById(result.getCharacter().getId());
         ArenaStats updated = null;
@@ -128,5 +99,43 @@ public class ArenaServiceImpl implements ArenaService {
 
         // check achievement
         achievementService.checkAchievementAward(result.getCharacter().getClan().getId(), AchievementType.ARENA_WINS, updated.getStats());
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
+    @Override
+    public void runActions(int turn) {
+        List<ArenaAction> actions = arenaActionRepository.findAllByState(ActionState.PENDING);
+        List<Character> characters = new ArrayList<>(actions.size());
+
+        for (ArenaAction action : actions) {
+            characters.add(action.getCharacter());
+
+            // mark action as completed
+            action.setState(ActionState.COMPLETED);
+        }
+
+        log.debug("{} characters entered arena.", characters.size());
+
+        // process arena fights
+        Collections.shuffle(characters);
+        List<ArenaResult> results = combatService.handleArenaFights(characters);
+
+        for (ArenaResult result : results) {
+            // save results
+            result.getNotification().setTurnId(turn);
+            result.getNotification().setHeader(result.getCharacter().getName());
+            notificationService.save(result.getNotification());
+
+            // handle stats update for winner
+            if (result.isWinner()) {
+                saveOrUpdateArenaStats(result);
+            }
+        }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.ARENA_ORDER;
     }
 }

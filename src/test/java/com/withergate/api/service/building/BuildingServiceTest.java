@@ -101,7 +101,7 @@ public class BuildingServiceTest {
         // when constructing new building
         Mockito.when(buildingDetailsRepository.getOne("MONUMENT")).thenReturn(details);
 
-        buildingService.processBuildingActions(1);
+        buildingService.runActions(1);
 
         // then verify progress saved
         Assert.assertEquals(4, character.getClan().getBuilding("MONUMENT").getProgress());
@@ -145,7 +145,7 @@ public class BuildingServiceTest {
         Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when improving existing building
-        buildingService.processBuildingActions(1);
+        buildingService.runActions(1);
 
         // then verify progress saved
         Assert.assertEquals(0, character.getClan().getBuilding("FORGE").getProgress());
@@ -195,7 +195,7 @@ public class BuildingServiceTest {
         Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when improving existing building
-        buildingService.processBuildingActions(1);
+        buildingService.runActions(1);
 
         // then verify progress saved
         Assert.assertEquals(8, character.getClan().getBuilding("QUARTERS").getProgress());
@@ -243,7 +243,7 @@ public class BuildingServiceTest {
         Mockito.when(buildingActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when improving existing building
-        buildingService.processBuildingActions(1);
+        buildingService.runActions(1);
 
         // then verify progress saved
         Assert.assertEquals(9, character.getClan().getBuilding("QUARTERS").getProgress());

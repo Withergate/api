@@ -2,6 +2,7 @@ package com.withergate.api.scheduler;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.turn.Turn;
+import com.withergate.api.scheduling.ActionRegistrar;
 import com.withergate.api.scheduling.TurnScheduler;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
@@ -44,6 +45,9 @@ public class TurnSchedulerTest {
     @Mock
     private AchievementService achievementService;
 
+    @Mock
+    private ActionRegistrar actionRegistrar;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -52,7 +56,7 @@ public class TurnSchedulerTest {
         properties.setMaxTurns(45);
 
         scheduler = new TurnScheduler(turnService, actionService, clanService, characterService, resultsService,
-                profileService, achievementService, properties);
+                profileService, achievementService, actionRegistrar, properties);
     }
 
     @Test
@@ -86,12 +90,7 @@ public class TurnSchedulerTest {
 
         // then verify all actions triggered
         Mockito.verify(actionService).assignDefaultActions();
-        Mockito.verify(actionService).processBuildingActions(1);
-        Mockito.verify(actionService).processResearchActions(1);
-        Mockito.verify(actionService).processLocationActions(1);
-        Mockito.verify(actionService).processQuestActions(1);
-        Mockito.verify(actionService).processTradeActions(1);
-        Mockito.verify(actionService).processDisaster(1);
+        Mockito.verify(actionRegistrar).runActions(1);
         Mockito.verify(clanService).performClanTurnUpdates(1);
     }
 
@@ -108,12 +107,7 @@ public class TurnSchedulerTest {
 
         // then verify all actions triggered
         Mockito.verify(actionService, Mockito.never()).assignDefaultActions();
-        Mockito.verify(actionService, Mockito.never()).processBuildingActions(1);
-        Mockito.verify(actionService, Mockito.never()).processResearchActions(1);
-        Mockito.verify(actionService, Mockito.never()).processLocationActions(1);
-        Mockito.verify(actionService, Mockito.never()).processQuestActions(1);
-        Mockito.verify(actionService, Mockito.never()).processTradeActions(1);
-        Mockito.verify(actionService, Mockito.never()).processDisaster(1);
+        Mockito.verify(actionRegistrar, Mockito.never()).runActions(1);
         Mockito.verify(clanService, Mockito.never()).performClanTurnUpdates(1);
         Mockito.verify(turnService, Mockito.never()).saveTurn(Mockito.any());
     }

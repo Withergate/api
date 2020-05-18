@@ -74,7 +74,7 @@ public class ArenaServiceTest {
         Mockito.when(arenaActionRepository.findAllByState(ActionState.PENDING)).thenReturn(actions);
 
         // when processing actions
-        arenaService.processArenaActions(1);
+        arenaService.runActions(1);
 
         // then verify combat initiated
         ArgumentCaptor<List<Character>> captor = ArgumentCaptor.forClass(List.class);

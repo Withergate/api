@@ -10,7 +10,6 @@ import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.QuestAction;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
-import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.quest.Quest;
@@ -20,14 +19,19 @@ import com.withergate.api.game.repository.action.QuestActionRepository;
 import com.withergate.api.game.repository.quest.QuestDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -130,12 +134,12 @@ public class QuestServiceImpl implements QuestService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+    @Retryable
     @Override
-    public void processQuestActions(int turnId) {
-        log.debug("Processing quest actions.");
-
+    public void runActions(int turn) {
         for (QuestAction action : questActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
             notification.setImageUrl(action.getCharacter().getImageUrl());
 
@@ -147,6 +151,11 @@ public class QuestServiceImpl implements QuestService {
             // mark action as completed
             action.setState(ActionState.COMPLETED);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.QUEST_ORDER;
     }
 
     private void assignQuest(QuestDetails details, Clan clan, ClanNotification notification) {

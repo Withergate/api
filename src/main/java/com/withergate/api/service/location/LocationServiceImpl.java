@@ -15,6 +15,8 @@ import com.withergate.api.game.model.request.LocationRequest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.repository.LocationDescriptionRepository;
 import com.withergate.api.game.repository.action.LocationActionRepository;
+import com.withergate.api.service.action.ActionOrder;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
@@ -25,7 +27,10 @@ import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -72,8 +77,10 @@ public class LocationServiceImpl implements LocationService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processLocationActions(int turnId) {
+    public void runActions(int turn) {
         log.info("Executing location actions...");
         List<LocationAction> actions = locationActionRepository.findAllByState(ActionState.PENDING);
 
@@ -81,18 +88,23 @@ public class LocationServiceImpl implements LocationService {
             Character character = action.getCharacter();
 
             // prepare notification
-            ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, character.getClan().getId());
             notification.setHeader(character.getName());
             notification.setImageUrl(character.getImageUrl());
 
             // process action
-            processLocationAction(notification, action, turnId);
+            processLocationAction(notification, action, turn);
 
             // send notification about action result
             notificationService.save(notification);
 
             action.setState(ActionState.COMPLETED);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.LOCATIONS_ORDER;
     }
 
     private void processLocationAction(ClanNotification notification, LocationAction action, int turn) {
@@ -237,4 +249,5 @@ public class LocationServiceImpl implements LocationService {
 
         return 0;
     }
+
 }

@@ -3,6 +3,7 @@ package com.withergate.api.service.quest;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.request.QuestRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -10,7 +11,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface QuestService {
+public interface QuestService extends Actionable {
 
     /**
      * Assign new quests to the provided clan based on its information level.
@@ -35,12 +36,5 @@ public interface QuestService {
      * @param request the action to be saved
      */
     void saveQuestAction(QuestRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Processes all pending quest actions.
-     *
-     * @param turnId turn ID
-     */
-    void processQuestActions(int turnId);
 
 }

@@ -22,6 +22,7 @@ import com.withergate.api.game.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.trade.MarketOfferRepository;
 import com.withergate.api.profile.model.achievement.AchievementType;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
@@ -33,7 +34,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -150,10 +154,13 @@ public class TradeServiceImpl implements TradeService {
         return marketOfferRepository.getOne(offerId);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processResourceTradeActions(int turnId) {
+    public void runActions(int turn) {
+        // resource trade actions
         for (ResourceTradeAction action : resourceTradeActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
             notification.setImageUrl(action.getCharacter().getImageUrl());
 
@@ -166,16 +173,23 @@ public class TradeServiceImpl implements TradeService {
             // mark action as done
             action.setState(ActionState.COMPLETED);
         }
-    }
 
-    @Override
-    public void processMarketTradeActions(int turnId) {
+        // market trade actions
         for (MarketOffer offer : marketOfferRepository.findAllByState(State.PENDING)) {
-            processMarketTradeAction(offer, turnId);
+            processMarketTradeAction(offer, turn);
 
             // mark offer as sold
             offer.setState(State.SOLD);
         }
+
+        // computer trades
+        performComputerTradeActions(turn);
+        prepareComputerMarketOffers(turn);
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.TRADE_ORDER;
     }
 
     @Transactional
@@ -233,8 +247,7 @@ public class TradeServiceImpl implements TradeService {
         return marketOfferRepository.findAllByStateOrderByPriceAsc(state, pageable);
     }
 
-    @Override
-    public void performComputerTradeActions(int turnId) {
+    private void performComputerTradeActions(int turnId) {
         for (MarketOffer offer : marketOfferRepository.findAllByState(State.PUBLISHED)) {
             // intelligent offers
             if (offer.isIntelligent()) {
@@ -259,8 +272,7 @@ public class TradeServiceImpl implements TradeService {
         }
     }
 
-    @Override
-    public void prepareComputerMarketOffers(int turn) {
+    private void prepareComputerMarketOffers(int turn) {
         log.debug("Preparing computer market offers.");
 
         // delete old unprocessed offers
@@ -361,4 +373,5 @@ public class TradeServiceImpl implements TradeService {
             buyerNotification.getDetails().add(detail);
         }
     }
+
 }
