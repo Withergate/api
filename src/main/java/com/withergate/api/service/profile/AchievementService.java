@@ -72,6 +72,11 @@ public interface AchievementService {
     /**
      * Handles all end game achievements.
      */
-    void handleEndGameAchievements();
+    void handleEndGameProfileAchievements();
+
+    /**
+     * Handles all end game faction achievements.
+     */
+    void handleEndGameFactionAchievements();
 
 }

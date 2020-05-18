@@ -40,7 +40,6 @@ public class TurnScheduler {
      */
     @Scheduled(cron = "0 0 ${game.turnTimes} * * *", zone = "UTC") // every day at specified UTC hours
     public void processTurn() {
-
         // process current turn
         Turn currentTurn = turnService.getCurrentTurn();
 
@@ -107,6 +106,9 @@ public class TurnScheduler {
 
         // perform end game actions
         if (currentTurn.getTurnId() == gameProperties.getMaxTurns()) {
+            // faction achievements
+            achievementService.handleEndGameFactionAchievements();
+
             // save historical results
             resultsService.saveResults(clanService.getAllClansByFame());
 
@@ -114,7 +116,7 @@ public class TurnScheduler {
             profileService.recalculateRankings();
 
             // end game achievements
-            achievementService.handleEndGameAchievements();
+            achievementService.handleEndGameProfileAchievements();
         }
 
         // prepare statistics
