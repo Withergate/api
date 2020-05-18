@@ -25,13 +25,17 @@ import com.withergate.api.game.repository.action.CraftingActionRepository;
 import com.withergate.api.game.repository.item.ItemDetailsRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -109,10 +113,12 @@ public class CraftingServiceImpl implements CraftingService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processCraftingActions(int turnId) {
+    public void runActions(int turn) {
         for (CraftingAction action : actionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setImageUrl(action.getCharacter().getImageUrl());
             notification.setHeader(action.getCharacter().getName());
 
@@ -123,6 +129,11 @@ public class CraftingServiceImpl implements CraftingService {
             notificationService.save(notification);
             action.setState(ActionState.COMPLETED);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.CRAFTING_ORDER;
     }
 
     private void handleCraftingAction(CraftingAction action, ClanNotification notification) {
@@ -205,4 +216,5 @@ public class CraftingServiceImpl implements CraftingService {
 
         throw new InvalidActionException("No crafting building found for item type " + type.name());
     }
+
 }

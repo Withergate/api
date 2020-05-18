@@ -3,7 +3,6 @@ package com.withergate.api.service.location;
 import java.util.List;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
 import com.withergate.api.game.model.action.ActionState;
@@ -16,17 +15,22 @@ import com.withergate.api.game.model.character.TavernOffer.State;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.TavernRequest;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.repository.action.TavernActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.clan.TavernOfferRepository;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -109,15 +113,17 @@ public class TavernServiceImpl implements TavernService {
         offer.setState(TavernOffer.State.HIRED);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processTavernActions(int turnId) {
+    public void runActions(int turn) {
         log.debug("Processing tavern actions.");
 
         for (TavernAction action : tavernActionRepository.findAllByState(ActionState.PENDING)) {
             Character character = action.getCharacter();
 
             // prepare notification
-            ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, character.getClan().getId());
             notification.setHeader(character.getName());
             notification.setImageUrl(character.getImageUrl());
 
@@ -234,5 +240,10 @@ public class TavernServiceImpl implements TavernService {
         }
 
         return filter;
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.TAVERN_ORDER;
     }
 }

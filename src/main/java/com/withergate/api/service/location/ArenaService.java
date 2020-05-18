@@ -1,6 +1,7 @@
 package com.withergate.api.service.location;
 
 import com.withergate.api.game.model.request.ArenaRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -8,7 +9,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface ArenaService {
+public interface ArenaService extends Actionable {
 
     /**
      * Validates and saves the provided action.
@@ -17,12 +18,5 @@ public interface ArenaService {
      * @param clanId clan ID
      */
     void saveArenaAction(ArenaRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Handles all pending arena actions.
-     *
-     * @param turnId turn ID
-     */
-    void processArenaActions(int turnId);
 
 }

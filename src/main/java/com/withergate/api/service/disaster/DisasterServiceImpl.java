@@ -15,6 +15,7 @@ import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.disaster.DisasterDetails;
 import com.withergate.api.game.model.disaster.DisasterSolution;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
@@ -35,7 +36,10 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.turn.TurnService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -86,27 +90,6 @@ public class DisasterServiceImpl implements DisasterService {
         return isVisible ? disaster : null;
     }
 
-    @Override
-    public void handleDisaster(int turnId) {
-        log.debug("Checking current disaster");
-
-        // get the current disaster
-        Disaster disaster = disasterRepository.findFirstByCompleted(false);
-
-        // check disaster
-        if (disaster != null) {
-            // check trigger
-            if (disaster.getTurn() > turnId) {
-                log.debug("Existing disaster planned for turn {}. {} turns left.", disaster.getTurn(), disaster.getTurn() - turnId);
-            } else {
-                triggerDisaster(turnId, disaster);
-                prepareNextDisaster(turnId);
-            }
-        } else {
-            prepareNextDisaster(turnId);
-        }
-    }
-
     @Transactional
     @Override
     public void saveDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException {
@@ -151,11 +134,13 @@ public class DisasterServiceImpl implements DisasterService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+    @Retryable
     @Override
-    public void processDisasterActions(int turnId) {
+    public void runActions(int turn) {
         for (DisasterAction action : disasterActionRepository.findAllByState(ActionState.PENDING)) {
             // prepare notification
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
             notification.setImageUrl(action.getCharacter().getImageUrl());
 
@@ -168,6 +153,14 @@ public class DisasterServiceImpl implements DisasterService {
             // save notification
             notificationService.save(notification);
         }
+
+        // handle disaster
+        handleDisaster(turn);
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.DISASTER_ORDER;
     }
 
     private void triggerDisaster(int turnId, Disaster disaster) {
@@ -186,6 +179,25 @@ public class DisasterServiceImpl implements DisasterService {
         disaster.setCompleted(true);
     }
 
+    private void handleDisaster(int turnId) {
+        log.debug("Checking current disaster");
+
+        // get the current disaster
+        Disaster disaster = disasterRepository.findFirstByCompleted(false);
+
+        // check disaster
+        if (disaster != null) {
+            // check trigger
+            if (disaster.getTurn() > turnId) {
+                log.debug("Existing disaster planned for turn {}. {} turns left.", disaster.getTurn(), disaster.getTurn() - turnId);
+            } else {
+                triggerDisaster(turnId, disaster);
+                prepareNextDisaster(turnId);
+            }
+        } else {
+            prepareNextDisaster(turnId);
+        }
+    }
 
     private void prepareNextDisaster(int turnId) {
         log.debug("Preparing next disaster.");

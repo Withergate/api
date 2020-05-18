@@ -1,6 +1,7 @@
 package com.withergate.api.service.location;
 
 import com.withergate.api.game.model.request.LocationRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -8,7 +9,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface LocationService {
+public interface LocationService extends Actionable {
 
     /**
      * Validates and saves the provided action.
@@ -17,12 +18,5 @@ public interface LocationService {
      * @param clanId  clan ID
      */
     void saveLocationAction(LocationRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Handles all pending location actions.
-     *
-     * @param turnId turn ID
-     */
-    void processLocationActions(int turnId);
 
 }

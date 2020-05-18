@@ -152,7 +152,7 @@ public class DisasterServiceTest {
         Mockito.when(randomService.getRandomInt(0, 0)).thenReturn(0); // random disaster list ID
 
         // when handling current disaster
-        disasterService.handleDisaster(1);
+        disasterService.runActions(1);
 
         // then verify disaster prepared
         ArgumentCaptor<Disaster> captor = ArgumentCaptor.forClass(Disaster.class);
@@ -171,7 +171,7 @@ public class DisasterServiceTest {
         Mockito.when(disasterRepository.findFirstByCompleted(false)).thenReturn(disaster);
 
         // when handling disaster with lower turn
-        disasterService.handleDisaster(5);
+        disasterService.runActions(5);
 
         // then verify nothing done
         Mockito.verify(disasterRepository, Mockito.never()).save(Mockito.any());
@@ -196,7 +196,7 @@ public class DisasterServiceTest {
         Mockito.when(disasterRepository.findFirstByCompleted(false)).thenReturn(disaster);
 
         // when handling disaster
-        disasterService.handleDisaster(15);
+        disasterService.runActions(15);
 
         // then verify resolution service called and disaster updated
         Mockito.verify(disasterResolutionService).handleDisasterResolution(Mockito.eq(clan), Mockito.any(), Mockito.eq(disaster));
@@ -231,7 +231,7 @@ public class DisasterServiceTest {
                 Mockito.any())).thenReturn(true);
 
         // when processing actions
-        disasterService.processDisasterActions(1);
+        disasterService.runActions(1);
 
         // then verify action succeeded
         Assert.assertEquals(10, clan.getDisasterProgress());
@@ -268,7 +268,7 @@ public class DisasterServiceTest {
         Mockito.when(randomService.getRandomInt(1, RandomServiceImpl.K6)).thenReturn(1); // low roll
 
         // when processing actions
-        disasterService.processDisasterActions(1);
+        disasterService.runActions(1);
 
         // then verify action failed
         Assert.assertEquals(5, clan.getDisasterProgress());
@@ -306,7 +306,7 @@ public class DisasterServiceTest {
                 Mockito.any())).thenReturn(true);
 
         // when processing actions
-        disasterService.processDisasterActions(1);
+        disasterService.runActions(1);
 
         // then verify action succeeded
         Assert.assertEquals(10, clan.getDisasterProgress());
@@ -344,7 +344,7 @@ public class DisasterServiceTest {
                 Mockito.any())).thenReturn(true);
 
         // when processing actions
-        disasterService.processDisasterActions(1);
+        disasterService.runActions(1);
 
         // then verify action succeeded
         Assert.assertEquals(10, clan.getDisasterProgress());
@@ -382,7 +382,7 @@ public class DisasterServiceTest {
         Mockito.when(disasterActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        disasterService.processDisasterActions(1);
+        disasterService.runActions(1);
 
         // then verify action succeeded
         Assert.assertEquals(10, clan.getDisasterProgress());

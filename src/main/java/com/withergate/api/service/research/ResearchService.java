@@ -2,6 +2,7 @@ package com.withergate.api.service.research;
 
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.request.ResearchRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -9,7 +10,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface ResearchService {
+public interface ResearchService extends Actionable {
 
     /**
      * Validates and saves the provided action.
@@ -18,13 +19,6 @@ public interface ResearchService {
      * @param clanId clan ID
      */
     void saveResearchAction(ResearchRequest request, int clanId) throws InvalidActionException;
-
-    /**
-     * Processes all pending research actions.
-     *
-     * @param turnId turn ID
-     */
-    void processResearchActions(int turnId);
 
     /**
      * Assigns initial research to given clan.

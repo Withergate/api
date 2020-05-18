@@ -20,7 +20,7 @@ import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
 import com.withergate.api.service.RandomService;
-import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
@@ -28,7 +28,10 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.BonusUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -80,12 +83,12 @@ public class BuildingServiceImpl implements BuildingService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processBuildingActions(int turnId) {
-        log.debug("Processing building actions...");
-
+    public void runActions(int turn) {
         for (BuildingAction action : buildingActionRepository.findAllByState(ActionState.PENDING)) {
-            ClanNotification notification = new ClanNotification(turnId, action.getCharacter().getClan().getId());
+            ClanNotification notification = new ClanNotification(turn, action.getCharacter().getClan().getId());
             notification.setHeader(action.getCharacter().getName());
             notification.setImageUrl(action.getCharacter().getImageUrl());
 
@@ -106,6 +109,11 @@ public class BuildingServiceImpl implements BuildingService {
             // save notification
             notificationService.save(notification);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.BUILDING_ORDER;
     }
 
     @Override
@@ -202,4 +210,5 @@ public class BuildingServiceImpl implements BuildingService {
             notification.getDetails().add(detail);
         }
     }
+
 }

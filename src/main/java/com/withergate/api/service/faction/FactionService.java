@@ -6,6 +6,7 @@ import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.faction.FactionsOverview;
 import com.withergate.api.game.model.request.FactionRequest;
+import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
 /**
@@ -13,7 +14,7 @@ import com.withergate.api.service.exception.InvalidActionException;
  *
  * @author Martin Myslik
  */
-public interface FactionService {
+public interface FactionService extends Actionable {
 
     /**
      * Validates and saves the provided action.
@@ -29,13 +30,6 @@ public interface FactionService {
      * @return list of factions
      */
     List<Faction> getFactions();
-
-    /**
-     * Processes all pending faction actions.
-     *
-     * @param turnId turn ID
-     */
-    void processFactionActions(int turnId);
 
     /**
      * Computes factions overview dynamically.

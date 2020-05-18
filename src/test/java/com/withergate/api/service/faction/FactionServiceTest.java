@@ -177,7 +177,7 @@ public class FactionServiceTest {
         Mockito.when(factionActionRepository.findAllByState(ActionState.PENDING)).thenReturn(List.of(action));
 
         // when processing actions
-        factionService.processFactionActions(1);
+        factionService.runActions(1);
 
         // then verify faction assigned
         Assert.assertEquals(faction, clan.getFaction());

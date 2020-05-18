@@ -15,6 +15,7 @@ import com.withergate.api.game.repository.action.ClanCombatActionRepository;
 import com.withergate.api.profile.model.achievement.AchievementType;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -22,7 +23,10 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.profile.AchievementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -82,9 +86,10 @@ public class ClanCombatServiceImpl implements ClanCombatService {
         character.setState(CharacterState.BUSY);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Retryable
     @Override
-    public void processClanCombatActions(int turnId) {
-        log.info("Executing clan combat actions...");
+    public void runActions(int turn) {
         List<ClanCombatAction> actions = actionRepository.findAllByState(ActionState.PENDING);
 
         for (ClanCombatAction action : actions) {
@@ -92,13 +97,13 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             Clan target = clanService.getClan(action.getTargetId());
 
             // prepare notification
-            ClanNotification attackerNotification = new ClanNotification(turnId, attacker.getId());
+            ClanNotification attackerNotification = new ClanNotification(turn, attacker.getId());
             attackerNotification.setHeader(action.getCharacter().getName());
             attackerNotification.setImageUrl(action.getCharacter().getImageUrl());
             notificationService.addLocalizedTexts(attackerNotification.getText(), "clan.combat.attack",
                     new String[]{target.getName()});
 
-            ClanNotification defenderNotification = new ClanNotification(turnId, target.getId());
+            ClanNotification defenderNotification = new ClanNotification(turn, target.getId());
             defenderNotification.setHeader(attacker.getName());
             notificationService.addLocalizedTexts(defenderNotification.getText(), "clan.combat.defense",
                     new String[]{attacker.getName()});
@@ -113,6 +118,11 @@ public class ClanCombatServiceImpl implements ClanCombatService {
             notificationService.save(attackerNotification);
             notificationService.save(defenderNotification);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return ActionOrder.CLAN_COMBAT_ORDER;
     }
 
     private void processAction(ClanNotification attackerNotification, ClanNotification defenderNotification,
@@ -187,4 +197,5 @@ public class ClanCombatServiceImpl implements ClanCombatService {
         // remove injury from defender notification - not needed for generated defender
         defenderNotification.setInjury(0);
     }
+
 }
