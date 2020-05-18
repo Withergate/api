@@ -7,10 +7,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.building.Building;
+import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.profile.model.PremiumType;
 import com.withergate.api.profile.model.Profile;
 import com.withergate.api.profile.model.achievement.Achievement;
@@ -143,8 +144,8 @@ public class AchievementServiceImpl implements AchievementService {
     @Transactional(transactionManager = "profileTransactionManager", propagation = Propagation.REQUIRED)
     @Retryable
     @Override
-    public void handleEndGameAchievements() {
-        log.debug("--> Handling end game achievements.");
+    public void handleEndGameProfileAchievements() {
+        log.debug("--> Handling end game profile achievements.");
 
         for (Profile profile : profileService.getAllProfiles()) {
             Clan clan = clanService.getClan(profile.getId());
@@ -157,21 +158,26 @@ public class AchievementServiceImpl implements AchievementService {
                 checkAchievementAward(profile, AchievementType.DISASTERS_AVERTED);
             }
             checkAchievementAward(profile, AchievementType.GAME_COUNT, profile.getNumPlayedGames());
-
-            // handle faction achievements
-            try {
-                if (clan.getFaction() != null
-                        && clan.getFaction().getIdentifier().equals(factionService.getBestFaction().getIdentifier())) {
-                    checkAchievementAward(profile, AchievementType.MEMBER_OF_TOP_FACTION, clan.getFactionPoints());
-                }
-                if (clan.getFaction() != null && clan.getId() == factionService.getBestClan(clan.getFaction()).getId()) {
-                    checkAchievementAward(profile, AchievementType.TOP_FACTION_MEMBER);
-                }
-            } catch (Throwable e) {
-                log.error("Cannot award faction achievements.", e);
-            }
-
             checkAchievementAward(profile, AchievementType.GAME_FAME, clan.getFame());
+        }
+    }
+
+    @Transactional
+    @Retryable
+    @Override
+    public void handleEndGameFactionAchievements() {
+        log.debug("--> Handling end game faction achievements.");
+
+        for (Faction faction : factionService.getFactions()) {
+            Clan best = factionService.getBestClan(faction);
+            if (best != null) {
+                checkAchievementAward(best.getId(), AchievementType.TOP_FACTION_MEMBER);
+            }
+        }
+
+        Faction best = factionService.getBestFaction();
+        for (Clan clan : best.getClans()) {
+            checkAchievementAward(clan.getId(), AchievementType.MEMBER_OF_TOP_FACTION, clan.getFactionPoints());
         }
     }
 
@@ -188,5 +194,6 @@ public class AchievementServiceImpl implements AchievementService {
         achievement.setDetails(details);
         achievement.setDate(LocalDate.now());
         profile.getAchievements().add(achievement);
+        profileService.saveProfile(profile);
     }
 }
