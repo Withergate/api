@@ -21,7 +21,7 @@ public class ActionRegistrar {
 
         Collections.sort(actionables, Comparator.comparing(Actionable::getOrder));
         for (Actionable actionable : actionables) {
-            log.debug("* Running action for {} with order {}.", actionable.getClass().getName(), actionable.getOrder());
+            log.debug("* Running action for {} with order {}.", actionable.getClass().getSimpleName(), actionable.getOrder());
             actionable.runActions(turn);
         }
     }

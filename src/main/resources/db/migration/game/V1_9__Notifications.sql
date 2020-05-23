@@ -87,7 +87,9 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('clan.combat.failure', 'en', 'Unfortunately, we lost the fight.'),
     ('clan.combat.failure', 'cs', 'Bohužel jsme neuspěli v souboji.'),
     ('crafting.item', 'en', 'Character was crafting an item.'),
-    ('crafting.item', 'cs', 'Postava vyráběla předmět.');
+    ('crafting.item', 'cs', 'Postava vyráběla předmět.'),
+    ('loan.interest', 'en', 'Your clan had to pay loan interest.'),
+    ('loan.interest', 'cs', 'Tvůj klan musel zaplatit úrok z půjčky.');
 
 -- Placeholder texts detail
 INSERT INTO placeholder_texts(code, lang, text) VALUES

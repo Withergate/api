@@ -68,6 +68,9 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         performResearchEndTurnUpdates(turnId, clan, ResearchBonusType.FOOD_FAME, clan.getFood());
         performResearchEndTurnUpdates(turnId, clan, ResearchBonusType.JUNK_FAME, clan.getJunk());
 
+        // pay loan
+        payLoan(clan, turnId);
+
         // mark characters as ready
         markCharactersReady(clan);
 
@@ -280,6 +283,20 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);
+        }
+    }
+
+    private void payLoan(Clan clan, int turn) {
+        if (clan.isActiveLoan() && clan.getCaps() >= gameProperties.getLoanPayback()) {
+            // pay interest
+            ClanNotification notification = new ClanNotification(turn, clan.getId());
+            notification.setHeader(clan.getName());
+
+            notificationService.addLocalizedTexts(notification.getText(), "loan.interest", new String[]{});
+            notification.changeCaps(- gameProperties.getLoanPayback());
+            clan.changeCaps(- gameProperties.getLoanPayback());
+
+            notificationService.save(notification);
         }
     }
 
