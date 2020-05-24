@@ -67,6 +67,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         // compare combat values
         int combat1 = character1.getTotalCombat() + roll1 + getCombatBonus(character1, notification1);
         int combat2 = character2.getTotalCombat() + roll2 + getCombatBonus(character2, notification2);
+        notificationCombat.setCombatTotal1(combat1);
+        notificationCombat.setCombatTotal2(combat2);
 
         // handle draw
         if (combat1 == combat2) {

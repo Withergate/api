@@ -264,6 +264,8 @@ CREATE TABLE notification_combat_rounds (
     name_loser VARCHAR(32) NOT NULL,
     combat_1 INT,
     combat_2 INT,
+    combat_total_1 INT,
+    combat_total_2 INT,
     health_1 INT,
     health_2 INT,
     armor INT,

@@ -46,6 +46,12 @@ public class NotificationCombatRound {
     @Column(name = "combat_2")
     private int combat2;
 
+    @Column(name = "combat_total_1")
+    private int combatTotal1;
+
+    @Column(name = "combat_total__2")
+    private int combatTotal2;
+
     @Column(name = "health_1")
     private int health1;
 
