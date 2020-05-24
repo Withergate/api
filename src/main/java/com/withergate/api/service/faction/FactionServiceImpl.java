@@ -297,6 +297,7 @@ public class FactionServiceImpl implements FactionService {
                 int healing = Math.min(missingHealth, aid.getAid());
                 character.changeHitpoints(healing);
                 notification.changeHealing(healing);
+                break;
             case ITEM_REWARD:
                 itemService.generateItemForCharacter(character, notification, null, Rarity.RARE, turnId);
                 break;

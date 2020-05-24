@@ -67,7 +67,7 @@ public class ClanServiceTest {
         GameProperties properties = new GameProperties();
         properties.setLoanCaps(20);
         properties.setLoanFame(10);
-        properties.setLoanPayback(30);
+        properties.setLoanPayback(2);
 
         clanService = new ClanServiceImpl(clanRepository, characterService, buildingService, researchService, tavernService,
                 clanTurnService, randomService, statisticsRepository, properties);
@@ -326,7 +326,7 @@ public class ClanServiceTest {
         clanService.processLoan(1);
 
         // then verify resources updated
-        Assert.assertEquals(10, clan.getCaps());
+        Assert.assertEquals(20, clan.getCaps());
         Assert.assertEquals(15, clan.getFame());
         Assert.assertFalse(clan.isActiveLoan());
     }
