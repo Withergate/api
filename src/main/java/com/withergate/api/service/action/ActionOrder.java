@@ -1,5 +1,10 @@
 package com.withergate.api.service.action;
 
+/**
+ * Action order.
+ *
+ * @author Martin Myslik
+ */
 public class ActionOrder {
 
     public static final int CLAN_COMBAT_ORDER = 1;

@@ -49,7 +49,7 @@ public class NotificationCombatRound {
     @Column(name = "combat_total_1")
     private int combatTotal1;
 
-    @Column(name = "combat_total__2")
+    @Column(name = "combat_total_2")
     private int combatTotal2;
 
     @Column(name = "health_1")
@@ -90,6 +90,8 @@ public class NotificationCombatRound {
         this.setArmor(other.getArmor());
         this.setCombat1(other.getCombat1());
         this.setCombat2(other.getCombat2());
+        this.setCombatTotal1(other.getCombatTotal1());
+        this.setCombatTotal2(other.getCombatTotal2());
         this.setRoll1(other.getRoll1());
         this.setRoll2(other.getRoll2());
         this.setHealth1(other.getHealth1());
