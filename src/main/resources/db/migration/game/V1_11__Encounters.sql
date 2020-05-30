@@ -1,102 +1,3 @@
--- Quests
-INSERT INTO quest_details (identifier, min_turn, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, image_url) VALUES
-    ('quest.1', 0, 'COMBAT', null, 2, 4, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest01.png'),
-    ('quest.2', 0, 'INTELLECT', null, 8, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest02.png'),
-    ('quest.3', 0, 'CRAFTSMANSHIP', null, 7, 3, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest03.png'),
-    ('quest.4', 0, 'COMBAT', null, 4, 2, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest04.png'),
-    ('quest.5', 0, 'COMBAT', null, 4, 2, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest05.png'),
-    ('quest.6', 0, 'COMBAT', null, 3, 3, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest06.png'),
-    ('quest.7', 0, 'COMBAT', null, 3, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest07.png'),
-    ('quest.8', 0, 'SCAVENGE', null, 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest08.png'),
-    ('quest.9', 0, 'CRAFTSMANSHIP', null, 7, 3, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest09.png'),
-    ('quest.10', 0, 'CRAFTSMANSHIP', null, 8, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest10.png'),
-    ('quest.11', 0, 'INTELLECT', null, 7, 3, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest11.png'),
-    ('quest.12', 0, 'SCAVENGE', null, 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest12.png'),
-    ('quest.13', 0, 'COMBAT', null, 4, 2, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest13.png'),
-    ('quest.14', 0, 'INTELLECT', null, 7, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest14.png'),
-    ('quest.15', 15, 'SCAVENGE', 'HEALTHY_CHARACTER', 6, 3, 40, 25, 'https://storage.googleapis.com/withergate-images/quests/quest15.png'),
-    ('quest.16', 15, 'INTELLECT', 'FEMALE_CHARACTER', 8, 1, 50, 20, 'https://storage.googleapis.com/withergate-images/quests/quest16.png'),
-    ('quest.17', 15, 'COMBAT', null, 7, 1, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest17.png');
-
-INSERT INTO quest_details (identifier, min_turn, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, food_cost, junk_cost, item_cost, health_cost, image_url) VALUES
-    ('quest.18', 15, 'AUTOMATIC', null, 0, 2, 40, 25, 0, 0, 'OUTFIT', true, 'https://storage.googleapis.com/withergate-images/quests/quest18.png');
-
-INSERT INTO localized_texts(quest_name, lang, text) VALUES
-    ('quest.1', 'en', 'Deratization'),
-    ('quest.1', 'cs', 'Deratizace'),
-    ('quest.2', 'en', 'Encrypted message'),
-    ('quest.2', 'cs', 'Zašifrovaná zpráva'),
-    ('quest.3', 'en', 'Water purifier renovation'),
-    ('quest.3', 'cs', 'Oprava čističky vody'),
-    ('quest.4', 'en', 'Wolf den'),
-    ('quest.4', 'cs', 'Vlčí doupě'),
-    ('quest.5', 'en', 'Scoundrels'),
-    ('quest.5', 'cs', 'Grázlové'),
-    ('quest.6', 'en', 'Debt collector'),
-    ('quest.6', 'cs', 'Vymahač'),
-    ('quest.7', 'en', 'Initiates'),
-    ('quest.7', 'cs', 'Zasvěcenci'),
-    ('quest.8', 'en', 'Deposit'),
-    ('quest.8', 'cs', 'Naleziště'),
-    ('quest.9', 'en', 'Oppenheimer'),
-    ('quest.9', 'cs', 'Oppenheimer'),
-    ('quest.10', 'en', 'Ich brauch’ Benzin!'),
-    ('quest.10', 'cs', 'Ich brauch’ Benzin!'),
-    ('quest.11', 'en', 'Return of the prodigal son'),
-    ('quest.11', 'cs', 'Návrat ztraceného syna'),
-    ('quest.12', 'en', 'They said I’m crazy...'),
-    ('quest.12', 'cs', 'Říkali, že jsem šílený...'),
-    ('quest.13', 'en', 'No need for killing...'),
-    ('quest.13', 'cs', 'Netřeba zabíjet...'),
-    ('quest.14', 'en', 'What nobody knows?'),
-    ('quest.14', 'cs', 'Co nikdo nezná?'),
-    ('quest.15', 'en', 'Experiments'),
-    ('quest.15', 'cs', 'Experimenty'),
-    ('quest.16', 'en', 'Succubus'),
-    ('quest.16', 'cs', 'Sukuba'),
-    ('quest.17', 'en', 'Bad motherfucker'),
-    ('quest.17', 'cs', 'Lvi žerou první'),
-    ('quest.18', 'en', 'Not great, not terrible'),
-    ('quest.18', 'cs', '3,6 röntgenu');
-
-INSERT INTO localized_texts(quest_description, lang, text) VALUES
-    ('quest.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours! This action will trigger a combat.'),
-    ('quest.1', 'cs', 'Ve sklepení pod hospodou se usídlily zmutované krysy. Zbav se jich a odměna tě nemine. Tato akce vyústí v souboj.'),
-    ('quest.2', 'en', 'Hey, pst! I found this encrypted message from one of my colleages, who passed away long time ago. Help me with the decryption and I will pay you. The success of this action is affected by the character`s intellect.'),
-    ('quest.2', 'cs', 'Hej, ty! Můžeš mi pomoct? Našel jsem zápisky od svého zesnulého kolegy. Text je ale zašifrovaný. Když mi ho pomůžeš rozluštit, tak ti zaplatím. Úspěch této akce závisí na intelektu postavy.'),
-    ('quest.3', 'en', 'Our water purifier broke down and we are running out of clean water. Help us with the renovation and we will spread the fame of your clan! The success of this action is affected by the character`s craftsmanship.'),
-    ('quest.3', 'cs', 'Naše čistička vod se rozbila a nám dochází voda. Když nám ji pomůžeš opravit, tak budeme šířit slávu tvého klanu! Úspěch této akce závisí na zručnosti postavy.'),
-    ('quest.4', 'en', 'There is a wolf den in the forest. Those bloody beasts are killing our sheep! Get rid of them for us and we will never forget your courage. This action will trigger a combat'),
-    ('quest.4', 'cs', 'V lese je doupě vlků. Ty krvežíznivé potvory nám zabíjí naše ovce. Když je zabiješ, tak nikdy nezapomeneme na tvou odvahu. Tato akce vyústí v souboj.'),
-    ('quest.5', 'en', 'Withergate announced a reward for killing a few brigands nearby. This action will trigger a combat.'),
-    ('quest.5', 'cs', 'Na několika místech poblíž Withergate opruzuje několik hrdlořezů. Město na ně vypsalo odměnu. Tato akce vyústí v souboj.'),
-    ('quest.6', 'en', 'I hate it when somebody owns me money and does not pay. Bring me my money back from these people and you can keep your share. This action will trigger a combat.'),
-    ('quest.6', 'cs', 'Znám bohužel pár lidí, kterým jsem poskytl své služby a dodnes nezaplatili. Jaké služby, to se tě netýká, a doufej, že je nebudeš potřebovat. Každopádně mi přines moje peníze zpět a část si z toho můžeš nechat. To je fér, ne? Tato akce vyústí v souboj.'),
-    ('quest.7', 'en', 'One does not simply leave Atom’s cult! The initiates which left our community a few days back probably did not have this in their mind. Find them and bring them back. Violence permitted. This action will trigger a combat.'),
-    ('quest.7', 'cs', 'Služba Atomovi je na celý život. Ti mladíci si to zřejmě neuvědomili, když nás před několika dny opustili. Už vědí příliš - najdi je a přiveď je zpět, klidně násilím.'),
-    ('quest.8', 'en', 'I’ve heard about huge deposits of quality junk somewhere around the city. Locate these and bring me a specimen from every deposit.'),
-    ('quest.8', 'cs', 'Slyšel jsem zvěsti o obřích nalezištích kvalitního šrotu nedaleko od města, ale ta místa znám jen přibližně. Když ti popíšu cestu, s tvými znalostmi Pustiny to jistě najdeš. Přines mi z každého naleziště pár vzorků a zakresli přesnou pozici do mapy. Bohatě tě odměním.'),
-    ('quest.9', 'en', 'Do you see this component? I need you to produce a hundred of exactly the same. I will create a strong weapon with this little help in a few months. Right now, I can pay only in caps.'),
-    ('quest.9', 'cs', 'Neumíte vyrobit sto těchto součástek? Je to docela jednoduché a jedné zručné osobě to zabere jen pár dní. Já jsem teď zrovna zaneprázdněn výrobou nové zbraně hromadného ničení a na přízemnosti nemám čas, raději vám za součástky zaplatím.'),
-    ('quest.10', 'en', 'Look at this old-aged masterpiece! Somebody tore off a lot of junk from this, but after all, I figured out how I can repair this vehicle! I will gladly pay for a little help with its reparation.'),
-    ('quest.10', 'cs', 'Pohleď na zachovalý pozůstatek starých časů! Někdo z toho oloupal hromadu šrotu, ale nakonec jsem přišel na to, jak to opravit, aby to zase jezdilo. Rád zaplatím za asistenci při opravě. '),
-    ('quest.11', 'en', 'Can you help me searching for my lost relative? The people on this list may know something about him. You can look for them and ask whether they heard of him. Will you do this for me, please?'),
-    ('quest.11', 'cs', 'Ty se ve světě docela vyznáš, že jo? Hledám svého ztraceného příbuzného, prý jsme z jedné rodiny ještě z doby před tím, než to bouchlo. Nevím, kde bydlí, ale vím, kdo by věděl... Dokážeš je najít podle informací na tomto seznamu a zeptat se jich, kde bych našel svého příbuzného?'),
-    ('quest.12', 'en', 'Please help me to find exactly the same device like this one. If I had a lot of these, I could finally create my own race of atomic monsters... radioactive supermen... that feast on the flesh of the living... heh!'),
-    ('quest.12', 'cs', 'Potřebuju trochu píchnout. V Pustině lze najít přesně takovéhle zařízení, nejspíš někde poblíž zbytků starých elektráren. Samo o sobě to nic nedělá, takže si klidně to moje vezmi. Když jich budu mít dostatek, konečně si splním svůj sen o vlastní rase atomových monster... (začíná mumlat) Budou mít osmihranné tělo, sát krev, a... (podivný stařec, stále mumlaje, odchází opodál, ale vypadá, že ti skutečně výměnou za ty věcičky dá dostatek zátek).'),
-    ('quest.13', 'en', 'Are you looking for a“strong muscles, no questions” kind of job? I need you to persuade my former co-workers... No, of course you don’t need to kill them! But you can, if you wish. This action will trigger a combat.'),
-    ('quest.13', 'cs', 'Hledáš práci pro tvé velké svaly a nabízíš málo otázek? Mám tady pár lidí, které je třeba přivést k rozumu... Ne, nemusíš je vůbec zabíjet. Ale vadit to nebude. Tato akce vyústí v souboj.'),
-    ('quest.14', 'en', 'I’m going to write a book about living in The Wasteland. Can you teach me how to survive out there? I want to comprehend its every aspect.'),
-    ('quest.14', 'cs', 'Ty se ve světě dost vyznáš, že jo? Chtěl bych napsat knihu o životě v Pustině, mezi klany a tak. Nauč mě něco o přežití tam venku. Chci tomu zcela porozumět... '),
-    ('quest.15', 'en', 'If you find me a bunch of screws, bearings and wires I will be able to make you a sixth finger...and you will get paid for that! Well, I haven`t actually tried it on anyone but the more famous you`re about to get when I finish the procedure!'),
-    ('quest.15', 'cs', 'Když mi doneseš pár šroubků, ložisek a drátků, dokážu ti vyrobit šestý prst...a ještě ti zaplatím! No, na nikom jsem to sice ještě nezkoušel, ale o to víc tě to proslaví po celé pustině!'),
-    ('quest.16', 'en', 'Coaxing this information out of this guy should be a piece of cake for someone with your looks. I know, he stinks, is a bit overweight and a tad old but maybe an innocent flirt would be enough for him to talk. And if not, I am always willing to pay more for the added effort.'),
-    ('quest.16', 'cs', 'Vytáhnout informaci z tohohle chlapíka by nemuselo být těžké pro někoho, kdo vypadá jako ty. Jasně, trochu smrdí, má nějaké to kilo navíc a není nejmladší, ale kdo říká, že se nerozpovídá už po nevinném flirtování...a kdyby ne, dám ti potom prostě víc peněz, ne?'),
-    ('quest.17', 'en', 'Looking for a well paid bloody job? I’m going to tell you a little story. Butch was a long-standing champion of the arena before, so I’ve bet a lot of caps on his opponent and offered Butch a great bribe. He gladly took it, because he is not getting any younger and arena fighters do not have an old-timers` day... The only task of this old gladiator was to feign defeat in the middle of the arena fight, leave the arena forever and enjoy incredible amount of caps for the rest of his life. But instead, that motherfucker bet on himself, won the fight and also all the caps I’ve bet! I am prepared to scour the Wasteland for that motherfucker. Find him and kill him. But beware, Butch is the best fighter I know.'),
-    ('quest.17', 'cs', 'Ztratil jsem hodně zátek při sázce na posledního šampiona arény. Měl to být zápas století, ale šel hned v prvních pár vteřinách dolů... Jestli si chceš vydělat špinavou prací, běž a sundej ho ještě jednou. Ale pozor, neznám nebezpečnějšího soupeře než je tenhle Karlos! Ne nadarmo se mu říká Terminátor.'),
-    ('quest.18', 'en', 'Look at this map - somewhere around here is a place where you can find graphite, a very important mineral for me. Bring it to me, it’s all around there. A long time ago there was some kind of an accident. Take this old yet still functional dosimeter and look for a place where this device shows exactly 3.6 - that’s as high as the meter is able to measure. You don’t know what actually is a dosimeter and what does it measure? Doesn’t matter… Some say that there can still be some residual radioactivity. But today is nearly everyone irradiated - not great, not terrible, right? But take rather thick clothes and leave them there.'),
-    ('quest.18', 'cs', 'Chceš si vydělat? Podívej na tuhle mapu - někde tady je místo, kde se nachází pro mě velice cenná hornina. Válí se tam všude na zemi, kdysi se tam stala nějaká nehoda. Vezmi si tento starý, ale stále funkční dozimetr. Hledej místo, kde se ti ukáže přesně 3,6 - to ta ručička ukazuje maximum. Že nevíš, co to je dozimetr a co měří? To neřeš… hele, ale může tam být prý ještě nějaká radioaktivita, tak se tam moc nezdržuj. Dneska už je stejně ozářen skoro každý, to není žádná hrůza. Raději si ale vezmi něco pořádného na sebe a pak tam ty hadry nech… ale jinak v pohodě, vůbec se nemusíš bát. Jo, a taky tam radši nic nejez ani nepij.');
-
 -- Random encounters
 INSERT INTO encounters(location, min_turn, encounter_type, reward_type, item, penalty_type, difficulty, description_text, success_text, failure_text) VALUES
     -- WASTELAND
@@ -146,7 +47,8 @@ INSERT INTO encounters(location, min_turn, encounter_type, reward_type, item, pe
     ('CITY_CENTER', 15, 'WEAPON_ROLL', 'CAPS', null, 'NONE', 9, 'encounter.c.16.desc', 'encounter.c.16.succ', 'encounter.c.16.fail'),
     ('CITY_CENTER', 15, 'INTELLECT', 'EXPERIENCE', null, 'EXPERIENCE', 8, 'encounter.c.17.desc', 'encounter.c.17.succ', 'encounter.c.17.fail'),
     ('CITY_CENTER', 15, 'SCAVENGE', 'ITEM', 'OLD_BOOK', 'INJURY', 8, 'encounter.c.18.desc', 'encounter.c.18.succ', 'encounter.c.18.fail'),
-    ('CITY_CENTER', 15, 'COMBAT_ROLL', 'CAPS', null, 'CAPS', 8, 'encounter.c.19.desc', 'encounter.c.19.succ', 'encounter.c.19.fail');
+    ('CITY_CENTER', 15, 'COMBAT_ROLL', 'CAPS', null, 'CAPS', 8, 'encounter.c.19.desc', 'encounter.c.19.succ', 'encounter.c.19.fail'),
+    ('CITY_CENTER', 0, 'CRAFTSMANSHIP', 'ITEM', 'BINOCULARS', 'NONE', 8, 'encounter.c.20.desc', 'encounter.c.20.succ', 'encounter.c.20.fail');
 
 INSERT INTO placeholder_texts(code, lang, text) VALUES
     -- WASTELAND
@@ -420,10 +322,15 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('encounter.c.18.succ', 'cs', 'Postava se za cenu nejvyššího nasazení vyškrábala až na vrchol regálu, který vydával podezřelé zvuky a značně se nakláněl, ale byla odměněna nálezem zapomenuté a značně zaprášené knihy. Opravdu měli lidé tak velké budovy jen pro knihy? Copak neměli nic jiného na práci?'),
     ('encounter.c.18.fail', 'en', 'The character started climbing oblivious of the weird sounds the bookshelf was emanating. It noticed the bookshelf was tilting as it was already falling on top of the character. The fall injured the character badly and the splinters from the shattered wood are probably still stuck everywhere... the character limped out of the building resolved never to return to this weird place.'),
     ('encounter.c.18.fail', 'cs', 'Postava se rychle pustila do lezení, nedbaje na skřípavé zvuky z regálu. Že se regál naklání si všimla až když bylo pozdě. Pád rozhodně nebyl příjemný a třísky z rozlámaného dřeva se zapíchly snad všude. Postava se odbelhala pryč s tím, že do téhle budovy se už vracet nebude.'),
-    ('encounter.c.19.desc', 'en', 'While wandering the city streets the character decided to pay a visit to the Irradiated Pony - the worst watering hole in the whole Withergate where the liquor is so sharp you may end up stabbed. But if you''re lucky, you might gamble enough caps to afford the bandages and a little extra. The crowd was just heating up for the main show - a former arena champion armwrestling anyone who dares challenge him. The character has had quite a few glasses already and so decided to give it a shot.'),
+    ('encounter.c.19.desc', 'en', 'While wandering the city streets the character decided to pay a visit to the Irradiated Pony - the worst watering hole in the whole Withergate where the liquor is so sharp you may end up stabbed. But if you are lucky, you might gamble enough caps to afford the bandages and a little extra. The crowd was just heating up for the main show - a former arena champion armwrestling anyone who dares challenge him. The character has had quite a few glasses already and so decided to give it a shot.'),
     ('encounter.c.19.desc', 'cs', 'Při toulkách městem se postavě zachtělo něčeho ostřejšího a tak se rozhodla stavit U Ozářeného Poníka, nechvalně známé putyce té nejhorší sebranky ve Withegate. Pálenku tu mají říznou tak, že většinou odejdeš pořezán, ale zátek si tu člověk může vydělat tolik, že mu to na obvazy bohatě vystačí. S přibývajícím večerem se rozjela ta hlavní zábava, bývalý šampion arény vyzýval ostatní hosty k páce. Nikdo ho sice zatím neporazil, ale postava v sobě měla už pěkných pár skleniček a tak se rozhodla, že to zkusí.'),
     ('encounter.c.19.succ', 'en', 'The character drunkenly fell into the chair which caused The Champ to snort. But his eyebrows shot right up when he saw the biceps of the character, strengthened by the tough everyday reality of the Wasteland. The match was a spectacle, the whole joint cheered and bets were placed on both contestants. At one time, The Champ gained the upper hand but the character managed to dig deep into his physical resources and finally prevailed. The character collected the prize and decided to leave quietly before the bookmakers could get the hold on him.'),
     ('encounter.c.19.succ', 'cs', 'Karlos se při pohledu na mírně se potácející postavu usmál. Úsměv mu ztuhl jen nepatrně, když postava obnažila svůj pustinou zocelený biceps. A pak už to začalo...už už to vypadalo, že má Karlos vyhráno, ale postava si vzpomněla na hladové kamarády v základně, na jejich živoření a na luxus těch hejsků z města... spravedlivé rozhořčení se vydralo na povrch...splň...sa...mi...senil! A mocně bouchla s Karlosovou rukou o stůl. Vítězných oslav si postava nicméně příliš neužila, neboť její vítězství naštvalo nejednoho sázkaře a pověst lokálu byla v tomto ohledu více než známá.'),
-    ('encounter.c.19.fail', 'en', 'The character fell drunkenly into the chair. The Champ snorted derisively. "Let''s be done with this." he muttered. His biceps was the size of our characters thigh and the character realized that this bet might have been a mistake. The match alone was quite unspectacular...The Champ did not win straight away (probably because he didn''t want to scare off other potential contenders) but when the crowd started mocking him for not being able to finish a drunken wastelander he ended it abruptly. The character lost all its caps and was lucky nobody was betting on him otherwise he might have lost more...'),
-    ('encounter.c.19.fail', 'cs', 'Postava se sotva dokolébala ke stolu, kde si šampión Karlos olejoval biceps. Postava v tu chvíli byla už tak opilá, že začala mluvit divnou řečí. "Čo to robíš, ty kokot..." Karlos se ale nenechal rozhodit: "Tak rychle, ať to máme za sebou..." Po zahájení zápasu to chvíli vypadalo nadějně, ale možná jen proto, že Karlos nemůže hned odradit případné zájemce. Když se ale začal ozývat posměch, že si neporadí ani s ožralou, zápas rázně ukončil. Postava přišla o všechny svoje zátky a mohla být ráda, že si sázkaři také přišli na své, jinak by to možná dopadlo ještě hůř.');
-
+    ('encounter.c.19.fail', 'en', 'The character fell drunkenly into the chair. The Champ snorted derisively. "Let`s be done with this." he muttered. His biceps was the size of our characters thigh and the character realized that this bet might have been a mistake. The match alone was quite unspectacular...The Champ did not win straight away (probably because he didn`t want to scare off other potential contenders) but when the crowd started mocking him for not being able to finish a drunken wastelander he ended it abruptly. The character lost all its caps and was lucky nobody was betting on him otherwise he might have lost more...'),
+    ('encounter.c.19.fail', 'cs', 'Postava se sotva dokolébala ke stolu, kde si šampión Karlos olejoval biceps. Postava v tu chvíli byla už tak opilá, že začala mluvit divnou řečí. "Čo to robíš, ty kokot..." Karlos se ale nenechal rozhodit: "Tak rychle, ať to máme za sebou..." Po zahájení zápasu to chvíli vypadalo nadějně, ale možná jen proto, že Karlos nemůže hned odradit případné zájemce. Když se ale začal ozývat posměch, že si neporadí ani s ožralou, zápas rázně ukončil. Postava přišla o všechny svoje zátky a mohla být ráda, že si sázkaři také přišli na své, jinak by to možná dopadlo ještě hůř.'),
+    ('encounter.c.20.desc', 'en', 'Rummaging through a decrepit house in the city, the character stumbled upon a weird tube-shaped object. Upon close inspection, the character discovered it shows changing colorful patters when you look through it. It didn`t seem to have any other function (probably the reason why it was lying there) but the resourceful character decided to change it into binoculars.'),
+    ('encounter.c.20.desc', 'cs', 'Při prohledávání jednoho z domů nalezla postava zvláštní tubu, která vypadalo jako dalekohled a po zatřesení vydávala zvuky. Když se skrz ní ale postava podívala, viděla jen barevné obrazce, které se měnily když otáčela horní částí tubusu. Nezdálo se, že by to bylo k nějakému užitku (proto se to zde také povalovalo bez povšimnutí), ale postavu jako správného kutila napadlo, že kdyby vysypala barevné korálky a změnila umístění a pořadí čoček, možná by z toho byl ucházející dalekohled.'),
+    ('encounter.c.20.succ', 'en', 'The character managed to cut a hole into the upper part of the tube and get rid of the colorful beads, while keeping them as a means of exchange. Through careful handling the character was able to make modifications on the lens and heureca! It is probably not a microscope but it magnifies and that`s considered a victory.'),
+    ('encounter.c.20.succ', 'cs', 'Postava nařízla díru do horní části, odkud vysypala korálky (třeba je ještě využije jako směnný prostředek), ve spodní části pak přeskupila čočky a upravila sklíčka...a heuréka! Není to zrovna mikroskop, ale přibližuje to vcelku slušně.'),
+    ('encounter.c.20.fail', 'en', 'The character threw itself into the project but after several hours realized the beads were still stuck in the tube. Finally, the character had to admit defeat when the lens fell off the tube and shattered on the ground. It didn`t turn out to be a very productive afternoon but at least nobody will be using this (now completely broken) thing against us.'),
+    ('encounter.c.20.fail', 'cs', 'Postava se pustila do díla, nicméně ani po několika hodinách usilovné práce nedokázala vysypat korálky z tuby, navíc ji při neopatrné manipulaci vypadly čočky a rozbily se...no co, promarnili jsme den, ale alespoň to nikdo nevyužije proti nám.');

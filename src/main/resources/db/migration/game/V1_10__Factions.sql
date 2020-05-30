@@ -126,7 +126,7 @@ INSERT INTO localized_texts (faction_aid, lang, text) VALUES
     ('s.leading', 'cs', 'Vyžebrat pár zátek z frakční kasy. Tato akce ti poskytne 20 zátek.');
 
 INSERT INTO quest_details (identifier, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, faction_reward, food_cost, junk_cost, caps_cost, item_cost, health_cost, faction_specific, follow_up, faction, image_url) VALUES
-    ('quest.s1', 'INTELLECT', null, 0, 2, 0, 5, 5, 0, 0, 10, null, false, true, 'quest.s2', 'SYNDICATE', 'https://storage.googleapis.com/withergate-images/quests/quest-s1.png'),
+    ('quest.s1', 'INTELLECT', null, 5, 2, 0, 5, 5, 0, 0, 10, null, false, true, 'quest.s2', 'SYNDICATE', 'https://storage.googleapis.com/withergate-images/quests/quest-s1.png'),
     ('quest.s2', 'AUTOMATIC', null, 0, 2, 20, 10, 10, 0, 0, 0, 'ANY', false, true, 'quest.s3', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s2.png'),
     ('quest.s3', 'CRAFTSMANSHIP', null, 8, 3, 30, 15, 15, 0, 3, 0, null, false, true, 'quest.s4', null, 'https://storage.googleapis.com/withergate-images/quests/quest-s3.png'),
     ('quest.s4', 'AUTOMATIC', null, 0, 3, 0, 20, 20, 0, 0, 50, null, false, true, null, null, 'https://storage.googleapis.com/withergate-images/quests/quest-s4.png');
