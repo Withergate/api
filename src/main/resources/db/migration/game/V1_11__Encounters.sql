@@ -1,8 +1,8 @@
 -- Random encounters
 INSERT INTO encounters(location, min_turn, encounter_type, reward_type, item, penalty_type, difficulty, description_text, success_text, failure_text) VALUES
     -- WASTELAND
-    ('WASTELAND', 0, 'COMBAT', 'ITEM', null, 'NONE', 4, 'encounter.w.1.desc', 'encounter.w.1.succ', 'encounter.w.1.fail'),
-    ('WASTELAND', 0, 'COMBAT', 'CAPS', null, 'NONE', 4, 'encounter.w.2.desc', 'encounter.w.2.succ', 'encounter.w.2.fail'),
+    ('WASTELAND', 15, 'COMBAT', 'ITEM', null, 'NONE', 4, 'encounter.w.1.desc', 'encounter.w.1.succ', 'encounter.w.1.fail'),
+    ('WASTELAND', 15, 'COMBAT', 'CAPS', null, 'NONE', 4, 'encounter.w.2.desc', 'encounter.w.2.succ', 'encounter.w.2.fail'),
     ('WASTELAND', 15, 'COMBAT', 'JUNK', null, 'NONE', 5, 'encounter.w.3.desc', 'encounter.w.3.succ', 'encounter.w.3.fail'),
     ('WASTELAND', 0, 'COMBAT', 'JUNK', null, 'NONE', 4, 'encounter.w.4.desc', 'encounter.w.4.succ', 'encounter.w.4.fail'),
     ('WASTELAND', 15, 'INTELLECT', 'JUNK', null, 'CAPS', 7, 'encounter.w.5.desc', 'encounter.w.5.succ', 'encounter.w.5.fail'),
@@ -19,14 +19,14 @@ INSERT INTO encounters(location, min_turn, encounter_type, reward_type, item, pe
     ('WASTELAND', 15, 'SCAVENGE', 'INFORMATION', null, 'NONE', 8, 'encounter.w.16.desc', 'encounter.w.16.succ', 'encounter.w.16.fail'),
     ('WASTELAND', 0, 'CRAFTSMANSHIP', 'FOOD', null, 'CAPS', 5, 'encounter.w.17.desc', 'encounter.w.17.succ', 'encounter.w.17.fail'),
     ('WASTELAND', 0, 'INTELLECT', 'FOOD', null, 'CAPS', 6, 'encounter.w.18.desc', 'encounter.w.18.succ', 'encounter.w.18.fail'),
-    ('WASTELAND', 0, 'COMBAT', 'ITEM', null, 'NONE', 5, 'encounter.w.19.desc', 'encounter.w.19.succ', 'encounter.w.19.fail'),
+    ('WASTELAND', 15, 'COMBAT', 'ITEM', null, 'NONE', 5, 'encounter.w.19.desc', 'encounter.w.19.succ', 'encounter.w.19.fail'),
     ('WASTELAND', 15, 'WEAPON_ROLL', 'CAPS', null, 'NONE', 8, 'encounter.w.20.desc', 'encounter.w.20.succ', 'encounter.w.20.fail'),
     ('WASTELAND', 15, 'SCAVENGE', 'FOOD', null, 'INJURY', 8, 'encounter.w.21.desc', 'encounter.w.21.succ', 'encounter.w.21.fail'),
     ('WASTELAND', 0, 'INTELLECT', 'INFORMATION', null, 'NONE', 6, 'encounter.w.22.desc', 'encounter.w.22.succ', 'encounter.w.22.fail'),
-    ('WASTELAND', 0, 'COMBAT', 'JUNK', null, 'NONE', 4, 'encounter.w.23.desc', 'encounter.w.23.succ', 'encounter.w.23.fail'),
+    ('WASTELAND', 0, 'COMBAT', 'JUNK', null, 'NONE', 3, 'encounter.w.23.desc', 'encounter.w.23.succ', 'encounter.w.23.fail'),
     ('WASTELAND', 0, 'CRAFTSMANSHIP', 'JUNK', null, 'INJURY', 5, 'encounter.w.24.desc', 'encounter.w.24.succ', 'encounter.w.24.fail'),
     ('WASTELAND', 15, 'CRAFTSMANSHIP', 'HEALING', null, 'INJURY', 6, 'encounter.w.25.desc', 'encounter.w.25.succ', 'encounter.w.25.fail'),
-    ('WASTELAND', 0, 'COMBAT', 'ITEM', 'PONCHO', 'NONE', 4, 'encounter.w.26.desc', 'encounter.w.26.succ', 'encounter.w.26.fail'),
+    ('WASTELAND', 15, 'COMBAT', 'ITEM', 'PONCHO', 'NONE', 5, 'encounter.w.26.desc', 'encounter.w.26.succ', 'encounter.w.26.fail'),
     ('WASTELAND', 0, 'INTELLECT', 'FOOD', null, 'INJURY', 5, 'encounter.w.27.desc', 'encounter.w.27.succ', 'encounter.w.27.fail'),
     -- CITY
     ('CITY_CENTER', 0, 'COMBAT', 'JUNK', null, 'CAPS', 5, 'encounter.c.1.desc', 'encounter.c.1.succ', 'encounter.c.1.fail'),
@@ -39,7 +39,7 @@ INSERT INTO encounters(location, min_turn, encounter_type, reward_type, item, pe
     ('CITY_CENTER', 0, 'SCAVENGE', 'CAPS', null, 'CAPS', 7, 'encounter.c.8.desc', 'encounter.c.8.succ', 'encounter.c.8.fail'),
     ('CITY_CENTER', 0, 'CRAFTSMANSHIP', 'CAPS', null, 'CAPS', 6, 'encounter.c.9.desc', 'encounter.c.9.succ', 'encounter.c.9.fail'),
     ('CITY_CENTER', 0, 'INTELLECT', 'CAPS', null, 'CAPS', 7, 'encounter.c.10.desc', 'encounter.c.10.succ', 'encounter.c.10.fail'),
-    ('CITY_CENTER', 0, 'COMBAT', 'CAPS', null, 'NONE', 6, 'encounter.c.11.desc', 'encounter.c.11.succ', 'encounter.c.11.fail'),
+    ('CITY_CENTER', 15, 'COMBAT', 'CAPS', null, 'NONE', 6, 'encounter.c.11.desc', 'encounter.c.11.succ', 'encounter.c.11.fail'),
     ('CITY_CENTER', 15, 'SCAVENGE', 'ITEM', null, 'INJURY', 8, 'encounter.c.12.desc', 'encounter.c.12.succ', 'encounter.c.12.fail'),
     ('CITY_CENTER', 0, 'CRAFTSMANSHIP', 'CAPS', null, 'NONE', 6, 'encounter.c.13.desc', 'encounter.c.13.succ', 'encounter.c.13.fail'),
     ('CITY_CENTER', 0, 'INTELLECT', 'INFORMATION', null, 'INJURY', 7, 'encounter.c.14.desc', 'encounter.c.14.succ', 'encounter.c.14.fail'),
