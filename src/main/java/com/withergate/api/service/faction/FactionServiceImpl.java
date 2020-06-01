@@ -105,17 +105,17 @@ public class FactionServiceImpl implements FactionService {
 
             FactionAid aid = getFactionAid(request.getFactionAid(), character.getClan().getFaction());
             // check cost
-            if (clan.getCaps() < aid.getCost()) {
+            if (aid.getCost() > 0 && clan.getCaps() < aid.getCost()) {
                 throw new InvalidActionException("Not enough resources to perform this action.");
             }
             // check item cost
             ConditionValidator.checkActionCondition(character, null, aid.getItemCost());
             // check information cost
-            if (clan.getInformation() < aid.getInformationCost()) {
+            if (aid.getInformationCost() > 0 && clan.getInformation() < aid.getInformationCost()) {
                 throw new InvalidActionException("Not enough information to perform this action.");
             }
             // check influence cost
-            if (clan.getFactionPoints() < aid.getFactionPointsCost()) {
+            if (aid.getFactionPointsCost() > 0 && clan.getFactionPoints() < aid.getFactionPointsCost()) {
                 throw new InvalidActionException("Not enough influence to perform this action.");
             }
             // check leading condition
@@ -126,7 +126,7 @@ public class FactionServiceImpl implements FactionService {
             // pay resources
             clan.changeCaps(- aid.getCost());
             clan.changeInformation(- aid.getInformationCost());
-            clan.changeFactionPoints(- aid.getFactionPoints());
+            clan.changeFactionPoints(- aid.getFactionPointsCost());
 
             action.setFactionAid(aid);
         }

@@ -114,7 +114,7 @@ INSERT INTO localized_texts (faction_description, lang, text) VALUES
 
 INSERT INTO faction_aids (identifier, faction, aid_type, in_lead, cost, faction_points_cost, aid, num_aid, information_cost, item_cost, faction_points, fame) VALUES
     ('s.information', 'SYNDICATE', 'FACTION_SUPPORT', false, 0, 0, 0, 0, 5, null, 10, 0),
-    ('s.resources', 'SYNDICATE', 'RESOURCE_SUPPORT', false, 12, 1, 3, 0, 0, null, 10, 1),
+    ('s.resources', 'SYNDICATE', 'RESOURCE_SUPPORT', false, 12, 0, 1, 3, 0, null, 10, 1),
     ('s.leading', 'SYNDICATE', 'CAPS_REWARD', true, 0, 20, 20, 0, 0, null, 0, 0);
 
 INSERT INTO localized_texts (faction_aid, lang, text) VALUES
