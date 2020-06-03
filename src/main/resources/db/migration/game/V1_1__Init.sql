@@ -250,6 +250,7 @@ DROP TABLE IF EXISTS notification_details;
 CREATE TABLE notification_details (
     detail_id BIGINT AUTO_INCREMENT,
     notification_id BIGINT,
+    solution_type VARCHAR(32) DEFAULT NULL,
     PRIMARY KEY (detail_id),
     CONSTRAINT detail_notification_fk FOREIGN KEY (notification_id) REFERENCES clan_notifications (notification_id)
 );

@@ -78,7 +78,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalIntellect >= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalIntellect));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalIntellect, type));
                 break;
             case SCAVENGE:
                 int totalScavenge = character.getScavenge() + diceRoll;
@@ -86,7 +86,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalScavenge >= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalScavenge));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalScavenge, type));
                 break;
             case CRAFTSMANSHIP:
                 int totalCraftsmanship = character.getCraftsmanship() + diceRoll;
@@ -94,7 +94,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalCraftsmanship >= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship, type));
                 break;
             case COMBAT_ROLL:
                 int totalCombat = character.getCombat() + diceRoll;
@@ -102,7 +102,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalCombat >= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat, type));
                 break;
             case WEAPON_ROLL:
                 totalCombat = character.getTotalCombat() + diceRoll;
@@ -110,7 +110,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalCombat >= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCombat, type));
                 break;
             case INTELLECT_LOW:
                 totalIntellect = character.getIntellect() + diceRoll;
@@ -118,7 +118,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalIntellect <= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalIntellect));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalIntellect, type));
                 break;
             case CRAFTSMANSHIP_LOW:
                 totalCraftsmanship = character.getCraftsmanship() + diceRoll;
@@ -126,7 +126,7 @@ public class EncounterServiceImpl implements EncounterService {
                 if (totalCraftsmanship <= difficulty) {
                     success = true;
                 }
-                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship));
+                notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship, type));
                 break;
             default:
                 log.error("Unknown solution type triggered: {}!", type);
@@ -232,8 +232,9 @@ public class EncounterServiceImpl implements EncounterService {
         }
     }
 
-    private NotificationDetail getActionRollDetail(int difficulty, int roll, int result) {
+    private NotificationDetail getActionRollDetail(int difficulty, int roll, int result, SolutionType type) {
         NotificationDetail detail = new NotificationDetail();
+        detail.setSolutionType(type);
         notificationService.addLocalizedTexts(detail.getText(), "detail.action.roll",
                 new String[]{String.valueOf(difficulty), String.valueOf(roll), String.valueOf(result)});
         return detail;
