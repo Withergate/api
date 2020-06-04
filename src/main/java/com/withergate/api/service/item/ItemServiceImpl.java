@@ -135,7 +135,12 @@ public class ItemServiceImpl implements ItemService {
             if (rarity == null) {
                 rarity = getRandomRarity();
             }
+            log.debug("Getting random item with rarity {}, type {} and turn less than {}.", rarity, type, turn);
             List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(rarity, type, turn);
+            // if epic items are not available for given turn, find common instead
+            if (detailsList.isEmpty()) {
+                detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(Rarity.COMMON, type, turn);
+            }
             details = detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
         }
 
