@@ -1,7 +1,5 @@
 package com.withergate.api.service.building;
 
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
@@ -19,11 +17,9 @@ import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
-import com.withergate.api.service.RandomService;
 import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
-import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.BonusUtils;
 import lombok.AllArgsConstructor;
@@ -33,6 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Building service implementation.
@@ -44,17 +42,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
-    private final ItemService itemService;
     private final BuildingActionRepository buildingActionRepository;
     private final BuildingDetailsRepository buildingDetailsRepository;
     private final NotificationService notificationService;
-    private final RandomService randomService;
     private final GameProperties gameProperties;
     private final CharacterService characterService;
 
     @Transactional
     @Override
-    public void saveBuildingAction(BuildingRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(BuildingRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting building action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
 

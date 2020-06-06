@@ -43,7 +43,7 @@ public class ResearchServiceImpl implements ResearchService {
 
     @Transactional
     @Override
-    public void saveResearchAction(ResearchRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(ResearchRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting research action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();

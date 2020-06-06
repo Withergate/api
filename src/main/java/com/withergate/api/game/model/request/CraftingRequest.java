@@ -12,9 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CraftingRequest {
+public class CraftingRequest extends ActionRequest {
 
-    private int characterId;
     private String item;
 
 }

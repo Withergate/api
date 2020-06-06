@@ -10,9 +10,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ClanCombatRequest {
+public class ClanCombatRequest extends ActionRequest {
 
-    private int characterId;
     private int targetId;
 
 }

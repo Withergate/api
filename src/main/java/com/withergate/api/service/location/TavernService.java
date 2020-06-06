@@ -1,19 +1,19 @@
 package com.withergate.api.service.location;
 
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.TavernOffer;
 import com.withergate.api.game.model.request.TavernRequest;
 import com.withergate.api.service.action.Actionable;
 import com.withergate.api.service.exception.InvalidActionException;
 
+import java.util.List;
+
 /**
  * Tavern service interface.
  *
  * @author Martin Myslik
  */
-public interface TavernService extends Actionable {
+public interface TavernService extends Actionable<TavernRequest> {
 
     /**
      * Loads single tavern offer.
@@ -31,14 +31,6 @@ public interface TavernService extends Actionable {
      * @return the loaded list of offers
      */
     List<TavernOffer> loadTavernOffers(TavernOffer.State state, Clan clan);
-
-    /**
-     * Validates and saves the provided action.
-     *
-     * @param request the action to be saved
-     * @param clanId clan ID
-     */
-    void saveTavernAction(TavernRequest request, int clanId) throws InvalidActionException;
 
     /**
      * Prepare new tavern offers for given clan.

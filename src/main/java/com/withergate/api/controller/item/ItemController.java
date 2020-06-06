@@ -1,8 +1,5 @@
 package com.withergate.api.controller.item;
 
-import java.security.Principal;
-import java.util.List;
-
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.request.CraftingRequest;
 import com.withergate.api.game.model.request.EquipRequest;
@@ -17,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
+import java.util.List;
 
 /**
  * Item controller.
@@ -82,7 +82,7 @@ public class ItemController {
     @PostMapping("/items/craft")
     public ResponseEntity<Void> submitBuildingAction(Principal principal, @RequestBody CraftingRequest request)
             throws InvalidActionException {
-        craftingService.saveCraftingAction(request, Integer.parseInt(principal.getName()));
+        craftingService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

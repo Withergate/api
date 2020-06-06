@@ -1,10 +1,5 @@
 package com.withergate.api.service.quest;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.QuestAction;
@@ -33,6 +28,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Quest service implementation.
@@ -89,7 +89,7 @@ public class QuestServiceImpl implements QuestService {
 
     @Transactional
     @Override
-    public void saveQuestAction(QuestRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(QuestRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting quest action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();

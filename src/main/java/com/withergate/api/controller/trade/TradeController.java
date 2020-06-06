@@ -1,7 +1,5 @@
 package com.withergate.api.controller.trade;
 
-import java.security.Principal;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.game.model.request.MarketTradeRequest;
 import com.withergate.api.game.model.request.PublishOfferRequest;
@@ -25,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 /**
  * Trade controller.
  *
@@ -47,7 +47,7 @@ public class TradeController {
     @PostMapping("/trade/resources/action")
     public ResponseEntity<Void> submitResourceTradeAction(Principal principal, @RequestBody ResourceTradeRequest request)
             throws InvalidActionException {
-        tradeService.saveResourceTradeAction(request, Integer.parseInt(principal.getName()));
+        tradeService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

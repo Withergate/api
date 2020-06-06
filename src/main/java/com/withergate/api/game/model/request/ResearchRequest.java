@@ -12,9 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ResearchRequest {
+public class ResearchRequest extends ActionRequest {
 
-    private int characterId;
     private String research;
 
 }

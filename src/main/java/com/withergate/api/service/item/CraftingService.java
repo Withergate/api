@@ -1,18 +1,17 @@
 package com.withergate.api.service.item;
 
-import java.util.List;
-
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.request.CraftingRequest;
 import com.withergate.api.service.action.Actionable;
-import com.withergate.api.service.exception.InvalidActionException;
+
+import java.util.List;
 
 /**
  * Crafting service.
  *
  * @author  Martin Myslik
  */
-public interface CraftingService extends Actionable {
+public interface CraftingService extends Actionable<CraftingRequest> {
 
     /**
      * Loads all available items to craft for the provided clan.
@@ -21,13 +20,5 @@ public interface CraftingService extends Actionable {
      * @return list of item details
      */
     List<ItemDetails> getAvailableItems(int clanId);
-
-    /**
-     * Validates and saves the provided action.
-     *
-     * @param request the action to be saved
-     * @param clanId clan ID
-     */
-    void saveCraftingAction(CraftingRequest request, int clanId) throws InvalidActionException;
 
 }

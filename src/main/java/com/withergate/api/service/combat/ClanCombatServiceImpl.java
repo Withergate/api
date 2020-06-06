@@ -1,7 +1,5 @@
 package com.withergate.api.service.combat;
 
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
 import com.withergate.api.game.model.action.ActionState;
@@ -29,6 +27,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Clan combat service implementation.
  *
@@ -49,7 +49,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
     @Transactional
     @Override
-    public void saveClanCombatAction(ClanCombatRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(ClanCombatRequest request, int clanId) throws InvalidActionException {
         log.debug("Receive clan combat request: {}.", request.toString());
 
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);

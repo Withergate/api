@@ -1,8 +1,5 @@
 package com.withergate.api.controller.faction;
 
-import java.security.Principal;
-import java.util.List;
-
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.faction.FactionsOverview;
 import com.withergate.api.game.model.request.ClanCombatRequest;
@@ -18,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
+import java.util.List;
 
 /**
  * Faction controller.
@@ -53,7 +53,7 @@ public class FactionController {
     public ResponseEntity<Void> submitFactionAction(Principal principal, @RequestBody FactionRequest request)
             throws InvalidActionException {
 
-        factionService.saveFactionAction(request, Integer.parseInt(principal.getName()));
+        factionService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -78,7 +78,7 @@ public class FactionController {
     public ResponseEntity<Void> submitClanCombatAction(Principal principal, @RequestBody ClanCombatRequest request)
             throws InvalidActionException {
 
-        clanCombatService.saveClanCombatAction(request, Integer.parseInt(principal.getName()));
+        clanCombatService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -1,11 +1,6 @@
 package com.withergate.api.service.clan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
@@ -14,6 +9,7 @@ import com.withergate.api.game.model.character.TavernOffer.State;
 import com.withergate.api.game.model.dto.ClanIntelDTO;
 import com.withergate.api.game.model.request.ClanRequest;
 import com.withergate.api.game.model.request.DefaultActionRequest;
+import com.withergate.api.game.model.type.AttributeTemplate.Type;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.statistics.ClanTurnStatisticsRepository;
 import com.withergate.api.service.RandomService;
@@ -29,6 +25,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 

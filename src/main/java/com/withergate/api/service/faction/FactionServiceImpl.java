@@ -1,14 +1,6 @@
 package com.withergate.api.service.faction;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.item.ItemDetails.Rarity;
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
 import com.withergate.api.game.model.action.ActionState;
@@ -16,27 +8,29 @@ import com.withergate.api.game.model.action.FactionAction;
 import com.withergate.api.game.model.action.FactionAction.Type;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
-import com.withergate.api.service.action.ActionOrder;
-import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.faction.ClanFactionOverview;
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.faction.FactionAid;
 import com.withergate.api.game.model.faction.FactionPointsOverview;
 import com.withergate.api.game.model.faction.FactionsOverview;
+import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.FactionRequest;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.action.FactionActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.faction.FactionRepository;
-import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -44,6 +38,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Faction service implementation.
@@ -69,7 +69,7 @@ public class FactionServiceImpl implements FactionService {
 
     @Transactional
     @Override
-    public void saveFactionAction(FactionRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(FactionRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting faction action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
 

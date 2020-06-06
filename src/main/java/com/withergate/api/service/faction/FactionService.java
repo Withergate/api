@@ -1,28 +1,19 @@
 package com.withergate.api.service.faction;
 
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.faction.FactionsOverview;
 import com.withergate.api.game.model.request.FactionRequest;
 import com.withergate.api.service.action.Actionable;
-import com.withergate.api.service.exception.InvalidActionException;
+
+import java.util.List;
 
 /**
  * Faction service.
  *
  * @author Martin Myslik
  */
-public interface FactionService extends Actionable {
-
-    /**
-     * Validates and saves the provided action.
-     *
-     * @param request the action to be saved
-     * @param clanId clan ID
-     */
-    void saveFactionAction(FactionRequest request, int clanId) throws InvalidActionException;
+public interface FactionService extends Actionable<FactionRequest> {
 
     /**
      * Gets all factions.

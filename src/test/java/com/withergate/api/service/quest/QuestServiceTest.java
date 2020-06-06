@@ -1,9 +1,5 @@
 package com.withergate.api.service.quest;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.QuestAction;
@@ -31,6 +27,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -88,7 +88,7 @@ public class QuestServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         // when creating quest action
-        questService.saveQuestAction(request, 1);
+        questService.saveAction(request, 1);
 
         // then expect exception
     }
@@ -119,7 +119,7 @@ public class QuestServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         // when creating quest action
-        questService.saveQuestAction(request, 1);
+        questService.saveAction(request, 1);
 
         // then expect exception
     }
@@ -151,7 +151,7 @@ public class QuestServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         // when creating building action
-        questService.saveQuestAction(request, 1);
+        questService.saveAction(request, 1);
 
         // then verify action saved
         ArgumentCaptor<QuestAction> captor = ArgumentCaptor.forClass(QuestAction.class);
@@ -346,7 +346,7 @@ public class QuestServiceTest {
         Mockito.when(characterService.loadReadyCharacter(1, 1)).thenReturn(character);
 
         // when creating building action
-        questService.saveQuestAction(request, 1);
+        questService.saveAction(request, 1);
 
         // then verify exception thrown
     }

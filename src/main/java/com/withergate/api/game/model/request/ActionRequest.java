@@ -2,18 +2,16 @@ package com.withergate.api.game.model.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
- * Quest request.
+ * Action request.
  *
  * @author Martin Myslik
  */
-@Getter
 @Setter
-@ToString
-public class QuestRequest extends ActionRequest {
+@Getter
+public abstract class ActionRequest {
 
-    private int questId;
+    private int characterId;
 
 }

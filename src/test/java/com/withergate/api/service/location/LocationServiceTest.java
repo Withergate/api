@@ -1,8 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.LocationAction;
@@ -35,6 +32,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -97,7 +97,7 @@ public class LocationServiceTest {
         Mockito.when(locationDescriptionRepository.getOne(Location.WASTELAND)).thenReturn(description);
 
         // when creating location action
-        locationService.saveLocationAction(request, 1);
+        locationService.saveAction(request, 1);
 
         // then verify action saved and character updated
         ArgumentCaptor<LocationAction> captorAction = ArgumentCaptor.forClass(LocationAction.class);
@@ -137,7 +137,7 @@ public class LocationServiceTest {
         Mockito.when(locationDescriptionRepository.getOne(Location.NEIGHBORHOOD)).thenReturn(description);
 
         // when creating location action
-        locationService.saveLocationAction(request, 1);
+        locationService.saveAction(request, 1);
 
         // then expect exception
     }

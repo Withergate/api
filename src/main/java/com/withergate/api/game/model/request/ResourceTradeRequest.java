@@ -1,7 +1,6 @@
 package com.withergate.api.game.model.request;
 
 import com.withergate.api.game.model.trade.TradeType;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +11,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ResourceTradeRequest {
+public class ResourceTradeRequest extends ActionRequest {
 
-    private int characterId;
     private int food;
     private int junk;
     private TradeType type;

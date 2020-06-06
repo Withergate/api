@@ -10,8 +10,5 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ArenaRequest {
-
-    private int characterId;
-
+public class ArenaRequest extends ActionRequest {
 }
