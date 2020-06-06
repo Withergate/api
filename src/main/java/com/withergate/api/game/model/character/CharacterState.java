@@ -6,5 +6,5 @@ package com.withergate.api.game.model.character;
  * @author Martin Myslik
  */
 public enum CharacterState {
-    READY, BUSY, RESTING
+    READY, BUSY
 }

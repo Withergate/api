@@ -1,11 +1,11 @@
 package com.withergate.api.service.clan;
 
-import java.util.List;
-
-import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
+import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.service.exception.InvalidActionException;
+
+import java.util.List;
 
 /**
  * CharacterService interface.
@@ -58,15 +58,6 @@ public interface CharacterService {
      * @return the generated character
      */
     Character generateRandomCharacter(CharacterFilter filter, AttributeTemplate attributes);
-
-    /**
-     * Marks character as resting.
-     *
-     * @param characterId the character ID
-     * @param clanId the clan ID
-     * @throws InvalidActionException invalid action
-     */
-    void markCharacterAsResting(int characterId, int clanId) throws InvalidActionException;
 
     /**
      * Increases level for provided character.

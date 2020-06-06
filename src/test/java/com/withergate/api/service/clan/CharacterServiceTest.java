@@ -1,19 +1,14 @@
 package com.withergate.api.service.clan;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
-import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
-import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +16,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -149,45 +147,6 @@ public class CharacterServiceTest {
         assertEquals(1, result.getScavenge());
         assertEquals(5, result.getCraftsmanship());
         assertEquals(3, result.getIntellect());
-    }
-
-    @Test
-    public void testGivenCharacterWhenMarkingRestingThenVerifyCharacterUpdated() throws Exception {
-        // given character
-        Clan clan = new Clan();
-        clan.setId(1);
-
-        Character character = new Character();
-        character.setId(1);
-        character.setName("Rusty Nick");
-        character.setState(CharacterState.READY);
-        character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
-
-        // when marking as resting
-        characterService.markCharacterAsResting(1, 1);
-
-        // then verify character updated
-        Assert.assertEquals(CharacterState.RESTING, character.getState());
-    }
-
-    @Test(expected = InvalidActionException.class)
-    public void testGivenBusyCharacterWhenMarkingRestingThenExpectException() throws Exception {
-        // given character
-        Clan clan = new Clan();
-        clan.setId(1);
-
-        Character character = new Character();
-        character.setId(1);
-        character.setName("Rusty Nick");
-        character.setState(CharacterState.BUSY);
-        character.setClan(clan);
-        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
-
-        // when marking as resting
-        characterService.markCharacterAsResting(1, 1);
-
-        // then expect exception
     }
 
     @Test

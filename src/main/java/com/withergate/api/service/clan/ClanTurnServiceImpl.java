@@ -10,8 +10,6 @@ import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.clan.ClanRepository;
-import com.withergate.api.service.RandomService;
-import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
@@ -39,7 +37,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
     private final QuestService questService;
     private final BuildingService buildingService;
     private final TavernService tavernService;
-    private final RandomService randomService;
     private final GameProperties gameProperties;
 
     @Override
@@ -51,9 +48,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
         // tavern offers
         tavernService.prepareTavernOffers(clan);
-
-        // perform resting
-        performResting(turnId, clan);
 
         // perform character leveling
         performCharacterLeveling(turnId, clan);
@@ -133,34 +127,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         }
 
         notificationService.save(notification);
-    }
-
-    private void performResting(int turnId, Clan clan) {
-        for (Character character : clan.getCharacters()) {
-            // heal only resting characters
-            if (!(character.getState().equals(CharacterState.READY) || character.getState().equals(CharacterState.RESTING))) {
-                continue;
-            }
-
-            // skip npc characters
-            if (character.getClan() == null) {
-                continue;
-            }
-
-            // prepare notification
-            ClanNotification notification = new ClanNotification(turnId, character.getClan().getId());
-            notification.setHeader(character.getName());
-            notification.setImageUrl(character.getImageUrl());
-            notificationService.addLocalizedTexts(notification.getText(), "character.resting", new String[] {});
-
-            // handle resting bonuses
-            handleRestingBonuses(character, notification);
-
-            handleHealing(character, notification);
-
-            // save notification
-            notificationService.save(notification);
-        }
     }
 
     private void performCharacterLeveling(int turnId, Clan clan) {
@@ -246,43 +212,6 @@ public class ClanTurnServiceImpl implements ClanTurnService {
     private void markCharactersReady(Clan clan) {
         for (Character character : clan.getCharacters()) {
             character.setState(CharacterState.READY);
-        }
-    }
-
-    private void handleHealing(Character character, ClanNotification notification) {
-        int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
-
-        if (hitpointsMissing == 0) {
-            return;
-        }
-
-        // each character that is ready heals
-        int points = gameProperties.getHealing();
-
-        // trait
-        points += BonusUtils.getBonus(character, BonusType.HEALING, notification, notificationService);
-
-        int healing = Math.min(points, hitpointsMissing);
-        character.changeHitpoints(healing);
-        notification.changeHealing(healing);
-    }
-
-    private void handleRestingBonuses(Character character, ClanNotification notification) {
-        int exp = BonusUtils.getBonus(character, BonusType.TRAINING, notification, notificationService);
-        if (exp > 0) {
-            notification.changeExperience(exp);
-            character.changeExperience(exp);
-        }
-
-        Research research = character.getClan().getResearch(ResearchBonusType.REST_FOOD);
-        if (research != null && research.isCompleted()) {
-            int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
-            character.getClan().changeFood(food);
-
-            notification.changeFood(food);
-            NotificationDetail detail = new NotificationDetail();
-            notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
-            notification.getDetails().add(detail);
         }
     }
 

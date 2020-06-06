@@ -1,7 +1,6 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;
@@ -9,7 +8,9 @@ import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Trait;
 import com.withergate.api.game.model.character.TraitDetails;
+import com.withergate.api.game.model.request.RestingRequest;
 import com.withergate.api.game.model.request.TraitRequest;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.game.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -30,6 +31,9 @@ public class TraitServiceTest {
     @Mock
     private CharacterRepository characterRepository;
 
+    @Mock
+    private RestingService restingService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -37,7 +41,7 @@ public class TraitServiceTest {
         GameProperties properties = new GameProperties();
         properties.setTrainingPrice(5);
 
-        traitService = new TraitServiceImpl(traitDetailsRepository, characterRepository, properties);
+        traitService = new TraitServiceImpl(traitDetailsRepository, characterRepository, restingService, properties);
     }
 
     @Test
@@ -80,7 +84,7 @@ public class TraitServiceTest {
 
         // then verify trait activated
         Assert.assertTrue(trait.isActive());
-        Assert.assertEquals(CharacterState.RESTING, character.getState());
+        Mockito.verify(restingService).saveAction(Mockito.any(RestingRequest.class), Mockito.eq(1));
     }
 
     @Test(expected = InvalidActionException.class)

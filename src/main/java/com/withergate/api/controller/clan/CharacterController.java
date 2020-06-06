@@ -4,8 +4,10 @@ import java.security.Principal;
 
 import com.withergate.api.game.model.request.CharacterRestRequest;
 import com.withergate.api.game.model.request.RenameRequest;
+import com.withergate.api.game.model.request.RestingRequest;
 import com.withergate.api.game.model.request.TraitRequest;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.RestingService;
 import com.withergate.api.service.clan.TraitService;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class CharacterController {
 
     private final CharacterService characterService;
     private final TraitService traitService;
+    private final RestingService restingService;
 
     /**
      * Marks character as resting.
@@ -38,10 +41,10 @@ public class CharacterController {
      * @throws InvalidActionException invalid action
      */
     @PostMapping("/characters/rest")
-    public ResponseEntity<Void> submitCharacterRestAction(Principal principal, @RequestBody CharacterRestRequest request)
+    public ResponseEntity<Void> submitCharacterRestAction(Principal principal, @RequestBody RestingRequest request)
             throws InvalidActionException {
 
-        characterService.markCharacterAsResting(request.getCharacterId(), Integer.parseInt(principal.getName()));
+        restingService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
