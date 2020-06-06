@@ -18,5 +18,6 @@ public class ActionOrder {
     public static final int TRADE_ORDER = 9;
     public static final int FACTION_ORDER = 10;
     public static final int DISASTER_ORDER = 11;
+    public static final int RESTING_ORDER = 12;
 
 }

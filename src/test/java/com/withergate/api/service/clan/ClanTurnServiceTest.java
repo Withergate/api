@@ -9,7 +9,6 @@ import com.withergate.api.game.model.character.TraitDetails;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.clan.ClanRepository;
-import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
@@ -45,9 +44,6 @@ public class ClanTurnServiceTest {
     @Mock
     private TavernService tavernService;
 
-    @Mock
-    private RandomService randomService;
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -59,7 +55,7 @@ public class ClanTurnServiceTest {
         properties.setStarvationFame(1);
 
         clanTurnService = new ClanTurnServiceImpl(clanRepository, characterService, notificationService, questService,
-                buildingService, tavernService, randomService, properties);
+                buildingService, tavernService, properties);
     }
 
     @Test
@@ -123,29 +119,6 @@ public class ClanTurnServiceTest {
         // then verify food consumed and buildings triggered
         Assert.assertEquals(5, clan.getFood());
         Mockito.verify(buildingService).processPassiveBuildingBonuses(1, clan);
-    }
-
-    @Test
-    public void testGivenReadyCharacterWhenPerformingEndTurnUpdatesThenVerifyCharacterHealed() {
-        // given character
-        Clan clan = new Clan();
-        clan.setId(1);
-        clan.setFood(10);
-
-        Character character = new Character();
-        character.setId(1);
-        character.setHitpoints(5);
-        character.setMaxHitpoints(7);
-        character.setName("Rusty Nick");
-        character.setState(CharacterState.READY);
-        character.setClan(clan);
-        clan.getCharacters().add(character);
-
-        // when performing healing
-        clanTurnService.performClanTurnUpdates(clan,1);
-
-        // then verify character updated
-        assertEquals(7, character.getHitpoints());
     }
 
     @Test

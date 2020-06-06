@@ -9,7 +9,9 @@ import com.withergate.api.game.model.disaster.DisasterSolution;
 import com.withergate.api.game.model.location.Location;
 import com.withergate.api.game.model.request.DisasterRequest;
 import com.withergate.api.game.model.request.LocationRequest;
+import com.withergate.api.game.model.request.RestingRequest;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.clan.RestingService;
 import com.withergate.api.service.disaster.DisasterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.faction.FactionService;
@@ -39,6 +41,7 @@ public class ActionServiceImpl implements ActionService {
     private final LocationService locationService;
     private final DisasterService disasterService;
     private final FactionService factionService;
+    private final RestingService restingService;
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
     @Retryable
@@ -100,10 +103,16 @@ public class ActionServiceImpl implements ActionService {
                 try {
                     locationService.saveAction(request, character.getClan().getId());
                 } catch (InvalidActionException e) {
-                    log.error("Error assigning default action.", e);
+                    log.error("Error assigning default location action.", e);
                 }
             } else {
-                character.setState(CharacterState.RESTING);
+                RestingRequest request = new RestingRequest();
+                request.setCharacterId(character.getId());
+                try {
+                    restingService.saveAction(request, character.getClan().getId());
+                } catch (InvalidActionException e) {
+                    log.error("Error assigning default resting action.", e);
+                }
             }
         }
     }

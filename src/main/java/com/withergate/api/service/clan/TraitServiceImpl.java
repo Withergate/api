@@ -1,28 +1,30 @@
 package com.withergate.api.service.clan;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
-import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Trait;
 import com.withergate.api.game.model.character.TraitDetails;
+import com.withergate.api.game.model.request.RestingRequest;
 import com.withergate.api.game.model.request.TraitRequest;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.game.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.exception.InvalidActionException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Trait service implementation.
  *
  * @author Martin Myslik
  */
+@Slf4j
 @Service
 @AllArgsConstructor
 public class TraitServiceImpl implements TraitService {
@@ -31,6 +33,7 @@ public class TraitServiceImpl implements TraitService {
 
     private final TraitDetailsRepository traitDetailsRepository;
     private final CharacterRepository characterRepository;
+    private final RestingService restingService;
     private final GameProperties properties;
 
     @Override
@@ -79,7 +82,9 @@ public class TraitServiceImpl implements TraitService {
 
         // mark character as resting unless immediate training
         if (!request.isImmediate()) {
-            character.setState(CharacterState.RESTING);
+            RestingRequest restingRequest = new RestingRequest();
+            restingRequest.setCharacterId(character.getId());
+            restingService.saveAction(restingRequest, character.getId());
         }
     }
 

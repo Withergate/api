@@ -1,12 +1,12 @@
 package com.withergate.api.service.clan;
 
-import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.profile.model.PremiumType;
@@ -128,22 +128,6 @@ public class CharacterServiceImpl implements CharacterService {
         }
 
         return character;
-    }
-
-    @Override
-    public void markCharacterAsResting(int characterId, int clanId) throws InvalidActionException {
-        // check action validity
-        Character character = load(characterId);
-        if (character == null || character.getClan().getId() != clanId) {
-            throw new InvalidActionException("This character either doesn't exist or doesn't belong to your clan.");
-        }
-
-        if (!character.getState().equals(CharacterState.READY)) {
-            throw new InvalidActionException("Character must be ready to perform this action.");
-        }
-
-        character.setState(CharacterState.RESTING);
-        save(character);
     }
 
     @Override
