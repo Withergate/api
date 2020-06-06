@@ -1,8 +1,5 @@
 package com.withergate.api.service.clan;
 
-import java.util.HashSet;
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.Clan.DefaultAction;
@@ -35,6 +32,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Clan service. Handles all basic operations over the clan entity.

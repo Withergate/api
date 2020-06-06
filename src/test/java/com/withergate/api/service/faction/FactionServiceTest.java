@@ -1,7 +1,5 @@
 package com.withergate.api.service.faction;
 
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
@@ -27,6 +25,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.List;
 
 public class FactionServiceTest {
 
@@ -90,7 +90,7 @@ public class FactionServiceTest {
         request.setType(Type.JOIN);
 
         // when submitting action
-        factionService.saveFactionAction(request, 1);
+        factionService.saveAction(request, 1);
 
         // then expect exception
     }
@@ -117,7 +117,7 @@ public class FactionServiceTest {
         request.setType(Type.JOIN);
 
         // when submitting action
-        factionService.saveFactionAction(request, 1);
+        factionService.saveAction(request, 1);
 
         // then expect exception
     }
@@ -144,7 +144,7 @@ public class FactionServiceTest {
         request.setType(Type.JOIN);
 
         // when submitting action
-        factionService.saveFactionAction(request, 1);
+        factionService.saveAction(request, 1);
 
         // then verify action saved
         ArgumentCaptor<FactionAction> captor = ArgumentCaptor.forClass(FactionAction.class);
@@ -214,7 +214,7 @@ public class FactionServiceTest {
         request.setFactionAid("aid");
 
         // when submitting action
-        factionService.saveFactionAction(request, 1);
+        factionService.saveAction(request, 1);
 
         // then expect exception
     }
@@ -249,7 +249,7 @@ public class FactionServiceTest {
         request.setFactionAid("aid");
 
         // when submitting action
-        factionService.saveFactionAction(request, 1);
+        factionService.saveAction(request, 1);
 
         // then verify action saved
         ArgumentCaptor<FactionAction> captor = ArgumentCaptor.forClass(FactionAction.class);

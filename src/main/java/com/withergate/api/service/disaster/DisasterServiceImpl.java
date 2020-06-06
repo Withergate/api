@@ -1,12 +1,6 @@
 package com.withergate.api.service.disaster;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.DisasterAction;
@@ -15,25 +9,26 @@ import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.disaster.DisasterDetails;
 import com.withergate.api.game.model.disaster.DisasterSolution;
-import com.withergate.api.service.action.ActionOrder;
-import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.DisasterRequest;
 import com.withergate.api.game.model.turn.Turn;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.action.DisasterActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.disaster.DisasterDetailsRepository;
 import com.withergate.api.game.repository.disaster.DisasterRepository;
 import com.withergate.api.game.repository.disaster.DisasterSolutionRepository;
-import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
+import com.withergate.api.service.encounter.ConditionValidator;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.turn.TurnService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -41,6 +36,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Disaster service implementation.
@@ -92,7 +92,7 @@ public class DisasterServiceImpl implements DisasterService {
 
     @Transactional
     @Override
-    public void saveDisasterAction(DisasterRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(DisasterRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting disaster action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();

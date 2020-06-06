@@ -34,7 +34,7 @@ public class ResearchController {
     public ResponseEntity<Void> submitResearchAction(Principal principal, @RequestBody ResearchRequest request)
             throws InvalidActionException {
 
-        researchService.saveResearchAction(request, Integer.parseInt(principal.getName()));
+        researchService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

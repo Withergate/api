@@ -1,8 +1,5 @@
 package com.withergate.api.controller.location;
 
-import java.security.Principal;
-import java.util.List;
-
 import com.withergate.api.game.model.location.LocationDescription;
 import com.withergate.api.game.model.request.LocationRequest;
 import com.withergate.api.game.model.request.TavernRequest;
@@ -18,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
+import java.util.List;
 
 /**
  * LocationAction controller. Enables the execution of location actions.
@@ -44,7 +44,7 @@ public class LocationController {
     public ResponseEntity<Void> visitLocation(Principal principal, @RequestBody LocationRequest request) throws InvalidActionException {
         log.debug("Executing location action for player {}", principal.getName());
 
-        locationService.saveLocationAction(request, Integer.parseInt(principal.getName()));
+        locationService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class LocationController {
     public ResponseEntity<Void> visitTavern(Principal principal, @RequestBody TavernRequest request) throws InvalidActionException {
         log.debug("Executing tavern action for player {}", principal.getName());
 
-        tavernService.saveTavernAction(request, Integer.parseInt(principal.getName()));
+        tavernService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

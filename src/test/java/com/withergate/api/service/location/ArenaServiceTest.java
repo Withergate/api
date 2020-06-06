@@ -1,8 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.ArenaAction;
@@ -23,6 +20,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArenaServiceTest {
 
@@ -120,7 +120,7 @@ public class ArenaServiceTest {
         Mockito.when(characterService.loadReadyCharacter(2, 1)).thenReturn(character2);
 
         // when creating location action
-        arenaService.saveArenaAction(request, 1);
+        arenaService.saveAction(request, 1);
 
         // then expect exception
     }

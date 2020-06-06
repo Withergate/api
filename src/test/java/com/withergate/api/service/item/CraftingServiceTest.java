@@ -1,8 +1,5 @@
 package com.withergate.api.service.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.CraftingAction;
@@ -10,7 +7,6 @@ import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
-import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.item.ItemType;
@@ -30,6 +26,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CraftingServiceTest {
 
@@ -110,7 +109,7 @@ public class CraftingServiceTest {
         CraftingRequest request = new CraftingRequest();
         request.setCharacterId(1);
         request.setItem("WEAPON");
-        craftingService.saveCraftingAction(request, 1);
+        craftingService.saveAction(request, 1);
 
         // then verify item crafted
         Assert.assertEquals(7, clan.getJunk());
@@ -140,7 +139,7 @@ public class CraftingServiceTest {
         CraftingRequest request = new CraftingRequest();
         request.setCharacterId(1);
         request.setItem("WEAPON");
-        craftingService.saveCraftingAction(request, 1);
+        craftingService.saveAction(request, 1);
 
         // then verify exception thrown
     }
@@ -166,7 +165,7 @@ public class CraftingServiceTest {
         CraftingRequest request = new CraftingRequest();
         request.setCharacterId(1);
         request.setItem("WEAPON");
-        craftingService.saveCraftingAction(request, 1);
+        craftingService.saveAction(request, 1);
 
         // then verify exception thrown
     }

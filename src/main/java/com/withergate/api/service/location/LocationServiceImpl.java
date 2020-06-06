@@ -1,8 +1,6 @@
 package com.withergate.api.service.location;
 
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.LocationAction;
 import com.withergate.api.game.model.character.Character;
@@ -13,18 +11,19 @@ import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
 import com.withergate.api.game.model.request.LocationRequest;
 import com.withergate.api.game.model.research.Research;
+import com.withergate.api.game.model.type.BonusType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.LocationDescriptionRepository;
 import com.withergate.api.game.repository.action.LocationActionRepository;
-import com.withergate.api.service.action.ActionOrder;
-import com.withergate.api.service.action.Actionable;
-import com.withergate.api.service.utils.BonusUtils;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
+import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.BonusUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -55,7 +54,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Transactional
     @Override
-    public void saveLocationAction(LocationRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(LocationRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting location action request: {}", request.toString());
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
 

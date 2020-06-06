@@ -10,9 +10,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TavernRequest {
+public class TavernRequest extends ActionRequest {
 
-    private int characterId;
     private int offerId;
 
 }

@@ -50,7 +50,7 @@ public class DisasterController {
     @PostMapping("/disaster/action")
     public ResponseEntity<Void> submitDisasterAction(Principal principal, @RequestBody DisasterRequest request)
             throws InvalidActionException {
-        disasterService.saveDisasterAction(request, Integer.parseInt(principal.getName()));
+        disasterService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

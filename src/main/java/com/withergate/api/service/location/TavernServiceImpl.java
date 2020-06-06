@@ -1,7 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
@@ -32,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Tavern service implementation.
@@ -70,7 +70,7 @@ public class TavernServiceImpl implements TavernService {
 
     @Transactional
     @Override
-    public void saveTavernAction(TavernRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(TavernRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting tavern action request: {}", request.toString());
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();

@@ -1,8 +1,5 @@
 package com.withergate.api.service.action;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.LocationAction.LocationActionType;
 import com.withergate.api.game.model.character.Character;
@@ -24,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Action service. Responsible for the execution of all game actions.
@@ -82,7 +82,7 @@ public class ActionServiceImpl implements ActionService {
                         request.setCharacterId(character.getId());
                         request.setSolution(solution.get().getIdentifier());
                         try {
-                            disasterService.saveDisasterAction(request, character.getClan().getId());
+                            disasterService.saveAction(request, character.getClan().getId());
                             continue;
                         } catch (InvalidActionException e) {
                             log.error("Error assigning default action.", e);
@@ -98,7 +98,7 @@ public class ActionServiceImpl implements ActionService {
                 request.setType(LocationActionType.VISIT);
                 request.setCharacterId(character.getId());
                 try {
-                    locationService.saveLocationAction(request, character.getClan().getId());
+                    locationService.saveAction(request, character.getClan().getId());
                 } catch (InvalidActionException e) {
                     log.error("Error assigning default action.", e);
                 }

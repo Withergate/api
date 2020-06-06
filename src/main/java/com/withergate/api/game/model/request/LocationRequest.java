@@ -14,9 +14,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class LocationRequest {
+public class LocationRequest extends ActionRequest {
 
-    private int characterId;
     private Location location;
     private LocationAction.LocationActionType type;
 

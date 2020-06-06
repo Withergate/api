@@ -12,9 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DisasterRequest {
+public class DisasterRequest extends ActionRequest {
 
-    private int characterId;
     private String solution;
 
 }

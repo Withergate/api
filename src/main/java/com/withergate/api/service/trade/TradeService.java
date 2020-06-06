@@ -15,15 +15,7 @@ import org.springframework.data.domain.Pageable;
  *
  * @author Martin Myslik
  */
-public interface TradeService extends Actionable {
-
-    /**
-     * Validates and saves the provided action.
-     *
-     * @param request the action to be saved
-     * @param clanId clan ID
-     */
-    void saveResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException;
+public interface TradeService extends Actionable<ResourceTradeRequest> {
 
     /**
      * Validates handles market trade action.

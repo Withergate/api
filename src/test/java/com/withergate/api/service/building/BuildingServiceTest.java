@@ -1,9 +1,5 @@
 package com.withergate.api.service.building;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
@@ -21,9 +17,7 @@ import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.repository.action.BuildingActionRepository;
 import com.withergate.api.game.repository.building.BuildingDetailsRepository;
-import com.withergate.api.service.RandomService;
 import com.withergate.api.service.clan.CharacterService;
-import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,6 +25,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class BuildingServiceTest {
 
@@ -46,12 +44,6 @@ public class BuildingServiceTest {
     private NotificationService notificationService;
 
     @Mock
-    private ItemService itemService;
-
-    @Mock
-    private RandomService randomService;
-
-    @Mock
     private CharacterService characterService;
 
     @Before
@@ -61,8 +53,8 @@ public class BuildingServiceTest {
         GameProperties properties = new GameProperties();
         properties.setBuildingFame(1);
 
-        buildingService = new BuildingServiceImpl(itemService, buildingActionRepository,
-                buildingDetailsRepository, notificationService, randomService, properties, characterService);
+        buildingService = new BuildingServiceImpl(buildingActionRepository,
+                buildingDetailsRepository, notificationService, properties, characterService);
     }
 
     @Test

@@ -1,7 +1,5 @@
 package com.withergate.api.controller.building;
 
-import java.security.Principal;
-
 import com.withergate.api.game.model.request.BuildingRequest;
 import com.withergate.api.service.building.BuildingService;
 import com.withergate.api.service.exception.InvalidActionException;
@@ -12,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 /**
  * BuildingAction controller. Enables the execution of building actions.
@@ -36,7 +36,7 @@ public class BuildingController {
     public ResponseEntity<Void> submitBuildingAction(Principal principal, @RequestBody BuildingRequest request)
             throws InvalidActionException {
 
-        buildingService.saveBuildingAction(request, Integer.parseInt(principal.getName()));
+        buildingService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

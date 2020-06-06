@@ -1,13 +1,13 @@
 package com.withergate.api.service.clan;
 
 import com.withergate.api.GameProperties;
-import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Trait;
 import com.withergate.api.game.model.character.TraitDetails;
 import com.withergate.api.game.model.notification.ClanNotification;
+import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.service.RandomService;
 import com.withergate.api.service.building.BuildingService;

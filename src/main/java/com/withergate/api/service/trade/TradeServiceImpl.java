@@ -1,9 +1,6 @@
 package com.withergate.api.service.trade;
 
-import java.util.Optional;
-
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.ResourceTradeAction;
 import com.withergate.api.game.model.character.Character;
@@ -18,6 +15,7 @@ import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.trade.MarketOffer;
 import com.withergate.api.game.model.trade.MarketOffer.State;
 import com.withergate.api.game.model.trade.TradeType;
+import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.repository.action.ResourceTradeActionRepository;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.trade.MarketOfferRepository;
@@ -39,6 +37,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * Trade service implementation.
@@ -68,7 +68,7 @@ public class TradeServiceImpl implements TradeService {
 
     @Transactional
     @Override
-    public void saveResourceTradeAction(ResourceTradeRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(ResourceTradeRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting resource trade action for request {}.", request);
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();

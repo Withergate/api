@@ -1,10 +1,5 @@
 package com.withergate.api.service.location;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
 import com.withergate.api.game.model.action.ActionState;
@@ -32,6 +27,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Arena service implementation.
  *
@@ -51,7 +51,7 @@ public class ArenaServiceImpl implements ArenaService {
 
     @Transactional
     @Override
-    public void saveArenaAction(ArenaRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(ArenaRequest request, int clanId) throws InvalidActionException {
         log.debug("Submitting arena action request: {}", request.toString());
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();

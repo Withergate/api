@@ -1,9 +1,5 @@
 package com.withergate.api.service.item;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.CraftingAction;
@@ -12,7 +8,6 @@ import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.item.EffectType;
 import com.withergate.api.game.model.item.ItemDetails;
-import com.withergate.api.game.model.item.ItemDetails.Rarity;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
@@ -37,6 +32,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Crafting service implementation.
@@ -81,7 +80,7 @@ public class CraftingServiceImpl implements CraftingService {
 
     @Transactional
     @Override
-    public void saveCraftingAction(CraftingRequest request, int clanId) throws InvalidActionException {
+    public void saveAction(CraftingRequest request, int clanId) throws InvalidActionException {
         Character character = characterService.loadReadyCharacter(request.getCharacterId(), clanId);
         Clan clan = character.getClan();
 

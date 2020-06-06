@@ -1,7 +1,5 @@
 package com.withergate.api.controller.quest;
 
-import java.security.Principal;
-
 import com.withergate.api.game.model.request.QuestRequest;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.quest.QuestService;
@@ -12,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 /**
  * Quest controller.
@@ -35,7 +35,7 @@ public class QuestController {
     @PostMapping("/quests/action")
     public ResponseEntity<Void> submitQuestAction(Principal principal, @RequestBody QuestRequest request)
             throws InvalidActionException {
-        questService.saveQuestAction(request, Integer.parseInt(principal.getName()));
+        questService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -41,7 +41,7 @@ public class ArenaController {
     public ResponseEntity<Void> visitArena(Principal principal, @RequestBody ArenaRequest request) throws InvalidActionException {
         log.debug("Executing arena action for player {}", principal.getName());
 
-        arenaService.saveArenaAction(request, Integer.parseInt(principal.getName()));
+        arenaService.saveAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

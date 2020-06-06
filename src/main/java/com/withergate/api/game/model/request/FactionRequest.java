@@ -13,9 +13,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FactionRequest {
+public class FactionRequest extends ActionRequest {
 
-    private int characterId;
     private FactionAction.Type type;
     private String faction;
     private String factionAid;
