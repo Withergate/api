@@ -40,9 +40,10 @@ public class FlywayCustomConfig {
     @Bean(name = "flyway")
     @ConfigurationProperties(prefix = "flyway.game")
     public Flyway flywayGame() {
-        Flyway flyway = new Flyway();
-        flyway.setLocations("classpath:db/migration/game");
-        flyway.setDataSource(gameDatasource);
+        Flyway flyway = Flyway.configure()
+                .locations("classpath:db/migration/game")
+                .dataSource(gameDatasource)
+                .load();
         flyway.migrate();
         return flyway;
     }
@@ -55,9 +56,10 @@ public class FlywayCustomConfig {
     @Bean(name = "flywayProfile")
     @ConfigurationProperties(prefix = "flyway.profile")
     public Flyway flywayProfile() {
-        Flyway flyway = new Flyway();
-        flyway.setLocations("classpath:db/migration/profile");
-        flyway.setDataSource(profileDataSource);
+        Flyway flyway = Flyway.configure()
+                .locations("classpath:db/migration/profile")
+                .dataSource(profileDataSource)
+                .load();
         flyway.migrate();
         return flyway;
     }
