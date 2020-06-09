@@ -2,7 +2,7 @@ package com.withergate.api.scheduler;
 
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.turn.Turn;
-import com.withergate.api.scheduling.ActionRegistrar;
+import com.withergate.api.service.action.ActionRegistrar;
 import com.withergate.api.scheduling.TurnScheduler;
 import com.withergate.api.service.action.ActionService;
 import com.withergate.api.service.clan.CharacterService;
