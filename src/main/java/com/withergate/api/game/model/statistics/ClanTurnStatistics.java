@@ -59,6 +59,9 @@ public class ClanTurnStatistics {
     @Column(name = "quests")
     private int quests;
 
+    @Column(name = "characters")
+    private int characters;
+
     /**
      * Constructor.
      */
@@ -73,6 +76,7 @@ public class ClanTurnStatistics {
         this.buildings = clan.getBuildings().stream().mapToInt(Building::getLevel).sum();
         this.research = (int) clan.getResearch().stream().filter(Research::isCompleted).count();
         this.quests = (int) clan.getQuests().stream().filter(Quest::isCompleted).count();
+        this.characters = clan.getCharacters().size();
     }
 
 }

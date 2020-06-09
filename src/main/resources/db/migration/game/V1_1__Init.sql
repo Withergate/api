@@ -537,6 +537,7 @@ CREATE TABLE clan_turn_statistics (
     buildings INT,
     research INT,
     quests INT,
+    characters INT,
     PRIMARY KEY (statistics_id)
 );
 
