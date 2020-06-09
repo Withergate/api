@@ -1,4 +1,4 @@
-package com.withergate.api.scheduling;
+package com.withergate.api.service.action;
 
 import java.util.Collections;
 import java.util.Comparator;
