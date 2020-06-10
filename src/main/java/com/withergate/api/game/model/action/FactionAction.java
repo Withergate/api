@@ -27,12 +27,12 @@ public class FactionAction extends BaseAction {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(name = "faction", nullable = false)
+    @Column(name = "faction")
     private String faction;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "faction_aid", nullable = false, updatable = false)
+    @JoinColumn(name = "faction_aid")
     private FactionAid factionAid;
 
     @Override

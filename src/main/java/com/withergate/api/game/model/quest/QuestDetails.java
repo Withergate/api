@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,6 +14,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.withergate.api.game.model.cost.ActionCost;
 import com.withergate.api.game.model.encounter.SolutionCondition;
 import com.withergate.api.game.model.encounter.SolutionType;
 import com.withergate.api.game.model.item.ItemCost;
@@ -71,21 +73,8 @@ public class QuestDetails {
     @Column(name = "difficulty", nullable = false)
     private int difficulty;
 
-    @Column(name = "food_cost", nullable = false)
-    private int foodCost;
-
-    @Column(name = "junk_cost", nullable = false)
-    private int junkCost;
-
-    @Column(name = "caps_cost", nullable = false)
-    private int capsCost;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "item_cost", updatable = false, nullable = false)
-    private ItemCost itemCost;
-
-    @Column(name = "health_cost", nullable = false)
-    private boolean healthCost;
+    @Embedded
+    private ActionCost actionCost;
 
     @Column(name = "follow_up", updatable = false, nullable = false)
     private String followUp;

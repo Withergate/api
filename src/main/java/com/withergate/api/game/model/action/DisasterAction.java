@@ -41,10 +41,7 @@ public class DisasterAction extends BaseAction {
     @Override
     public void cancel() {
         Clan clan = getCharacter().getClan();
-
-        clan.changeCaps(solution.getCapsCost());
-        clan.changeFood(solution.getFoodCost());
-        clan.changeJunk(solution.getJunkCost());
+        solution.getActionCost().refundResources(clan);
     }
 
 }

@@ -40,11 +40,7 @@ public class QuestAction extends BaseAction {
     @Override
     public void cancel() {
         Clan clan = getCharacter().getClan();
-        QuestDetails details = quest.getDetails();
-
-        clan.changeCaps(details.getCapsCost());
-        clan.changeFood(details.getFoodCost());
-        clan.changeJunk(details.getJunkCost());
+        quest.getDetails().getActionCost().refundResources(clan);
     }
 
 }

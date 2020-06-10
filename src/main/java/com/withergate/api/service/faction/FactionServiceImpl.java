@@ -1,5 +1,11 @@
 package com.withergate.api.service.faction;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionDescriptor;
@@ -30,6 +36,7 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
+import com.withergate.api.service.utils.ActionCostUtils;
 import com.withergate.api.service.utils.BonusUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +45,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Faction service implementation.
@@ -104,29 +105,17 @@ public class FactionServiceImpl implements FactionService {
             }
 
             FactionAid aid = getFactionAid(request.getFactionAid(), character.getClan().getFaction());
-            // check cost
-            if (aid.getCost() > 0 && clan.getCaps() < aid.getCost()) {
-                throw new InvalidActionException("Not enough resources to perform this action.");
-            }
+
             // check item cost
-            ConditionValidator.checkActionCondition(character, null, aid.getItemCost());
-            // check information cost
-            if (aid.getInformationCost() > 0 && clan.getInformation() < aid.getInformationCost()) {
-                throw new InvalidActionException("Not enough information to perform this action.");
-            }
-            // check influence cost
-            if (aid.getFactionPointsCost() > 0 && clan.getFactionPoints() < aid.getFactionPointsCost()) {
-                throw new InvalidActionException("Not enough influence to perform this action.");
-            }
+            ConditionValidator.checkActionCondition(character, null, aid.getActionCost().getItemCost());
+
             // check leading condition
             if (aid.isLeading() && !clan.getFaction().getIdentifier().equals(getBestFaction().getIdentifier())) {
                 throw new InvalidActionException(("Your clan must be a member of a leading faction to perform this action."));
             }
 
-            // pay resources
-            clan.changeCaps(- aid.getCost());
-            clan.changeInformation(- aid.getInformationCost());
-            clan.changeFactionPoints(- aid.getFactionPointsCost());
+            // check cost & pay
+            aid.getActionCost().payResources(clan);
 
             action.setFactionAid(aid);
         }
@@ -276,17 +265,7 @@ public class FactionServiceImpl implements FactionService {
                 break;
             case FACTION_SUPPORT:
                 // pay cost
-                if (aid.isHealthCost()) {
-                    int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
-                    character.changeHitpoints(-injury);
-                    notification.changeInjury(injury);
-                    if (character.getHitpoints() < 1) {
-                        notification.setDeath(true);
-                    }
-                }
-                if (aid.getItemCost() != null) {
-                    itemService.deleteItem(character, aid.getItemCost(), notification);
-                }
+                ActionCostUtils.handlePostActionPayment(aid.getActionCost(), character, notification, randomService, itemService);
                 break;
             case CAPS_REWARD:
                 character.getClan().changeCaps(aid.getAid());

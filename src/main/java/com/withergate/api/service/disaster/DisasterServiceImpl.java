@@ -1,5 +1,10 @@
 package com.withergate.api.service.disaster;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
@@ -28,6 +33,7 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.turn.TurnService;
+import com.withergate.api.service.utils.ActionCostUtils;
 import com.withergate.api.service.utils.BonusUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +42,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Disaster service implementation.
@@ -105,18 +106,15 @@ public class DisasterServiceImpl implements DisasterService {
         }
 
         // check condition
-        ConditionValidator.checkActionCondition(character, solution.getCondition(), solution.getItemCost());
-
-        // check resources
-        if (solution.getCapsCost() > clan.getCaps() || solution.getJunkCost() > clan.getJunk()
-                || solution.getFoodCost() > clan.getFood()) {
-            throw new InvalidActionException("Not enough resources to perform this action.");
-        }
+        ConditionValidator.checkActionCondition(character, solution.getCondition(), solution.getActionCost().getItemCost());
 
         // check completion
         if (clan.getDisasterProgress() >= 100) {
             throw new InvalidActionException("Your already averted this disaster!");
         }
+
+        // check resources & pay
+        solution.getActionCost().payResources(clan);
 
         // create action
         DisasterAction action = new DisasterAction();
@@ -124,11 +122,6 @@ public class DisasterServiceImpl implements DisasterService {
         action.setSolution(solution);
         action.setState(ActionState.PENDING);
         disasterActionRepository.save(action);
-
-        // pay resources
-        clan.changeCaps(- solution.getCapsCost());
-        clan.changeJunk(- solution.getJunkCost());
-        clan.changeFood(- solution.getFoodCost());
 
         // mark character as busy and save the clan
         character.setState(CharacterState.BUSY);
@@ -259,9 +252,9 @@ public class DisasterServiceImpl implements DisasterService {
         notificationService.addLocalizedTexts(notification.getText(), "disaster.action", new String[]{},
                 action.getSolution().getName());
 
-        if (action.getSolution().getItemCost() != null) {
-            itemService.deleteItem(action.getCharacter(), action.getSolution().getItemCost(), notification);
-        }
+        // pay cost
+        ActionCostUtils.handlePostActionPayment(action.getSolution().getActionCost(), action.getCharacter(), notification,
+                randomService, itemService);
 
         Character character = action.getCharacter();
         boolean success = encounterService.handleSolution(character, action.getSolution().getSolutionType(),
