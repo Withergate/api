@@ -14,7 +14,9 @@ INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, i
     ('PATRIOT', 2, 'FACTION_POINTS', 'detail.trait.factionPoints', false, 'https://storage.googleapis.com/withergate-images/traits/patriot-trait.png'),
     ('GHOST', 10, 'CAMOUFLAGE', 'detail.trait.camouflage', false, 'https://storage.googleapis.com/withergate-images/traits/ghost-trait.png'),
     ('BRUTE', 1, 'PIERCING', 'detail.trait.piercing', false, 'https://storage.googleapis.com/withergate-images/traits/brute-trait.png'),
-    ('HANDYMAN', 2, 'CRAFTING', null, false, 'https://storage.googleapis.com/withergate-images/traits/handyman-trait.png');
+    ('HANDYMAN', 2, 'CRAFTING', null, false, 'https://storage.googleapis.com/withergate-images/traits/handyman-trait.png'),
+    ('STURDY', 2, 'DEFENSE', 'detail.trait.defense', true, 'https://storage.googleapis.com/withergate-images/traits/sturdy-trait.png'),
+    ('TIRELESS', 1, 'LONG_COMBAT', 'detail.trait.combat', false, 'https://storage.googleapis.com/withergate-images/traits/tireless-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -46,7 +48,11 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('BRUTE', 'en', 'Brute'),
     ('BRUTE', 'cs', 'Surovec'),
     ('HANDYMAN', 'en', 'Handy man'),
-    ('HANDYMAN', 'cs', 'Kutil');
+    ('HANDYMAN', 'cs', 'Kutil'),
+    ('STURDY', 'en', 'Sturdy'),
+    ('STURDY', 'cs', 'Hroší kůže'),
+    ('TIRELESS', 'en', 'Tireless'),
+    ('TIRELESS', 'cs', 'Já mám času dost!');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -78,4 +84,8 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('BRUTE', 'en', 'Character with this trait ignores part of the armor of his/her opponent.'),
     ('BRUTE', 'cs', 'Postava s touto schopností ignoruje část zbroje svého protivníka.'),
     ('HANDYMAN', 'en', 'Character with this trait has decreased crafting cost.'),
-    ('HANDYMAN', 'cs', 'Postava s touto schopností snižuje cenu výroby předmětů.');
+    ('HANDYMAN', 'cs', 'Postava s touto schopností snižuje cenu výroby předmětů.'),
+    ('STURDY', 'en', 'Character with this trait has a chance to gain a defense bonus (armor) when fighting.'),
+    ('STURDY', 'cs', 'Postava s touto schopností má šanci na zvýšení zbroje během souboje.'),
+    ('TIRELESS', 'en', 'Character with this trait gets a combat bonus after first three combat rounds.'),
+    ('TIRELESS', 'cs', 'Postava s touto schopností dostane bonus k boji po prvních třech kolech souboje.');
