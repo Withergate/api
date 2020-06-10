@@ -21,6 +21,7 @@ import com.withergate.api.service.encounter.EncounterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.ActionCostUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -112,16 +113,12 @@ public class QuestServiceImpl implements QuestService {
         }
 
         // check condition
-        ConditionValidator.checkActionCondition(character, quest.getDetails().getCondition(), quest.getDetails().getItemCost());
+        ConditionValidator.checkActionCondition(character, quest.getDetails().getCondition(),
+                quest.getDetails().getActionCost().getItemCost());
 
-        // check price
+        // pay price
         QuestDetails details = quest.getDetails();
-        if (clan.getFood() < details.getFoodCost() || clan.getJunk() < details.getJunkCost() || clan.getCaps() < details.getCapsCost()) {
-            throw new InvalidActionException("Not enough resources to perform this action.");
-        }
-        clan.changeFood(- details.getFoodCost());
-        clan.changeJunk(- details.getJunkCost());
-        clan.changeCaps(- details.getCapsCost());
+        details.getActionCost().payResources(clan);
 
         // persist the action
         QuestAction action = new QuestAction();
@@ -176,16 +173,8 @@ public class QuestServiceImpl implements QuestService {
         Character character = action.getCharacter();
         Quest quest = action.getQuest();
 
-        if (action.getQuest().getDetails().isHealthCost()) {
-            int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);
-            character.changeHitpoints(-injury);
-            notification.changeInjury(injury);
-            if (character.getHitpoints() < 1) notification.setDeath(true);
-        }
-
-        if (quest.getDetails().getItemCost() != null) {
-            itemService.deleteItem(character, quest.getDetails().getItemCost(), notification);
-        }
+        // pay cost
+        ActionCostUtils.handlePostActionPayment(quest.getDetails().getActionCost(), character, notification, randomService, itemService);
 
         boolean success = encounterService.handleSolution(character, quest.getDetails().getType(), quest.getDetails().getDifficulty(),
                 notification);

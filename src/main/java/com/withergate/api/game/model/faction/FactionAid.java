@@ -1,6 +1,7 @@
 package com.withergate.api.game.model.faction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.withergate.api.game.model.cost.ActionCost;
 import com.withergate.api.game.model.item.ItemCost;
 import com.withergate.api.game.model.notification.LocalizedText;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -52,27 +54,14 @@ public class FactionAid {
     @Column(name = "faction_points", updatable = false, nullable = false)
     private int factionPoints;
 
-    @Column(name = "cost", updatable = false, nullable = false)
-    private int cost;
-
-    @Column(name = "faction_points_cost", updatable = false, nullable = false)
-    private int factionPointsCost;
-
     @Column(name = "aid", updatable = false, nullable = false)
     private int aid;
 
     @Column(name = "num_aid", updatable = false, nullable = false)
     private int numAid;
 
-    @Column(name = "health_cost", updatable = false, nullable = false)
-    private boolean healthCost;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "item_cost", updatable = false, nullable = false)
-    private ItemCost itemCost;
-
-    @Column(name = "information_cost", updatable = false, nullable = false)
-    private int informationCost;
+    @Embedded
+    private ActionCost actionCost;
 
     @ManyToOne
     @JoinColumn(name = "faction")

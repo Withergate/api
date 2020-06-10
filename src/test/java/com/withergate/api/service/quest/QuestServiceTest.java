@@ -6,6 +6,7 @@ import com.withergate.api.game.model.action.QuestAction;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.cost.ActionCost;
 import com.withergate.api.game.model.encounter.SolutionCondition;
 import com.withergate.api.game.model.encounter.SolutionType;
 import com.withergate.api.game.model.notification.ClanNotification;
@@ -140,7 +141,9 @@ public class QuestServiceTest {
         Quest quest = new Quest();
         quest.setId(1);
         quest.setCompleted(false);
-        quest.setDetails(new QuestDetails());
+        QuestDetails details = new QuestDetails();
+        details.setActionCost(new ActionCost());
+        quest.setDetails(details);
         clan.getQuests().add(quest);
 
         Character character = new Character();
@@ -199,6 +202,7 @@ public class QuestServiceTest {
         details.setType(SolutionType.INTELLECT);
         details.setDifficulty(1);
         details.setCompletion(4);
+        details.setActionCost(new ActionCost());
 
         Quest quest = new Quest();
         quest.setCompleted(false);
@@ -247,6 +251,7 @@ public class QuestServiceTest {
         details.setCompletion(4);
         details.setFameReward(20);
         details.setCapsReward(10);
+        details.setActionCost(new ActionCost());
 
         Quest quest = new Quest();
         quest.setCompleted(false);
@@ -293,6 +298,7 @@ public class QuestServiceTest {
         details.setType(SolutionType.COMBAT);
         details.setDifficulty(1);
         details.setCompletion(4);
+        details.setActionCost(new ActionCost());
 
         Quest quest = new Quest();
         quest.setCompleted(false);
@@ -334,6 +340,7 @@ public class QuestServiceTest {
         quest.setCompleted(false);
         QuestDetails details = new QuestDetails();
         details.setCondition(SolutionCondition.FEMALE_CHARACTER);
+        details.setActionCost(new ActionCost());
         quest.setDetails(details);
         clan.getQuests().add(quest);
 

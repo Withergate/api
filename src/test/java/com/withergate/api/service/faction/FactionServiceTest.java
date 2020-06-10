@@ -6,6 +6,7 @@ import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.FactionAction;
 import com.withergate.api.game.model.action.FactionAction.Type;
 import com.withergate.api.game.model.character.Character;
+import com.withergate.api.game.model.cost.ActionCost;
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.faction.FactionAid;
 import com.withergate.api.game.model.request.FactionRequest;
@@ -192,7 +193,7 @@ public class FactionServiceTest {
 
         FactionAid aid = new FactionAid();
         aid.setIdentifier("aid");
-        aid.setCost(10);
+        aid.setActionCost(new ActionCost(0, 0, 10, 0, 0, null, false));
         aid.setFaction(faction);
         faction.setFactionAids(List.of(aid));
         Mockito.when(factionRepository.getOne("FACTION")).thenReturn(faction);
@@ -227,7 +228,7 @@ public class FactionServiceTest {
 
         FactionAid aid = new FactionAid();
         aid.setIdentifier("aid");
-        aid.setCost(10);
+        aid.setActionCost(new ActionCost(0, 0, 10, 0, 0, null, false));
         aid.setFaction(faction);
         faction.setFactionAids(List.of(aid));
         Mockito.when(factionRepository.getOne("FACTION")).thenReturn(faction);

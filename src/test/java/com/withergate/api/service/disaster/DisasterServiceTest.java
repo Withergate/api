@@ -9,6 +9,7 @@ import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.DisasterAction;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.game.model.cost.ActionCost;
 import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.disaster.DisasterDetails;
 import com.withergate.api.game.model.disaster.DisasterSolution;
@@ -220,6 +221,7 @@ public class DisasterServiceTest {
         solution.setIdentifier("solution");
         solution.setSolutionType(SolutionType.AUTOMATIC);
         solution.setBonus(5);
+        solution.setActionCost(new ActionCost());
 
         DisasterAction action = new DisasterAction();
         action.setState(ActionState.PENDING);
@@ -258,6 +260,7 @@ public class DisasterServiceTest {
         solution.setSolutionType(SolutionType.INTELLECT);
         solution.setDifficulty(5);
         solution.setBonus(5);
+        solution.setActionCost(new ActionCost());
 
         DisasterAction action = new DisasterAction();
         action.setState(ActionState.PENDING);
@@ -295,6 +298,7 @@ public class DisasterServiceTest {
         solution.setSolutionType(SolutionType.INTELLECT);
         solution.setDifficulty(5);
         solution.setBonus(5);
+        solution.setActionCost(new ActionCost());
 
         DisasterAction action = new DisasterAction();
         action.setState(ActionState.PENDING);
@@ -333,6 +337,7 @@ public class DisasterServiceTest {
         solution.setSolutionType(SolutionType.CRAFTSMANSHIP);
         solution.setDifficulty(5);
         solution.setBonus(5);
+        solution.setActionCost(new ActionCost());
 
         DisasterAction action = new DisasterAction();
         action.setState(ActionState.PENDING);
@@ -371,6 +376,7 @@ public class DisasterServiceTest {
         solution.setSolutionType(SolutionType.COMBAT);
         solution.setDifficulty(5);
         solution.setBonus(5);
+        solution.setActionCost(new ActionCost());
 
         Mockito.when(encounterService.handleSolution(Mockito.eq(character), Mockito.eq(SolutionType.COMBAT), Mockito.eq(5),
                 Mockito.any())).thenReturn(true);
