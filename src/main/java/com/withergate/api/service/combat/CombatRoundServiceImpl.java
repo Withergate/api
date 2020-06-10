@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,6 +33,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class CombatRoundServiceImpl implements CombatRoundService {
+
+    private static final int LONG_COMBAT = 3; // round after which we consider the combat long
 
     private final RandomService randomService;
     private final NotificationService notificationService;
@@ -65,8 +68,8 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         notificationCombat.setRoll2(roll2);
 
         // compare combat values
-        int combat1 = character1.getTotalCombat() + roll1 + getCombatBonus(character1, notification1);
-        int combat2 = character2.getTotalCombat() + roll2 + getCombatBonus(character2, notification2);
+        int combat1 = character1.getTotalCombat() + roll1 + getCombatBonus(character1, notification1, round);
+        int combat2 = character2.getTotalCombat() + roll2 + getCombatBonus(character2, notification2, round);
         notificationCombat.setCombatTotal1(combat1);
         notificationCombat.setCombatTotal2(combat2);
 
@@ -146,7 +149,7 @@ public class CombatRoundServiceImpl implements CombatRoundService {
     }
 
     // add combat bonus to a character with certain traits if conditions are met
-    private int getCombatBonus(Character character, ClanNotification notification) {
+    private int getCombatBonus(Character character, ClanNotification notification, int round) {
         int bonus = 0;
 
         if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.MELEE)) {
@@ -161,6 +164,10 @@ public class CombatRoundServiceImpl implements CombatRoundService {
             bonus += BonusUtils.getBonus(character, BonusType.COMBAT_UNARMED, notification, notificationService);
         }
 
+        if (round > LONG_COMBAT) {
+            bonus += BonusUtils.getBonus(character, BonusType.LONG_COMBAT, notification, notificationService);
+        }
+
         return bonus;
     }
 
@@ -171,6 +178,10 @@ public class CombatRoundServiceImpl implements CombatRoundService {
         if (defender.getOutfit() != null) {
             armor += defender.getOutfit().getDetails().getCombat();
         }
+
+        armor += BonusUtils.getBonus(defender, BonusType.DEFENSE, defenderNotification, notificationService);
+        // update attacker notification as well
+        BonusUtils.getBonus(defender, BonusType.DEFENSE, attackerNotification, notificationService);
 
         if (armor > 0) {
             armor -= BonusUtils.getBonus(attacker, BonusType.PIERCING, attackerNotification, notificationService);
