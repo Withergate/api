@@ -9,7 +9,6 @@ import com.withergate.api.game.model.character.TavernOffer;
 import com.withergate.api.game.model.dto.ClanIntelDTO;
 import com.withergate.api.game.model.request.ActionCancelRequest;
 import com.withergate.api.game.model.request.ClanRequest;
-import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.request.RenameRequest;
 import com.withergate.api.game.model.statistics.ClanTurnStatistics;
 import com.withergate.api.game.model.turn.Turn;
@@ -138,18 +137,6 @@ public class ClanController {
     @PostMapping("/clan/loan")
     public ResponseEntity<Void> handleLoan(Principal principal) throws InvalidActionException {
         clanService.processLoan(Integer.parseInt(principal.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    /**
-     * Changes clan's default action.
-     *
-     * @param principal   the principal
-     * @param request the clan request containing necessary clan details
-     */
-    @PutMapping("/clan/defaultAction")
-    public ResponseEntity<Void> changeDefaultAction(Principal principal, @RequestBody DefaultActionRequest request) {
-        clanService.changeDefaultAction(request, Integer.parseInt(principal.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

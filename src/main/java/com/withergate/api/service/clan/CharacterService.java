@@ -2,6 +2,7 @@ package com.withergate.api.service.clan;
 
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
+import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.service.exception.InvalidActionException;
 
@@ -85,4 +86,13 @@ public interface CharacterService {
      * @throws InvalidActionException invalid action
      */
     void renameCharacter(int characterId, int clanId, String name) throws InvalidActionException;
+
+    /**
+     * Changes character's default action.
+     *
+     * @param request the request
+     * @param clanId  the clan ID
+     */
+    void changeDefaultAction(DefaultActionRequest request, int clanId, int characterId) throws InvalidActionException;
+
 }

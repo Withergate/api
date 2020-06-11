@@ -1,8 +1,10 @@
 package com.withergate.api.service.clan;
 
+import java.util.HashSet;
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
-import com.withergate.api.game.model.Clan.DefaultAction;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.building.BuildingDetails;
 import com.withergate.api.game.model.character.Character;
@@ -10,7 +12,6 @@ import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.character.TavernOffer;
 import com.withergate.api.game.model.dto.ClanIntelDTO;
 import com.withergate.api.game.model.request.ClanRequest;
-import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.statistics.ClanTurnStatistics;
 import com.withergate.api.game.repository.clan.ClanRepository;
 import com.withergate.api.game.repository.statistics.ClanTurnStatisticsRepository;
@@ -32,9 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Clan service. Handles all basic operations over the clan entity.
@@ -132,8 +130,6 @@ public class ClanServiceImpl implements ClanService {
         clan.setInformation(0);
         clan.setInformationLevel(0);
         clan.setCharacters(new HashSet<>());
-        clan.setDefaultAction(DefaultAction.EXPLORE_NEIGHBORHOOD);
-        clan.setPreferDisaster(true);
         clan.setDefenderName(DEFAULT_DEFENDER_NAME);
 
         // assign random initial characters to clan.
@@ -178,14 +174,6 @@ public class ClanServiceImpl implements ClanService {
         for (Clan clan : getAllClans()) {
             clanTurnService.performClanTurnUpdates(clan, turnId);
         }
-    }
-
-    @Transactional
-    @Override
-    public void changeDefaultAction(DefaultActionRequest request, int clanId) {
-        Clan clan = clanRepository.getOne(clanId);
-        clan.setDefaultAction(request.getDefaultAction());
-        clan.setPreferDisaster(request.isPreferDisaster());
     }
 
     @Override

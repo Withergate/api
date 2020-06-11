@@ -56,8 +56,6 @@ CREATE TABLE clans (
     information INT NOT NULL,
     information_level INT NOT NULL,
     disaster_progress INT NOT NULL DEFAULT 0,
-    default_action VARCHAR(32) NOT NULL,
-    prefer_disaster BIT DEFAULT 1,
     faction VARCHAR(16),
     faction_points INT DEFAULT 0,
     defender_name VARCHAR(16),
@@ -138,6 +136,8 @@ CREATE TABLE characters (
     craftsmanship INT NOT NULL,
     intellect INT NOT NULL,
     skill_points INT NOT NULL,
+    default_action VARCHAR(32) NOT NULL,
+    prefer_disaster BIT DEFAULT 1,
     PRIMARY KEY (character_id),
     CONSTRAINT character_clan_fk FOREIGN KEY (clan_id) REFERENCES clans (clan_id)
 );

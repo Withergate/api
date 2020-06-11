@@ -2,6 +2,7 @@ package com.withergate.api.game.model.character;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.withergate.api.game.model.type.BonusType;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
@@ -9,6 +10,7 @@ import com.withergate.api.game.model.action.BaseAction;
 import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemType;
+import com.withergate.api.game.model.view.Views;
 import com.withergate.api.service.clan.CharacterServiceImpl;
 import com.withergate.api.service.utils.BonusUtils;
 import lombok.Getter;
@@ -131,6 +133,17 @@ public class Character {
     @OneToOne(mappedBy = "character", cascade = CascadeType.DETACH)
     private TavernOffer offer;
 
+    // Default action
+
+    @Column(name = "default_action", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JsonView(Views.Internal.class)
+    private DefaultAction defaultAction;
+
+    @Column(name = "prefer_disaster", nullable = false)
+    @JsonView(Views.Internal.class)
+    private boolean preferDisaster;
+
     /**
      * Constructor.
      */
@@ -140,6 +153,8 @@ public class Character {
         state = CharacterState.READY;
         level = 1;
         npc = false;
+        defaultAction = DefaultAction.EXPLORE_NEIGHBORHOOD;
+        preferDisaster = true;
     }
 
     // Helper functions

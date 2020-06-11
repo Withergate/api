@@ -1,11 +1,13 @@
 package com.withergate.api.service.clan;
 
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.character.Gender;
 import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.notification.NotificationDetail;
+import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
@@ -211,6 +213,18 @@ public class CharacterServiceImpl implements CharacterService {
 
         // rename
         character.setName(name);
+    }
+
+    @Transactional
+    @Override
+    public void changeDefaultAction(DefaultActionRequest request, int clanId, int characterId) throws InvalidActionException {
+        Character character = characterRepository.getOne(characterId);
+        if (character.getClan().getId() != clanId) {
+            throw new InvalidActionException("This character does not belong to your clan!");
+        }
+
+        character.setDefaultAction(request.getDefaultAction());
+        character.setPreferDisaster(request.isPreferDisaster());
     }
 
     private void delete(Character character) {
