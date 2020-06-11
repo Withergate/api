@@ -3,6 +3,7 @@ package com.withergate.api.controller.clan;
 import java.security.Principal;
 
 import com.withergate.api.game.model.request.CharacterRestRequest;
+import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.request.RenameRequest;
 import com.withergate.api.game.model.request.RestingRequest;
 import com.withergate.api.game.model.request.TraitRequest;
@@ -89,6 +90,19 @@ public class CharacterController {
         log.debug("Renaming character {}", characterId);
 
         characterService.renameCharacter(characterId, Integer.parseInt(principal.getName()), request.getName());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Changes clan's default action.
+     *
+     * @param principal   the principal
+     * @param request the clan request containing necessary clan details
+     */
+    @PutMapping("/characters/{characterId}/defaultAction")
+    public ResponseEntity<Void> changeDefaultAction(Principal principal, @RequestBody DefaultActionRequest request,
+                                                    @PathVariable(name = "characterId") int characterId) throws InvalidActionException {
+        characterService.changeDefaultAction(request, Integer.parseInt(principal.getName()), characterId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

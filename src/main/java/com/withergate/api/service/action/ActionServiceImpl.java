@@ -1,9 +1,12 @@
 package com.withergate.api.service.action;
 
-import com.withergate.api.game.model.Clan;
+import java.util.List;
+import java.util.Optional;
+
 import com.withergate.api.game.model.action.LocationAction.LocationActionType;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
+import com.withergate.api.game.model.character.DefaultAction;
 import com.withergate.api.game.model.disaster.Disaster;
 import com.withergate.api.game.model.disaster.DisasterSolution;
 import com.withergate.api.game.model.location.Location;
@@ -23,9 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Action service. Responsible for the execution of all game actions.
@@ -74,7 +74,7 @@ public class ActionServiceImpl implements ActionService {
             }
 
             // handle disaster first
-            if (character.getClan().isPreferDisaster()) {
+            if (character.isPreferDisaster()) {
                 Disaster disaster = disasterService.getDisasterForClan(character.getClan().getId());
 
                 if (disaster != null && character.getClan().getDisasterProgress() < 100) {
@@ -95,7 +95,7 @@ public class ActionServiceImpl implements ActionService {
             }
 
             // exploration
-            if (character.getClan().getDefaultAction().equals(Clan.DefaultAction.EXPLORE_NEIGHBORHOOD)) {
+            if (character.getDefaultAction().equals(DefaultAction.EXPLORE_NEIGHBORHOOD)) {
                 LocationRequest request = new LocationRequest();
                 request.setLocation(Location.NEIGHBORHOOD);
                 request.setType(LocationActionType.VISIT);

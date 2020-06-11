@@ -1,17 +1,16 @@
 package com.withergate.api.service.clan;
 
+import java.util.List;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.TavernOffer;
 import com.withergate.api.game.model.dto.ClanIntelDTO;
 import com.withergate.api.game.model.request.ClanRequest;
-import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.service.exception.EntityConflictException;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.exception.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 /**
  * ClanService interface.
@@ -76,14 +75,6 @@ public interface ClanService {
      * @param turnId the turn ID
      */
     void performClanTurnUpdates(int turnId);
-
-    /**
-     * Changes clan's default action.
-     *
-     * @param request the request
-     * @param clanId  the clan ID
-     */
-    void changeDefaultAction(DefaultActionRequest request, int clanId);
 
     /**
      * Loads all tavern offers for given clan.

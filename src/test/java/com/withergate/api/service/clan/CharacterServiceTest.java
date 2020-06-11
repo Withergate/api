@@ -1,9 +1,14 @@
 package com.withergate.api.service.clan;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterFilter;
+import com.withergate.api.game.model.character.DefaultAction;
 import com.withergate.api.game.model.character.Gender;
+import com.withergate.api.game.model.request.DefaultActionRequest;
 import com.withergate.api.game.model.type.AttributeTemplate;
 import com.withergate.api.game.repository.action.BaseActionRepository;
 import com.withergate.api.game.repository.clan.CharacterRepository;
@@ -16,9 +21,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -171,6 +173,29 @@ public class CharacterServiceTest {
         Assert.assertEquals(2, character.getLevel());
         Assert.assertEquals(1, character.getExperience());
         Assert.assertEquals(1, character.getSkillPoints());
+    }
+
+    @Test
+    public void testGivenDefaultActionRequestWhenChangingActionThenVerifyActionChanged() throws Exception {
+        // given request
+        DefaultActionRequest request = new DefaultActionRequest();
+        request.setDefaultAction(DefaultAction.EXPLORE_NEIGHBORHOOD);
+
+        Character character = new Character();
+        character.setId(1);
+        character.setDefaultAction(DefaultAction.REST);
+
+        Clan clan = new Clan();
+        clan.setId(1);
+        character.setClan(clan);
+
+        Mockito.when(characterRepository.getOne(1)).thenReturn(character);
+
+        // when changing action
+        characterService.changeDefaultAction(request, 1, 1);
+
+        // then verify action changed
+        Assert.assertEquals(DefaultAction.EXPLORE_NEIGHBORHOOD, character.getDefaultAction());
     }
 
 }
