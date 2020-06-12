@@ -73,47 +73,61 @@ public class ActionServiceImpl implements ActionService {
                 continue;
             }
 
-            // handle disaster first
-            if (character.isPreferDisaster()) {
-                Disaster disaster = disasterService.getDisasterForClan(character.getClan().getId());
+            try {
+                createDefaultAction(character);
+                character.setState(CharacterState.BUSY);
+            } catch (InvalidActionException e) {
+                log.error("Error assigning default action to character {}.", character.getId(), e);
+            }
+        }
+    }
 
-                if (disaster != null && character.getClan().getDisasterProgress() < 100) {
-                    Optional<DisasterSolution> solution = disaster.getDetails().getSolutions().stream().filter(DisasterSolution::isBasic)
-                            .findFirst();
-                    if (solution.isPresent()) {
-                        DisasterRequest request = new DisasterRequest();
-                        request.setCharacterId(character.getId());
-                        request.setSolution(solution.get().getIdentifier());
-                        try {
-                            disasterService.saveAction(request, character.getClan().getId());
-                            continue;
-                        } catch (InvalidActionException e) {
-                            log.error("Error assigning default action.", e);
-                        }
+    private void createDefaultAction(Character character) throws InvalidActionException {
+        if (character.isPreferDisaster()) {
+            Disaster disaster = disasterService.getDisasterForClan(character.getClan().getId());
+
+            if (disaster != null && character.getClan().getDisasterProgress() < 100) {
+                Optional<DisasterSolution> solution = disaster.getDetails().getSolutions().stream().filter(DisasterSolution::isBasic)
+                        .findFirst();
+                if (solution.isPresent()) {
+                    DisasterRequest request = new DisasterRequest();
+                    request.setCharacterId(character.getId());
+                    request.setSolution(solution.get().getIdentifier());
+                    try {
+                        disasterService.saveAction(request, character.getClan().getId());
+                        return; // do not continue
+                    } catch (InvalidActionException e) {
+                        log.error("Error assigning default action.", e);
                     }
                 }
             }
+        }
 
-            // exploration
-            if (character.getDefaultAction().equals(DefaultAction.EXPLORE_NEIGHBORHOOD)) {
+        switch (character.getDefaultAction()) {
+            case REST: {
+                RestingRequest request = new RestingRequest();
+                request.setCharacterId(character.getId());
+                restingService.saveAction(request, character.getClan().getId());
+                break;
+            }
+            case EXPLORE_NEIGHBORHOOD: {
                 LocationRequest request = new LocationRequest();
                 request.setLocation(Location.NEIGHBORHOOD);
                 request.setType(LocationActionType.VISIT);
                 request.setCharacterId(character.getId());
-                try {
-                    locationService.saveAction(request, character.getClan().getId());
-                } catch (InvalidActionException e) {
-                    log.error("Error assigning default location action.", e);
-                }
-            } else {
-                RestingRequest request = new RestingRequest();
-                request.setCharacterId(character.getId());
-                try {
-                    restingService.saveAction(request, character.getClan().getId());
-                } catch (InvalidActionException e) {
-                    log.error("Error assigning default resting action.", e);
-                }
+                locationService.saveAction(request, character.getClan().getId());
+                break;
             }
+            case SCOUT_WASTELAND: {
+                LocationRequest request = new LocationRequest();
+                request.setLocation(Location.WASTELAND);
+                request.setType(LocationActionType.SCOUT);
+                request.setCharacterId(character.getId());
+                locationService.saveAction(request, character.getClan().getId());
+                break;
+            }
+            default:
+                log.error("Unknown default action type: {}.", character.getDefaultAction());
         }
     }
 
