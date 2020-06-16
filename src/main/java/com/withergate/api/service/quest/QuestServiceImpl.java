@@ -217,7 +217,7 @@ public class QuestServiceImpl implements QuestService {
 
             // income
             clan.changeFame(quest.getDetails().getFameReward());
-            completionNotification.changeFame(quest.getDetails().getFameReward());
+            completionNotification.changeFame(quest.getDetails().getFameReward(), clan, "QUEST");
             clan.changeCaps(quest.getDetails().getCapsReward());
             completionNotification.changeCaps(quest.getDetails().getCapsReward());
             clan.changeFactionPoints(quest.getDetails().getFactionReward());

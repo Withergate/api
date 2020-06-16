@@ -169,7 +169,7 @@ public class CraftingServiceImpl implements CraftingService {
                 notification.changeJunk(- researchFame.getDetails().getCostAction());
 
                 clan.changeFame(researchFame.getDetails().getValue());
-                notification.changeFame(researchFame.getDetails().getValue());
+                notification.changeFame(researchFame.getDetails().getValue(), clan, researchFame.getDetails().getIdentifier());
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), researchFame.getDetails().getBonusText(), new String[]{});

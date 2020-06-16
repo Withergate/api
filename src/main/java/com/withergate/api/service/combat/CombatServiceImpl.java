@@ -172,7 +172,7 @@ public class CombatServiceImpl implements CombatService {
         character.getClan().changeCaps(ARENA_CAPS); // add caps to the winner
         character.getClan().changeFame(ARENA_FAME); // add fame to the winner
         notification.changeCaps(ARENA_CAPS);
-        notification.changeFame(ARENA_FAME);
+        notification.changeFame(ARENA_FAME, character.getClan(), "ARENA");
 
         // handle experience
         character.changeExperience(2);
@@ -234,7 +234,7 @@ public class CombatServiceImpl implements CombatService {
         Research research = character.getClan().getResearch(ResearchBonusType.COMBAT_FAME);
         if (research != null && research.isCompleted()) {
             // add fame to clan
-            notification.changeFame(research.getDetails().getValue());
+            notification.changeFame(research.getDetails().getValue(), character.getClan(), research.getDetails().getIdentifier());
             character.getClan().changeFame(research.getDetails().getValue());
 
             NotificationDetail detail = new NotificationDetail();

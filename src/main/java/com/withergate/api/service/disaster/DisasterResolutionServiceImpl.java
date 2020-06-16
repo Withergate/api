@@ -66,7 +66,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
 
             // reward fame
             clan.changeFame(disaster.getDetails().getFameReward());
-            notification.changeFame(disaster.getDetails().getFameReward());
+            notification.changeFame(disaster.getDetails().getFameReward(), clan, "DISASTER");
         }
 
         log.debug("Clan finished disaster with {}% and will receive {} penalties", clan.getDisasterProgress(), numPenalties);
@@ -159,7 +159,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
 
     private void handleFameLoss(Clan clan, ClanNotification notification) {
         clan.changeFame(- gameProperties.getDisasterFameLoss());
-        notification.changeFame(- gameProperties.getDisasterFameLoss());
+        notification.changeFame(- gameProperties.getDisasterFameLoss(), clan, "DISASTER_PENALTY");
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.fame.loss", new String[]{});

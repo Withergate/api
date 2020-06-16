@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.withergate.api.game.model.Clan;
+import com.withergate.api.game.model.statistics.FameStatistics;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -124,8 +127,20 @@ public class ClanNotification {
         this.capsIncome += caps;
     }
 
-    public void changeFame(int fame) {
+    public void changeFame(int fame, Clan clan, String source) {
         this.fameIncome += fame;
+
+        Optional<FameStatistics> opStats = clan.getFameStatistics().stream().filter(s -> s.getName().equals(source)).findFirst();
+        if (opStats.isEmpty()) {
+            FameStatistics statistics = new FameStatistics();
+            statistics.setName(source);
+            statistics.setFame(fame);
+            statistics.setClan(clan);
+            clan.getFameStatistics().add(statistics);
+            return;
+        }
+
+        opStats.get().setFame(opStats.get().getFame() + fame);
     }
 
     public void changeInformation(int information) {

@@ -548,6 +548,8 @@ CREATE TABLE clan_turn_statistics (
     PRIMARY KEY (statistics_id)
 );
 
+
+-- statistics
 DROP TABLE IF EXISTS clan_statistics;
 CREATE TABLE clan_statistics (
     statistics_id INT AUTO_INCREMENT,
@@ -562,7 +564,17 @@ CREATE TABLE clan_statistics (
     outcoming_attacks INT,
     outcoming_attacks_success INT,
     PRIMARY KEY (statistics_id),
-    CONSTRAINT statistics_clan_fk FOREIGN KEY (clan_clan_id) REFERENCES clans (clan_id)
+    CONSTRAINT clan_statistics_clan_fk FOREIGN KEY (clan_clan_id) REFERENCES clans (clan_id)
+);
+
+DROP TABLE IF EXISTS fame_statistics;
+CREATE TABLE fame_statistics (
+    statistics_id INT AUTO_INCREMENT,
+    clan_clan_id INT NOT NULL,
+    text_id VARCHAR(32),
+    fame INT,
+    PRIMARY KEY (statistics_id),
+    CONSTRAINT fame_statistics_clan_fk FOREIGN KEY (clan_clan_id) REFERENCES clans (clan_id)
 );
 
 -- Attribute templates

@@ -1,5 +1,20 @@
 package com.withergate.api.game.model;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -11,6 +26,7 @@ import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.statistics.ClanStatistics;
+import com.withergate.api.game.model.statistics.FameStatistics;
 import com.withergate.api.game.model.type.PassiveBonusType;
 import com.withergate.api.game.model.type.ResearchBonusType;
 import com.withergate.api.game.model.view.Views;
@@ -18,22 +34,6 @@ import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.combat.ClanDefenseUtils;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Clan entity. Represent the player and all his/her resources.
@@ -114,6 +114,10 @@ public class Clan {
     @OneToOne(mappedBy = "clan", cascade = CascadeType.ALL)
     private ClanStatistics statistics;
 
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL)
+    @JsonView(Views.Internal.class)
+    private Set<FameStatistics> fameStatistics;
+
     /**
      * Constructor.
      */
@@ -123,6 +127,7 @@ public class Clan {
         research = new HashSet<>();
         items = new HashSet<>();
         quests = new HashSet<>();
+        fameStatistics = new HashSet<>();
 
         // statistics
         ClanStatistics statistics = new ClanStatistics();

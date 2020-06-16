@@ -216,7 +216,7 @@ public class FactionServiceImpl implements FactionService {
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
             notification.setHeader(clan.getName());
             notification.setImageUrl(clan.getFaction().getImageUrl());
-            notification.changeFame(fame);
+            notification.changeFame(fame, clan, clan.getFaction().getIdentifier());
             notificationService.addLocalizedTexts(notification.getText(), "faction.fame", new String[]{},
                     clan.getFaction().getName());
 
@@ -292,7 +292,7 @@ public class FactionServiceImpl implements FactionService {
 
         // award fame
         character.getClan().changeFame(aid.getFame());
-        notification.changeFame(aid.getFame());
+        notification.changeFame(aid.getFame(), character.getClan(), character.getClan().getFaction().getIdentifier());
     }
 
     private void distributeResources(Clan clan, FactionAid aid, int turnId, ClanNotification notification) {
