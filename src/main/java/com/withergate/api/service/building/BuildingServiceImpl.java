@@ -122,7 +122,7 @@ public class BuildingServiceImpl implements BuildingService {
         int fame = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.FAME_INCOME, notificationService, notificationFame);
         if (fame > 0) {
             clan.changeFame(fame);
-            notificationFame.changeFame(fame);
+            notificationFame.changeFame(fame, clan, "BUILDING FAME");
             notificationService.save(notificationFame);
         }
 
@@ -192,13 +192,13 @@ public class BuildingServiceImpl implements BuildingService {
     private void processBuildingLevelUpBonuses(Building building, Clan clan, ClanNotification notification) {
         // award fame
         int fame = gameProperties.getBuildingFame() * building.getLevel();
-        notification.changeFame(fame);
+        notification.changeFame(fame, clan, "CONSTRUCTION");
         clan.changeFame(fame);
 
         Research research = clan.getResearch(ResearchBonusType.BUILDING_FAME);
         if (research != null && research.isCompleted()) {
             // add fame to clan for architecture
-            notification.changeFame(research.getDetails().getValue());
+            notification.changeFame(research.getDetails().getValue(), clan, research.getDetails().getIdentifier());
             clan.changeFame(research.getDetails().getValue());
 
             NotificationDetail detail = new NotificationDetail();

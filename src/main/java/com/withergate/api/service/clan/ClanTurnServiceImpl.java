@@ -111,7 +111,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.changeFame(- gameProperties.getStarvationFame());
+                notification.changeFame(- gameProperties.getStarvationFame(), clan, "STARVATION");
                 notification.changeInjury(gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
@@ -175,7 +175,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 notification.setHeader(clan.getName());
 
                 clan.changeFame(fame);
-                notification.changeFame(fame);
+                notification.changeFame(fame, clan, research.getDetails().getIdentifier());
 
                 notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
 

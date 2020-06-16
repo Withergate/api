@@ -331,11 +331,11 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('d.spies.failure', 'en', 'There were countless agents in the area. They had to invade our clan unnoticed because they destroyed our equipment. Our research plans and detailed neighborhood maps now look different too. We probably can''t trust our maps and plans now, and we have to start all over again.'),
     ('d.spies.failure', 'cs', 'Agentů v okolí bylo nepočítaně. Nepozorovaně museli vniknout do našeho klanu, protože zničili naše vybavení. Naše výzkumné plány a detailní mapy okolí také nyní vypadají jinak. Asi jim teď nemůžeme zcela věřit a budeme muset v některých ohledech začít znovu od počátku.');
 
-INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, item_cost) VALUES
-    ('d.spies.s1', true, 'd.spies', 'AUTOMATIC', null, 0, 5, 0, 0, 0, null),
-    ('d.spies.s2', false, 'd.spies', 'COMBAT', null, 4, 10, 0, 0, 0, null),
-    ('d.spies.s3', false, 'd.spies', 'CRAFTSMANSHIP', null, 7, 10, 0, 0, 0, null),
-    ('d.spies.s4', false, 'd.spies', 'INTELLECT', null, 5, 20, 10, 10, 10, null);
+INSERT INTO disaster_solutions(identifier, basic, disaster, solution_type, disaster_condition, difficulty, bonus, junk_cost, caps_cost, food_cost, health_cost) VALUES
+    ('d.spies.s1', true, 'd.spies', 'AUTOMATIC', null, 0, 5, 0, 0, 0, false),
+    ('d.spies.s2', false, 'd.spies', 'COMBAT', null, 4, 10, 0, 0, 0, false),
+    ('d.spies.s3', false, 'd.spies', 'AUTOMATIC', null, 7, 10, 0, 0, 0, true),
+    ('d.spies.s4', false, 'd.spies', 'INTELLECT', null, 5, 20, 10, 10, 10, false);
 
 INSERT INTO localized_texts(disaster_solution_name, lang, text) VALUES
     ('d.spies.s1', 'en', 'Let’s ask politely'),
@@ -352,8 +352,8 @@ INSERT INTO localized_texts(disaster_solution_description, lang, text) VALUES
     ('d.spies.s1', 'cs', 'Asi je poněkud naivní běhat celý den po okolí našeho klanu a ptát se každého vandráka, kterého potkáme, jestli neviděl nějaké agenty z města. Ale pořád lepší než drátem do oka.'),
     ('d.spies.s2', 'en', 'Maybe we don`t have to ask anyone. Maybe we don`t even need to know anything. No one will just spy on us. We will drive everybody out. All of them!'),
     ('d.spies.s2', 'cs', 'Možná se vlastně nemusíme nikoho ptát. Možná se ani nic nepotřebujeme dozvědět. Nás prostě nikdo očumovat nebude. Vyženeme všechny z okolí. Všechny.'),
-    ('d.spies.s3', 'en', 'We will behave like foreign spies so we will obtain their trust. We will arrange a fake quarrel between our clan members. Our double agent will then publicly announce that he will tell all of the secret information about our clan. And he proves that he is in a struggle with us with a fake painted cut to make the illusion perfect. We will then give the agents fictional information about our clan.'),
-    ('d.spies.s3', 'cs', 'Získáme důvěru cizích špehů tím, že se sami budeme chovat jako cizí špehové. Zinscenujeme roztržku mezi členy našeho klanu. Náš dvojitý agent pak bude veřejně rozhlašovat, že o nás vyklopí první poslední, protože jsme pěkní syčáci. A to doloží pořádnou řeznou ránou, kterou jsme mu museli nakreslit, aby iluze byla dokonalá. Agentům pak podstrčíme smyšlené informace o našem klanu.'),
+    ('d.spies.s3', 'en', 'We will behave like foreign spies so we will obtain their trust. We will arrange a fake quarrel between our clan members. Our double agent will then publicly announce that he will tell all of the secret information about our clan. And he proves that he is in a struggle with us with a real cut to make the illusion perfect. We will then give the agents fictional information about our clan.'),
+    ('d.spies.s3', 'cs', 'Získáme důvěru cizích špehů tím, že se sami budeme chovat jako cizí špehové. Zinscenujeme roztržku mezi členy našeho klanu. Náš dvojitý agent pak bude veřejně rozhlašovat, že o nás vyklopí první poslední, protože jsme pěkní syčáci. A to doloží pořádnou řeznou ránou, kterou jsme mu museli způsobit, aby iluze byla dokonalá. Agentům pak podstrčíme smyšlené informace o našem klanu.'),
     ('d.spies.s4', 'en', 'Our geniuses produced a cunning plan. We will pretend to be the worst guarded clan in the world, lure the spies into our clan and destroy them. The plan includes poisoned  food, a trapdoor with poisoned sharpened stakes, poisoned darts, ejecting poisoned blades - and, finally, a rat - also poisoned, its teeth are impregnated with a cyanide!'),
     ('d.spies.s4', 'cs', 'Naši přední géniové vymysleli vychytralý plán. Budeme se tvářit jako nejhůře hlídaný klan na světě, nalákáme špicly k nám do klanu a tam je zničíme. Plán zahrnuje otrávené jídlo, propadliště s otrávenými naostřenými kůly, otrávené šipky, takové ty vystřelovací otrávené čepele - a nakonec se na ně vrhne krysa. Taky otrávená, má totiž zuby natřené prudkým jedem!');
 

@@ -141,7 +141,7 @@ public class ResearchServiceImpl implements ResearchService {
             notificationService.addLocalizedTexts(notification.getText(), "research.complete", new String[] {}, details.getName());
 
             // award fame
-            notification.changeFame(research.getDetails().getFame());
+            notification.changeFame(research.getDetails().getFame(), character.getClan(), "RESEARCH COMPLETION");
             character.getClan().changeFame(research.getDetails().getFame());
         }
     }

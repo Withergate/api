@@ -156,7 +156,7 @@ public class ClanCombatServiceImpl implements ClanCombatService {
                 int fame = intel.getFameReward();
                 int factionPoints = intel.getFactionReward();
                 attacker.getClan().changeFame(fame);
-                attackerNotification.changeFame(fame);
+                attackerNotification.changeFame(fame, attacker.getClan(), "CLAN_COMBAT");
                 attacker.getClan().changeFactionPoints(factionPoints);
                 attackerNotification.changeFactionPoints(factionPoints);
 
