@@ -19,7 +19,8 @@ INSERT INTO quest_details (identifier, min_turn, quest_type, quest_condition, di
     ('quest.17', 15, 'COMBAT', null, 7, 1, 30, 30, 'https://storage.googleapis.com/withergate-images/quests/quest17.png');
 
 INSERT INTO quest_details (identifier, min_turn, quest_type, quest_condition, difficulty, completion, caps_reward, fame_reward, food_cost, junk_cost, item_cost, health_cost, image_url) VALUES
-    ('quest.18', 15, 'AUTOMATIC', null, 0, 2, 40, 25, 0, 0, 'OUTFIT', true, 'https://storage.googleapis.com/withergate-images/quests/quest18.png');
+    ('quest.18', 15, 'AUTOMATIC', null, 0, 2, 40, 25, 0, 0, 'OUTFIT', true, 'https://storage.googleapis.com/withergate-images/quests/quest18.png'),
+    ('quest.19', 0, 'INTELLECT', null, 7, 3, 50, 20, 0, 0, null, false, 'https://storage.googleapis.com/withergate-images/quests/quest19.png');
 
 INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.1', 'en', 'Deratization'),
@@ -57,7 +58,9 @@ INSERT INTO localized_texts(quest_name, lang, text) VALUES
     ('quest.17', 'en', 'Bad motherfucker'),
     ('quest.17', 'cs', 'Lvi žerou první'),
     ('quest.18', 'en', 'Not great, not terrible'),
-    ('quest.18', 'cs', '3,6 röntgenu');
+    ('quest.18', 'cs', '3,6 röntgenu'),
+    ('quest.19', 'en', 'Rains of Castamere'),
+    ('quest.19', 'cs', 'Deště Kastameru');
 
 INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.1', 'en', 'There is a rat infestation in the sewers under the tavern. Get rid of those mutated bastards and reward will be yours! This action will trigger a combat.'),
@@ -95,4 +98,7 @@ INSERT INTO localized_texts(quest_description, lang, text) VALUES
     ('quest.17', 'en', 'Looking for a well paid bloody job? I’m going to tell you a little story. Butch was a long-standing champion of the arena before, so I’ve bet a lot of caps on his opponent and offered Butch a great bribe. He gladly took it, because he is not getting any younger and arena fighters do not have an old-timers` day... The only task of this old gladiator was to feign defeat in the middle of the arena fight, leave the arena forever and enjoy incredible amount of caps for the rest of his life. But instead, that motherfucker bet on himself, won the fight and also all the caps I’ve bet! I am prepared to scour the Wasteland for that motherfucker. Find him and kill him. But beware, Butch is the best fighter I know.'),
     ('quest.17', 'cs', 'Ztratil jsem hodně zátek při sázce na posledního šampiona arény. Měl to být zápas století, ale šel hned v prvních pár vteřinách dolů... Jestli si chceš vydělat špinavou prací, běž a sundej ho ještě jednou. Ale pozor, neznám nebezpečnějšího soupeře než je tenhle Karlos! Ne nadarmo se mu říká Terminátor.'),
     ('quest.18', 'en', 'Look at this map - somewhere around here is a place where you can find graphite, a very important mineral for me. Bring it to me, it’s all around there. A long time ago there was some kind of an accident. Take this old yet still functional dosimeter and look for a place where this device shows exactly 3.6 - that’s as high as the meter is able to measure. You don’t know what actually is a dosimeter and what does it measure? Doesn’t matter… Some say that there can still be some residual radioactivity. But today is nearly everyone irradiated - not great, not terrible, right? But take rather thick clothes and leave them there.'),
-    ('quest.18', 'cs', 'Chceš si vydělat? Podívej na tuhle mapu - někde tady je místo, kde se nachází pro mě velice cenná hornina. Válí se tam všude na zemi, kdysi se tam stala nějaká nehoda. Vezmi si tento starý, ale stále funkční dozimetr. Hledej místo, kde se ti ukáže přesně 3,6 - to ta ručička ukazuje maximum. Že nevíš, co to je dozimetr a co měří? To neřeš… hele, ale může tam být prý ještě nějaká radioaktivita, tak se tam moc nezdržuj. Dneska už je stejně ozářen skoro každý, to není žádná hrůza. Raději si ale vezmi něco pořádného na sebe a pak tam ty hadry nech… ale jinak v pohodě, vůbec se nemusíš bát. Jo, a taky tam radši nic nejez ani nepij.');
+    ('quest.18', 'cs', 'Chceš si vydělat? Podívej na tuhle mapu - někde tady je místo, kde se nachází pro mě velice cenná hornina. Válí se tam všude na zemi, kdysi se tam stala nějaká nehoda. Vezmi si tento starý, ale stále funkční dozimetr. Hledej místo, kde se ti ukáže přesně 3,6 - to ta ručička ukazuje maximum. Že nevíš, co to je dozimetr a co měří? To neřeš… hele, ale může tam být prý ještě nějaká radioaktivita, tak se tam moc nezdržuj. Dneska už je stejně ozářen skoro každý, to není žádná hrůza. Raději si ale vezmi něco pořádného na sebe a pak tam ty hadry nech… ale jinak v pohodě, vůbec se nemusíš bát. Jo, a taky tam radši nic nejez ani nepij.'),
+    ('quest.19', 'en', 'Can you sing? No? Actually, it doesn`t matter at all. I`m going to teach you a great song. You will go to the pubs and sing it to as many people as possible. I will pay you for this easy job. The song is about a clan which wanted to rebel against us… uhmm, its faction... and it turned out badly for the clan. So listen…'),
+    ('quest.19', 'cs', 'Umíš zpívat? Ne? Škoda, ale nevadí. Naučím tě písničku. Je to trhák. Když budeš chodit po všech možných hospodách a budeš ji hrát co největšímu množství lidí, zaplatím ti. Je to o klanu, který se chtěl vzbouřit proti nám, teda… své frakci, a špatně dopadl. Tak poslouchej…');
+
