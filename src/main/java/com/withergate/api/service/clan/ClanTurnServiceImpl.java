@@ -61,6 +61,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         // perform end-turn research updates
         performResearchEndTurnUpdates(turnId, clan, ResearchBonusType.FOOD_FAME, clan.getFood());
         performResearchEndTurnUpdates(turnId, clan, ResearchBonusType.JUNK_FAME, clan.getJunk());
+        performEndTurnFactionResearchBonuses(turnId, clan);
 
         // pay loan
         payLoan(clan, turnId);
@@ -195,6 +196,21 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
                 notificationService.save(notification);
             }
+        }
+    }
+
+    private void performEndTurnFactionResearchBonuses(int turnId, Clan clan) {
+        Research research = clan.getResearch(ResearchBonusType.NO_FACTION_FAME);
+        if (research != null && research.isCompleted() && clan.getFaction() == null) {
+            ClanNotification notification = new ClanNotification(turnId, clan.getId());
+            notification.setHeader(clan.getName());
+            notification.setImageUrl(research.getDetails().getImageUrl());
+
+            clan.changeFame(research.getDetails().getValue());
+            notification.changeFame(research.getDetails().getValue(), clan, research.getDetails().getIdentifier());
+
+            notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
+;           notificationService.save(notification);
         }
     }
 

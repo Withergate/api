@@ -39,7 +39,7 @@ public class UpdateScheduler {
         if (profile.getLastActivity() != null) {
             LocalDate lastDate = profile.getLastActivity().toLocalDate();
             // last activity two days before today
-            if (today.minus(2, ChronoUnit.DAYS).isEqual(lastDate)) {
+            if (today.minus(2, ChronoUnit.DAYS).isAfter(lastDate)) {
                 profile.setConsecutiveLogins(0);
                 profileService.saveProfile(profile);
             }
