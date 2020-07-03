@@ -16,6 +16,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('research.new', 'cs', 'K dispozici je nový výzkum: [].'),
     ('research.complete', 'en', 'The research of [] was completed.'),
     ('research.complete', 'cs', 'Výzkum [] byl dokončen.'),
+    ('research.independence', 'en', 'Your clan received bonus fame thanks to its pride and independence.'),
+    ('research.independence', 'cs', 'Tvůj klan obdržel slávu navíc díky své hrdé nezávislosti.'),
     ('research.culinary', 'en', 'Your clan received bonus fame thanks to culinary.'),
     ('research.culinary', 'cs', 'Tvůj klan obdržel slávu navíc díky kulinářství.'),
     ('research.decoration', 'en', 'Your clan received bonus fame thanks to decoration of your clan base.'),
