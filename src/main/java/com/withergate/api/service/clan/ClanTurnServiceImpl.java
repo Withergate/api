@@ -103,16 +103,13 @@ public class ClanTurnServiceImpl implements ClanTurnService {
 
                 character.changeHitpoints(- gameProperties.getStarvationInjury());
 
-                // lose fame
-                clan.changeFame(- gameProperties.getStarvationFame());
-
                 // update statistics
                 clan.getStatistics().setStarvations(clan.getStatistics().getStarvations() + 1);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.changeFame(- gameProperties.getStarvationFame(), clan, "STARVATION");
+                clan.changeFame(- gameProperties.getStarvationFame(),"STARVATION", notification);
                 notification.changeInjury(gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
@@ -175,8 +172,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
 
-                clan.changeFame(fame);
-                notification.changeFame(fame, clan, research.getDetails().getIdentifier());
+                clan.changeFame(fame, research.getDetails().getIdentifier(), notification);
 
                 notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
 
@@ -206,8 +202,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             notification.setHeader(clan.getName());
             notification.setImageUrl(research.getDetails().getImageUrl());
 
-            clan.changeFame(research.getDetails().getValue());
-            notification.changeFame(research.getDetails().getValue(), clan, research.getDetails().getIdentifier());
+            clan.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), notification);
 
             notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
 ;           notificationService.save(notification);

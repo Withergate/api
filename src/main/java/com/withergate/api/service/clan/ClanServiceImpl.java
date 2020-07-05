@@ -235,11 +235,11 @@ public class ClanServiceImpl implements ClanService {
 
             // pay price
             clan.changeCaps(- properties.getLoanCaps());
-            clan.changeFame(properties.getLoanFame());
+            clan.changeFame(properties.getLoanFame(), "LOAN", null);
             clan.setActiveLoan(false);
         } else { // get loan
             clan.changeCaps(properties.getLoanCaps());
-            clan.changeFame(- properties.getLoanFame());
+            clan.changeFame(- properties.getLoanFame(), "LOAN", null);
             clan.setActiveLoan(true);
         }
     }

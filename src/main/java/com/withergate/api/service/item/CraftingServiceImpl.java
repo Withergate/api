@@ -1,5 +1,9 @@
 package com.withergate.api.service.item;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
 import com.withergate.api.game.model.action.CraftingAction;
@@ -32,10 +36,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Crafting service implementation.
@@ -168,8 +168,7 @@ public class CraftingServiceImpl implements CraftingService {
                 clan.changeJunk(- researchFame.getDetails().getCostAction());
                 notification.changeJunk(- researchFame.getDetails().getCostAction());
 
-                clan.changeFame(researchFame.getDetails().getValue());
-                notification.changeFame(researchFame.getDetails().getValue(), clan, researchFame.getDetails().getIdentifier());
+                clan.changeFame(researchFame.getDetails().getValue(), researchFame.getDetails().getIdentifier(), notification);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), researchFame.getDetails().getBonusText(), new String[]{});

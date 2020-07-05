@@ -38,7 +38,7 @@ public class TavernAction extends BaseAction {
     @Override
     public void cancel() {
         getCharacter().getClan().changeCaps(offer.getPrice());
-        getCharacter().getClan().changeFame(offer.getFame());
+        getCharacter().getClan().changeFame(offer.getFame(), "TAVERN", null);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.withergate.api.service.building;
 
+import java.util.List;
+
 import com.withergate.api.GameProperties;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.action.ActionState;
@@ -29,8 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Building service implementation.
@@ -121,8 +121,7 @@ public class BuildingServiceImpl implements BuildingService {
         notificationFame.setHeader(clan.getName());
         int fame = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.FAME_INCOME, notificationService, notificationFame);
         if (fame > 0) {
-            clan.changeFame(fame);
-            notificationFame.changeFame(fame, clan, "BUILDING FAME");
+            clan.changeFame(fame, "BUILDING FAME", notificationFame);
             notificationService.save(notificationFame);
         }
 
@@ -192,14 +191,12 @@ public class BuildingServiceImpl implements BuildingService {
     private void processBuildingLevelUpBonuses(Building building, Clan clan, ClanNotification notification) {
         // award fame
         int fame = gameProperties.getBuildingFame() * building.getLevel();
-        notification.changeFame(fame, clan, "CONSTRUCTION");
-        clan.changeFame(fame);
+        clan.changeFame(fame, "CONSTRUCTION", notification);
 
         Research research = clan.getResearch(ResearchBonusType.BUILDING_FAME);
         if (research != null && research.isCompleted()) {
             // add fame to clan for architecture
-            notification.changeFame(research.getDetails().getValue(), clan, research.getDetails().getIdentifier());
-            clan.changeFame(research.getDetails().getValue());
+            clan.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), notification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});

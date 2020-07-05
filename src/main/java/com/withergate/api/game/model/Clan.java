@@ -23,6 +23,7 @@ import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.dto.FactionDTO;
 import com.withergate.api.game.model.faction.Faction;
 import com.withergate.api.game.model.item.Item;
+import com.withergate.api.game.model.notification.ClanNotification;
 import com.withergate.api.game.model.quest.Quest;
 import com.withergate.api.game.model.research.Research;
 import com.withergate.api.game.model.statistics.ClanStatistics;
@@ -211,8 +212,22 @@ public class Clan {
         this.caps += caps;
     }
 
-    public void changeFame(int fame) {
+    public void changeFame(int fame, String source, ClanNotification notification) {
         this.fame += fame;
+        if (notification != null) {
+            notification.changeFame(fame);
+        }
+
+        Optional<FameStatistics> opStats = getFameStatistics().stream().filter(s -> s.getName().equals(source)).findFirst();
+        if (opStats.isEmpty()) {
+            FameStatistics statistics = new FameStatistics();
+            statistics.setName(source);
+            statistics.setFame(fame);
+            statistics.setClan(this);
+            getFameStatistics().add(statistics);
+        } else {
+            opStats.get().setFame(opStats.get().getFame() + fame);
+        }
     }
 
     public void changeInformation(int information) {
