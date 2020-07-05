@@ -127,20 +127,8 @@ public class ClanNotification {
         this.capsIncome += caps;
     }
 
-    public void changeFame(int fame, Clan clan, String source) {
+    public void changeFame(int fame) {
         this.fameIncome += fame;
-
-        Optional<FameStatistics> opStats = clan.getFameStatistics().stream().filter(s -> s.getName().equals(source)).findFirst();
-        if (opStats.isEmpty()) {
-            FameStatistics statistics = new FameStatistics();
-            statistics.setName(source);
-            statistics.setFame(fame);
-            statistics.setClan(clan);
-            clan.getFameStatistics().add(statistics);
-            return;
-        }
-
-        opStats.get().setFame(opStats.get().getFame() + fame);
     }
 
     public void changeInformation(int information) {

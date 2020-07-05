@@ -365,8 +365,7 @@ public class TradeServiceImpl implements TradeService {
             buyerNotification.changeCaps(- research.getDetails().getCostAction());
 
             // award fame
-            buyer.changeFame(research.getDetails().getValue());
-            buyerNotification.changeFame(research.getDetails().getValue(), buyer, research.getDetails().getIdentifier());
+            buyer.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), buyerNotification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});

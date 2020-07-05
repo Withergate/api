@@ -97,7 +97,7 @@ public class TavernServiceImpl implements TavernService {
         }
 
         clan.changeCaps(- cost);
-        clan.changeFame(- offer.getFame());
+        clan.changeFame(- offer.getFame(), "TAVERN", null);
 
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);

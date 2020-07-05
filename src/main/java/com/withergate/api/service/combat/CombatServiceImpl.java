@@ -170,9 +170,8 @@ public class CombatServiceImpl implements CombatService {
                 .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
         character.getClan().changeCaps(ARENA_CAPS); // add caps to the winner
-        character.getClan().changeFame(ARENA_FAME); // add fame to the winner
         notification.changeCaps(ARENA_CAPS);
-        notification.changeFame(ARENA_FAME, character.getClan(), "ARENA");
+        character.getClan().changeFame(ARENA_FAME, "ARENA", notification); // add fame to the winner
 
         // handle experience
         character.changeExperience(2);
@@ -234,8 +233,7 @@ public class CombatServiceImpl implements CombatService {
         Research research = character.getClan().getResearch(ResearchBonusType.COMBAT_FAME);
         if (research != null && research.isCompleted()) {
             // add fame to clan
-            notification.changeFame(research.getDetails().getValue(), character.getClan(), research.getDetails().getIdentifier());
-            character.getClan().changeFame(research.getDetails().getValue());
+            character.getClan().changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), notification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
