@@ -20,6 +20,7 @@ import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -169,9 +170,8 @@ public class CombatServiceImpl implements CombatService {
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.win", new String[]{character.getName()});
 
-        character.getClan().changeCaps(ARENA_CAPS); // add caps to the winner
-        notification.changeCaps(ARENA_CAPS);
-        character.getClan().changeFame(ARENA_FAME, "ARENA", notification); // add fame to the winner
+        ResourceUtils.changeCaps(ARENA_CAPS, character.getClan(), notification); // add caps to the winner
+        ResourceUtils.changeFame(ARENA_FAME, "ARENA", character.getClan(), notification); // add fame to the winner
 
         // handle experience
         character.changeExperience(2);
@@ -200,8 +200,7 @@ public class CombatServiceImpl implements CombatService {
         notificationService
                 .addLocalizedTexts(notification.getText(), "combat.arena.lose", new String[]{character.getName()});
 
-        character.getClan().changeCaps(ARENA_CAPS_LOSER); // add caps to the loser
-        notification.changeCaps(ARENA_CAPS_LOSER);
+        ResourceUtils.changeCaps(ARENA_CAPS_LOSER, character.getClan(), notification); // add caps to the loser
 
         // handle experience
         character.changeExperience(1);
@@ -233,7 +232,8 @@ public class CombatServiceImpl implements CombatService {
         Research research = character.getClan().getResearch(ResearchBonusType.COMBAT_FAME);
         if (research != null && research.isCompleted()) {
             // add fame to clan
-            character.getClan().changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), notification);
+            ResourceUtils.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), character.getClan(),
+                    notification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});

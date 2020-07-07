@@ -200,46 +200,9 @@ public class Clan {
     /*
      * Setters.
      */
-    public void changeFood(int food) {
-        this.food += food;
-    }
-
-    public void changeJunk(int junk) {
-        this.junk += junk;
-    }
-
-    public void changeCaps(int caps) {
-        this.caps += caps;
-    }
-
-    public void changeFame(int fame, String source, ClanNotification notification) {
-        this.fame += fame;
-        if (notification != null) {
-            notification.changeFame(fame);
-        }
-
-        Optional<FameStatistics> opStats = getFameStatistics().stream().filter(s -> s.getName().equals(source)).findFirst();
-        if (opStats.isEmpty()) {
-            FameStatistics statistics = new FameStatistics();
-            statistics.setName(source);
-            statistics.setFame(fame);
-            statistics.setClan(this);
-            getFameStatistics().add(statistics);
-        } else {
-            opStats.get().setFame(opStats.get().getFame() + fame);
-        }
-    }
-
-    public void changeInformation(int information) {
-        this.information += information;
-    }
 
     public void changeDisasterProgress(int progress) {
         this.disasterProgress += progress;
-    }
-
-    public void changeFactionPoints(int factionPoints) {
-        this.factionPoints += factionPoints;
     }
 
     /*

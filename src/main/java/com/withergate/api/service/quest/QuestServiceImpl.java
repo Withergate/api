@@ -22,6 +22,7 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.ActionCostUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -216,11 +217,9 @@ public class QuestServiceImpl implements QuestService {
             quest.setCompleted(true);
 
             // income
-            clan.changeFame(quest.getDetails().getFameReward(), "QUEST", completionNotification);
-            clan.changeCaps(quest.getDetails().getCapsReward());
-            completionNotification.changeCaps(quest.getDetails().getCapsReward());
-            clan.changeFactionPoints(quest.getDetails().getFactionReward());
-            completionNotification.changeFactionPoints(quest.getDetails().getFactionReward());
+            ResourceUtils.changeFame(quest.getDetails().getFameReward(), "QUEST", clan, completionNotification);
+            ResourceUtils.changeCaps(quest.getDetails().getCapsReward(), clan, completionNotification);
+            ResourceUtils.changeFactionPoints(quest.getDetails().getFactionReward(), clan, completionNotification);
 
             // check follow ups
             if (quest.getDetails().getFollowUp() != null) {

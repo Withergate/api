@@ -18,6 +18,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -141,7 +142,7 @@ public class ResearchServiceImpl implements ResearchService {
             notificationService.addLocalizedTexts(notification.getText(), "research.complete", new String[] {}, details.getName());
 
             // award fame
-            character.getClan().changeFame(research.getDetails().getFame(), "RESEARCH COMPLETION", notification);
+            ResourceUtils.changeFame(research.getDetails().getFame(), "RESEARCH COMPLETION", character.getClan(), notification);
         }
     }
 

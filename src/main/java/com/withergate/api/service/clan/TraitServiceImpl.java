@@ -10,6 +10,7 @@ import com.withergate.api.game.model.request.TraitRequest;
 import com.withergate.api.game.repository.clan.CharacterRepository;
 import com.withergate.api.game.repository.clan.TraitDetailsRepository;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,7 @@ public class TraitServiceImpl implements TraitService {
                 throw new InvalidActionException("Not enough caps to perform training.");
             }
             // pay price for immediate training
-            clan.changeCaps(- properties.getTrainingPrice());
+            ResourceUtils.changeCaps(- properties.getTrainingPrice(), clan, null);
         }
 
         trait.get().setActive(true);
@@ -112,7 +113,7 @@ public class TraitServiceImpl implements TraitService {
         trait.setOrder(TRAIT_LIMIT - 1);
 
         // pay price
-        clan.changeCaps(- properties.getTraitForgetPrice());
+        ResourceUtils.changeCaps(- properties.getTraitForgetPrice(), clan, null);
 
     }
 

@@ -29,6 +29,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -100,7 +101,7 @@ public class CraftingServiceImpl implements CraftingService {
         }
 
         // pay cost
-        clan.changeJunk(- cost);
+        ResourceUtils.changeJunk(- cost, clan, null);
 
         CraftingAction action = new CraftingAction();
         action.setCraftingItem(details.getIdentifier());
@@ -153,8 +154,7 @@ public class CraftingServiceImpl implements CraftingService {
         Research researchCaps = clan.getResearch(ResearchBonusType.CRAFTING_CAPS);
         if (researchCaps != null && researchCaps.isCompleted()) {
             int caps = randomService.getRandomInt(1, RandomServiceImpl.K4);
-            clan.changeCaps(caps);
-            notification.changeCaps(caps);
+            ResourceUtils.changeCaps(caps, clan, notification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), researchCaps.getDetails().getBonusText(), new String[]{});
@@ -165,10 +165,9 @@ public class CraftingServiceImpl implements CraftingService {
         if (researchFame != null && researchFame.isCompleted()) {
             // check cost
             if (clan.getJunk() >= researchFame.getDetails().getCostAction()) {
-                clan.changeJunk(- researchFame.getDetails().getCostAction());
-                notification.changeJunk(- researchFame.getDetails().getCostAction());
-
-                clan.changeFame(researchFame.getDetails().getValue(), researchFame.getDetails().getIdentifier(), notification);
+                ResourceUtils.changeJunk(- researchFame.getDetails().getCostAction(), clan, notification);
+                ResourceUtils.changeFame(researchFame.getDetails().getValue(), researchFame.getDetails().getIdentifier(), clan,
+                        notification);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), researchFame.getDetails().getBonusText(), new String[]{});

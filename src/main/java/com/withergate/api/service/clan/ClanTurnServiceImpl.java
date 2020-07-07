@@ -15,6 +15,7 @@ import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -91,13 +92,12 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             consumption -= BonusUtils.getBonus(character, BonusType.FOOD_CONSUMPTION, notification, notificationService);
 
             if (clan.getFood() >= consumption) {
-                clan.setFood(clan.getFood() - consumption);
+                ResourceUtils.changeFood(- consumption, clan, notification);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.foodConsumption",
                         new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                notification.changeFood(- consumption);
             } else {
                 log.debug("Character {} is starving,", character.getName());
 
@@ -109,7 +109,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), "detail.character.starving", new String[] {character.getName()});
                 notification.getDetails().add(detail);
-                clan.changeFame(- gameProperties.getStarvationFame(),"STARVATION", notification);
+                ResourceUtils.changeFame(- gameProperties.getStarvationFame(),"STARVATION", clan, notification);
                 notification.changeInjury(gameProperties.getStarvationInjury());
 
                 if (character.getHitpoints() < 1) {
@@ -143,7 +143,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
         if (clan.getInformation() >= clan.getNextLevelInformation()) {
             log.debug("Increasing clan's information level.");
 
-            clan.changeInformation(- clan.getNextLevelInformation());
+            ResourceUtils.changeInformation(- clan.getNextLevelInformation(), clan, null);
             clan.setInformationLevel(clan.getInformationLevel() + 1);
 
             ClanNotification notification = new ClanNotification(turnId, clan.getId());
@@ -172,19 +172,17 @@ public class ClanTurnServiceImpl implements ClanTurnService {
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
 
-                clan.changeFame(fame, research.getDetails().getIdentifier(), notification);
+                ResourceUtils.changeFame(fame, research.getDetails().getIdentifier(), clan, notification);
 
                 notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
 
                 // pay resources
                 switch (bonusType) {
                     case FOOD_FAME:
-                        clan.changeFood(- fame);
-                        notification.changeFood(- fame);
+                        ResourceUtils.changeFood(- fame, clan, notification);
                         break;
                     case JUNK_FAME:
-                        clan.changeJunk(- fame);
-                        notification.changeJunk(- fame);
+                        ResourceUtils.changeJunk(- fame, clan, notification);
                         break;
                     default:
                         log.error("Incompatible research type: {}", bonusType);
@@ -202,7 +200,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             notification.setHeader(clan.getName());
             notification.setImageUrl(research.getDetails().getImageUrl());
 
-            clan.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), notification);
+            ResourceUtils.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), clan, notification);
 
             notificationService.addLocalizedTexts(notification.getText(), research.getDetails().getBonusText(), new String[]{});
 ;           notificationService.save(notification);
@@ -233,8 +231,7 @@ public class ClanTurnServiceImpl implements ClanTurnService {
             notification.setHeader(clan.getName());
 
             notificationService.addLocalizedTexts(notification.getText(), "loan.interest", new String[]{});
-            notification.changeCaps(- gameProperties.getLoanPayback());
-            clan.changeCaps(- gameProperties.getLoanPayback());
+            ResourceUtils.changeCaps(- gameProperties.getLoanPayback(), clan, notification);
 
             notificationService.save(notification);
         }

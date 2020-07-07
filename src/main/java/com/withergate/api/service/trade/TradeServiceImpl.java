@@ -26,6 +26,7 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.profile.AchievementService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,7 @@ public class TradeServiceImpl implements TradeService {
             }
 
             // pay the price and save the action
-            clan.changeCaps(- cost);
+            ResourceUtils.changeCaps(- cost, clan, null);
         }
 
         if (request.getType().equals(TradeType.SELL)) {
@@ -110,8 +111,8 @@ public class TradeServiceImpl implements TradeService {
             }
 
             // pay the price
-            clan.changeFood(- request.getFood());
-            clan.changeJunk(- request.getJunk());
+            ResourceUtils.changeFood(- request.getFood(), clan, null);
+            ResourceUtils.changeJunk(- request.getJunk(), clan, null);
         }
 
         // save the action
@@ -142,7 +143,7 @@ public class TradeServiceImpl implements TradeService {
         }
 
         // pay caps
-        clan.changeCaps(- offer.getPrice());
+        ResourceUtils.changeCaps(- offer.getPrice(), clan, null);
 
         // change offer state
         offer.setState(State.PENDING);
@@ -257,13 +258,14 @@ public class TradeServiceImpl implements TradeService {
             // if item is offered for market price, sell it
             if (offer.getPrice() == offer.getItem().getDetails().getPrice()) {
                 Clan clan = offer.getSeller();
-                clan.changeCaps(offer.getPrice());
 
                 ClanNotification notification = new ClanNotification(turnId, clan.getId());
                 notification.setHeader(clan.getName());
                 notificationService.addLocalizedTexts(notification.getText(), "clan.trade.item.computer",
                         new String[]{}, offer.getItem().getDetails().getName());
-                notification.changeCaps(offer.getItem().getDetails().getPrice());
+
+                ResourceUtils.changeCaps(offer.getPrice(), clan, notification);
+
                 notificationService.save(notification);
 
                 // delete offer
@@ -300,16 +302,12 @@ public class TradeServiceImpl implements TradeService {
         Clan clan = action.getCharacter().getClan();
 
         if (action.getType().equals(TradeType.BUY)) {
-            clan.changeJunk(action.getJunk());
-            notification.changeJunk(action.getJunk());
-
-            clan.changeFood(action.getFood());
-            notification.changeFood(action.getFood());
+            ResourceUtils.changeJunk(action.getJunk(), clan, notification);
+            ResourceUtils.changeFood(action.getFood(), clan, notification);
 
             notificationService.addLocalizedTexts(notification.getText(), "character.trade.resourcesBuy", new String[]{});
         } else if (action.getType().equals(TradeType.SELL)) {
-            clan.changeCaps(action.getJunk() + action.getFood());
-            notification.changeCaps(action.getJunk() + action.getFood());
+            ResourceUtils.changeCaps(action.getJunk() + action.getFood(), clan, notification);
 
             notificationService.addLocalizedTexts(notification.getText(), "character.trade.resourcesSell", new String[]{});
         }
@@ -343,8 +341,7 @@ public class TradeServiceImpl implements TradeService {
             ClanNotification sellerNotification = new ClanNotification(turnId, offer.getSeller().getId());
             sellerNotification.setHeader(seller.getName());
 
-            seller.changeCaps(offer.getPrice());
-            sellerNotification.changeCaps(offer.getPrice());
+            ResourceUtils.changeCaps(offer.getPrice(), seller, sellerNotification);
             notificationService.addLocalizedTexts(sellerNotification.getText(), "clan.trade.item.sold",
                     new String[]{offer.getBuyer().getName()}, offer.getItem().getDetails().getName());
 
@@ -361,11 +358,10 @@ public class TradeServiceImpl implements TradeService {
         Research research = buyer.getResearch(ResearchBonusType.TRADE_FAME);
         if (research != null && research.isCompleted() && buyer.getCaps() >= research.getDetails().getCostAction()) {
             // pay caps
-            buyer.changeCaps(- research.getDetails().getCostAction());
-            buyerNotification.changeCaps(- research.getDetails().getCostAction());
+            ResourceUtils.changeCaps(- research.getDetails().getCostAction(), buyer, buyerNotification);
 
             // award fame
-            buyer.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), buyerNotification);
+            ResourceUtils.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), buyer, buyerNotification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});

@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.item.ItemCost;
 import com.withergate.api.service.exception.InvalidActionException;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +47,7 @@ public class ActionCost {
     private boolean healthCost;
 
     /**
-     * Pays resources for the action
+     * Pays resources for the action.
      *
      * @param clan clan
      * @throws InvalidActionException if insufficient resources
@@ -64,11 +65,11 @@ public class ActionCost {
         }
 
         // pay resources
-        clan.changeCaps(- capsCost);
-        clan.changeFood(- foodCost);
-        clan.changeJunk(- junkCost);
-        clan.changeInformation(- informationCost);
-        clan.changeFactionPoints(- factionPointsCost);
+        ResourceUtils.changeCaps(- capsCost, clan, null);
+        ResourceUtils.changeFood(- foodCost, clan, null);
+        ResourceUtils.changeJunk(- junkCost, clan, null);
+        ResourceUtils.changeInformation(- informationCost, clan, null);
+        ResourceUtils.changeFactionPoints(- factionPointsCost, clan, null);
     }
 
     /**
@@ -77,11 +78,11 @@ public class ActionCost {
      * @param clan clan
      */
     public void refundResources(Clan clan) {
-        clan.changeCaps(capsCost);
-        clan.changeFood(foodCost);
-        clan.changeJunk(junkCost);
-        clan.changeInformation(informationCost);
-        clan.changeFactionPoints(factionPointsCost);
+        ResourceUtils.changeCaps(capsCost, clan, null);
+        ResourceUtils.changeFood(foodCost, clan, null);
+        ResourceUtils.changeJunk(junkCost, clan, null);
+        ResourceUtils.changeInformation(informationCost, clan, null);
+        ResourceUtils.changeFactionPoints(factionPointsCost, clan, null);
     }
 
 }
