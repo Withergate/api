@@ -24,6 +24,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -73,7 +74,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         // pay junk
         Clan clan = character.getClan();
-        clan.changeJunk(- character.getCraftsmanship());
+        ResourceUtils.changeJunk(- character.getCraftsmanship(), clan, null);
 
         // character needs to be marked as busy
         character.setState(CharacterState.BUSY);
@@ -121,7 +122,7 @@ public class BuildingServiceImpl implements BuildingService {
         notificationFame.setHeader(clan.getName());
         int fame = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.FAME_INCOME, notificationService, notificationFame);
         if (fame > 0) {
-            clan.changeFame(fame, "BUILDING FAME", notificationFame);
+            ResourceUtils.changeFame(fame, "BUILDING FAME", clan, notificationFame);
             notificationService.save(notificationFame);
         }
 
@@ -130,8 +131,7 @@ public class BuildingServiceImpl implements BuildingService {
         notificationFood.setHeader(clan.getName());
         int food = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.FOOD_INCOME, notificationService, notificationFood);
         if (food > 0) {
-            clan.changeFood(food);
-            notificationFood.changeFood(food);
+            ResourceUtils.changeFood(food, clan, notificationFood);
             notificationService.save(notificationFood);
         }
 
@@ -140,8 +140,7 @@ public class BuildingServiceImpl implements BuildingService {
         notificationInfo.setHeader(clan.getName());
         int info = BonusUtils.getBuildingEndBonus(clan, PassiveBonusType.INFORMATION_INCOME, notificationService, notificationInfo);
         if (info > 0) {
-            clan.changeInformation(info);
-            notificationInfo.changeInformation(info);
+            ResourceUtils.changeInformation(info, clan, notificationInfo);
             notificationService.save(notificationInfo);
         }
     }
@@ -191,12 +190,12 @@ public class BuildingServiceImpl implements BuildingService {
     private void processBuildingLevelUpBonuses(Building building, Clan clan, ClanNotification notification) {
         // award fame
         int fame = gameProperties.getBuildingFame() * building.getLevel();
-        clan.changeFame(fame, "CONSTRUCTION", notification);
+        ResourceUtils.changeFame(fame, "CONSTRUCTION", clan, notification);
 
         Research research = clan.getResearch(ResearchBonusType.BUILDING_FAME);
         if (research != null && research.isCompleted()) {
             // add fame to clan for architecture
-            clan.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), notification);
+            ResourceUtils.changeFame(research.getDetails().getValue(), research.getDetails().getIdentifier(), clan, notification);
 
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});

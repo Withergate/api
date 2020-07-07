@@ -38,6 +38,7 @@ import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.quest.QuestService;
 import com.withergate.api.service.utils.ActionCostUtils;
 import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -218,7 +219,7 @@ public class FactionServiceImpl implements FactionService {
             notificationService.addLocalizedTexts(notification.getText(), "faction.fame", new String[]{},
                     clan.getFaction().getName());
 
-            clan.changeFame(fame, clan.getFaction().getIdentifier(), notification);
+            ResourceUtils.changeFame(fame, clan.getFaction().getIdentifier(), clan, notification);
 
             // save notification
             notificationService.save(notification);
@@ -268,8 +269,7 @@ public class FactionServiceImpl implements FactionService {
                 ActionCostUtils.handlePostActionPayment(aid.getActionCost(), character, notification, randomService, itemService);
                 break;
             case CAPS_REWARD:
-                character.getClan().changeCaps(aid.getAid());
-                notification.changeCaps(aid.getAid());
+                ResourceUtils.changeCaps(aid.getAid(), character.getClan(), notification);
                 break;
             case HEALING_REWARD:
                 int missingHealth = character.getMaxHitpoints() - character.getHitpoints();
@@ -287,11 +287,10 @@ public class FactionServiceImpl implements FactionService {
         // increase faction points
         int factionPoints = aid.getFactionPoints();
         factionPoints += BonusUtils.getBonus(action.getCharacter(), BonusType.FACTION_POINTS, notification, notificationService);
-        character.getClan().changeFactionPoints(factionPoints);
-        notification.changeFactionPoints(factionPoints);
+        ResourceUtils.changeFactionPoints(factionPoints, character.getClan(), notification);
 
         // award fame
-        character.getClan().changeFame(aid.getFame(), character.getClan().getFaction().getIdentifier(), notification);
+        ResourceUtils.changeFame(aid.getFame(), character.getClan().getFaction().getIdentifier(), character.getClan(), notification);
     }
 
     private void distributeResources(Clan clan, FactionAid aid, int turnId, ClanNotification notification) {
@@ -307,12 +306,9 @@ public class FactionServiceImpl implements FactionService {
             receiverNotification.setHeader(receiver.getName());
             notificationService.addLocalizedTexts(receiverNotification.getText(), "faction.aid.receive", new String[]{clan.getName()});
 
-            receiver.changeFood(aid.getAid());
-            receiverNotification.changeFood(aid.getAid());
-            receiver.changeJunk(aid.getAid());
-            receiverNotification.changeJunk(aid.getAid());
-            receiver.changeInformation(aid.getAid());
-            receiverNotification.changeInformation(aid.getAid());
+            ResourceUtils.changeFood(aid.getAid(), receiver, receiverNotification);
+            ResourceUtils.changeJunk(aid.getAid(), receiver, receiverNotification);
+            ResourceUtils.changeInformation(aid.getAid(), receiver, receiverNotification);
 
             notificationService.save(receiverNotification);
 

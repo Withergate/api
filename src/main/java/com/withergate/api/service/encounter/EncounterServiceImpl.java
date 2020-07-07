@@ -15,6 +15,7 @@ import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.combat.CombatService;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -148,26 +149,22 @@ public class EncounterServiceImpl implements EncounterService {
             case CAPS:
                 // add caps
                 int caps = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
-                clan.changeCaps(caps);
-                notification.changeCaps(caps);
+                ResourceUtils.changeCaps(caps, clan, notification);
                 break;
             case JUNK:
                 // add junk
                 int junk = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
-                clan.changeJunk(junk);
-                notification.changeJunk(junk);
+                ResourceUtils.changeJunk(junk, clan, notification);
                 break;
             case FOOD:
                 // add food
                 int food = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
-                clan.changeFood(food);
-                notification.changeFood(food);
+                ResourceUtils.changeFood(food, clan, notification);
                 break;
             case INFORMATION:
                 // add information
                 int information = randomService.getRandomInt(1, RandomServiceImpl.K6) + BASE_REWARD;
-                clan.changeInformation(information);
-                notification.changeInformation(information);
+                ResourceUtils.changeInformation(information, clan, notification);
                 break;
             case ITEM:
                 // generate item
@@ -205,8 +202,7 @@ public class EncounterServiceImpl implements EncounterService {
                 // add caps
                 int diceRoll = randomService.getRandomInt(1, RandomServiceImpl.K6) * 2; // random amount of caps
                 int caps = Math.min(clan.getCaps(), diceRoll);
-                clan.changeCaps(-caps);
-                notification.changeCaps(-caps);
+                ResourceUtils.changeCaps(- caps, clan, notification);
                 break;
             case INJURY:
                 int injury = randomService.getRandomInt(1, RandomServiceImpl.K6);

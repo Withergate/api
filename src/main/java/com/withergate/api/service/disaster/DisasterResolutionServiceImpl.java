@@ -17,6 +17,7 @@ import com.withergate.api.service.RandomService;
 import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
             notificationService.addLocalizedTexts(notification.getText(), disaster.getDetails().getSuccessText(), new String[]{});
 
             // reward fame
-            clan.changeFame(disaster.getDetails().getFameReward(), "DISASTER", notification);
+            ResourceUtils.changeFame(disaster.getDetails().getFameReward(), "DISASTER", clan, notification);
         }
 
         log.debug("Clan finished disaster with {}% and will receive {} penalties", clan.getDisasterProgress(), numPenalties);
@@ -146,10 +147,8 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
         int foodLoss = Math.min(gameProperties.getDisasterResourceLoss(), clan.getFood());
         int junkLoss = Math.min(gameProperties.getDisasterResourceLoss(), clan.getJunk());
 
-        clan.changeFood(- foodLoss);
-        clan.changeJunk(- junkLoss);
-        notification.changeFood(- foodLoss);
-        notification.changeJunk(- junkLoss);
+        ResourceUtils.changeFood(- foodLoss, clan, notification);
+        ResourceUtils.changeJunk(- junkLoss, clan, notification);
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.resource.loss", new String[]{});
@@ -157,7 +156,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
     }
 
     private void handleFameLoss(Clan clan, ClanNotification notification) {
-        clan.changeFame(- gameProperties.getDisasterFameLoss(),"DISASTER", notification);
+        ResourceUtils.changeFame(- gameProperties.getDisasterFameLoss(),"DISASTER", clan, notification);
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.fame.loss", new String[]{});
@@ -165,8 +164,7 @@ public class DisasterResolutionServiceImpl implements DisasterResolutionService 
     }
 
     private void handleInformationLoss(Clan clan, ClanNotification notification) {
-        clan.changeInformation(- gameProperties.getDisasterInformationLoss());
-        notification.changeInformation(- gameProperties.getDisasterInformationLoss());
+        ResourceUtils.changeInformation(- gameProperties.getDisasterInformationLoss(), clan, notification);
 
         NotificationDetail detail = new NotificationDetail();
         notificationService.addLocalizedTexts(detail.getText(), "detail.disaster.information.loss", new String[]{});

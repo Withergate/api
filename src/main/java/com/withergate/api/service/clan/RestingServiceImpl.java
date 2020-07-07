@@ -19,6 +19,7 @@ import com.withergate.api.service.action.ActionOrder;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -102,9 +103,8 @@ public class RestingServiceImpl implements RestingService {
         Research research = character.getClan().getResearch(ResearchBonusType.REST_FOOD);
         if (research != null && research.isCompleted()) {
             int food = randomService.getRandomInt(1, RandomServiceImpl.K4);
-            character.getClan().changeFood(food);
+            ResourceUtils.changeFood(food, character.getClan(), notification);
 
-            notification.changeFood(food);
             NotificationDetail detail = new NotificationDetail();
             notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
             notification.getDetails().add(detail);

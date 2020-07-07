@@ -23,6 +23,7 @@ import com.withergate.api.service.clan.CharacterService;
 import com.withergate.api.service.clan.ClanServiceImpl;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -96,8 +97,8 @@ public class TavernServiceImpl implements TavernService {
             throw new InvalidActionException("Population limit exceeded.");
         }
 
-        clan.changeCaps(- cost);
-        clan.changeFame(- offer.getFame(), "TAVERN", null);
+        ResourceUtils.changeCaps(- cost, clan, null);
+        ResourceUtils.changeFame(- offer.getFame(), "TAVERN", clan, null);
 
         TavernAction action = new TavernAction();
         action.setState(ActionState.PENDING);
@@ -214,7 +215,7 @@ public class TavernServiceImpl implements TavernService {
             throw new InvalidActionException("Not enough caps to perform this action.");
         }
 
-        clan.changeCaps(- gameProperties.getTavernRefreshPrice());
+        ResourceUtils.changeCaps(- gameProperties.getTavernRefreshPrice(), clan, null);
 
         prepareTavernOffers(clan);
     }

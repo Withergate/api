@@ -24,6 +24,7 @@ import com.withergate.api.service.exception.ValidationException;
 import com.withergate.api.service.location.TavernService;
 import com.withergate.api.service.premium.Premium;
 import com.withergate.api.service.research.ResearchService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -234,12 +235,12 @@ public class ClanServiceImpl implements ClanService {
             }
 
             // pay price
-            clan.changeCaps(- properties.getLoanCaps());
-            clan.changeFame(properties.getLoanFame(), "LOAN", null);
+            ResourceUtils.changeCaps(- properties.getLoanCaps(), clan, null);
+            ResourceUtils.changeFame(properties.getLoanFame(), "LOAN", clan, null);
             clan.setActiveLoan(false);
         } else { // get loan
-            clan.changeCaps(properties.getLoanCaps());
-            clan.changeFame(- properties.getLoanFame(), "LOAN", null);
+            ResourceUtils.changeCaps(properties.getLoanCaps(), clan, null);
+            ResourceUtils.changeFame(- properties.getLoanFame(), "LOAN", clan,null);
             clan.setActiveLoan(true);
         }
     }

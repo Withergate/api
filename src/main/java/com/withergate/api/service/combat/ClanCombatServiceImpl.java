@@ -19,6 +19,7 @@ import com.withergate.api.service.clan.ClanService;
 import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.profile.AchievementService;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -155,25 +156,18 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
                 int fame = intel.getFameReward();
                 int factionPoints = intel.getFactionReward();
-                attacker.getClan().changeFame(fame, "CLAN COMBAT", attackerNotification);
-                attacker.getClan().changeFactionPoints(factionPoints);
-                attackerNotification.changeFactionPoints(factionPoints);
+                ResourceUtils.changeFame(fame, "CLAN COMBAT", attacker.getClan(), attackerNotification);
+                ResourceUtils.changeFactionPoints(factionPoints, attacker.getClan(), attackerNotification);
 
                 int food = Math.min(defender.getClan().getFood(), randomService.getRandomInt(1, RandomServiceImpl.K4));
-                attackerNotification.changeFood(food);
-                attacker.getClan().changeFood(food);
-                defenderNotification.changeFood(- food);
-                defender.getClan().changeFood(- food);
+                ResourceUtils.changeFood(food, attacker.getClan(), attackerNotification);
+                ResourceUtils.changeFood(- food, defender.getClan(), defenderNotification);
                 int junk = Math.min(defender.getClan().getJunk(), randomService.getRandomInt(1, RandomServiceImpl.K4));
-                attackerNotification.changeJunk(junk);
-                attacker.getClan().changeJunk(junk);
-                defenderNotification.changeJunk(- junk);
-                defender.getClan().changeJunk(- junk);
+                ResourceUtils.changeJunk(junk, attacker.getClan(), attackerNotification);
+                ResourceUtils.changeJunk(- junk, defender.getClan(), defenderNotification);
                 int caps = Math.min(defender.getClan().getCaps(), randomService.getRandomInt(1, RandomServiceImpl.K4));
-                attackerNotification.changeCaps(caps);
-                attacker.getClan().changeCaps(caps);
-                defenderNotification.changeCaps(- caps);
-                defender.getClan().changeCaps(- caps);
+                ResourceUtils.changeCaps(caps, attacker.getClan(), attackerNotification);
+                ResourceUtils.changeCaps(- caps, defender.getClan(), defenderNotification);
             } catch (InvalidActionException e) {
                 log.error("Cannot compute attacker reward.", e);
             }

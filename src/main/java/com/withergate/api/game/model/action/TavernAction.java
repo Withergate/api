@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,8 +39,8 @@ public class TavernAction extends BaseAction {
 
     @Override
     public void cancel() {
-        getCharacter().getClan().changeCaps(offer.getPrice());
-        getCharacter().getClan().changeFame(offer.getFame(), "TAVERN", null);
+        ResourceUtils.changeCaps(offer.getPrice(), getCharacter().getClan(), null);
+        ResourceUtils.changeFame(offer.getFame(), "TAVERN", getCharacter().getClan(), null);
     }
 
 }

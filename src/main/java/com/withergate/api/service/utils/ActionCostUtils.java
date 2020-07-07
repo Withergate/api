@@ -8,6 +8,11 @@ import com.withergate.api.service.RandomServiceImpl;
 import com.withergate.api.service.item.ItemService;
 import lombok.experimental.UtilityClass;
 
+/**
+ * Action cost utils. Handles post-action payments.
+ *
+ * @author Martin Myslik
+ */
 @UtilityClass
 public class ActionCostUtils {
 

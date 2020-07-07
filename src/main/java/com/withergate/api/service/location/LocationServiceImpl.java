@@ -24,6 +24,7 @@ import com.withergate.api.service.exception.InvalidActionException;
 import com.withergate.api.service.item.ItemService;
 import com.withergate.api.service.notification.NotificationService;
 import com.withergate.api.service.utils.BonusUtils;
+import com.withergate.api.service.utils.ResourceUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
@@ -180,9 +181,7 @@ public class LocationServiceImpl implements LocationService {
         if (encounter) {
             junk = junk / 2;
         }
-
-        clan.changeJunk(junk);
-        notification.changeJunk(junk);
+        ResourceUtils.changeJunk(junk, clan, notification);
 
         int food = character.getScavenge() + description.getFoodBonus()
                 + BonusUtils.getBonus(character, BonusType.SCAVENGE_FOOD, notification, notificationService);
@@ -191,9 +190,7 @@ public class LocationServiceImpl implements LocationService {
         if (encounter) {
             food = food / 2;
         }
-
-        clan.changeFood(food);
-        notification.changeFood(food);
+        ResourceUtils.changeFood(food, clan, notification);
     }
 
     private void handleScoutResult(ClanNotification notification, Character character, LocationDescription description,
@@ -208,10 +205,8 @@ public class LocationServiceImpl implements LocationService {
         }
 
         Clan clan = character.getClan();
-        clan.changeInformation(information);
-
+        ResourceUtils.changeInformation(information, clan, notification);
         notificationService.addLocalizedTexts(notification.getText(), "location.information", new String[] {});
-        notification.changeInformation(information);
     }
 
     private int getScoutingBonus(Character character, ClanNotification notification, boolean encounter) {
@@ -228,8 +223,7 @@ public class LocationServiceImpl implements LocationService {
                 food = food / 2;
             }
             if (food > 0) {
-                character.getClan().changeFood(food);
-                notification.changeFood(food);
+                ResourceUtils.changeFood(food, character.getClan(), notification);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), research.getDetails().getBonusText(), new String[]{});
