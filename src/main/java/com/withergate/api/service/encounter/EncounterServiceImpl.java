@@ -129,6 +129,11 @@ public class EncounterServiceImpl implements EncounterService {
                 }
                 notification.getDetails().add(getActionRollDetail(difficulty, diceRoll, totalCraftsmanship, type));
                 break;
+            case RANDOM:
+                if (randomService.getRandomBoolean()) {
+                    success = true;
+                }
+                break;
             default:
                 log.error("Unknown solution type triggered: {}!", type);
                 break;

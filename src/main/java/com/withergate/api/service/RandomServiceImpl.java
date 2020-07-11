@@ -53,6 +53,16 @@ public class RandomServiceImpl implements RandomService {
     }
 
     @Override
+    public boolean getRandomBoolean() {
+        double random = rand.nextDouble();
+
+        if (random < 0.5) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public ItemType getRandomItemType() {
         int diceRoll = getRandomInt(1, 4);
         switch (diceRoll) {
