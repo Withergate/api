@@ -29,6 +29,13 @@ public interface RandomService {
     int getRandomInt(int min, int max);
 
     /**
+     * Gets random boolean with 50-50 probability.
+     *
+     * @return random boolean
+     */
+    boolean getRandomBoolean();
+
+    /**
      * Generates random item type.
      *
      * @return random item type
