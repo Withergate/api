@@ -60,6 +60,8 @@ public class AdminServiceImpl implements AdminService {
     public void updateGlobalNotification(GlobalNotificationRequest request) {
         GlobalNotification notification = globalNotificationRepository.getOne(request.getType());
         notification.setActive(request.isActive());
+        notification.setLink(request.getLink());
+        notification.setLinkText(request.getLinkText());
 
         for (String lang : request.getMessage().keySet()) {
             if (!notification.getMessage().containsKey(lang)) continue;

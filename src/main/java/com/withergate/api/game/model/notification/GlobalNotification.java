@@ -41,6 +41,12 @@ public class GlobalNotification {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "link")
+    private String link;
+
+    @Column(name = "link_text")
+    private String linkText;
+
     /**
      * Enforces single entity per table.
      */
