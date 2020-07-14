@@ -180,6 +180,7 @@ public class TradeServiceImpl implements TradeService {
             processMarketTradeAction(offer, turn);
 
             // mark offer as sold
+            offer.setItem(null);
             offer.setState(State.SOLD);
         }
 
