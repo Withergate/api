@@ -392,6 +392,8 @@ DROP TABLE IF EXISTS global_notification;
 CREATE TABLE global_notification (
     single_id VARCHAR(8) NOT NULL,
     active BIT DEFAULT 0,
+    link VARCHAR(256),
+    link_text VARCHAR(64),
     PRIMARY KEY (single_id)
 );
 

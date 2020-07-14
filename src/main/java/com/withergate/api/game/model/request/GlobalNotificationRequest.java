@@ -19,5 +19,7 @@ public class GlobalNotificationRequest {
     private Map<String, LocalizedText> message;
     private Type type;
     private boolean active;
+    private String link;
+    private String linkText;
 
 }

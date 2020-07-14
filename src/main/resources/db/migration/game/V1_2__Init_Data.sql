@@ -275,8 +275,8 @@ INSERT INTO attribute_templates (template_type, attr_sum, combat, scavenge, craf
 
 -- Notification bootstrap
 INSERT INTO global_notification VALUES
-    ('GLOBAL', false),
-    ('INGAME', false);
+    ('GLOBAL', false, '', ''),
+    ('INGAME', false, '', '');
 
 INSERT INTO localized_texts (global_notification, lang, text) VALUES
     ('GLOBAL', 'en', ''),
