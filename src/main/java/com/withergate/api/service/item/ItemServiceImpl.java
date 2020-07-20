@@ -164,7 +164,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void generateCraftableItem(Character character, ClanNotification notification, ItemDetails details) {
+    public Item generateCraftableItem(Character character, ClanNotification notification, ItemDetails details) {
         log.debug("Crafting item with {}", character.getName());
 
         // save item
@@ -184,6 +184,8 @@ public class ItemServiceImpl implements ItemService {
         Clan clan = character.getClan();
         clan.getStatistics().setCraftedItems(clan.getStatistics().getCraftedItems() + 1);
         achievementService.checkAchievementAward(clan.getId(), AchievementType.CRAFT_COUNT, clan.getStatistics().getCraftedItems());
+
+        return item;
     }
 
     @Override
