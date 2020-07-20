@@ -61,7 +61,7 @@ public interface ItemService {
      * @param notification  the crafted weapon
      * @param details       item details
      */
-    void generateCraftableItem(Character character, ClanNotification notification, ItemDetails details);
+    Item generateCraftableItem(Character character, ClanNotification notification, ItemDetails details);
 
     /**
      * Generates random item.

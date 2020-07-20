@@ -11,6 +11,7 @@ import com.withergate.api.game.model.building.Building;
 import com.withergate.api.game.model.character.Character;
 import com.withergate.api.game.model.character.CharacterState;
 import com.withergate.api.game.model.item.EffectType;
+import com.withergate.api.game.model.item.Item;
 import com.withergate.api.game.model.item.ItemDetails;
 import com.withergate.api.game.model.item.ItemType;
 import com.withergate.api.game.model.notification.ClanNotification;
@@ -140,7 +141,7 @@ public class CraftingServiceImpl implements CraftingService {
         ItemDetails details = detailsRepository.getOne(action.getCraftingItem());
 
         // craft item
-        itemService.generateCraftableItem(action.getCharacter(), notification, details);
+        Item item = itemService.generateCraftableItem(action.getCharacter(), notification, details);
 
         // award experience
         action.getCharacter().changeExperience(1);
@@ -166,8 +167,8 @@ public class CraftingServiceImpl implements CraftingService {
             // check cost
             if (clan.getJunk() >= researchFame.getDetails().getCostAction()) {
                 ResourceUtils.changeJunk(- researchFame.getDetails().getCostAction(), clan, notification);
-                ResourceUtils.changeFame(researchFame.getDetails().getValue(), researchFame.getDetails().getIdentifier(), clan,
-                        notification);
+                ResourceUtils.changeFame(researchFame.getDetails().getValue() + item.getDetails().getCraftingLevel(),
+                        researchFame.getDetails().getIdentifier(), clan, notification);
 
                 NotificationDetail detail = new NotificationDetail();
                 notificationService.addLocalizedTexts(detail.getText(), researchFame.getDetails().getBonusText(), new String[]{});
