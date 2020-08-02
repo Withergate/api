@@ -16,7 +16,8 @@ INSERT INTO trait_details(identifier, bonus, bonus_type, bonus_text, optional, i
     ('BRUTE', 1, 'PIERCING', 'detail.trait.piercing', false, 'https://storage.googleapis.com/withergate-images/traits/brute-trait.png'),
     ('HANDYMAN', 2, 'CRAFTING', null, false, 'https://storage.googleapis.com/withergate-images/traits/handyman-trait.png'),
     ('STURDY', 2, 'DEFENSE', 'detail.trait.defense', true, 'https://storage.googleapis.com/withergate-images/traits/sturdy-trait.png'),
-    ('TIRELESS', 1, 'LONG_COMBAT', 'detail.trait.combat', false, 'https://storage.googleapis.com/withergate-images/traits/tireless-trait.png');
+    ('TIRELESS', 1, 'LONG_COMBAT', 'detail.trait.combat', false, 'https://storage.googleapis.com/withergate-images/traits/tireless-trait.png'),
+    ('THOUGHTFUL', 3, 'TRAINING', 'detail.trait.training', false, 'https://storage.googleapis.com/withergate-images/traits/thoughtful-trait.png');
 
 INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('FIGHTER', 'en', 'Fighter'),
@@ -52,7 +53,9 @@ INSERT INTO localized_texts(trait_name, lang, text) VALUES
     ('STURDY', 'en', 'Sturdy'),
     ('STURDY', 'cs', 'Hroší kůže'),
     ('TIRELESS', 'en', 'Tireless'),
-    ('TIRELESS', 'cs', 'Já mám času dost!');
+    ('TIRELESS', 'cs', 'Já mám času dost!'),
+    ('THOUGHTFUL', 'en', 'Thoughtful'),
+    ('THOUGHTFUL', 'cs', 'Přemýšlivý');
 
 INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('FIGHTER', 'en', 'Character with this trait has a chance to gain a combat bonus when fighting with a melee weapon.'),
@@ -88,4 +91,6 @@ INSERT INTO localized_texts(trait_description, lang, text) VALUES
     ('STURDY', 'en', 'Character with this trait has a chance to gain a defense bonus (armor) when fighting.'),
     ('STURDY', 'cs', 'Postava s touto schopností má šanci na zvýšení zbroje během souboje.'),
     ('TIRELESS', 'en', 'Character with this trait gets a combat bonus after first three combat rounds.'),
-    ('TIRELESS', 'cs', 'Postava s touto schopností dostane bonus k boji po prvních třech kolech souboje.');
+    ('TIRELESS', 'cs', 'Postava s touto schopností dostane bonus k boji po prvních třech kolech souboje.'),
+    ('THOUGHTFUL', 'en', 'Character with this trait gains bonus experience when resting.'),
+    ('THOUGHTFUL', 'cs', 'Postava s touto schopností dostane zkušenosti navíc při odpočínku.');

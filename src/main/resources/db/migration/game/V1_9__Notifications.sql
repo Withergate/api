@@ -171,6 +171,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.trait.piercing', 'cs', '{} snížil/a soupeřovu zbroj díky schopnosti: [].'),
     ('detail.trait.defense', 'en', '{} increased his/her armor thanks to the trait: [].'),
     ('detail.trait.defense', 'cs', '{} zvýšil/a svou zbroj díky schopnosti: [].'),
+    ('detail.trait.training', 'en', '{} gained bonus experience thanks to the trait: [].'),
+    ('detail.trait.training', 'cs', '{} dostal/a zkušenosti navíc díky schopnosti: [].'),
     ('detail.gear.bonus.junk', 'en', 'Character found more junk thanks to the quipped gear: [].'),
     ('detail.gear.bonus.junk', 'cs', 'Postava našla více šrotu díky předmětu: [].'),
     ('detail.gear.bonus.food', 'en', 'Character found more food thanks to the quipped gear: [].'),
