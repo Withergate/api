@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,6 +54,7 @@ public class TradeServiceImpl implements TradeService {
 
     private static final int RESOURCE_TRADE_LIMIT = 20;
     private static final int CLANS_PER_OFFER = 5;
+    private static final int MULTI_CLAN_LIMIT = 2;
 
     private final ResourceTradeActionRepository resourceTradeActionRepository;
     private final NotificationService notificationService;
@@ -140,6 +142,13 @@ public class TradeServiceImpl implements TradeService {
 
         if (clan.getCaps() < offer.getPrice()) {
             throw new InvalidActionException("Not enough caps to perform this action.");
+        }
+
+        // check multi-clan limit
+        List<MarketOffer> multiClanOffers = marketOfferRepository.findAllByStateAndBuyerAndSeller(State.PENDING, clan, offer.getSeller());
+        if (multiClanOffers.size() >= MULTI_CLAN_LIMIT) {
+            throw new InvalidActionException("You cannot buy more than " + MULTI_CLAN_LIMIT
+                    + " items from the same clan one the same turn.");
         }
 
         // pay caps
