@@ -2,6 +2,7 @@ package com.withergate.api.game.repository.trade;
 
 import java.util.List;
 
+import com.withergate.api.game.model.Clan;
 import com.withergate.api.game.model.trade.MarketOffer;
 import com.withergate.api.game.model.trade.MarketOffer.State;
 import org.springframework.data.domain.Page;
@@ -19,5 +20,6 @@ public interface MarketOfferRepository extends JpaRepository<MarketOffer, Intege
 
     Page<MarketOffer> findAllByStateOrderByPriceAsc(State state, Pageable pageable);
     List<MarketOffer> findAllByState(State state);
+    List<MarketOffer> findAllByStateAndBuyerAndSeller(State state, Clan buyer, Clan seller);
 
 }

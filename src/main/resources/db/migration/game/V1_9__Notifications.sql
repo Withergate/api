@@ -140,7 +140,7 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     ('detail.research.cultivation', 'en', 'Character managed to grow some food when resting.'),
     ('detail.research.cultivation', 'cs', 'Postavě se podařilo při odpočinku vypěstovat trochu jídla.'),
     ('detail.research.architecture', 'en', 'Your clan received bonus fame due to the use of Wasteland Architecture.'),
-    ('detail.research.architecture', 'cs', 'Tvůj klan obdržel slávu navíc díky stavně za použití Architektury Pustiny.'),
+    ('detail.research.architecture', 'cs', 'Tvůj klan obdržel slávu navíc díky stavbě za použití Architektury Pustiny.'),
     ('detail.research.boasting', 'en', 'Your clan gained extra fame for winning the combat thanks to Boasting.'),
     ('detail.research.boasting', 'cs', 'Tvůj klan obdržel slávu navíc díky Vychloubání.'),
     ('detail.research.collecting', 'en', 'Your clan paid extra caps when purchasing an item and received bonus fame.'),
