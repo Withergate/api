@@ -230,7 +230,7 @@ public class ClanServiceImpl implements ClanService {
 
         if (clan.isActiveLoan()) { // payback
             // check price
-            if (clan.getCaps() < properties.getLoanPayback()) {
+            if (clan.getCaps() < properties.getLoanCaps()) {
                 throw new InvalidActionException("Not enough caps to perform this action.");
             }
 
