@@ -328,6 +328,10 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemDetails getRandomItemDetails(ItemType type, Rarity rarity, int turn) {
         List<ItemDetails> detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(rarity, type, turn);
+        if (detailsList.isEmpty()) {
+            detailsList = itemDetailsRepository.findItemDetailsByRarityAndItemTypeAndTurnLessThan(Rarity.COMMON, type, turn);
+        }
+
         return detailsList.get(randomService.getRandomInt(0, detailsList.size() - 1));
     }
 
