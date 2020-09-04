@@ -62,17 +62,17 @@ public class TraitServiceImpl implements TraitService {
         Optional<Trait> trait = character.getTraits().stream().filter(t ->
                 t.getDetails().getIdentifier().equals(request.getTraitName())).findFirst();
         if (trait.isEmpty() || trait.get().isActive()) {
-            throw new InvalidActionException("This trait does not exist or has been activated already.");
+            throw new InvalidActionException(null, "This trait does not exist or has been activated already.");
         }
 
         long maxOrder = character.getMaxOrder();
         if (trait.get().getOrder() > maxOrder) {
-            throw new InvalidActionException("This trait is not available for the provided character.");
+            throw new InvalidActionException(null, "This trait is not available for the provided character.");
         }
 
         if (request.isImmediate()) {
             if (clan.getCaps() < properties.getTrainingPrice()) {
-                throw new InvalidActionException("Not enough caps to perform training.");
+                throw new InvalidActionException("error.no-caps", "Not enough caps to perform training.");
             }
             // pay price for immediate training
             ResourceUtils.changeCaps(- properties.getTrainingPrice(), clan, null);
@@ -98,7 +98,7 @@ public class TraitServiceImpl implements TraitService {
 
         // check the price
         if (clan.getCaps() < properties.getTraitForgetPrice()) {
-            throw new InvalidActionException("Not enough caps to perform training.");
+            throw new InvalidActionException("error.no-caps", "Not enough caps to perform training.");
         }
 
         // change trait order
@@ -119,11 +119,11 @@ public class TraitServiceImpl implements TraitService {
 
     private void checkTraitRequirements(Character character, Clan clan, int clanId) throws InvalidActionException {
         if (clan.getId() != clanId) {
-            throw new InvalidActionException("This character does not belong to your clan.");
+            throw new InvalidActionException(null, "This character does not belong to your clan.");
         }
 
         if (character.getSkillPoints() < 1) {
-            throw new InvalidActionException("This character has no available skill points!");
+            throw new InvalidActionException(null, "This character has no available skill points!");
         }
     }
 

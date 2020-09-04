@@ -52,16 +52,16 @@ public class ResearchServiceImpl implements ResearchService {
 
         // check if research is available
         if (research == null) {
-            throw new InvalidActionException("The specified research is not available to your clan.");
+            throw new InvalidActionException(null, "The specified research is not available to your clan.");
         }
 
         // check requirements
         if (research.getDetails().getInformationLevel() > clan.getInformationLevel()) {
-            throw new InvalidActionException("You need higher information level to perform this action.");
+            throw new InvalidActionException("error.no-information-level", "You need higher information level to perform this action.");
         }
 
         if (research.isCompleted()) {
-            throw new InvalidActionException("This research has been completed already.");
+            throw new InvalidActionException(null, "This research has been completed already.");
         }
 
         ResearchAction action = new ResearchAction();

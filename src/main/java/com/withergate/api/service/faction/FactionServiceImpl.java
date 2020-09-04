@@ -82,15 +82,15 @@ public class FactionServiceImpl implements FactionService {
 
         if (request.getType().equals(Type.JOIN)) {
             if (character.getClan().getFaction() != null) {
-                throw new InvalidActionException("This clan already belongs to a faction.");
+                throw new InvalidActionException(null, "This clan already belongs to a faction.");
             }
             if (character.getClan().getFame() < properties.getFactionEntryFame()) {
-                throw new InvalidActionException("Not enough fame to join this faction.");
+                throw new InvalidActionException("error.no-fame", "Not enough fame to join this faction.");
             }
             for (Character ch : character.getClan().getCharacters()) {
                 if (ch.getCurrentAction().isPresent()
                         && ch.getCurrentAction().get().getDescriptor().equals(ActionDescriptor.FACTION.name())) {
-                    throw new InvalidActionException("You are already trying to join a faction.");
+                    throw new InvalidActionException(null, "You are already trying to join a faction.");
                 }
             }
 
@@ -102,7 +102,7 @@ public class FactionServiceImpl implements FactionService {
         Clan clan = character.getClan();
         if (request.getType().equals(Type.SUPPORT)) {
             if (clan.getFaction() == null) {
-                throw new InvalidActionException("Clan must be in a faction to perform this action.");
+                throw new InvalidActionException(null, "Clan must be in a faction to perform this action.");
             }
 
             FactionAid aid = getFactionAid(request.getFactionAid(), character.getClan().getFaction());
@@ -112,7 +112,7 @@ public class FactionServiceImpl implements FactionService {
 
             // check leading condition
             if (aid.isLeading() && !clan.getFaction().getIdentifier().equals(getBestFaction().getIdentifier())) {
-                throw new InvalidActionException(("Your clan must be a member of a leading faction to perform this action."));
+                throw new InvalidActionException(null, "Your clan must be a member of a leading faction to perform this action.");
             }
 
             // check cost & pay
@@ -327,7 +327,7 @@ public class FactionServiceImpl implements FactionService {
                 return aid;
             }
         }
-        throw new InvalidActionException("This action was not found.");
+        throw new InvalidActionException(null, "This action was not found.");
     }
 
     private int getFactionFame(Faction faction, List<Faction> factions) {

@@ -60,7 +60,7 @@ public class CharacterServiceImpl implements CharacterService {
         Character character = characterRepository.getOne(characterId);
         if (character.getClan().getId() != clanId || character.getState() != CharacterState.READY) {
             log.error("Action cannot be performed with this character: {}!", character.getId());
-            throw new InvalidActionException("The provided character is not ready or does not belong to your clan!");
+            throw new InvalidActionException(null, "The provided character is not ready or does not belong to your clan!");
         }
 
         return character;
@@ -168,10 +168,10 @@ public class CharacterServiceImpl implements CharacterService {
 
         // check conditions
         if (character.getClan().getId() != clanId) {
-            throw new InvalidActionException("Character must belong to your clan to perform this action.");
+            throw new InvalidActionException(null, "Character must belong to your clan to perform this action.");
         }
         if (character.getCurrentAction().isEmpty() || !character.getCurrentAction().get().isCancellable()) {
-            throw new InvalidActionException("Character has no action or this action is not cancellable.");
+            throw new InvalidActionException(null, "Character has no action or this action is not cancellable.");
         }
 
         // cancel handler
@@ -191,13 +191,13 @@ public class CharacterServiceImpl implements CharacterService {
 
         // check conditions
         if (character.getClan().getId() != clanId) {
-            throw new InvalidActionException("Character must belong to your clan to perform this action.");
+            throw new InvalidActionException(null, "Character must belong to your clan to perform this action.");
         }
 
         // sanitize
         name = name.replaceAll("\\s+", " ").trim();
         if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
-            throw new InvalidActionException("Character name must be between " + MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH
+            throw new InvalidActionException(null, "Character name must be between " + MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH
                 + " characters long.");
         }
 
@@ -207,7 +207,7 @@ public class CharacterServiceImpl implements CharacterService {
         // check name collisions
         for (Character ch : character.getClan().getCharacters()) {
             if (ch.getName().equals(name)) {
-                throw new InvalidActionException("Character with this name already exists in your clan!");
+                throw new InvalidActionException(null, "Character with this name already exists in your clan!");
             }
         }
 
@@ -220,7 +220,7 @@ public class CharacterServiceImpl implements CharacterService {
     public void changeDefaultAction(DefaultActionRequest request, int clanId, int characterId) throws InvalidActionException {
         Character character = characterRepository.getOne(characterId);
         if (character.getClan().getId() != clanId) {
-            throw new InvalidActionException("This character does not belong to your clan!");
+            throw new InvalidActionException(null, "This character does not belong to your clan!");
         }
 
         character.setDefaultAction(request.getDefaultAction());

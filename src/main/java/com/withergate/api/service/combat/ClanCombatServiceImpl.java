@@ -57,22 +57,22 @@ public class ClanCombatServiceImpl implements ClanCombatService {
 
         Clan target = clanService.getClan(request.getTargetId());
         if (target == null) {
-            throw new InvalidActionException("Target clan does not exist!");
+            throw new InvalidActionException(null, "Target clan does not exist!");
         }
 
         // check conditions
         if (character.getClan().getFaction() == null || target.getFaction() == null) {
-            throw new InvalidActionException("Both clans need to be in a faction.");
+            throw new InvalidActionException(null, "Both clans need to be in a faction.");
         }
         if (character.getClan().getFaction().getIdentifier().equals(target.getFaction().getIdentifier())) {
-            throw new InvalidActionException("Your target must be in a different faction than you.");
+            throw new InvalidActionException(null, "Your target must be in a different faction than you.");
         }
 
         // only one attack action per clan is permitted
         for (Character ch : character.getClan().getCharacters()) {
             if (ch.getCurrentAction().isPresent()
                     && ch.getCurrentAction().get().getDescriptor().equals(ActionDescriptor.CLAN_COMBAT.name())) {
-                throw new InvalidActionException("Only one attack action per turn is permitted!");
+                throw new InvalidActionException("error.combat-limit", "Only one attack action per turn is permitted!");
             }
         }
 

@@ -59,13 +59,13 @@ public class ArenaServiceImpl implements ArenaService {
         // check if another character is in arena already
         for (Character ch : clan.getCharacters()) {
             if (ch.getCurrentAction().isPresent() && ch.getCurrentAction().get().getDescriptor().equals(ActionDescriptor.ARENA.name())) {
-                throw new InvalidActionException("You already have selected a character to enter arena this turn!");
+                throw new InvalidActionException("error.arena-limit", "You already have selected a character to enter arena this turn!");
             }
         }
 
         // check arena requirements
         if (character.getWeapon() != null && character.getWeapon().getDetails().getWeaponType().equals(WeaponType.RANGED)) {
-            throw new InvalidActionException("Ranged weapons are not allowed in the arena.");
+            throw new InvalidActionException("error.arena-ranged", "Ranged weapons are not allowed in the arena.");
         }
 
         ArenaAction action = new ArenaAction();

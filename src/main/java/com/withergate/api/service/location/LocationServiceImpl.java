@@ -62,7 +62,7 @@ public class LocationServiceImpl implements LocationService {
         // check if this location supports given action type
         LocationDescription description = locationDescriptionRepository.getOne(request.getLocation());
         if (request.getType() == LocationAction.LocationActionType.SCOUT && !description.isScouting()) {
-            throw new InvalidActionException("Location not found or does not support specified action!");
+            throw new InvalidActionException(null, "Location not found or does not support specified action!");
         }
 
         LocationAction action = new LocationAction();

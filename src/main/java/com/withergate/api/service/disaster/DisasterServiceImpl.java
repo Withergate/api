@@ -102,7 +102,7 @@ public class DisasterServiceImpl implements DisasterService {
         Disaster disaster = disasterRepository.findFirstByCompleted(false);
         DisasterSolution solution = disasterSolutionRepository.getOne(request.getSolution());
         if (!solution.getDisaster().equals(disaster.getDetails())) {
-            throw new InvalidActionException("This solution either doesn't exist or doesn't belong to the current disaster.");
+            throw new InvalidActionException(null, "This solution either doesn't exist or doesn't belong to the current disaster.");
         }
 
         // check condition
@@ -110,7 +110,7 @@ public class DisasterServiceImpl implements DisasterService {
 
         // check completion
         if (clan.getDisasterProgress() >= 100) {
-            throw new InvalidActionException("Your already averted this disaster!");
+            throw new InvalidActionException(null, "Your already averted this disaster!");
         }
 
         // check resources & pay
