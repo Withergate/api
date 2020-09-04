@@ -58,11 +58,11 @@ public class BuildingServiceImpl implements BuildingService {
         // check if action is applicable
         Building building = character.getClan().getBuilding(request.getBuilding());
         if (building == null) {
-            throw new InvalidActionException("This building does not exist");
+            throw new InvalidActionException(null, "This building does not exist");
         }
 
         if (character.getClan().getJunk() < character.getCraftsmanship()) {
-            throw new InvalidActionException("Not enough junk to perform this action.");
+            throw new InvalidActionException("error.no-junk", "Not enough junk to perform this action.");
         }
 
         BuildingAction action = new BuildingAction();

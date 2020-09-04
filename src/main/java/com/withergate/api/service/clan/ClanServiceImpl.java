@@ -198,7 +198,7 @@ public class ClanServiceImpl implements ClanService {
         Clan target = getClan(targetId);
         Clan spy = getClan(spyId);
         if (target == null || spy == null) {
-            throw new InvalidActionException("One or both of provided clans do not exist!");
+            throw new InvalidActionException(null, "One or both of provided clans do not exist!");
         }
 
         return new ClanIntelDTO(target, spy);
@@ -216,7 +216,7 @@ public class ClanServiceImpl implements ClanService {
 
         // check name length
         if (name.length() < DEFENDER_MIN_LENGTH || name.length() > DEFENDER_MAX_LENGTH) {
-            throw new InvalidActionException("Name must be between " + DEFENDER_MIN_LENGTH + " and " + DEFENDER_MAX_LENGTH
+            throw new InvalidActionException(null, "Name must be between " + DEFENDER_MIN_LENGTH + " and " + DEFENDER_MAX_LENGTH
                     + " characters long");
         }
 
@@ -231,7 +231,7 @@ public class ClanServiceImpl implements ClanService {
         if (clan.isActiveLoan()) { // payback
             // check price
             if (clan.getCaps() < properties.getLoanCaps()) {
-                throw new InvalidActionException("Not enough caps to perform this action.");
+                throw new InvalidActionException("error.no-caps", "Not enough caps to perform this action.");
             }
 
             // pay price

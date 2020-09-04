@@ -55,13 +55,13 @@ public class ActionCost {
     public void payResources(Clan clan) throws InvalidActionException {
         // check resources
         if (clan.getCaps() < capsCost || clan.getFood() < foodCost || clan.getJunk() < junkCost) {
-            throw new InvalidActionException("Not enough resources.");
+            throw new InvalidActionException("error.no-resources", "Not enough resources.");
         }
         if (informationCost > 0 && clan.getInformation() < informationCost) {
-            throw new InvalidActionException("Not enough information.");
+            throw new InvalidActionException("error.no-information", "Not enough information.");
         }
         if (factionPointsCost > 0 && clan.getFactionPoints() < factionPointsCost) {
-            throw new InvalidActionException("Not enough influence.");
+            throw new InvalidActionException("error.no-influence", "Not enough influence.");
         }
 
         // pay resources

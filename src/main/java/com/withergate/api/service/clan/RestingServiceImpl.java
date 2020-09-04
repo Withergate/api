@@ -75,7 +75,7 @@ public class RestingServiceImpl implements RestingService {
     public void saveAction(RestingRequest request, int clanId) throws InvalidActionException {
         Character character = characterRepository.getOne(request.getCharacterId());
         if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character is not READY.");
+            throw new InvalidActionException("error.ready", "Character is not READY.");
         }
 
         RestingAction action = new RestingAction();

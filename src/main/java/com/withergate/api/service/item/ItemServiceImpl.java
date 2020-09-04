@@ -68,7 +68,7 @@ public class ItemServiceImpl implements ItemService {
         Character character = characterRepository.getOne(characterId);
 
         if (character.getItem(item.getDetails().getItemType()) != null) {
-            throw new InvalidActionException("Character is already holding an item of this type!");
+            throw new InvalidActionException("error.item-equip", "Character is already holding an item of this type!");
         }
 
         if (item.getDetails().getItemType().equals(ItemType.CONSUMABLE)) {
@@ -79,11 +79,11 @@ public class ItemServiceImpl implements ItemService {
         // check clan
         if (item.getClan() == null || item.getClan().getId() != clanId) {
             log.error("Item with ID {} is not available in the clan storage of clan ID {}!", itemId, clanId);
-            throw new InvalidActionException("Item with this ID does not belong the the provided clan!");
+            throw new InvalidActionException(null, "Item with this ID does not belong the the provided clan!");
         }
 
         if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to equip item.");
+            throw new InvalidActionException("error.ready", "Character must be READY to equip item.");
         }
 
         item.setCharacter(character);
@@ -101,17 +101,17 @@ public class ItemServiceImpl implements ItemService {
         // check clan and character
         if (character.getId() != characterId || character.getClan().getId() != clanId) {
             log.error("Character with ID {} does not match the requested character!", characterId);
-            throw new InvalidActionException("Cannot equip item to the provided character!");
+            throw new InvalidActionException(null, "Cannot equip item to the provided character!");
         }
 
         // check if item quipped
         if (item.getCharacter().getId() != characterId) {
             log.error("Character {} is not carrying the specified item!", characterId);
-            throw new InvalidActionException("Item with this ID is not equipped by the provided character!");
+            throw new InvalidActionException(null, "Item with this ID is not equipped by the provided character!");
         }
 
         if (character.getState() != CharacterState.READY) {
-            throw new InvalidActionException("Character must be READY to unequip item.");
+            throw new InvalidActionException("error.ready", "Character must be READY to unequip item.");
         }
 
         // process unequip action
@@ -200,17 +200,17 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Using consumable {} with character {}", consumable.getId(), character.getId());
 
         if (consumable.getClan().getId() != character.getClan().getId()) {
-            throw new InvalidActionException("Consumable not found or doesn't belong to your clan!");
+            throw new InvalidActionException(null, "Consumable not found or doesn't belong to your clan!");
         }
 
         if (!consumable.getDetails().getItemType().equals(ItemType.CONSUMABLE)) {
-            throw new InvalidActionException("The provided item is not a consumable!");
+            throw new InvalidActionException(null, "The provided item is not a consumable!");
         }
 
         // check prerequizities
         if (consumable.getDetails().getEffectType().equals(EffectType.EXPERIENCE)
                 && character.getIntellect() < consumable.getDetails().getPrereq()) {
-            throw new InvalidActionException("Character's intellect is too low to perform this action.");
+            throw new InvalidActionException("error.item-intellect", "Character's intellect is too low to perform this action.");
         }
 
         // process the effect
@@ -218,7 +218,7 @@ public class ItemServiceImpl implements ItemService {
             case HEALING:
                 int hitpointsMissing = character.getMaxHitpoints() - character.getHitpoints();
                 if (hitpointsMissing == 0) {
-                    throw new InvalidActionException("This character already has full health!");
+                    throw new InvalidActionException(null, "This character already has full health!");
                 }
                 int healing = Math.min(hitpointsMissing, consumable.getDetails().getBonus());
                 character.setHitpoints(character.getHitpoints() + healing);
@@ -228,25 +228,29 @@ public class ItemServiceImpl implements ItemService {
                 break;
             case BUFF_COMBAT:
                 if (character.getCombat() > 6 || character.getHitpoints() < character.getMaxHitpoints()) {
-                    throw new InvalidActionException("This character is injured or already reached max combat value!");
+                    throw new InvalidActionException("error-item-max-stat",
+                            "This character is injured or already reached max combat value!");
                 }
                 character.setCombat(character.getCombat() + 1);
                 break;
             case BUFF_SCAVENGE:
                 if (character.getScavenge() > 6 || character.getHitpoints() < character.getMaxHitpoints()) {
-                    throw new InvalidActionException("This character is injured or already reached max scavenge value!");
+                    throw new InvalidActionException("error-item-max-stat",
+                            "This character is injured or already reached max scavenge value!");
                 }
                 character.setScavenge(character.getScavenge() + 1);
                 break;
             case BUFF_CRAFTSMANSHIP:
                 if (character.getCraftsmanship() > 6) {
-                    throw new InvalidActionException("This character is injured or already reached max craftsmanship value!");
+                    throw new InvalidActionException("error-item-max-stat",
+                            "This character is injured or already reached max craftsmanship value!");
                 }
                 character.setCraftsmanship(character.getCraftsmanship() + 1);
                 break;
             case BUFF_INTELLECT:
                 if (character.getIntellect() > 6) {
-                    throw new InvalidActionException("This character is injured or already reached max intellect value!");
+                    throw new InvalidActionException("error-item-max-stat",
+                            "This character is injured or already reached max intellect value!");
                 }
                 character.setIntellect(character.getIntellect() + 1);
                 break;

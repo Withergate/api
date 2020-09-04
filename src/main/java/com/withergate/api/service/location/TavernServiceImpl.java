@@ -79,12 +79,12 @@ public class TavernServiceImpl implements TavernService {
         TavernOffer offer = loadTavernOffer(request.getOfferId());
         if (offer == null || offer.getClan().getId() != clanId
                 || !offer.getState().equals(TavernOffer.State.AVAILABLE)) {
-            throw new InvalidActionException("This offer either doesn't exists or does not belong to your clan!");
+            throw new InvalidActionException(null, "This offer either doesn't exists or does not belong to your clan!");
         }
 
         int cost = offer.getPrice();
         if (clan.getCaps() < cost) {
-            throw new InvalidActionException("Not enough resources to perform this action!");
+            throw new InvalidActionException("error.no-caps", "Not enough resources to perform this action!");
         }
 
         int limit = clan.getPopulationLimit();
@@ -94,7 +94,7 @@ public class TavernServiceImpl implements TavernService {
             }
         }
         if (clan.getCharacters().size() >= limit) {
-            throw new InvalidActionException("Population limit exceeded.");
+            throw new InvalidActionException("error.tavern-limit", "Population limit exceeded.");
         }
 
         ResourceUtils.changeCaps(- cost, clan, null);
@@ -212,7 +212,7 @@ public class TavernServiceImpl implements TavernService {
 
         // check price
         if (clan.getCaps() < gameProperties.getTavernRefreshPrice()) {
-            throw new InvalidActionException("Not enough caps to perform this action.");
+            throw new InvalidActionException("error.no-caps", "Not enough caps to perform this action.");
         }
 
         ResourceUtils.changeCaps(- gameProperties.getTavernRefreshPrice(), clan, null);

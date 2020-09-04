@@ -102,7 +102,7 @@ public class QuestServiceImpl implements QuestService {
             if (q.getId() == request.getQuestId()) {
                 // check if not completed
                 if (q.isCompleted()) {
-                    throw new InvalidActionException("This quest has already been completed.");
+                    throw new InvalidActionException(null, "This quest has already been completed.");
                 }
                 quest = q;
                 break;
@@ -110,7 +110,7 @@ public class QuestServiceImpl implements QuestService {
         }
 
         if (quest == null) {
-            throw new InvalidActionException("This quest does not exist.");
+            throw new InvalidActionException(null, "This quest does not exist.");
         }
 
         // check condition

@@ -46,7 +46,7 @@ public class PremiumAspect {
 
         if (profile.getPremiumType() == null
                 || (type.equals(PremiumType.GOLD) && profile.getPremiumType().equals(PremiumType.SILVER))) {
-            throw new InvalidActionException("You must have a " + type + " premium account to use this feature!");
+            throw new InvalidActionException("error.premium", "You must have a " + type + " premium account to use this feature!");
         }
 
         return joinPoint.proceed();

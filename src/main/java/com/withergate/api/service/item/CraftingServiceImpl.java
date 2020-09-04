@@ -91,14 +91,14 @@ public class CraftingServiceImpl implements CraftingService {
 
         // check prereq
         if (!checkCraftingRequirements(details, clan)) {
-            throw new InvalidActionException("This item is not available to you.");
+            throw new InvalidActionException(null, "This item is not available to you.");
         }
 
         // check cost
         int cost = details.getCraftingCost() - character.getCraftingBonus();
         if (cost < 1) cost = 1;
         if (clan.getJunk() < cost) {
-            throw new InvalidActionException("Not enough junk to perform this action.");
+            throw new InvalidActionException("error.no-junk", "Not enough junk to perform this action.");
         }
 
         // pay cost
@@ -212,7 +212,7 @@ public class CraftingServiceImpl implements CraftingService {
             }
         }
 
-        throw new InvalidActionException("No crafting building found for item type " + type.name());
+        throw new InvalidActionException(null, "No crafting building found for item type " + type.name());
     }
 
 }

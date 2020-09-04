@@ -85,11 +85,11 @@ public class TradeServiceImpl implements TradeService {
 
         // check resource limit
         if (request.getJunk() + request.getFood() > TradeServiceImpl.RESOURCE_TRADE_LIMIT) {
-            throw new InvalidActionException("Your character cannot carry that much!");
+            throw new InvalidActionException("error.trade-resource-limit", "Your character cannot carry that much!");
         }
 
         if (request.getJunk() + request.getFood() < 1) {
-            throw new InvalidActionException("No resources specified!");
+            throw new InvalidActionException("error.trade-no-resources", "No resources specified!");
         }
 
         // check if clan has enough resources
@@ -97,7 +97,7 @@ public class TradeServiceImpl implements TradeService {
             int resourcesToBuy = request.getFood() + request.getJunk();
             int cost = resourcesToBuy * 2;
             if (clan.getCaps() < cost) {
-                throw new InvalidActionException("Not enough caps!");
+                throw new InvalidActionException("error.no-caps", "Not enough caps!");
             }
 
             // pay the price and save the action
@@ -106,10 +106,10 @@ public class TradeServiceImpl implements TradeService {
 
         if (request.getType().equals(TradeType.SELL)) {
             if (clan.getFood() < request.getFood()) {
-                throw new InvalidActionException("Not enough food!");
+                throw new InvalidActionException("error.no-food", "Not enough food!");
             }
             if (clan.getJunk() < request.getJunk()) {
-                throw new InvalidActionException("Not enough junk!");
+                throw new InvalidActionException("error.no-junk", "Not enough junk!");
             }
 
             // pay the price
@@ -133,21 +133,21 @@ public class TradeServiceImpl implements TradeService {
         MarketOffer offer = loadMarketOffer(request.getOfferId());
 
         if (offer == null || !offer.getState().equals(State.PUBLISHED)) {
-            throw new InvalidActionException("This offer is not available.");
+            throw new InvalidActionException(null, "This offer is not available.");
         }
 
         if (offer.getSeller() != null && clan.getId() == offer.getSeller().getId()) {
-            throw new InvalidActionException("You cannot buy your own item!");
+            throw new InvalidActionException(null, "You cannot buy your own item!");
         }
 
         if (clan.getCaps() < offer.getPrice()) {
-            throw new InvalidActionException("Not enough caps to perform this action.");
+            throw new InvalidActionException("error.no-caps", "Not enough caps to perform this action.");
         }
 
         // check multi-clan limit
         List<MarketOffer> multiClanOffers = marketOfferRepository.findAllByStateAndBuyerAndSeller(State.PENDING, clan, offer.getSeller());
         if (multiClanOffers.size() >= MULTI_CLAN_LIMIT) {
-            throw new InvalidActionException("You cannot buy more than " + MULTI_CLAN_LIMIT
+            throw new InvalidActionException("error.trade-limit", "You cannot buy more than " + MULTI_CLAN_LIMIT
                     + " items from the same clan one the same turn.");
         }
 
@@ -210,13 +210,10 @@ public class TradeServiceImpl implements TradeService {
 
         // check validity
         if (item == null || item.getClan().getId() != clanId) {
-            throw new InvalidActionException("This item does not belong to your clan!");
+            throw new InvalidActionException(null, "This item does not belong to your clan!");
         }
-        if (request.getPrice() < item.getDetails().getPrice()) {
-            throw new InvalidActionException("Price must not be lower than market price!");
-        }
-        if (request.getPrice() > item.getDetails().getPrice() * 2) {
-            throw new InvalidActionException("Price must not be higher than double the market price!");
+        if (request.getPrice() < item.getDetails().getPrice() || request.getPrice() > item.getDetails().getPrice() * 2) {
+            throw new InvalidActionException("error.trade-invalid-price", "This price is invalid.");
         }
 
         // create market offer
@@ -238,11 +235,11 @@ public class TradeServiceImpl implements TradeService {
         Optional<MarketOffer> offer = marketOfferRepository.findById(offerId);
 
         if (offer.isEmpty() || offer.get().getSeller().getId() != clanId) {
-            throw new InvalidActionException("This offer either does not exist or does not belong to your clan.");
+            throw new InvalidActionException(null, "This offer either does not exist or does not belong to your clan.");
         }
 
         if (!offer.get().getState().equals(State.PUBLISHED)) {
-            throw new InvalidActionException("This offer is not in PUBLISHED state and cannot be cancelled.");
+            throw new InvalidActionException(null, "This offer is not in PUBLISHED state and cannot be cancelled.");
         }
 
         // return item to the seller
