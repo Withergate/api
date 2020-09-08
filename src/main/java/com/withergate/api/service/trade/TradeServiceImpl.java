@@ -146,7 +146,7 @@ public class TradeServiceImpl implements TradeService {
 
         // check multi-clan limit
         List<MarketOffer> multiClanOffers = marketOfferRepository.findAllByStateAndBuyerAndSeller(State.PENDING, clan, offer.getSeller());
-        if (multiClanOffers.size() >= MULTI_CLAN_LIMIT) {
+        if (offer.getSeller() != null && multiClanOffers.size() >= MULTI_CLAN_LIMIT) {
             throw new InvalidActionException("error.trade-limit", "You cannot buy more than " + MULTI_CLAN_LIMIT
                     + " items from the same clan one the same turn.");
         }
