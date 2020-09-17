@@ -9,8 +9,8 @@ INSERT INTO research_details(identifier, bonus_type, bonus_text, value, informat
     ('COLLECTING', 'TRADE_FAME', 'detail.research.collecting', 2, 2, 35, 8, 3, 'https://storage.googleapis.com/withergate-images/research/collecting.png'),
     ('JUNKSMITHERY', 'CRAFTING_FAME', 'detail.research.junksmithery', 1, 2, 35, 5, 3, 'https://storage.googleapis.com/withergate-images/research/junksmithery.png'),
     ('INDEPENDENCE', 'NO_FACTION_FAME', 'research.independence', 2, 3, 40, 0, 4, 'https://storage.googleapis.com/withergate-images/research/independence.png'),
-    ('CULINARY', 'FOOD_FAME', 'research.culinary', 30, 4, 50, 0, 5, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
-    ('DECORATION', 'JUNK_FAME', 'research.decoration', 30, 4, 50, 0, 5, 'https://storage.googleapis.com/withergate-images/research/decoration.png');
+    ('CULINARY', 'FOOD_FAME', 'research.culinary', 25, 4, 50, 0, 5, 'https://storage.googleapis.com/withergate-images/research/culinary.png'),
+    ('DECORATION', 'JUNK_FAME', 'research.decoration', 25, 4, 50, 0, 5, 'https://storage.googleapis.com/withergate-images/research/decoration.png');
 
 INSERT INTO localized_texts(research_name, lang, text) VALUES
     ('FORGERY', 'en', 'Forgery'),
@@ -79,7 +79,7 @@ INSERT INTO localized_texts(research_info, lang, text) VALUES
     ('JUNKSMITHERY', 'cs', 'Kdykoli vyrobíš předmět, bude ti odečteno 5 šrotu navíc (pokud to je možné). Stane-li se tak, obdržíš 2-4 slávy navíc (v závislosti na předmětu).'),
     ('INDEPENDENCE', 'en', 'Your clan will receive 2 bonus fame every turn during which you are not a member of any faction.'),
     ('INDEPENDENCE', 'cs', 'Tvůj klan obdrží 2 slávy navíc každé kolo, během kterého není členem žádné frakce.'),
-    ('CULINARY', 'en', 'At the end of every turn, your clan will receive 1 fame and pay 1 food for every 30 food you own (max 5 per turn). This effect is calculated after food consumption.'),
-    ('CULINARY', 'cs', 'Tvůj klan dostane 1 slávu a zaplatí 1 jídlo na koci každého kola za každých 30 jídel, které máš v zásobě (maximum 5 za kolo). Tento efekt se počítá po konzumaci jídla.'),
-    ('DECORATION', 'en', 'At the end of every turn, your clan will receive 1 fame and pay 1 junk for every 30 junk you own (max 5 per turn).'),
-    ('DECORATION', 'cs', 'Tvůj klan dostane 1 slávu a zaplatí 1 šrot na konci každého kola za každých 30 šrotů, které máš v zásobě (maximum 5 za kolo).');
+    ('CULINARY', 'en', 'At the end of every turn, your clan will receive 1 fame and pay 1 food for every 25 food you own (max 6 per turn). This effect is calculated after food consumption.'),
+    ('CULINARY', 'cs', 'Tvůj klan dostane 1 slávu a zaplatí 1 jídlo na koci každého kola za každých 25 jídel, které máš v zásobě (maximum 6 za kolo). Tento efekt se počítá po konzumaci jídla.'),
+    ('DECORATION', 'en', 'At the end of every turn, your clan will receive 1 fame and pay 1 junk for every 25 junk you own (max 6 per turn).'),
+    ('DECORATION', 'cs', 'Tvůj klan dostane 1 slávu a zaplatí 1 šrot na konci každého kola za každých 25 šrotů, které máš v zásobě (maximum 6 za kolo).');

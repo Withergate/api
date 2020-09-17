@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClanTurnServiceImpl implements ClanTurnService {
 
-    private static final int FAME_CAP = 5;
+    private static final int FAME_CAP = 6;
 
     private final ClanRepository clanRepository;
     private final CharacterService characterService;
