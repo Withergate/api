@@ -41,6 +41,8 @@ INSERT INTO placeholder_texts(code, lang, text) VALUES
     -- FACTIONS
     ('error.combat-limit', 'en', 'Only one attack action per turn is permitted!'),
     ('error.combat-limit', 'cs', 'Je povolen pouze jeden útok na cizí klan za kolo!'),
+    ('error.leading-faction', 'en', 'Your clan must be a member of the leading faction to perform this action!'),
+    ('error.leading-faction', 'cs', 'Tvůj klan musí být členem vedoucí frakce, aby mohl využít tuto akci!'),
     -- ARENA
     ('error.arena-limit', 'en', 'Only one character in arena per turn is permitted!'),
     ('error.arena-limit', 'cs', 'Je povolen pouze jeden vstup do arény za kolo!'),
