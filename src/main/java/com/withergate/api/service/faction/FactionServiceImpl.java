@@ -112,7 +112,8 @@ public class FactionServiceImpl implements FactionService {
 
             // check leading condition
             if (aid.isLeading() && !clan.getFaction().getIdentifier().equals(getBestFaction().getIdentifier())) {
-                throw new InvalidActionException(null, "Your clan must be a member of a leading faction to perform this action.");
+                throw new InvalidActionException("error.leading-faction",
+                        "Your clan must be a member of a leading faction to perform this action.");
             }
 
             // check cost & pay
